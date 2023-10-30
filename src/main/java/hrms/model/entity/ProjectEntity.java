@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Builder
 @Table(name = "PJT_MNG")
 public class ProjectEntity extends BaseTime {
 
