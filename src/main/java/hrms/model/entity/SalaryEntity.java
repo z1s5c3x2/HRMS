@@ -37,5 +37,5 @@ public class SalaryEntity extends BaseTime {
     @ToString.Exclude
     @JoinColumn(name="aprv_no")
     @ManyToOne
-    private ApprovalEntity aprv_no;
+    private ApprovalEntity aprv_no;     // 6.결제번호
 }
