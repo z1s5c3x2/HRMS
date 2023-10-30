@@ -1,10 +1,16 @@
 package hrms.model.entity;
 
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString
 @Table(name = "TM_MNG")
 public class TeamMemberEntity extends BaseTime{
 

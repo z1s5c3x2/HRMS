@@ -1,14 +1,19 @@
 package hrms.model.entity;
 
 
-import lombok.Builder;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString
 @Table(name = "PJT_MNG")
 public class ProjectEntity extends BaseTime {
 
