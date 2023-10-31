@@ -27,7 +27,7 @@ public class LeaveRequestEntity extends BaseTime { // 휴직/연차/병가 테�
     private LocalDateTime lrq_st;            // 3. 시작 날짜
 
     @Column()
-    private LocalDateTime lrq_end;              // 4. 지급유형 ( 1:기본급/2:정기상여/3:특별상여/4:성과금/5:명절휴가비/6:퇴직금)
+    private LocalDateTime lrq_end;              // 4. 종료 날짜
 
     @Column()
     private int lrq_srtype;                   // 5. ( 0: 무급 / 1: 유급 )
