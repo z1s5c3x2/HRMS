@@ -14,7 +14,7 @@ Content-Type: application/json
   "emp_rk": 3
 }
 
-### 사원 조회
+### 사원 리스트조회
 
 GET http://localhost:80/employee/list
 Content-Type: application/json
@@ -22,5 +22,15 @@ Content-Type: application/json
 
 ### 사원 퇴사
 
-PUT http://localhost:80/employee/leave?emp_no=231020004
+PUT http://localhost:80/employee/leave
+Content-Type: application/json
+
+{
+    "emp_no" : 231120000,
+    "rtemp_cont" : "북한군 침공"
+}
+
+
+### 휴직 사원 리스트조회
+GET http://localhost:80/employee/restlist
 Content-Type: application/json

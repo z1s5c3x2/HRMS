@@ -1,8 +1,11 @@
 package hrms.service.employee;
 
 import hrms.model.dto.EmployeeDto;
+import hrms.model.dto.RetiredEmployeeDto;
 import hrms.model.entity.EmployeeEntity;
-import hrms.model.repository.EmployeeRepository;
+import hrms.model.entity.RetiredEmployeeEntity;
+import hrms.model.repository.EmployeeEntityRepository;
+import hrms.model.repository.RetiredEmployeeEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +19,9 @@ import java.util.Optional;
 @Service
 public class EmployeeService {
     @Autowired
-    EmployeeRepository employeeRepository;
+    EmployeeEntityRepository employeeRepository;
+    @Autowired
+    RetiredEmployeeEntityRepository retiredEmployeeEntityRepository;
 
     @Transactional
     public boolean registerEmp(@RequestBody EmployeeDto employeeDto)
@@ -50,17 +55,45 @@ public class EmployeeService {
     }
 
     @Transactional
-    public boolean setEmpStatus(int emp_no)
+    public boolean leaveEmpStatus(RetiredEmployeeDto retiredEmployeeDto)
     {
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findById(emp_no);
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findById(retiredEmployeeDto.getEmp_no());
+        System.out.println("retiredEmployeeDto = " + retiredEmployeeDto);
+        System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
         if(optionalEmployeeEntity.isPresent())
         {
+            System.out.println("step1");
             EmployeeEntity employeeEntity = optionalEmployeeEntity.get();
-            employeeEntity.setEmp_sta(!employeeEntity.isEmp_sta());
+            System.out.println("step2");
+            employeeEntity.setEmpSta(!employeeEntity.isEmpSta());
+            System.out.println("여기");
+            setRetiredEmployee(retiredEmployeeDto);
             return true;
         }else{
             return false;
         }
+
+    }
+    @Transactional
+    public void setRetiredEmployee(RetiredEmployeeDto retiredEmployeeDto)
+    {
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findById(retiredEmployeeDto.getEmp_no());
+        if(optionalEmployeeEntity.isPresent())
+        {
+            System.out.println("여기 옴?");
+            retiredEmployeeEntityRepository.save(RetiredEmployeeEntity.builder()
+                    .emp_no(optionalEmployeeEntity.get()).rtemp_cont(retiredEmployeeDto.getRtemp_cont()).build());
+        }
+    }
+    @Transactional
+    public List<EmployeeDto> getRestList()
+    {
+        List<EmployeeDto> result = new ArrayList<>();
+        employeeRepository.findAllByEmpStaIsFalse().forEach(e ->{
+            result.add(e.allToDto());
+        });
+
+        return result;
 
     }
 }

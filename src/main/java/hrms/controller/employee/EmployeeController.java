@@ -1,6 +1,7 @@
 package hrms.controller.employee;
 
 import hrms.model.dto.EmployeeDto;
+import hrms.model.dto.RetiredEmployeeDto;
 import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,10 +30,16 @@ public class EmployeeController {
         return employeeService.getEmpList();
     }
     @PutMapping("/leave")
-    public boolean setEmpStatus(@RequestParam int emp_no)
+    public boolean leaveEmpStatus(@RequestBody RetiredEmployeeDto retiredEmployeeDto)
     {
         //System.out.println("EmployeeController.setEmpStatus");
-        return employeeService.setEmpStatus(emp_no);
+        System.out.println("retiredEmployeeDto = " + retiredEmployeeDto);
+        return employeeService.leaveEmpStatus(retiredEmployeeDto);
+    }
+    @GetMapping("/restlist")
+    public List<EmployeeDto> getRestList()
+    {
+        return employeeService.getRestList();
     }
 
 }

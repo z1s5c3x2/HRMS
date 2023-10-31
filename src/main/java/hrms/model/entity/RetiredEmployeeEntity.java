@@ -17,6 +17,7 @@ public class RetiredEmployeeEntity extends BaseTime {
     private int rtemp_no;
     @Column( )
     private String rtemp_cont;
+    @Column()
     private String rtemp_date;
 
     @ToString.Exclude

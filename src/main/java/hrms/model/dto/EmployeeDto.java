@@ -21,12 +21,12 @@ public class EmployeeDto {
     {
         return EmployeeEntity.builder()
                 .emp_no(this.emp_no)
-                .emp_name(this.emp_name)
+                .empName(this.emp_name)
                 .emp_phone(this.emp_phone)
                 .emp_pwd(this.emp_pwd)
                 .emp_sex(this.emp_sex)
                 .emp_acn(this.emp_acn)
-                .emp_sta(this.emp_sta)
+                .empSta(this.emp_sta)
                 .emp_rk(this.emp_rk).build();
     }
 }
