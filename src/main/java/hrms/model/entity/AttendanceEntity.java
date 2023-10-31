@@ -1,5 +1,6 @@
 package hrms.model.entity;
 
+import hrms.model.dto.AttendanceDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.ColumnDefault;
@@ -31,13 +32,13 @@ public class AttendanceEntity extends BaseTime{
     @ManyToOne
     private EmployeeEntity emp_no;              // 사원번호
 
-/*    public AttendanceDto allToDto() {
+    public AttendanceDto allToDto() {
         return AttendanceDto.builder()
-                .arno(this.arno)
-                .arWorkStartTime(this.arWorkStartTime)
-                .arWorkEndTime(this.arWorkEndTime)
-                .employeeId(this.employeeId)
+                .attd_no(this.attd_no)
+                .attd_wrst(this.attd_wrst)
+                .attd_wrend(this.attd_wrend)
+                .emp_no(this.emp_no)
                 .build();
-    }*/
+    }
 
 }
