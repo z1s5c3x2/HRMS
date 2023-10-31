@@ -5,12 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Builder
-@ToString
+@AllArgsConstructor@NoArgsConstructor
+@Getter@Setter
+@Builder@ToString
 @Table(name = "TM_MNG")
 public class TeamMemberEntity extends BaseTime{
 
@@ -24,7 +21,7 @@ public class TeamMemberEntity extends BaseTime{
     @Column
     private String tm_st;     // 투입 날짜
     @Column
-    private String tm_end;    // 투입 종료 날짜
+    private String tm_end = null;    // 투입 종료 날짜
 
     @ToString.Exclude
     @ManyToOne
