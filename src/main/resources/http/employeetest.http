@@ -1,0 +1,26 @@
+
+
+### 사원 가입
+POST http://localhost:80/employee/register
+Content-Type: application/json
+
+{
+  "emp_name": "John Doe1",
+  "emp_phone": "123-455-7890",
+  "emp_pwd": "password223",
+  "emp_sex": "male",
+  "emp_acn": "123456789",
+  "emp_sta": true,
+  "emp_rk": 3
+}
+
+### 사원 조회
+
+GET http://localhost:80/employee/list
+Content-Type: application/json
+
+
+### 사원 퇴사
+
+PUT http://localhost:80/employee/leave?emp_no=231020004
+Content-Type: application/json

@@ -2,6 +2,7 @@ package hrms.model.entity;
 
 
 
+import hrms.model.dto.EmployeeDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity @Table(name="EMP")
 
 public class EmployeeEntity extends BaseTime {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동생성 변경 필요
+    @Id
     private int emp_no;                     // 사원번호
     @Column( )
     private String emp_name;                // 사원이름
@@ -67,5 +68,17 @@ public class EmployeeEntity extends BaseTime {
     private List<TeamMemberEntity> teamMemberEntities = new ArrayList<>();
 
 
+    public EmployeeDto allToDto()
+    {
+        return EmployeeDto.builder()
+                .emp_no(this.emp_no)
+                .emp_name(this.emp_name)
+                .emp_phone(this.emp_phone)
+                .emp_pwd(this.emp_pwd)
+                .emp_sex(this.emp_sex)
+                .emp_acn(this.emp_acn)
+                .emp_sta(this.emp_sta)
+                .emp_rk(this.emp_rk).build();
+    }
 
 }
