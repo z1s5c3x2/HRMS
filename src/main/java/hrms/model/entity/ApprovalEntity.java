@@ -2,7 +2,6 @@ package hrms.model.entity;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +22,14 @@ public class ApprovalEntity extends BaseTime {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private int aprv_no;            // 결재번호
     @Column(nullable = false)
-    private int aprv_type;          // 결재타입 (1프로젝트팀결성 / 2프로젝트기획 / 3연차,휴직,병가 / 4퇴사)
-    @ColumnDefault( "''" )  // default
+    private int aprv_type;          // 결재타입 (1 프로젝트팀결성 / 2 프로젝트기획 / 3 연차,휴직,병가 / 4 퇴사)
+    @ColumnDefault( "''" )          // default
     @Column( length = 40 )
-    private String aprv_cont;    // 간단한 결재내용
+    private String aprv_cont;       // 간단한 결재내용
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name="emp_no")
-    private EmployeeEntity emp_no;            // 상신자
+    private EmployeeEntity emp_no;  // 상신자
 
     @Builder.Default
     @OneToMany(mappedBy="aprv_no")

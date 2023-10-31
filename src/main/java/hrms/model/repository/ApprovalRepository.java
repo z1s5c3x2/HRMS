@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ApprovalRepository extends JpaRepository<ApprovalEntity,Integer> {
+
+
+
+
 }
