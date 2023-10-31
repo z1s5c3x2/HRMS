@@ -1,8 +1,7 @@
 package hrms.model.entity;
 
 
-import lombok.Builder;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
