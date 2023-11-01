@@ -19,24 +19,24 @@ public class ProjectEntity extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int pjt_no; //  프로젝트번호
+    private int pjtNo; //  프로젝트번호
     @ToString.Exclude
-    @JoinColumn(name="emp_no")
+    @JoinColumn(name="empNo")
     @ManyToOne
-    private EmployeeEntity emp_no;    // 프로젝트 관리자 사원번호(fk)
+    private EmployeeEntity empNo;    // 프로젝트 관리자 사원번호(fk)
     @Column
-    private String pjt_name;    // 프로젝트명
+    private String pjtName;    // 프로젝트명
     @Column
-    private String pjt_st;      // 프로젝트 시작날짜
+    private String pjtSt;      // 프로젝트 시작날짜
     @Column
-    private String pjt_END;     // 프로젝트 기한
+    private String pjtEND;     // 프로젝트 기한
     @Column
     @ColumnDefault("1")         // 프로젝트 상태 디폴트값(1 = 진행중)
-    private int pjt_sta;        // 프로젝트 상태
+    private int pjtSta;        // 프로젝트 상태
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name="aprv_no")
-    private ApprovalEntity aprv_no;            // 결재번호(fk)
+    @JoinColumn(name="aprvNo")
+    private ApprovalEntity aprvNo;            // 결재번호(fk)
 
     @Builder.Default
     @OneToMany(mappedBy="pjt_no")
@@ -45,13 +45,13 @@ public class ProjectEntity extends BaseTime {
     // 1. 전체 출력할때 메소드
     public ProjectDto allToDto(){
         return ProjectDto.builder()
-                .pjt_no(this.pjt_no)
-                .emp_no(this.emp_no.getEmp_no())
-                .pjt_name(this.pjt_name)
-                .pjt_st(this.pjt_st)
-                .pjt_END(this.pjt_END)
-                .pjt_sta(this.pjt_sta)
-                .aprv_no((this.aprv_no.getAprv_no()))
+                .pjt_no(this.pjtNo)
+                .emp_no(this.empNo.getEmp_no())
+                .pjt_name(this.pjtName)
+                .pjt_st(this.pjtSt)
+                .pjt_END(this.pjtEND)
+                .pjt_sta(this.pjtSta)
+                .aprv_no((this.aprvNo.getAprv_no()))
                 .build();
     }
 
