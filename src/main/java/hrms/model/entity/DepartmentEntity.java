@@ -21,7 +21,7 @@ public class DepartmentEntity extends BaseTime{
     private String dptmName;          // 부서이름
 
     @Builder.Default
-    @OneToMany(mappedBy = "dptm_no")
+    @OneToMany(mappedBy = "dptmNo")
     private List<DepartmentHistoryEntity> departmentHistory = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "dptmNo")

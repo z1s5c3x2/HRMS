@@ -40,31 +40,31 @@ public class EmployeeEntity extends BaseTime {
     private ApprovalEntity aprvNo;
 
     @Builder.Default
-    @OneToMany(mappedBy = "emp_no")         // 결재테이블연결
+    @OneToMany(mappedBy = "empNo")         // 결재테이블연결
     private List<ApprovalEntity> approvalEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "emp_no")
+    @OneToMany(mappedBy = "empNo")
     private List<ApprovalLogEntity> approvalLogs = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "emp_no")
+    @OneToMany(mappedBy = "empNo")
     private List<ProjectEntity> projectEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "emp_no")
+    @OneToMany(mappedBy = "empNo")
     private List<AttendanceEntity> attendanceEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "emp_no")
+    @OneToMany(mappedBy = "empNo")
     private List<DepartmentHistoryEntity> departmentEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "emp_no")
+    @OneToMany(mappedBy = "empNo")
     private List<LeaveRequestEntity> leaveRequestEntities = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "empNo")
     private List<RetiredEmployeeEntity> retiredEmployeeEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "emp_no")
+    @OneToMany(mappedBy = "empNo")
     private List<SalaryEntity> salaryEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "emp_no")
+    @OneToMany(mappedBy = "empNo")
     private List<TeamMemberEntity> teamMemberEntities = new ArrayList<>();
 
 

@@ -41,7 +41,7 @@ public class ProjectEntity extends BaseTime {
     private ApprovalEntity aprvNo;            // 결재번호(fk)
 
     @Builder.Default
-    @OneToMany(mappedBy="pjt_no")
+    @OneToMany(mappedBy="pjtNo")
     private List<TeamMemberEntity> teamMemberEntities = new ArrayList<>();
 
     // 1. 전체 출력할때 메소드
