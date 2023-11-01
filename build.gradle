@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation' // @MIN ,@MAX ,@SIZE 사용 가능
-    implementation 'org.springframework.boot:spring-boot-starter-security' // spring security 라이브러리
+    // implementation 'org.springframework.boot:spring-boot-starter-security' // spring security 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-web'   // springboot web 라이브러리
     runtimeOnly 'com.mysql:mysql-connector-j' // mysql 라이브러리
     compileOnly 'org.projectlombok:lombok'// 롬복 라이브러리

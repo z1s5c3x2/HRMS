@@ -1,7 +1,9 @@
 package hrms.service.Salary;
 
 
+import hrms.model.dto.LeaveRequestDto;
 import hrms.model.dto.SalaryDto;
+import hrms.model.entity.LeaveRequestEntity;
 import hrms.model.entity.SalaryEntity;
 import hrms.model.repository.SalaryEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +34,27 @@ public class SalaryService {
         salaryEntities.forEach( e ->{ salaryDtos.add( e.allToDto()); });
         return salaryDtos;
     }
+    @Transactional
+    public SalaryDto slryGet( int empNo ){
+        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findByEmpNo( empNo ) ;
 
+        if(optionalSalaryEntity.isPresent()){
+
+            SalaryDto salaryDto = new SalaryDto();
+
+            salaryDto.setSlryNo( optionalSalaryEntity.get().getSlryNo());
+            salaryDto.setSlryDate( optionalSalaryEntity.get().getSlryDate());
+            salaryDto.setSlryPay( optionalSalaryEntity.get().getSlryPay());
+            salaryDto.setSlryType( optionalSalaryEntity.get().getSlryType());
+            salaryDto.setAprvNo( optionalSalaryEntity.get().getAprvNo().getAprvNo());
+            salaryDto.setEmpNo( empNo );
+            salaryDto.setCdate( optionalSalaryEntity.get().getCdate());
+            salaryDto.setUdate( optionalSalaryEntity.get().getUdate());
+            return salaryDto;
+        }
+        return null;
+    }
     // 3.
-
     public boolean slryUpdate( SalaryDto salaryDto ){
         // 수정할 엔티티 찾기
         Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findById( salaryDto.getSlryNo() );

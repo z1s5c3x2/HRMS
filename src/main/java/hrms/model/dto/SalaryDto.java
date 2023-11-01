@@ -19,7 +19,7 @@ public class SalaryDto {
     private LocalDate slryDate;
     private int slryPay;
     private int slryType;
-    private String empNo;
+    private int empNo;
     private int aprvNo;
     // +
     private LocalDateTime cdate;
