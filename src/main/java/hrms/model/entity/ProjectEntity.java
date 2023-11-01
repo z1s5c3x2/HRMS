@@ -45,13 +45,13 @@ public class ProjectEntity extends BaseTime {
     // 1. 전체 출력할때 메소드
     public ProjectDto allToDto(){
         return ProjectDto.builder()
-                .pjt_no(this.pjtNo)
-                .emp_no(this.empNo.getEmp_no())
-                .pjt_name(this.pjtName)
-                .pjt_st(this.pjtSt)
-                .pjt_END(this.pjtEND)
-                .pjt_sta(this.pjtSta)
-                .aprv_no((this.aprvNo.getAprv_no()))
+                .pjtNo(this.pjtNo)
+                .empNo(this.empNo.getEmp_no())
+                .pjtName(this.pjtName)
+                .pjtSt(this.pjtSt)
+                .pjtEND(this.pjtEND)
+                .pjtSta(this.pjtSta)
+                .aprvNo((this.aprvNo.getAprv_no()))
                 .build();
     }
 
