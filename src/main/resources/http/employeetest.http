@@ -11,7 +11,8 @@ Content-Type: application/json
   "empSex": "male",
   "empAcn": "123456789",
   "empSta": true,
-  "empRk": 3
+  "empRk": 3,
+  "dtpmNo": 1
 }
 
 ### 사원 리스트조회
@@ -34,3 +35,20 @@ Content-Type: application/json
 ### 휴직 사원 리스트조회
 GET http://localhost:80/employee/restlist
 Content-Type: application/json
+
+### 부서 생성1
+POST http://localhost:80/department/insertdpm
+Content-Type: application/json
+
+{
+    "dptmName": "인사"
+}
+### 부서 생성2
+POST http://localhost:80/department/insertdpm
+Content-Type: application/json
+
+{
+  "dptmName": "개발"
+}
+
+### 부서 이동

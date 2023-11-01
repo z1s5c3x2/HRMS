@@ -2,8 +2,10 @@ package hrms.service.employee;
 
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.RetiredEmployeeDto;
+import hrms.model.entity.DepartmentEntity;
 import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.RetiredEmployeeEntity;
+import hrms.model.repository.DepartmentEntityRepository;
 import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.RetiredEmployeeEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +24,23 @@ public class EmployeeService {
     EmployeeEntityRepository employeeRepository;
     @Autowired
     RetiredEmployeeEntityRepository retiredEmployeeEntityRepository;
+    @Autowired
+    DepartmentEntityRepository departmentEntityRepository;
 
     @Transactional
     public boolean registerEmp(@RequestBody EmployeeDto employeeDto)
     {
-        //System.out.println("employeeDto = " + employeeDto);
+        System.out.println("employeeDto = " + employeeDto.toString());
         employeeDto.setEmpNo(generateEmpNumber(employeeDto.getEmpSex()));
-
-        return employeeRepository.save(employeeDto.saveToEntity()).getEmpNo() > 0;
+        EmployeeEntity employeeEntity = employeeDto.saveToEntity();
+        Optional<DepartmentEntity> optionalDepartmentEntity =  departmentEntityRepository.findById(employeeDto.getDtpmNo());
+        if(optionalDepartmentEntity.isPresent())
+        {
+            employeeEntity.setDptmNo(optionalDepartmentEntity.get());
+            employeeRepository.save(employeeEntity);
+            optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity);
+        }
+        return employeeEntity.getEmpNo() > 0;
     }
 
     @Transactional
