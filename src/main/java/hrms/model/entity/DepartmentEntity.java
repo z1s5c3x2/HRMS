@@ -24,6 +24,6 @@ public class DepartmentEntity extends BaseTime{
     @OneToMany(mappedBy = "dptm_no")
     private List<DepartmentHistoryEntity> departmentHistory = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "dptm_no")
+    @OneToMany(mappedBy = "dptmNo")
     private List<EmployeeEntity> employeeEntities = new ArrayList<>();
 }

@@ -8,25 +8,25 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDto {
-    private int emp_no;                     // 사원번호
-    private String emp_name;                // 사원이름
-    private String emp_phone;               // 사원전환번호
-    private String emp_pwd;                 // 사원비밀번호
-    private String emp_sex;                 // 사원성별
-    private String emp_acn;                 // 사원계좌번호
-    private boolean emp_sta;                 // 근무상태
-    private int emp_rk;                     // 사원 직급
+    private int empNo;                     // 사원번호
+    private String empName;                // 사원이름
+    private String empPhone;               // 사원전환번호
+    private String empPwd;                 // 사원비밀번호
+    private String empSex;                 // 사원성별
+    private String empAcn;                 // 사원계좌번호
+    private boolean empSta;                 // 근무상태
+    private int empRk;                     // 사원 직급
 
     public EmployeeEntity saveToEntity()
     {
         return EmployeeEntity.builder()
-                .emp_no(this.emp_no)
-                .empName(this.emp_name)
-                .emp_phone(this.emp_phone)
-                .emp_pwd(this.emp_pwd)
-                .emp_sex(this.emp_sex)
-                .emp_acn(this.emp_acn)
-                .empSta(this.emp_sta)
-                .emp_rk(this.emp_rk).build();
+                .empNo(this.empNo)
+                .empName(this.empName)
+                .empPhone(this.empPhone)
+                .empPwd(this.empPwd)
+                .empSex(this.empSex)
+                .empAcn(this.empAcn)
+                .empSta(this.empSta)
+                .empRk(this.empRk).build();
     }
 }

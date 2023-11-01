@@ -16,4 +16,5 @@ public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity,I
             ,nativeQuery = true)
     int countNowEmployee(String nowyear);
     List<EmployeeEntity> findAllByEmpStaIsFalse();
+
 }

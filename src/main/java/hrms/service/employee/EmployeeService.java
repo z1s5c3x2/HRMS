@@ -27,9 +27,9 @@ public class EmployeeService {
     public boolean registerEmp(@RequestBody EmployeeDto employeeDto)
     {
         //System.out.println("employeeDto = " + employeeDto);
-        employeeDto.setEmp_no(generateEmpNumber(employeeDto.getEmp_sex()));
+        employeeDto.setEmpNo(generateEmpNumber(employeeDto.getEmpSex()));
 
-        return employeeRepository.save(employeeDto.saveToEntity()).getEmp_no() > 0;
+        return employeeRepository.save(employeeDto.saveToEntity()).getEmpNo() > 0;
     }
 
     @Transactional
@@ -57,16 +57,16 @@ public class EmployeeService {
     @Transactional
     public boolean leaveEmpStatus(RetiredEmployeeDto retiredEmployeeDto)
     {
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findById(retiredEmployeeDto.getEmp_no());
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findById(retiredEmployeeDto.getEmpNo());
         System.out.println("retiredEmployeeDto = " + retiredEmployeeDto);
         System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
         if(optionalEmployeeEntity.isPresent())
         {
-            System.out.println("step1");
+
             EmployeeEntity employeeEntity = optionalEmployeeEntity.get();
-            System.out.println("step2");
+
             employeeEntity.setEmpSta(!employeeEntity.isEmpSta());
-            System.out.println("여기");
+
             setRetiredEmployee(retiredEmployeeDto);
             return true;
         }else{
@@ -77,13 +77,20 @@ public class EmployeeService {
     @Transactional
     public void setRetiredEmployee(RetiredEmployeeDto retiredEmployeeDto)
     {
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findById(retiredEmployeeDto.getEmp_no());
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findById(retiredEmployeeDto.getEmpNo());
         if(optionalEmployeeEntity.isPresent())
         {
-            System.out.println("여기 옴?");
-            retiredEmployeeEntityRepository.save(RetiredEmployeeEntity.builder()
-                    .emp_no(optionalEmployeeEntity.get()).rtemp_cont(retiredEmployeeDto.getRtemp_cont()).build());
+            RetiredEmployeeEntity retiredEmployeeEntity = retiredEmployeeDto.saveToEntity();
+            retiredEmployeeEntity.setEmpNo(optionalEmployeeEntity.get());
+            retiredEmployeeEntityRepository.save(retiredEmployeeEntity);
+
+            optionalEmployeeEntity.get().getRetiredEmployeeEntities().add(retiredEmployeeEntity);
+            System.out.println("optionalEmployeeEntity.to = " + optionalEmployeeEntity.get().toString());
+            System.out.println("retiredEmployeeEntity = " + retiredEmployeeEntity.toString());
         }
+
+
+
     }
     @Transactional
     public List<EmployeeDto> getRestList()

@@ -5,13 +5,13 @@ POST http://localhost:80/employee/register
 Content-Type: application/json
 
 {
-  "emp_name": "John Doe1",
-  "emp_phone": "123-455-7890",
-  "emp_pwd": "password223",
-  "emp_sex": "male",
-  "emp_acn": "123456789",
-  "emp_sta": true,
-  "emp_rk": 3
+  "empName": "John Doe1",
+  "empPhone": "123-455-7890",
+  "empPwd": "password223",
+  "empSex": "male",
+  "empAcn": "123456789",
+  "empSta": true,
+  "empRk": 3
 }
 
 ### 사원 리스트조회
@@ -26,8 +26,8 @@ PUT http://localhost:80/employee/leave
 Content-Type: application/json
 
 {
-    "emp_no" : 231120000,
-    "rtemp_cont" : "북한군 침공"
+    "empNo" : 231120000,
+    "rtempCont" : "북한군 침공"
 }
 
 

@@ -1,5 +1,7 @@
 package hrms.model.dto;
 
+import hrms.model.entity.EmployeeEntity;
+import hrms.model.entity.RetiredEmployeeEntity;
 import lombok.*;
 
 @Getter
@@ -9,9 +11,15 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RetiredEmployeeDto {
-    private int rtemp_no;
-    private String rtemp_cont;
-    private String rtemp_date;
-    private int emp_no;
+    private int rtempNo;
+    private String rtempCont;
+    private String rtempDate;
+    private int empNo;
 
+    public RetiredEmployeeEntity saveToEntity()
+    {
+        return RetiredEmployeeEntity.builder()
+                .rtempDate(this.rtempDate)
+                .rtempCont(this.rtempCont).build();
+    }
 }
