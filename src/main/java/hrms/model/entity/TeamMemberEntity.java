@@ -1,5 +1,6 @@
 package hrms.model.entity;
 
+import hrms.model.dto.TeamMemberDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,5 +33,17 @@ public class TeamMemberEntity extends BaseTime{
     @ManyToOne
     @JoinColumn(name="aprvNo")
     private ApprovalEntity aprvNo;            // 결재번호(fk)
+
+    // entity -> dto
+    public TeamMemberDto allToDto() {
+        return TeamMemberDto.builder()
+                .tmNo(this.tmNo)
+                .empNo(this.empNo.getEmpNo())
+                .tmSt(this.tmSt)
+                .tmEnd(this.tmEnd)
+                .pjtNo(this.pjtNo.getPjtNo())
+                .aprvNo(this.aprvNo.getAprvNo())
+                .build();
+    }
 
 }

@@ -28,7 +28,7 @@ public class ApprovalEntity<T> extends BaseTime {
     private String aprvCont;       // 간단한 결재내용
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name="emp_no")
+    @JoinColumn(name="empNo")
     private EmployeeEntity empNo;  // 상신자
     @Builder.Default
     @OneToMany(mappedBy="aprvNo")

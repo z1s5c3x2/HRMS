@@ -31,11 +31,11 @@ public class EmployeeEntity extends BaseTime {
     private int empRk;                     // 사원 직급
 
     @ToString.Exclude
-    @JoinColumn(name="dptm_no")
+    @JoinColumn(name="dptmNo")
     @ManyToOne
     private DepartmentEntity dptmNo;
     @ToString.Exclude
-    @JoinColumn(name="aprv_no")
+    @JoinColumn(name="aprvNo")
     @ManyToOne
     private ApprovalEntity aprvNo;
 

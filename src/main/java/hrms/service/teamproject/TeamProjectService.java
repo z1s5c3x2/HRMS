@@ -1,14 +1,18 @@
 package hrms.service.teamproject;
 
 import hrms.model.dto.ProjectDto;
+import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.ProjectEntity;
+import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.ProjectEntityRepository;
+import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TeamProjectService {
@@ -16,14 +20,32 @@ public class TeamProjectService {
     @Autowired
     private ProjectEntityRepository projectRepository;
 
+    @Autowired
+    private EmployeeService employeeService;
+
+
+    @Autowired
+    private EmployeeEntityRepository employeeRepository;
+
     // 팀 프로젝트 생성
     @Transactional
     public boolean postTeamProject(ProjectDto projectDto/*, ApprovalDto approvalDto*/){
 
-        projectDto.setAprvNo(1);
+        // 입력한 팀프로젝트 관리자 pk번호 호출
+        Optional<EmployeeEntity> employeeEntityOptional =
+                employeeRepository.findById(projectDto.getEmpNo());
 
+        // 사원번호 유효성검사
+        if(!employeeEntityOptional.isPresent()){return false;}
+
+        // 팀 프로젝트 생성
         ProjectEntity projectEntity =
                 projectRepository.save(projectDto.saveToEntity());
+        // 팀 프로젝트에 관리자 사원번호 추가
+        projectEntity.setEmpNo(employeeEntityOptional.get());
+
+        // 사원 엔티티에 팀 프로젝트 엔티티 추가
+        employeeEntityOptional.get().getProjectEntities().add(projectEntity);
 
         return projectEntity.getPjtNo() >= 1;
     }
@@ -35,15 +57,23 @@ public class TeamProjectService {
         List<ProjectDto> projectDtos = new ArrayList<>();
 
         for(ProjectEntity projectEntity : projectEntities){
-            //projectDtos.add(projectEntities.);
+            projectDtos.add(projectEntity.allToDto());
+            System.out.println(projectEntity.allToDto());
         }
+
+        return projectDtos;
+    }
+    
+    // 3. 개별 프로젝트 조회(팀원정보도 출력)
+    @Transactional
+    public ProjectDto getOneTeamProject(){
 
         return null;
     }
 
-    // 3. 팀프로젝트 수정
+    // 4. 팀프로젝트 수정
 
-    // 4. 팀프로젝트 삭제
+    // 5. 팀프로젝트 삭제
 
 
 }

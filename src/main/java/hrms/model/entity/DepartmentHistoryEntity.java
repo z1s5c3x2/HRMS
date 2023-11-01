@@ -18,16 +18,16 @@ public class DepartmentHistoryEntity extends BaseTime {
     private int htrdpNo;       // 부서이동 히스토리 넘버
     private int htrdpRk;    // 권한레벨(직급)
     @ToString.Exclude
-    @JoinColumn(name="dptm_no")
+    @JoinColumn(name="dptmNo")
     @ManyToOne
     private DepartmentEntity dptmNo;
     @ToString.Exclude
-    @JoinColumn(name="emp_no")
+    @JoinColumn(name="empNo")
     @ManyToOne
     private EmployeeEntity empNo;
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name="aprv_no")
+    @JoinColumn(name="aprvNo")
     private ApprovalEntity aprvNo;
 
 

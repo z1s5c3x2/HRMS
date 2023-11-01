@@ -39,12 +39,12 @@ public class SalaryEntity extends BaseTime {
     private int slryType;               // 4. 지급유형 ( 1:기본급/2:정기상여/3:특별상여/4:성과금/5:명절휴가비/6:퇴직금)
 
     @ToString.Exclude
-    @JoinColumn(name="emp_no")
+    @JoinColumn(name="empNo")
     @ManyToOne
     private EmployeeEntity empNo;        // 5. 사원번호 ( FK )
 
     @ToString.Exclude
-    @JoinColumn(name="aprv_no")
+    @JoinColumn(name="aprvNo")
     @ManyToOne
     private ApprovalEntity aprvNo;     // 6.결제번호
 

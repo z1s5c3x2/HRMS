@@ -2,6 +2,7 @@ package hrms.model.entity;
 
 
 import hrms.model.dto.ProjectDto;
+import hrms.model.dto.TeamMemberDto;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -11,12 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Builder
-@ToString
+@AllArgsConstructor@NoArgsConstructor
+@Getter@Setter@Builder@ToString
+@DynamicInsert
 @Table(name = "PJT_MNG")
 public class ProjectEntity extends BaseTime {
 
@@ -24,7 +22,7 @@ public class ProjectEntity extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pjtNo; //  프로젝트번호
     @ToString.Exclude
-    @JoinColumn(name="emp_no")
+    @JoinColumn(name="empNo")
     @ManyToOne
     private EmployeeEntity empNo;    // 프로젝트 관리자 사원번호(fk)
     @Column
@@ -33,11 +31,12 @@ public class ProjectEntity extends BaseTime {
     private String pjtSt;      // 프로젝트 시작날짜
     @Column
     private String pjtEND;     // 프로젝트 기한
-    @Column
+    @Column(nullable = false)
+    @ColumnDefault("1")         // 프로젝트 상태 디폴트값(1 = 진행중)
     private int pjtSta;        // 프로젝트 상태
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name="aprv_no")
+    @JoinColumn(name="aprvNo")
     private ApprovalEntity aprvNo;            // 결재번호(fk)
 
     @Builder.Default
@@ -49,12 +48,38 @@ public class ProjectEntity extends BaseTime {
         return ProjectDto.builder()
                 .pjtNo(this.pjtNo)
                 .empNo(this.empNo.getEmpNo())
+                .empName(this.empNo.getEmpName())
                 .pjtName(this.pjtName)
                 .pjtSt(this.pjtSt)
                 .pjtEND(this.pjtEND)
                 .pjtSta(this.pjtSta)
                 .aprvNo((this.aprvNo.getAprvNo()))
                 .build();
+    }
+
+    // 2. 개별 조회시 메소드
+    public ProjectDto oneToDto(){
+        return ProjectDto.builder()
+                .pjtNo(this.pjtNo)
+                .empNo(this.empNo.getEmpNo())
+                .empName(this.empNo.getEmpName())
+                .pjtName(this.pjtName)
+                .pjtSt(this.pjtSt)
+                .pjtEND(this.pjtEND)
+                .pjtSta(this.pjtSta)
+                .aprvNo((this.aprvNo.getAprvNo()))
+                .teamMembers(getTeamMembers(this.teamMemberEntities))
+                .build();
+    }
+
+    // 3. 리스트 변환 메소드
+    public List<TeamMemberDto> getTeamMembers(List<TeamMemberEntity> teamMemberEntities){
+        List<TeamMemberDto> teamMemberDtos = new ArrayList<>();
+
+        for(TeamMemberEntity teamMemberEntity : teamMemberEntities){
+            teamMemberDtos.add(teamMemberEntity.allToDto());
+        }
+        return teamMemberDtos;
     }
 
 }
