@@ -13,28 +13,35 @@ public class LeaveRequestController {
     @Autowired
     private LeaveRequestService leaveRequestService;
 
-    @PostMapping("")
+    @PostMapping("/post")
     public boolean lrqWrite( LeaveRequestDto leaveRequestDto ){
 
         return leaveRequestService.lrqWrite( leaveRequestDto );
     }
 
-    // 2.
-    @GetMapping("")
+    // 2. 모든 LRQ 리스트 출력
+    @GetMapping("/getAll")
     public List<LeaveRequestDto> lrqGetAll(){
 
         return leaveRequestService.lrqGetAll();
     }
+    // 개별 LRQ 출력
+    @GetMapping("/get")
+    public LeaveRequestDto lrqGet(){
+
+        return leaveRequestService.lrqGet();
+    }
 
     // 3.
-    @PutMapping("")
+    @PutMapping("/put")
     public boolean lrqUpdate( LeaveRequestDto leaveRequestDto ){
         return leaveRequestService.lrqUpdate( leaveRequestDto );
     }
     // 4
-    @DeleteMapping("")
+    @DeleteMapping("/delete")
     public boolean lrqDelete( @RequestParam int lrqNo){
         return leaveRequestService.lrqDelete( lrqNo );
     }
+
 
 }
