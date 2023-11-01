@@ -2,10 +2,9 @@ package hrms.service.LeaveRequest;
 
 import hrms.model.dto.LeaveRequestDto;
 import hrms.model.entity.LeaveRequestEntity;
-import hrms.model.repository.LeaveRequestRepository;
+import hrms.model.repository.LeaveRequestEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.Optional;
 @Service
 public class LeaveRequestService {
     @Autowired
-    private LeaveRequestRepository leaveRequestRepository;
+    private LeaveRequestEntityRepository leaveRequestRepository;
 
     @Transactional
     public boolean lrqWrite( LeaveRequestDto leaveRequestDto ){

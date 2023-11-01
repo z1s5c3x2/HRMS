@@ -2,8 +2,8 @@ package hrms.service;
 
 import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.EmployeeEntity;
-import hrms.model.repository.ApprovalLogRepository;
-import hrms.model.repository.ApprovalRepository;
+import hrms.model.repository.ApprovalLogEntityRepository;
+import hrms.model.repository.ApprovalEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,15 +11,14 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class Approval {
 
     @Autowired
-    private ApprovalRepository approvalRepository;
+    private ApprovalEntityRepository approvalRepository;
     @Autowired
-    private ApprovalLogRepository approvalLogRepository;
+    private ApprovalLogEntityRepository approvalLogRepository;
 
     // 결재 테이블 등록
     @Transactional

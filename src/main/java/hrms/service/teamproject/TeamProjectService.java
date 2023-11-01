@@ -2,7 +2,7 @@ package hrms.service.teamproject;
 
 import hrms.model.dto.ProjectDto;
 import hrms.model.entity.ProjectEntity;
-import hrms.model.repository.ProjectRepository;
+import hrms.model.repository.ProjectEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.List;
 public class TeamProjectService {
 
     @Autowired
-    private ProjectRepository projectRepository;
+    private ProjectEntityRepository projectRepository;
 
     // 팀 프로젝트 생성
     @Transactional

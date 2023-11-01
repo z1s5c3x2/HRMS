@@ -3,7 +3,7 @@ package hrms.service.Salary;
 
 import hrms.model.dto.SalaryDto;
 import hrms.model.entity.SalaryEntity;
-import hrms.model.repository.SalaryRepository;
+import hrms.model.repository.SalaryEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class SalaryService {
     @Autowired
-    private SalaryRepository salaryRepository;
+    private SalaryEntityRepository salaryRepository;
 
     @Transactional
     public boolean slryWrite( SalaryDto salaryDto ){
