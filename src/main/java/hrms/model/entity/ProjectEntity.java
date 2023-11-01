@@ -46,12 +46,12 @@ public class ProjectEntity extends BaseTime {
     public ProjectDto allToDto(){
         return ProjectDto.builder()
                 .pjtNo(this.pjtNo)
-                .empNo(this.empNo.getEmp_no())
+                .empNo(this.empNo.getEmpNo())
                 .pjtName(this.pjtName)
                 .pjtSt(this.pjtSt)
                 .pjtEND(this.pjtEND)
                 .pjtSta(this.pjtSta)
-                .aprvNo((this.aprvNo.getAprv_no()))
+                .aprvNo((this.aprvNo.getAprvNo()))
                 .build();
     }
 
