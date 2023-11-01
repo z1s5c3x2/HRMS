@@ -20,12 +20,12 @@ public class TeamProjectService {
     @Transactional
     public boolean postTeamProject(ProjectDto projectDto/*, ApprovalDto approvalDto*/){
 
-        projectDto.setAprv_no(1);
+        projectDto.setAprvNo(1);
 
         ProjectEntity projectEntity =
                 projectRepository.save(projectDto.saveToEntity());
 
-        return projectEntity.getPjt_no() >= 1;
+        return projectEntity.getPjtNo() >= 1;
     }
 
     // 2. 전체 팀프로젝트 출력
@@ -35,9 +35,10 @@ public class TeamProjectService {
         List<ProjectDto> projectDtos = new ArrayList<>();
 
         for(ProjectEntity projectEntity : projectEntities){
-            projectDtos.add(projectEntities.);
+            //projectDtos.add(projectEntities.);
         }
 
+        return null;
     }
 
     // 3. 팀프로젝트 수정
