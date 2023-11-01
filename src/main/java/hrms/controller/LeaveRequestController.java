@@ -33,8 +33,8 @@ public class LeaveRequestController {
     }
     // 4
     @DeleteMapping("")
-    public boolean lrqDelete( @RequestParam int lrq_no){
-        return leaveRequestService.lrqDelete( lrq_no );
+    public boolean lrqDelete( @RequestParam int lrqNo){
+        return leaveRequestService.lrqDelete( lrqNo );
     }
 
 }

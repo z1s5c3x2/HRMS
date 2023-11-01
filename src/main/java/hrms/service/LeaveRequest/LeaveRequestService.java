@@ -22,7 +22,7 @@ public class LeaveRequestService {
         LeaveRequestEntity leaveRequestEntity
                 = leaveRequestRepository.save( leaveRequestDto.saveToEntity());
         // 2.
-        if( leaveRequestEntity.getLrq_no() >= 1){ return true;} return false;
+        if( leaveRequestEntity.getLrqNo() >= 1){ return true;} return false;
     }
 
     // 2. 모두 출력
@@ -38,29 +38,29 @@ public class LeaveRequestService {
     @Transactional
     public boolean lrqUpdate( LeaveRequestDto leaveRequestDto ){
         // 수정할 엔티티 찾기
-        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById( leaveRequestDto.getLrq_no() );
+        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById( leaveRequestDto.getLrqNo() );
         // 수정할 엔티티 존재하면?
         if(optionalLeaveRequestEntity.isPresent()){
             // 엔티티 꺼내기
             LeaveRequestEntity leaveRequestEntity = optionalLeaveRequestEntity.get();
             // 객체 수정하면 테이블 내 레코드 같이 수정
-            leaveRequestEntity.setLrq_st( leaveRequestDto.getLrq_st());
-            leaveRequestEntity.setLrq_end( leaveRequestDto.getLrq_end());
-            leaveRequestEntity.setLrq_srtype( leaveRequestDto.getLrq_srtype());
-            leaveRequestEntity.setLrq_type( leaveRequestDto.getLrq_type());
+            leaveRequestEntity.setLrqSt( leaveRequestDto.getLrqSt());
+            leaveRequestEntity.setLrqEnd( leaveRequestDto.getLrqEnd());
+            leaveRequestEntity.setLrqSrtype( leaveRequestDto.getLrqSrtype());
+            leaveRequestEntity.setLrqType( leaveRequestDto.getLrqType());
             return true;
         }
         return false;
     }
     // 4
     @Transactional
-    public boolean lrqDelete(int lrq_no){
+    public boolean lrqDelete(int lrqNo){
        // 1. 엔티티 호출
         Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById( lrq_no );
         // 2. 엔티티가 호출되었는지 확인
         if(optionalLeaveRequestEntity.isPresent()){
             //3. 삭제
-            leaveRequestRepository.deleteById(lrq_no);
+            leaveRequestRepository.deleteById(lrqNo);
             return true;
         }
         return false;

@@ -21,7 +21,7 @@ public class SalaryService {
         SalaryEntity salaryEntity
                 = salaryRepository.save( salaryDto.saveToEntity());
         // 2.
-        if( salaryEntity.getSlry_no() >= 1){ return true;} return false;
+        if( salaryEntity.getSlryNo() >= 1){ return true;} return false;
     }
 
     @Transactional
@@ -37,28 +37,28 @@ public class SalaryService {
 
     public boolean slryUpdate( SalaryDto salaryDto ){
         // 수정할 엔티티 찾기
-        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findById( salaryDto.getSlry_no() );
+        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findById( salaryDto.getSlryNo() );
         // 수정할 엔티티 존재하면?
         if(optionalSalaryEntity.isPresent()){
             // 엔티티 꺼내기
             SalaryEntity salaryEntity = optionalSalaryEntity.get();
             // 객체 수정하면 테이블 내 레코드 같이 수정
-            salaryEntity.setSlry_date( salaryDto.getSlry_date());
-            salaryEntity.setSlry_pay( salaryDto.getSlry_pay());
-            salaryEntity.setSlry_type( salaryDto.getSlry_type());
+            salaryEntity.setSlryDate( salaryDto.getSlryDate());
+            salaryEntity.setSlryPay( salaryDto.getSlryPay());
+            salaryEntity.setSlryType( salaryDto.getSlryType());
             return true;
         }
         return false;
     }
     // 4
 
-    public boolean slryDelete(int slry_no){
+    public boolean slryDelete(int slryNo){
         // 1. 엔티티 호출
-        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findById( slry_no );
+        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findById( slryNo );
         // 2. 엔티티가 호출되었는지 확인
         if(optionalSalaryEntity.isPresent()){
             //3. 삭제
-            salaryRepository.deleteById(slry_no);
+            salaryRepository.deleteById(slryNo);
             return true;
         }
         return false;

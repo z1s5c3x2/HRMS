@@ -15,12 +15,12 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 public class SalaryDto {
-    private int slry_no;
-    private LocalDate slry_date;
-    private int slry_pay;
-    private int slry_type;
-    private int emp_no;
-    private int aprv_no;
+    private int slryNo;
+    private LocalDate slryDate;
+    private int slryPay;
+    private int slryType;
+    private int empNo;
+    private int aprvNo;
     // +
     private LocalDateTime cdate;
     private LocalDateTime udate;
@@ -29,9 +29,9 @@ public class SalaryDto {
     // 1. entity 저장할때
     public SalaryEntity saveToEntity( ){
         return SalaryEntity.builder()
-                .slry_date(this.slry_date)
-                .slry_pay(this.slry_pay)
-                .slry_type(this.slry_type)
+                .slryDate(this.slryDate)
+                .slryPay(this.slryPay)
+                .slryType(this.slryType)
                 .build();
 
     }
