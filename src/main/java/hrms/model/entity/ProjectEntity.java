@@ -11,9 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@AllArgsConstructor@NoArgsConstructor
-@Getter@Setter@Builder@ToString
-@DynamicInsert
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString
 @Table(name = "PJT_MNG")
 public class ProjectEntity extends BaseTime {
 
