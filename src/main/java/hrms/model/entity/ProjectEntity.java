@@ -1,18 +1,19 @@
 package hrms.model.entity;
 
 
+import hrms.model.dto.ProjectDto;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Builder
-@ToString
+@AllArgsConstructor@NoArgsConstructor
+@Getter@Setter@Builder@ToString
+@DynamicInsert
 @Table(name = "PJT_MNG")
 public class ProjectEntity extends BaseTime {
 
@@ -39,4 +40,18 @@ public class ProjectEntity extends BaseTime {
     @Builder.Default
     @OneToMany(mappedBy="pjt_no")
     private List<TeamMemberEntity> teamMemberEntities = new ArrayList<>();
+
+    // 1. 전체 출력할때 메소드
+    public ProjectDto allToDto(){
+        return ProjectDto.builder()
+                .pjt_no(this.pjtNo)
+                .emp_no(this.empNo.getEmp_no())
+                .pjt_name(this.pjtName)
+                .pjt_st(this.pjtSt)
+                .pjt_END(this.pjtEND)
+                .pjt_sta(this.pjtSta)
+                .aprv_no((this.aprvNo.getAprv_no()))
+                .build();
+    }
+
 }
