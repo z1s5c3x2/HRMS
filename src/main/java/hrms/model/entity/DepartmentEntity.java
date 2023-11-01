@@ -16,9 +16,9 @@ import java.util.List;
 @Table(name="DPTM")
 public class DepartmentEntity extends BaseTime{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int dptm_no;                // 부서번호
+    private int dptmNoo;                // 부서번호
     @Column( )
-    private String dptm_name;          // 부서이름
+    private String dptmName;          // 부서이름
 
     @Builder.Default
     @OneToMany(mappedBy = "dptm_no")
