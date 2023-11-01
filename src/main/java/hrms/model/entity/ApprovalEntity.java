@@ -28,23 +28,23 @@ public class ApprovalEntity extends BaseTime {
     private String aprvCont;       // 간단한 결재내용
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name="emp_no")
+    @JoinColumn(name="empNo")
     private EmployeeEntity empNo;  // 상신자
 
     @Builder.Default
-    @OneToMany(mappedBy="aprv_no")
+    @OneToMany(mappedBy="aprvNo")
     private List<ApprovalLogEntity> approvalLogEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy="aprv_no")
+    @OneToMany(mappedBy="aprvNo")
     private List<LeaveRequestEntity> leaveRequestEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprv_no")
+    @OneToMany(mappedBy = "aprvNo")
     private List<ProjectEntity> projectEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprv_no")
+    @OneToMany(mappedBy = "aprvNo")
     private List<TeamMemberEntity> teamMemberEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprv_no")
+    @OneToMany(mappedBy = "aprvNo")
     private List<DepartmentHistoryEntity> departmentHistoryEntities = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "aprvNo")
@@ -53,7 +53,7 @@ public class ApprovalEntity extends BaseTime {
     @OneToMany(mappedBy = "aprvNo")
     private List<RetiredEmployeeEntity> retiredEmployees = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprv_no")
+    @OneToMany(mappedBy = "aprvNo")
     private List<SalaryEntity> salaryEntities = new ArrayList<>();
 
 }

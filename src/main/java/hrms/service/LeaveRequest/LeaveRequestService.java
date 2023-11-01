@@ -55,7 +55,7 @@ public class LeaveRequestService {
     @Transactional
     public boolean lrqDelete(int lrqNo){
        // 1. 엔티티 호출
-        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById( lrq_no );
+        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById( lrqNo );
         // 2. 엔티티가 호출되었는지 확인
         if(optionalLeaveRequestEntity.isPresent()){
             //3. 삭제

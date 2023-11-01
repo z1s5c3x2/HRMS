@@ -25,12 +25,12 @@ public class ApprovalLogEntity extends BaseTime{
     @ColumnDefault( "3" )
     private int aplogSta;         // (1결재 / 2반려 / 3검토중)
     @ToString.Exclude
-    @JoinColumn(name="emp_no")
+    @JoinColumn(name="empNo")
     @ManyToOne
     private EmployeeEntity empNo;             // fk 검토자
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name="aprv_no")
+    @JoinColumn(name="aprvNo")
     private ApprovalEntity aprvNo;             // fk 결제테이블
 
 

@@ -42,13 +42,13 @@ public class LeaveRequestEntity extends BaseTime { // 휴직/연차/병가 테�
     private int lrqSrtype;                   // 5. ( 0: 무급 / 1: 유급 )
 
     @ToString.Exclude
-    @JoinColumn(name="emp_no")
+    @JoinColumn(name="empNo")
     @ManyToOne
     private EmployeeEntity empNo;                    // 5. 사원번호 ( FK )
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name="aprv_no")
+    @JoinColumn(name="aprvNo")
     private ApprovalEntity aprvNo;
 
     // 1. 전체 출력

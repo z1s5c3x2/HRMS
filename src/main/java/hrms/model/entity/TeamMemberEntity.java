@@ -21,7 +21,7 @@ public class TeamMemberEntity extends BaseTime{
     @Column
     private String tmSt;     // 투입 날짜
     @Column
-    private String tmEnd = null;    // 투입 종료 날짜
+    private String tmEnd;    // 투입 종료 날짜
 
     @ToString.Exclude
     @ManyToOne

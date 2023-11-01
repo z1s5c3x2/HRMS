@@ -21,11 +21,11 @@ public class RetiredEmployeeEntity extends BaseTime {
     private String rtempDate;
 
     @ToString.Exclude
-    @JoinColumn(name="emp_no")
+    @JoinColumn(name="empNo")
     @ManyToOne
     private EmployeeEntity empNo;
     @ToString.Exclude
-    @JoinColumn(name="aprv_no")
+    @JoinColumn(name="aprvNo")
     @ManyToOne
     private ApprovalEntity aprvNo;
 
