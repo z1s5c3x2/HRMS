@@ -20,18 +20,18 @@ public class ApprovalLogEntity extends BaseTime{
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY  )
-    private int aplog_no;            // 결재내역번호
+    private int aplogNo;            // 결재내역번호
     @Column()
     @ColumnDefault( "3" )
-    private int aplog_sta;         // (1결재 / 2반려 / 3검토중)
+    private int aplogSta;         // (1결재 / 2반려 / 3검토중)
     @ToString.Exclude
     @JoinColumn(name="emp_no")
     @ManyToOne
-    private EmployeeEntity emp_no;             // fk 검토자
+    private EmployeeEntity empNo;             // fk 검토자
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name="aprv_no")
-    private ApprovalEntity aprv_no;             // fk 결제테이블
+    private ApprovalEntity aprvNo;             // fk 결제테이블
 
 
 

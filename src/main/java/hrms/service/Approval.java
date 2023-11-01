@@ -5,6 +5,7 @@ import hrms.model.entity.EmployeeEntity;
 import hrms.model.repository.ApprovalLogRepository;
 import hrms.model.repository.ApprovalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -26,46 +27,34 @@ public class Approval {
 
         // int aprv_no, String aprv_cont, int emp_no
         ApprovalEntity result = approvalRepository.save( approvalEntity );
+        postApprovalLog( approvers, result.getAprvNo() );
 
         // 2.
-        if( result.getAprv_no() >= 1 ){
-
-
-
-            return result.getAprv_no();
-        }
-
+        if( result.getAprvNo() >= 1 )  return result.getAprvNo();
         return 0;
     }
 
     // 결재 테이블 내역 검토자 등록
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Transactional
-    public boolean postApprovalLog(ArrayList<EmployeeEntity> approvers) {
-        String insertQuery = "INSERT INTO your_table (column1, column2, ...) VALUES (?, ?, ...)";
+    public boolean postApprovalLog(ArrayList<EmployeeEntity> approvers, int aprvNo ) {
 
-        List<Object[]> batchArgs = new ArrayList<>();
+        String sql = "INSERT INTO your_table (emp_no, aprv_no) VALUES ";
 
-        for (EmployeeEntity approver : approvers) {
-            // 각 레코드에 대한 데이터를 배열로 추가
-            Object[] values = {approver.getField1(), approver.getField2(), /* 나머지 필드 값 */};
-            batchArgs.add(values);
-        }
-
-        int[] updateCounts = jdbcTemplate.batchUpdate(insertQuery, batchArgs, batchSize);
-
-        // 모든 작업이 성공했는지 확인
-        for (int updateCount : updateCounts) {
-            if (updateCount == 0) {
-                return false; // 실패 시 false 반환
+        for (int i = 0; i < approvers.size(); i++) {
+            if (i > 0) {
+                sql += ", ";
             }
+            sql += "(" + approvers.get(i).getEmpNo() + ", " + aprvNo + ")";
         }
 
-        return true; // 성공 시 true 반환
+        int updateCount = jdbcTemplate.update(sql);
+        if (updateCount > 0)  return true;
+        return false;
     }
+
 
 
 }

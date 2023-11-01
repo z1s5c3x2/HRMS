@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 public class LeaveRequestDto {
-    private int lrq_no;
-    private int lrq_type;
-    private LocalDateTime lrq_st;
-    private LocalDateTime lrq_end;
-    private int lrq_srtype;
-    private int emp_no;
-    private int aprv_no;
+    private int lrqNo;
+    private int lrqType;
+    private LocalDateTime lrqSt;
+    private LocalDateTime lrqEnd;
+    private int lrqSrtype;
+    private int empNo;
+    private int aprvNo;
 }
