@@ -28,8 +28,14 @@ public class TeamProjectController {
         return teamProjectService.getAllTeamProject();
     }
 
-    // 3. 팀프로젝트 수정
+    // 3. 개별 팀프로젝트 출력
+    @GetMapping("/getOne")
+    public ProjectDto getOneTeamProject(){
+        return teamProjectService.getOneTeamProject();
+    }
 
-    // 4. 팀프로젝트 삭제
+    // 4. 팀프로젝트 수정
+
+    // 5. 팀프로젝트 삭제
 
 }

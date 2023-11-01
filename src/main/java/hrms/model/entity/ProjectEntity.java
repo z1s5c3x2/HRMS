@@ -2,6 +2,7 @@ package hrms.model.entity;
 
 
 import hrms.model.dto.ProjectDto;
+import hrms.model.dto.TeamMemberDto;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -30,7 +31,7 @@ public class ProjectEntity extends BaseTime {
     private String pjtSt;      // 프로젝트 시작날짜
     @Column
     private String pjtEND;     // 프로젝트 기한
-    @Column
+    @Column(nullable = false)
     @ColumnDefault("1")         // 프로젝트 상태 디폴트값(1 = 진행중)
     private int pjtSta;        // 프로젝트 상태
     @ToString.Exclude
@@ -47,12 +48,38 @@ public class ProjectEntity extends BaseTime {
         return ProjectDto.builder()
                 .pjtNo(this.pjtNo)
                 .empNo(this.empNo.getEmpNo())
+                .empName(this.empNo.getEmpName())
                 .pjtName(this.pjtName)
                 .pjtSt(this.pjtSt)
                 .pjtEND(this.pjtEND)
                 .pjtSta(this.pjtSta)
                 .aprvNo((this.aprvNo.getAprvNo()))
                 .build();
+    }
+
+    // 2. 개별 조회시 메소드
+    public ProjectDto oneToDto(){
+        return ProjectDto.builder()
+                .pjtNo(this.pjtNo)
+                .empNo(this.empNo.getEmpNo())
+                .empName(this.empNo.getEmpName())
+                .pjtName(this.pjtName)
+                .pjtSt(this.pjtSt)
+                .pjtEND(this.pjtEND)
+                .pjtSta(this.pjtSta)
+                .aprvNo((this.aprvNo.getAprvNo()))
+                .teamMembers(getTeamMembers(this.teamMemberEntities))
+                .build();
+    }
+
+    // 3. 리스트 변환 메소드
+    public List<TeamMemberDto> getTeamMembers(List<TeamMemberEntity> teamMemberEntities){
+        List<TeamMemberDto> teamMemberDtos = new ArrayList<>();
+
+        for(TeamMemberEntity teamMemberEntity : teamMemberEntities){
+            teamMemberDtos.add(teamMemberEntity.allToDto());
+        }
+        return teamMemberDtos;
     }
 
 }
