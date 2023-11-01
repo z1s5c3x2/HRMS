@@ -1,0 +1,36 @@
+
+
+### 사원 가입
+POST http://localhost:80/employee/register
+Content-Type: application/json
+
+{
+  "empName": "John Doe1",
+  "empPhone": "123-455-7890",
+  "empPwd": "password223",
+  "empSex": "male",
+  "empAcn": "123456789",
+  "empSta": true,
+  "empRk": 3
+}
+
+### 사원 리스트조회
+
+GET http://localhost:80/employee/list
+Content-Type: application/json
+
+
+### 사원 퇴사
+
+PUT http://localhost:80/employee/leave
+Content-Type: application/json
+
+{
+    "empNo" : 231120000,
+    "rtempCont" : "북한군 침공"
+}
+
+
+### 휴직 사원 리스트조회
+GET http://localhost:80/employee/restlist
+Content-Type: application/json

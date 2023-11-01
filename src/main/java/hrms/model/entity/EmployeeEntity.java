@@ -2,6 +2,7 @@ package hrms.model.entity;
 
 
 
+import hrms.model.dto.EmployeeDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,52 +13,52 @@ import java.util.List;
 @Entity @Table(name="EMP")
 
 public class EmployeeEntity extends BaseTime {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동생성 변경 필요
-    private int emp_no;                     // 사원번호
+    @Id
+    private int empNo;                     // 사원번호
     @Column( )
-    private String emp_name;                // 사원이름
+    private String empName;                // 사원이름
     @Column( )
-    private String emp_phone;               // 사원전환번호
+    private String empPhone;               // 사원전환번호
     @Column( )
-    private String emp_pwd;                 // 사원비밀번호
+    private String empPwd;                 // 사원비밀번호
     @Column( )
-    private String emp_sex;                 // 사원성별
+    private String empSex;                 // 사원성별
     @Column( )
-    private String emp_acn;                 // 사원계좌번호
-    @Column( )
-    private boolean emp_sta;                 // 근무상태
+    private String empAcn;                 // 사원계좌번호
     @Column()
-    private int emp_rk;                     // 사원 직급
+    private boolean empSta;                 // 근무상태
+    @Column()
+    private int empRk;                     // 사원 직급
 
     @ToString.Exclude
     @JoinColumn(name="dptm_no")
     @ManyToOne
-    private DepartmentEntity dptm_no;
+    private DepartmentEntity dptmNo;
     @ToString.Exclude
     @JoinColumn(name="aprv_no")
     @ManyToOne
-    private ApprovalEntity aprv_no;
+    private ApprovalEntity aprvNo;
 
     @Builder.Default
     @OneToMany(mappedBy = "emp_no")         // 결재테이블연결
-    private List<ApprovalEntity> approval_entities = new ArrayList<>();
+    private List<ApprovalEntity> approvalEntities = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "emp_no")
-    private List<ApprovalLogEntity> approval_logs = new ArrayList<>();
+    private List<ApprovalLogEntity> approvalLogs = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "emp_no")
-    private List<ProjectEntity> project_entities = new ArrayList<>();
+    private List<ProjectEntity> projectEntities = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "emp_no")
     private List<AttendanceEntity> attendanceEntities = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "emp_no")
-    private List<DepartmentHistoryEntity> department_entities = new ArrayList<>();
+    private List<DepartmentHistoryEntity> departmentEntities = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "emp_no")
     private List<LeaveRequestEntity> leaveRequestEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "emp_no")
+    @OneToMany(mappedBy = "empNo")
     private List<RetiredEmployeeEntity> retiredEmployeeEntities = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "emp_no")
@@ -67,5 +68,17 @@ public class EmployeeEntity extends BaseTime {
     private List<TeamMemberEntity> teamMemberEntities = new ArrayList<>();
 
 
+    public EmployeeDto allToDto()
+    {
+        return EmployeeDto.builder()
+                .empNo(this.empNo)
+                .empName(this.empName)
+                .empPhone(this.empPhone)
+                .empPwd(this.empPwd)
+                .empSex(this.empSex)
+                .empAcn(this.empAcn)
+                .empSta(this.empSta)
+                .empRk(this.empRk).build();
+    }
 
 }

@@ -47,10 +47,10 @@ public class ApprovalEntity extends BaseTime {
     @OneToMany(mappedBy = "aprv_no")
     private List<DepartmentHistoryEntity> departmentHistoryEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprv_no")
+    @OneToMany(mappedBy = "aprvNo")
     private List<EmployeeEntity> employeeEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprv_no")
+    @OneToMany(mappedBy = "aprvNo")
     private List<RetiredEmployeeEntity> retiredEmployees = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "aprv_no")

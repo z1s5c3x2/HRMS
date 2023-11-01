@@ -14,19 +14,20 @@ import javax.persistence.*;
 @Entity @Table(name="RTEMP")
 public class RetiredEmployeeEntity extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int rtemp_no;
+    private int rtempNo;
     @Column( )
-    private String rtemp_cont;
-    private String rtemp_date;
+    private String rtempCont;
+    @Column()
+    private String rtempDate;
 
     @ToString.Exclude
     @JoinColumn(name="emp_no")
     @ManyToOne
-    private EmployeeEntity emp_no;
+    private EmployeeEntity empNo;
     @ToString.Exclude
     @JoinColumn(name="aprv_no")
     @ManyToOne
-    private ApprovalEntity aprv_no;
+    private ApprovalEntity aprvNo;
 
 
 }
