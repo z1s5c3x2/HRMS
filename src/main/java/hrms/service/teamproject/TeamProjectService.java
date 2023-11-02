@@ -33,7 +33,7 @@ public class TeamProjectService {
 
         // 입력한 팀프로젝트 관리자 pk번호 호출
         Optional<EmployeeEntity> employeeEntityOptional =
-                employeeRepository.findById(projectDto.getEmpNo());
+                employeeRepository.findByEmpNo(projectDto.getEmpNo());
 
         // 사원번호 유효성검사
         if(!employeeEntityOptional.isPresent()){return false;}
