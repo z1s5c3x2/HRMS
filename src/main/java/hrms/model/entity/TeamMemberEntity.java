@@ -34,8 +34,9 @@ public class TeamMemberEntity extends BaseTime{
     @JoinColumn(name="aprvNo")
     private ApprovalEntity aprvNo;            // 결재번호(fk)
 
-    // entity -> dto
-    public TeamMemberDto allToDto() {
+
+    // 1. 팀원 개별 조회시 메소드
+    public TeamMemberDto oneToDto(){
         return TeamMemberDto.builder()
                 .tmNo(this.tmNo)
                 .empNo(this.empNo.getEmpNo())
@@ -43,6 +44,7 @@ public class TeamMemberEntity extends BaseTime{
                 .tmSt(this.tmSt)
                 .tmEnd(this.tmEnd)
                 .pjtNo(this.pjtNo.getPjtNo())
+                .pjtName(this.pjtNo.getPjtName())
                 .aprvNo(this.aprvNo.getAprvNo())
                 .build();
     }

@@ -35,7 +35,12 @@ public class TeamProjectController {
     }
 
     // 4. 팀프로젝트 수정
+    @PutMapping("/put")
+    public boolean updateTeamProject(@RequestBody ProjectDto projectDto /*, ApprovalDto approvalDto*/){
+        boolean result = teamProjectService.updateTeamProject(projectDto/*, approvalDto*/);
 
+        return result;
+    }
     // 5. 팀프로젝트 삭제
 
 }

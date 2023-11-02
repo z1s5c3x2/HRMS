@@ -72,12 +72,12 @@ public class ProjectEntity extends BaseTime {
                 .build();
     }
 
-    // 3. 리스트 변환 메소드
+    // 3. 팀원리스트 변환 메소드
     public List<TeamMemberDto> getTeamMembers(List<TeamMemberEntity> teamMemberEntities){
         List<TeamMemberDto> teamMemberDtos = new ArrayList<>();
 
         for(TeamMemberEntity teamMemberEntity : teamMemberEntities){
-            teamMemberDtos.add(teamMemberEntity.allToDto());
+            teamMemberDtos.add(teamMemberEntity.oneToDto());
         }
         return teamMemberDtos;
     }

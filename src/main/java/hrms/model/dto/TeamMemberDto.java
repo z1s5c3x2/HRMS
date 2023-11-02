@@ -17,11 +17,12 @@ public class TeamMemberDto {
 
     private int tmNo;        // 프로젝트 팀원 번호
     private String empName;     // 사원 이름
-    private String empNo;            // 사원번호 (fk)
+    private String empNo;       // 사원번호 (fk)
     private String tmSt;     // 투입 날짜
     private String tmEnd;    // 투입 종료 날짜
 
     private int pjtNo;         // 프로젝트 번호(fk)
+    private String pjtName;     // 프로젝트명
     private int aprvNo;            // 결재번호(fk)
 
     // entity 저장할때 메소드
