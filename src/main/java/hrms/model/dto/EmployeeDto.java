@@ -16,7 +16,7 @@ public class EmployeeDto {
     private String empAcn;                 // 사원계좌번호
     private boolean empSta;                 // 근무상태
     private int empRk;                     // 사원 직급
-
+    private int restCnt;                    //연차 조회
     private int dtpmNo;
     public EmployeeEntity saveToEntity()
     {

@@ -1,5 +1,6 @@
 package hrms.service.employee;
 
+import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.RetiredEmployeeDto;
 import hrms.model.entity.DepartmentEntity;
@@ -26,10 +27,11 @@ public class EmployeeService {
     RetiredEmployeeEntityRepository retiredEmployeeEntityRepository;
     @Autowired
     DepartmentEntityRepository departmentEntityRepository;
-
+    private final int LEAVE_COUNT = 5;
     @Transactional
-    public boolean registerEmp(@RequestBody EmployeeDto employeeDto)
+    public boolean registerEmp(ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
+        EmployeeDto employeeDto = employeeDtoApprovalRequestDto.getData();
         System.out.println("employeeDto = " + employeeDto.toString());
         employeeDto.setEmpNo(generateEmpNumber(employeeDto.getEmpSex()));
         EmployeeEntity employeeEntity = employeeDto.saveToEntity();
@@ -66,10 +68,10 @@ public class EmployeeService {
         return result;
     }
 
-    @Transactional
+    /*@Transactional
     public boolean leaveEmpStatus(RetiredEmployeeDto retiredEmployeeDto)
     {
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findById(retiredEmployeeDto.getEmpNo());
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(retiredEmployeeDto.getEmpNo());
         System.out.println("retiredEmployeeDto = " + retiredEmployeeDto);
         System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
         if(optionalEmployeeEntity.isPresent())
@@ -87,9 +89,10 @@ public class EmployeeService {
 
     }
     @Transactional
-    public void setRetiredEmployee(RetiredEmployeeDto retiredEmployeeDto)
+    public void setRetiredEmployee(ApprovalRequestDto<RetiredEmployeeDto> approvalRequestDto)
     {
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findById(retiredEmployeeDto.getEmpNo());
+        RetiredEmployeeDto retiredEmployeeDto = approvalRequestDto.getData();
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(retiredEmployeeDto.getEmpNo());
         if(optionalEmployeeEntity.isPresent())
         {
             RetiredEmployeeEntity retiredEmployeeEntity = retiredEmployeeDto.saveToEntity();
@@ -103,7 +106,7 @@ public class EmployeeService {
 
 
 
-    }
+    }*/
     @Transactional
     public List<EmployeeDto> getRestList()
     {

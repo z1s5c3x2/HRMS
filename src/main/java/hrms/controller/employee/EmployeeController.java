@@ -1,10 +1,11 @@
 package hrms.controller.employee;
 
+import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.RetiredEmployeeDto;
+import hrms.service.LeaveRequest.LeaveCalcService;
 import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,31 +16,41 @@ public class EmployeeController {
 
     @Autowired
     EmployeeService employeeService;
+    @Autowired
+    LeaveCalcService leaveCalcService;
 
     @PostMapping("/register") //사원 등록 결제 정보 받아오기
-    public boolean registerEmp(@RequestBody EmployeeDto employeeDto)
+    public boolean registerEmp(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
         //System.out.println("employeeDto = " + employeeDto);
-        return employeeService.registerEmp(employeeDto);
+        return employeeService.registerEmp(employeeDtoApprovalRequestDto);
     }
 
+    @PutMapping("/leave")
+    public boolean leaveEmpStatus(@RequestBody ApprovalRequestDto<RetiredEmployeeDto> retiredEmployeeDtoApprovalRequestDto)
+    {
+        //System.out.println("EmployeeController.setEmpStatus");
+        //return employeeService.leaveEmpStatus(retiredEmployeeDtoApprovalRequestDto);
+        return false;
+    }
+
+
+
+    @GetMapping("/restlist")
+    public List<EmployeeDto> getRestList()
+    {
+        return employeeService.getRestList();
+    }
     @GetMapping("/list")
     public List<EmployeeDto> getEmpList()
     {
         //System.out.println("EmployeeController.getEmpList");
         return employeeService.getEmpList();
     }
-    @PutMapping("/leave")
-    public boolean leaveEmpStatus(@RequestBody RetiredEmployeeDto retiredEmployeeDto)
+    @GetMapping("/restcount")
+    public int getRestCount(@RequestParam String empNo)
     {
-        //System.out.println("EmployeeController.setEmpStatus");
-        System.out.println("retiredEmployeeDto = " + retiredEmployeeDto);
-        return employeeService.leaveEmpStatus(retiredEmployeeDto);
-    }
-    @GetMapping("/restlist")
-    public List<EmployeeDto> getRestList()
-    {
-        return employeeService.getRestList();
+        return leaveCalcService.calcRestCount(empNo);
     }
 
 }

@@ -12,9 +12,9 @@ import java.util.Optional;
 public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity,Integer> {
     @Query(value = "SELECT  COUNT(emp_no) AS emp_count\n" +
             "FROM emp\n" +
-            "WHERE DATE_FORMAT(cdate, '%Y') = :nowyear\n"
+            "WHERE DATE_FORMAT(cdate, '%Y') = :nowYear\n"
             ,nativeQuery = true)
-    int countNowEmployee(String nowyear);
+    int countNowEmployee(String nowYear);
     List<EmployeeEntity> findAllByEmpStaIsFalse();
     Optional<EmployeeEntity> findByEmpNo(String empNo);
 

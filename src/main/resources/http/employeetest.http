@@ -1,18 +1,34 @@
 
+### 부서 생성1
+POST http://localhost:80/department/insertdpm
+Content-Type: application/json
+
+{
+  "dptmName": "인사"
+}
+### 부서 생성2
+POST http://localhost:80/department/insertdpm
+Content-Type: application/json
+
+{
+  "dptmName": "개발"
+}
 
 ### 사원 가입
 POST http://localhost:80/employee/register
 Content-Type: application/json
 
 {
-  "empName": "John Doe1",
-  "empPhone": "123-455-7890",
-  "empPwd": "password223",
-  "empSex": "male",
-  "empAcn": "123456789",
-  "empSta": true,
-  "empRk": 3,
-  "dtpmNo": 1
+  "data": {
+    "empName": "John Doe1",
+    "empPhone": "123-455-7890",
+    "empPwd": "password223",
+    "empSex": "male",
+    "empAcn": "123456789",
+    "empSta": true,
+    "empRk": 3,
+    "dtpmNo": 1
+  }
 }
 
 ### 사원 리스트조회
@@ -27,7 +43,7 @@ PUT http://localhost:80/employee/leave
 Content-Type: application/json
 
 {
-    "empNo" : 231120000,
+    "empNo" : "231122",
     "rtempCont" : "북한군 침공"
 }
 
@@ -36,19 +52,6 @@ Content-Type: application/json
 GET http://localhost:80/employee/restlist
 Content-Type: application/json
 
-### 부서 생성1
-POST http://localhost:80/department/insertdpm
-Content-Type: application/json
 
-{
-    "dptmName": "인사"
-}
-### 부서 생성2
-POST http://localhost:80/department/insertdpm
-Content-Type: application/json
-
-{
-  "dptmName": "개발"
-}
-
-### 부서 이동
+### 사원 연차 조회
+GET http://localhost:80/employee/restcount?empNo=231110
