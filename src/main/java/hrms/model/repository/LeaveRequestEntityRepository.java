@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface LeaveRequestEntityRepository extends JpaRepository<LeaveRequestEntity,Integer> {
-    Optional<LeaveRequestEntity> findByEmpNo(int empNo );
+    Optional<LeaveRequestEntity> findByEmpNo(String empNo );
 }

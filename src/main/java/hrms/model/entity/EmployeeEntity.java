@@ -14,7 +14,7 @@ import java.util.List;
 
 public class EmployeeEntity extends BaseTime {
     @Id
-    private int empNo;                     // 사원번호
+    private String empNo;                     // 사원번호
     @Column( )
     private String empName;                // 사원이름
     @Column( )

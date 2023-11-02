@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDto {
-    private int empNo;                     // 사원번호
+    private String empNo;                     // 사원번호
     private String empName;                // 사원이름
     private String empPhone;               // 사원전환번호
     private String empPwd;                 // 사원비밀번호

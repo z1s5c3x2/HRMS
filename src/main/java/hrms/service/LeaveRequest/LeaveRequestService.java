@@ -38,7 +38,7 @@ public class LeaveRequestService {
     }
     // 2-2. 개별 출력
     @Transactional
-    public LeaveRequestDto lrqGet( int empNo ){
+    public LeaveRequestDto lrqGet( String empNo ){
         Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findByEmpNo( empNo ) ;
 
         if(optionalLeaveRequestEntity.isPresent()){

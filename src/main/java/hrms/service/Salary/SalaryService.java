@@ -35,7 +35,7 @@ public class SalaryService {
         return salaryDtos;
     }
     @Transactional
-    public SalaryDto slryGet( int empNo ){
+    public SalaryDto slryGet( String empNo ){
         Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findByEmpNo( empNo ) ;
 
         if(optionalSalaryEntity.isPresent()){
