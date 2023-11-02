@@ -41,7 +41,7 @@ public class LeaveRequestService {
 
         LeaveRequestEntity leaveRequestEntity = leaveRequestRepository.findByEmpNo( empNo ) ;
 
-        return
+        return null;
     }
     //3. 수정
     @Transactional
