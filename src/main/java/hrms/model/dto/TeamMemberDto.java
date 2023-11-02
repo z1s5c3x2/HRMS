@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 public class TeamMemberDto {
 
     private int tmNo;        // 프로젝트 팀원 번호
-    private int empNo;            // 사원번호 (fk)
+    private String empNo;            // 사원번호 (fk)
     private String tmSt;     // 투입 날짜
     private String tmEnd;    // 투입 종료 날짜
 
