@@ -23,7 +23,7 @@ public class LeaveRequestDto {
     private LocalDate lrqSt;
     private LocalDate lrqEnd;
     private int lrqSrtype;
-    private int empNo;
+    private String empNo;
     private int aprvNo;
     // +
     private LocalDateTime cdate;

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class ProjectDto {
 
     private int pjtNo; //  프로젝트번호
-    private int empNo;    // 프로젝트 관리자 사원번호(fk)
+    private String empNo;    // 프로젝트 관리자 사원번호(fk)
     private String pjtName;    // 프로젝트명
     private String pjtSt;      // 프로젝트 시작날짜
     private String pjtEND;     // 프로젝트 기한

@@ -38,21 +38,22 @@ public class EmployeeService {
         {
             employeeEntity.setDptmNo(optionalDepartmentEntity.get());
             employeeRepository.save(employeeEntity);
+            System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
             optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity);
         }
-        return employeeEntity.getEmpNo() > 0;
+        return employeeEntity.getEmpNo().length() > 0;
     }
 
     @Transactional
-    public int generateEmpNumber(String _sex)
+    public String generateEmpNumber(String _sex)
     {
         LocalDate now = LocalDate.now();
-        String _str = String.valueOf(now.getYear()).substring(1); //년
+        String _str = String.valueOf(now.getYear()).substring(2); //년
         _str += String.valueOf(now.getMonthValue());   //월
-        _str += _sex.equals("man") ? "1" : "2"; // 성별
-        _str += String.format("%04d",employeeRepository.countNowEmployee(String.valueOf(now.getYear()))) ;
-        //System.out.println("_str = " + _str);
-        return Integer.parseInt(_str);
+        _str += _sex.equals("male") ? "1" : "2"; // 성별
+        _str += String.valueOf(employeeRepository.countNowEmployee(String.valueOf(now.getYear()))) ;
+        System.out.println("_str = " + _str);
+        return _str;
     }
 
     @Transactional
