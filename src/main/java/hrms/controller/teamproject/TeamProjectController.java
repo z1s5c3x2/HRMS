@@ -30,8 +30,8 @@ public class TeamProjectController {
 
     // 3. 개별 팀프로젝트 출력
     @GetMapping("/getOne")
-    public ProjectDto getOneTeamProject(){
-        return teamProjectService.getOneTeamProject();
+    public ProjectDto getOneTeamProject(@RequestParam int pjtNo){
+        return teamProjectService.getOneTeamProject(pjtNo);
     }
 
     // 4. 팀프로젝트 수정

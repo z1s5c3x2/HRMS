@@ -66,7 +66,14 @@ public class TeamProjectService {
     
     // 3. 개별 프로젝트 조회(팀원정보도 출력)
     @Transactional
-    public ProjectDto getOneTeamProject(){
+    public ProjectDto getOneTeamProject(int pjtNo){
+
+        List<ProjectEntity> projectEntities = projectRepository.findAll();
+        for(ProjectEntity projectEntity : projectEntities){
+            if(projectEntity.getPjtNo() == pjtNo){
+                return projectEntity.oneToDto();
+            }
+        }
 
         return null;
     }
