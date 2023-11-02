@@ -21,6 +21,7 @@ public class TeamMemberEntity extends BaseTime{
     private EmployeeEntity empNo;            // 사원번호 (fk)
     @Column
     private String tmSt;     // 투입 날짜
+
     @Column
     private String tmEnd;    // 투입 종료 날짜
 

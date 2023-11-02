@@ -4,6 +4,7 @@ import hrms.model.dto.LeaveRequestDto;
 import hrms.model.entity.LeaveRequestEntity;
 import hrms.model.repository.LeaveRequestEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @Service
 public class LeaveRequestService {
+
     @Autowired
     private LeaveRequestEntityRepository leaveRequestRepository;
 
@@ -26,14 +28,36 @@ public class LeaveRequestService {
 
     // 2. 모두 출력
     @Transactional
-    public List<LeaveRequestDto> lrqGetAll(){
+    public List<LeaveRequestDto> lrqGetAll()  {
         // 1. 모두 출력
         List<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findAll();
         List<LeaveRequestDto> leaveRequestDtos = new ArrayList<>();
         leaveRequestEntities.forEach( e ->{ leaveRequestDtos.add( e.allToDto()); });
         return leaveRequestDtos;
-    // 3.
     }
+    // 2-2. 개별 출력
+    @Transactional
+    public LeaveRequestDto lrqGet( String empNo ){
+        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findByEmpNo( empNo ) ;
+
+        if(optionalLeaveRequestEntity.isPresent()){
+
+            LeaveRequestDto leaveRequestDto = new LeaveRequestDto();
+
+            leaveRequestDto.setLrqNo( optionalLeaveRequestEntity.get().getLrqNo());
+            leaveRequestDto.setLrqSt( optionalLeaveRequestEntity.get().getLrqSt());
+            leaveRequestDto.setLrqEnd( optionalLeaveRequestEntity.get().getLrqEnd());
+            leaveRequestDto.setLrqType( optionalLeaveRequestEntity.get().getLrqType());
+            leaveRequestDto.setLrqSrtype( optionalLeaveRequestEntity.get().getLrqSrtype());
+            leaveRequestDto.setAprvNo( optionalLeaveRequestEntity.get().getAprvNo().getAprvNo());
+            leaveRequestDto.setEmpNo( empNo );
+            leaveRequestDto.setCdate( optionalLeaveRequestEntity.get().getCdate());
+            leaveRequestDto.setUdate( optionalLeaveRequestEntity.get().getUdate());
+            return leaveRequestDto;
+        }
+        return null;
+    }
+    //3. 수정
     @Transactional
     public boolean lrqUpdate( LeaveRequestDto leaveRequestDto ){
         // 수정할 엔티티 찾기
@@ -51,7 +75,7 @@ public class LeaveRequestService {
         }
         return false;
     }
-    // 4
+    // 4 삭제
     @Transactional
     public boolean lrqDelete(int lrqNo){
        // 1. 엔티티 호출

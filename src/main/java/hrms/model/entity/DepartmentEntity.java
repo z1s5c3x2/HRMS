@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name="DPTM")
 public class DepartmentEntity extends BaseTime{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int dptmNoo;                // 부서번호
+    private int dptmNo;                // 부서번호
     @Column( )
     private String dptmName;          // 부서이름
 

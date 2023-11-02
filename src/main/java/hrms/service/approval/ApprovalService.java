@@ -1,4 +1,4 @@
-package hrms.service;
+package hrms.service.approval;
 
 import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.EmployeeEntity;
@@ -13,16 +13,18 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 
 @Service
-public class Approval {
+public class ApprovalService {
 
     @Autowired
     private ApprovalEntityRepository approvalRepository;
     @Autowired
     private ApprovalLogEntityRepository approvalLogRepository;
-
+        /*
     // 결재 테이블 등록
     @Transactional
-    public Integer postApproval( ApprovalEntity approvalEntity, ArrayList<EmployeeEntity> approvers ){
+    public Integer postApproval( int aprvType, String aprvCont, String  empNo, ArrayList<String> approvers ){
+
+
 
         // int aprv_no, String aprv_cont, int emp_no
         ApprovalEntity result = approvalRepository.save( approvalEntity );
@@ -50,10 +52,11 @@ public class Approval {
         }
 
         int updateCount = jdbcTemplate.update(sql);
+
         if (updateCount > 0)  return true;
         return false;
     }
 
-
+*/
 
 }

@@ -78,6 +78,7 @@ public class EmployeeEntity extends BaseTime {
                 .empSex(this.empSex)
                 .empAcn(this.empAcn)
                 .empSta(this.empSta)
+                .dtpmNo(this.dptmNo.getDptmNo())
                 .empRk(this.empRk).build();
     }
 

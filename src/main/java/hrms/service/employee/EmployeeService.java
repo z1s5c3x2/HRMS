@@ -2,8 +2,10 @@ package hrms.service.employee;
 
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.RetiredEmployeeDto;
+import hrms.model.entity.DepartmentEntity;
 import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.RetiredEmployeeEntity;
+import hrms.model.repository.DepartmentEntityRepository;
 import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.RetiredEmployeeEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,26 +24,36 @@ public class EmployeeService {
     EmployeeEntityRepository employeeRepository;
     @Autowired
     RetiredEmployeeEntityRepository retiredEmployeeEntityRepository;
+    @Autowired
+    DepartmentEntityRepository departmentEntityRepository;
 
     @Transactional
     public boolean registerEmp(@RequestBody EmployeeDto employeeDto)
     {
-        //System.out.println("employeeDto = " + employeeDto);
+        System.out.println("employeeDto = " + employeeDto.toString());
         employeeDto.setEmpNo(generateEmpNumber(employeeDto.getEmpSex()));
-
-        return employeeRepository.save(employeeDto.saveToEntity()).getEmpNo() > 0;
+        EmployeeEntity employeeEntity = employeeDto.saveToEntity();
+        Optional<DepartmentEntity> optionalDepartmentEntity =  departmentEntityRepository.findById(employeeDto.getDtpmNo());
+        if(optionalDepartmentEntity.isPresent())
+        {
+            employeeEntity.setDptmNo(optionalDepartmentEntity.get());
+            employeeRepository.save(employeeEntity);
+            System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
+            optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity);
+        }
+        return employeeEntity.getEmpNo().length() > 0;
     }
 
     @Transactional
-    public int generateEmpNumber(String _sex)
+    public String generateEmpNumber(String _sex)
     {
         LocalDate now = LocalDate.now();
-        String _str = String.valueOf(now.getYear()).substring(1); //년
+        String _str = String.valueOf(now.getYear()).substring(2); //년
         _str += String.valueOf(now.getMonthValue());   //월
-        _str += _sex.equals("man") ? "1" : "2"; // 성별
-        _str += String.format("%04d",employeeRepository.countNowEmployee(String.valueOf(now.getYear()))) ;
-        //System.out.println("_str = " + _str);
-        return Integer.parseInt(_str);
+        _str += _sex.equals("male") ? "1" : "2"; // 성별
+        _str += String.valueOf(employeeRepository.countNowEmployee(String.valueOf(now.getYear()))) ;
+        System.out.println("_str = " + _str);
+        return _str;
     }
 
     @Transactional

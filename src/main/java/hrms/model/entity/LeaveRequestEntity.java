@@ -64,5 +64,18 @@ public class LeaveRequestEntity extends BaseTime { // 휴직/연차/병가 테�
                 .cdate(this.getCdate()).udate(this.getUdate())
                 .build();
     }
+    // 1. 개별출력
+    public LeaveRequestDto OneToDto(){
+        return  LeaveRequestDto.builder()
+                .lrqNo(this.lrqNo)
+                .lrqType(this.lrqType)
+                .lrqSt(this.lrqSt)
+                .lrqEnd(this.lrqEnd)
+                .lrqSrtype(this.lrqSrtype)
+                .empNo(this.empNo.getEmpNo())
+                .aprvNo(this.aprvNo.getAprvNo())
+                .cdate(this.getCdate()).udate(this.getUdate())
+                .build();
+    }
 
 }

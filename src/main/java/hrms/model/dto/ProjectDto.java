@@ -4,7 +4,6 @@ import hrms.model.entity.ProjectEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @AllArgsConstructor@NoArgsConstructor
 @Getter@Setter@ToString
@@ -12,15 +11,12 @@ import java.util.List;
 public class ProjectDto {
 
     private int pjtNo; //  프로젝트번호
-    private int empNo;    // 프로젝트 관리자 사원번호(fk)
-    private String empName;    // 프로젝트 관리자 사원이름
+    private String empNo;    // 프로젝트 관리자 사원번호(fk)
     private String pjtName;    // 프로젝트명
     private String pjtSt;      // 프로젝트 시작날짜
     private String pjtEND;     // 프로젝트 기한
     private int pjtSta;        // 프로젝트 상태
     private int aprvNo;            // 결재번호(fk)
-
-    private List<TeamMemberDto> teamMembers;        // 팀원 리스트
 
     private LocalDateTime cdate;
     private LocalDateTime udate;
@@ -31,7 +27,6 @@ public class ProjectDto {
                 .pjtName(this.pjtName)
                 .pjtSt(this.pjtSt)
                 .pjtEND(this.pjtEND)
-                .pjtSta(this.pjtSta)
                 .build();
     }
 

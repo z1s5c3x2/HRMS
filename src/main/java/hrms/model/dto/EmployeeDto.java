@@ -17,6 +17,7 @@ public class EmployeeDto {
     private boolean empSta;                 // 근무상태
     private int empRk;                     // 사원 직급
 
+    private int dtpmNo;
     public EmployeeEntity saveToEntity()
     {
         return EmployeeEntity.builder()
