@@ -38,6 +38,7 @@ public class TeamMemberEntity extends BaseTime{
         return TeamMemberDto.builder()
                 .tmNo(this.tmNo)
                 .empNo(this.empNo.getEmpNo())
+                .empName(this.empNo.getEmpName())
                 .tmSt(this.tmSt)
                 .tmEnd(this.tmEnd)
                 .pjtNo(this.pjtNo.getPjtNo())
