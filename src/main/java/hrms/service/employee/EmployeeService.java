@@ -101,8 +101,6 @@ public class EmployeeService {
             System.out.println("retiredEmployeeEntity = " + retiredEmployeeEntity.toString());
         }
 
-
-
     }
     @Transactional
     public List<EmployeeDto> getRestList()

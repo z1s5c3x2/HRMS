@@ -18,19 +18,17 @@ public class ApprovalTest {
 
     @PostMapping("/post")
     public boolean postMember(@RequestBody ApprovalRequestDto<EmployeeDto> approvalRequestDto) {
-        /*
-        System.out.println(approvalRequestDto);
-        approvalService.postApproval(
-                approvalRequestDto.getAprvType(),
-                approvalRequestDto.getAprvCont(),
-                approvalRequestDto.getEmpNo(),
-                approvalRequestDto.getApprovers()
+
+        // 결재 테이블 등록 메서드
+        // => 실행 후 aprvPk 반환
+        int aprvPk = approvalService.postApproval(
+                approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
+                approvalRequestDto.getAprvCont(),   // 결재내용
+                approvalRequestDto.getApprovers()   // 검토자
         );
 
-        EmployeeDto employeeDto = approvalRequestDto.getData();
+        /* 이후 등록 메서드 실행 */
 
-        System.out.println( employeeDto );
-*/
         return false;
     }
 
