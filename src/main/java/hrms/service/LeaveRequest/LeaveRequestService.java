@@ -37,10 +37,24 @@ public class LeaveRequestService {
     }
     // 2-2. 개별 출력
     @Transactional
-    public LeaveRequestDto lrqGet( int empNo ){
+    public LeaveRequestDto lrqGet( String empNo ){
+        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findByEmpNo( empNo ) ;
 
-        LeaveRequestEntity leaveRequestEntity = leaveRequestRepository.findByEmpNo( empNo ) ;
+        if(optionalLeaveRequestEntity.isPresent()){
 
+            LeaveRequestDto leaveRequestDto = new LeaveRequestDto();
+
+            leaveRequestDto.setLrqNo( optionalLeaveRequestEntity.get().getLrqNo());
+            leaveRequestDto.setLrqSt( optionalLeaveRequestEntity.get().getLrqSt());
+            leaveRequestDto.setLrqEnd( optionalLeaveRequestEntity.get().getLrqEnd());
+            leaveRequestDto.setLrqType( optionalLeaveRequestEntity.get().getLrqType());
+            leaveRequestDto.setLrqSrtype( optionalLeaveRequestEntity.get().getLrqSrtype());
+            leaveRequestDto.setAprvNo( optionalLeaveRequestEntity.get().getAprvNo().getAprvNo());
+            leaveRequestDto.setEmpNo( empNo );
+            leaveRequestDto.setCdate( optionalLeaveRequestEntity.get().getCdate());
+            leaveRequestDto.setUdate( optionalLeaveRequestEntity.get().getUdate());
+            return leaveRequestDto;
+        }
         return null;
     }
     //3. 수정

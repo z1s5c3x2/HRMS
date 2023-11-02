@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/leaveRequest")
+@CrossOrigin("http://localhost:3000")
 public class LeaveRequestController {
     @Autowired
     private LeaveRequestService leaveRequestService;
@@ -27,9 +28,9 @@ public class LeaveRequestController {
     }
     // 개별 LRQ 출력
     @GetMapping("/get")
-    public LeaveRequestDto lrqGet(){
+    public LeaveRequestDto lrqGet( String empNo){
 
-        return leaveRequestService.lrqGet();
+        return leaveRequestService.lrqGet( empNo );
     }
 
     // 3.

@@ -4,7 +4,9 @@ import hrms.model.entity.LeaveRequestEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface LeaveRequestEntityRepository extends JpaRepository<LeaveRequestEntity,Integer> {
-    LeaveRequestEntity findByEmpNo( int empNo );
+    Optional<LeaveRequestEntity> findByEmpNo(String empNo );
 }
