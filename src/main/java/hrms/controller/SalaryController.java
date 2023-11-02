@@ -32,7 +32,7 @@ public class SalaryController {
         return salaryService.slryGetAll();
     }
     @GetMapping("/get")
-    public SalaryDto slryGet(@RequestParam int empNo){
+    public SalaryDto slryGet(String empNo){
 
         return salaryService.slryGet(empNo);
     }
