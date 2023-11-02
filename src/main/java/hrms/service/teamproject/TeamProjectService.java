@@ -60,12 +60,20 @@ public class TeamProjectService {
 
         for(ProjectEntity projectEntity : projectEntities){
             List<ApprovalLogEntity> approvalLogEntities = projectEntity.getAprvNo().getApprovalLogEntities();
+            boolean allStaThree = true;
 
             for(ApprovalLogEntity approvalLogEntity : approvalLogEntities){
-
+                if(approvalLogEntity.getAplogSta() != 3){
+                    allStaThree = false;
+                    break;
+                }
             }
+
+            // 승인된 상태이면 팀프로젝트dto리스트에 추가
+            if(allStaThree){
                 projectDtos.add(projectEntity.allToDto());
                 System.out.println(projectEntity.allToDto());
+            }
         }
 
         return projectDtos;
