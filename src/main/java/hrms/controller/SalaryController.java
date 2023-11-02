@@ -17,7 +17,7 @@ public class SalaryController {
     private SalaryService salaryService;
 
     @PostMapping("/post")
-    public boolean slryWrite(@RequestBody SalaryDto salaryDto ){
+    public boolean slryWrite( SalaryDto salaryDto ){
         // 입력받은 값이 담긴 Dto를 -> 결재 서비스로 보내서 결제 엔티티를 먼저 생성한다.
         // 그 후 해당 생성된 엔티티로부터 결재PK를 리턴받아서
         // 입력받아서 가져온 Dto에 .set 으로 결재번호 삽입 후 급여 엔티티 생성

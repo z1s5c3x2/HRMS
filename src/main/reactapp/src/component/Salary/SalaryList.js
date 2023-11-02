@@ -14,7 +14,6 @@ export default function SalaryList(props){
 
     return(<>
         <div>
-            <h3> 게시물 목록 </h3>
             <a href="/salary/write">글쓰기</a>
             <table>
                 <tr>

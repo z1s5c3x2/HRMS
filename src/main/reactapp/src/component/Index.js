@@ -8,10 +8,13 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 
-/* Member import */
+/* LeaveRequest import */
 
-/* Board import */
-
+/* Salary import */
+import SalaryList from './Salary/SalaryList';
+import SalaryView from './Salary/SalaryView';
+import SalaryWrite from './Salary/SalaryWrite';
+import App from './Salary/SalaryWrite';
 export default function Index( props ){
     return(<>
         <div className="webContainer">
@@ -22,19 +25,13 @@ export default function Index( props ){
                         <Route path='/' element = { <Main />} />
 
                         {/* EXAMPLE */}
-                         <Route path='/example' element = { <ExampleList />} />
-                            <Route path='/example/day01/컴포넌트1' element = { <컴포넌트1 />} />
-
-
-                            <Route path='/example/day04/Axios컴포넌트' element = { <Axios컴포넌트 />} />
 
                         {/* MEMBER */}
-                        <Route path='/login' element = { <Login />} />
-                        <Route path='/signup' element = { <Signup />} />
-                        <Route path='/info' element = { <Info />} />
-                         {/* Board */}
-                         <Route path='/board/list' element = { <BoardList />} />
-                         <Route path='/board/write' element = { <BoardWrite />} />
+
+                         {/* Salary */}
+                         <Route path='/salary/list' element = { <SalaryList />} />
+                         <Route path='/salary/view' element = { <SalaryView />} />
+                         <Route path='/salary/write' element = { <SalaryWrite />} />
 
                     </Routes >
                 <Footer />
