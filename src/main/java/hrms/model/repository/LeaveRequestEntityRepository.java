@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LeaveRequestEntityRepository extends JpaRepository<LeaveRequestEntity,Integer> {
-    LeaveRequestEntity findByEmpNo( String empNo );
+    LeaveRequestEntity findByEmpNo( int empNo );
 }
