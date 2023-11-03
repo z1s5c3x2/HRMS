@@ -24,6 +24,7 @@ public class TeamMemberDto {
     private int pjtNo;         // 프로젝트 번호(fk)
     private String pjtName;     // 프로젝트명
     private int aprvNo;            // 결재번호(fk)
+    private int aprvSta;     // 결재상태(1:승인,2:반려,3:검토중)
 
     // entity 저장할때 메소드
     public TeamMemberEntity saveToEntity(){
@@ -31,4 +32,5 @@ public class TeamMemberDto {
                 .tmSt(this.tmSt)
                 .build();
     }
+
 }

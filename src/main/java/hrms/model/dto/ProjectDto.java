@@ -31,7 +31,6 @@ public class ProjectDto {
                 .pjtName(this.pjtName)
                 .pjtSt(this.pjtSt)
                 .pjtEND(this.pjtEND)
-                .pjtSta(this.pjtSta)
                 .build();
     }
 

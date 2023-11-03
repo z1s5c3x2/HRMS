@@ -22,11 +22,16 @@ public class TeamProjectController {
         return result;
     }
 
-    // 2. 전체 팀프로젝트 출력
+    // 전체 팀프로젝트 출력
     @GetMapping("/getAll")
-    public List<ProjectDto> getAllTeamProject(){
-        return teamProjectService.getAllTeamProject();
+    public List<ProjectDto> getAllTeamProject(){return teamProjectService.getAllTeamProject();}
+
+    // 2. 승인,반려, 검토중 상태에 따른 팀프로젝트 출력
+    @GetMapping("/getPermitAll")
+    public List<ProjectDto> getPermitAllTeamProject(@RequestParam int approval){
+        return teamProjectService.getPermitAllTeamProject(approval);
     }
+
 
     // 3. 개별 팀프로젝트 출력
     @GetMapping("/getOne")

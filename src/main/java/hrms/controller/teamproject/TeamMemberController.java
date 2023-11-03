@@ -19,6 +19,7 @@ public class TeamMemberController {
         return teamMemberService.postTeamMember(teamMemberDto);
     }
 
+
     // 팀프로젝트 팀원 개별조회
     @GetMapping("/getOne")
     public TeamMemberDto getTeamMember(int tmNo){

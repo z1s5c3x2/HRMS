@@ -10,6 +10,7 @@ import hrms.model.repository.ProjectEntityRepository;
 import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
@@ -52,34 +53,58 @@ public class TeamProjectService {
         return projectEntity.getPjtNo() >= 1;
     }
 
-    // 2. 전체 팀프로젝트 출력(승인된 팀프로젝트만)
+    // 전체 팀프로젝트 출력
     @Transactional
     public List<ProjectDto> getAllTeamProject(){
+
         List<ProjectEntity> projectEntities = projectRepository.findAll();
         List<ProjectDto> projectDtos = new ArrayList<>();
 
         for(ProjectEntity projectEntity : projectEntities){
-            List<ApprovalLogEntity> approvalLogEntities = projectEntity.getAprvNo().getApprovalLogEntities();
-            boolean allStaThree = true;
+            projectDtos.add(projectEntity.allToDto());
+        }
 
-            for(ApprovalLogEntity approvalLogEntity : approvalLogEntities){
-                if(approvalLogEntity.getAplogSta() != 3){
+        return projectDtos;
+    }
+
+    // 3. 팀프로젝트 출력(approval이 1 = 승인, 2 = 반려, 3 = 검토중)
+    @Transactional
+    public List<ProjectDto> getPermitAllTeamProject(int approval) {
+        List<ProjectEntity> projectEntities = projectRepository.findAll();
+        List<ProjectDto> projectDtos = new ArrayList<>();
+
+        for (ProjectEntity projectEntity : projectEntities) {
+            List<ApprovalLogEntity> approvalLogEntities = projectEntity.getAprvNo().getApprovalLogEntities();
+            boolean allStaThree = true;     // 검토중 판단
+            boolean hasRejection = false;   // 반려상태 판단
+
+            for (ApprovalLogEntity approvalLogEntity : approvalLogEntities) {
+                int aplogSta = approvalLogEntity.getAplogSta();
+
+                if (aplogSta == 2) {
+                    hasRejection = true;
+                } else if (aplogSta != 1) {
                     allStaThree = false;
-                    break;
                 }
             }
 
-            // 승인된 상태이면 팀프로젝트dto리스트에 추가
-            if(allStaThree){
+            if (approval == 1 && allStaThree) {
+                // 모두 1(승인) 상태일 때 승인
                 projectDtos.add(projectEntity.allToDto());
-                System.out.println(projectEntity.allToDto());
+            } else if (approval == 2 && hasRejection) {
+                // 2(반려) 상태가 하나라도 있을 때 반려
+                projectDtos.add(projectEntity.allToDto());
+            } else if (approval == 3 && !allStaThree) {
+                // 나머지 경우의 수, 3(검토중) 상태가 있을 때 검토중
+                projectDtos.add(projectEntity.allToDto());
             }
         }
 
         return projectDtos;
     }
+
     
-    // 3. 개별 프로젝트 조회(팀원정보도 출력)
+    // 5. 개별 프로젝트 조회(팀원정보도 출력)
     @Transactional
     public ProjectDto getOneTeamProject(int pjtNo){
 
@@ -94,14 +119,19 @@ public class TeamProjectService {
         return null;
     }
 
-    // 4. 팀프로젝트 수정
+    // 6. 팀프로젝트 수정
     @Transactional
     public boolean updateTeamProject(ProjectDto projectDto /*, ApprovalDto approvalDto*/){
 
         return false;
     }
 
-    // 5. 팀프로젝트 삭제
+    // 7. 팀프로젝트 삭제
+    @Transactional
+    public boolean deleteTeamProject(int pjtNo){
+
+        return false;
+    }
 
 
 }

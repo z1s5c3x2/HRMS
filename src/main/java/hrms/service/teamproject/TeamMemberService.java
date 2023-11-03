@@ -61,8 +61,11 @@ public class TeamMemberService {
         return teamMemberEntity.getTmNo() >= 1;
     }
 
+    // 2. 팀프로젝트 팀원 전체 조회
 
-    // 2. 팀프로젝트 팀원 개별 조회
+
+
+    // 3. 팀프로젝트 팀원 개별 조회
     @Transactional
     public TeamMemberDto getTeamMember(int tmNo){
 
