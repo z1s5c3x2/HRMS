@@ -3,6 +3,7 @@ package hrms.service.approval;
 import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.entity.ApprovalEntity;
+import hrms.model.entity.ApprovalLogEntity;
 import hrms.model.entity.EmployeeEntity;
 import hrms.model.repository.ApprovalLogEntityRepository;
 import hrms.model.repository.ApprovalEntityRepository;
@@ -28,10 +29,9 @@ public class ApprovalService {
     @Autowired
     private EmployeeEntityRepository employeeEntityRepository;
 
-
     // 결재 테이블 등록 [등록 기능에 관한 테이블]
     @Transactional
-    public Integer postApproval(int aprvType, String aprvCont, ArrayList<String> approvers ){
+    public ApprovalEntity postApproval(int aprvType, String aprvCont, ArrayList<String> approvers ){
         
         // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeEntityRepository.findByEmpNo( "aaa" );
@@ -43,17 +43,12 @@ public class ApprovalService {
                 .empNo(optionalEmployeeEntity.get())
                 .build();
 
-        // int aprv_no, String aprv_cont, int emp_no
         ApprovalEntity result = approvalRepository.save( approvalEntity );
-
-        // 검토자들의 EmployeeEntity 리스트 가져오기
-        ArrayList<EmployeeEntity> approverEntities = employeeEntityRepository.findByEmpNoIn(approvers);
-
         postApprovalLog( approvers, result.getAprvNo() );
 
         // 2.
-        if( result.getAprvNo() >= 1 )  return result.getAprvNo();
-        return 0;
+        if( result.getAprvNo() >= 1 )  return result;
+        return null;
     }
 
     // 결재 테이블 내역 검토자 등록
@@ -63,17 +58,43 @@ public class ApprovalService {
     @Transactional
     public boolean postApprovalLog( ArrayList<String> approvers, int aprvNo ) {
 
-        String sql = "INSERT INTO aplog (emp_no, aprv_no) VALUES ";
+        // 해당 결재건을 조회
+        Optional<ApprovalEntity> optionalApproval = approvalRepository.findById( aprvNo );
+        Optional<EmployeeEntity> optionalEmployee;
 
-        for (int i = 0; i < approvers.size(); i++) {
-            if (i > 0) sql += ", ";
-            sql += "(\'" + approvers.get(i) + "\', " + aprvNo + ")";
+        // 검토자 목록을 순회하며 각 검토자에 대한 ApprovalLogEntity를 생성하고 설정
+        for (String approver : approvers) {
+
+            // 검토자 1명에 대한 optional EMP 객체 생성
+            optionalEmployee = employeeEntityRepository.findByEmpNo( approver );
+
+            if (optionalEmployee.isPresent() && optionalApproval.isPresent()) {
+
+                /* 단방향 */
+                    // 결재 검토자에 대한 객체 생성
+                ApprovalLogEntity logEntity = ApprovalLogEntity
+                        .builder()
+                        .aplogSta(3)
+                        .empNo( optionalEmployee.get() )
+                        .aprvNo( optionalApproval.get() )
+                        .build();
+
+                ApprovalLogEntity result = approvalLogRepository.save( logEntity );
+                result.setAprvNo( optionalApproval.get() );
+
+                /* 양방향 */
+                    // 결재테이블
+                optionalApproval.get().getApprovalLogEntities().add( result );
+                optionalEmployee.get().getApprovalLogs().add( result );
+
+                if( result.getAplogNo() < 1 ) return false;
+
+            }
         }
 
-        int updateCount = jdbcTemplate.update(sql);
 
-        if (updateCount > 0)  return true;
         return false;
+
     }
 
 

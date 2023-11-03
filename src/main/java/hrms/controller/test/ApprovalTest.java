@@ -2,6 +2,7 @@ package hrms.controller.test;
 
 import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.EmployeeDto;
+import hrms.model.entity.ApprovalEntity;
 import hrms.service.approval.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +22,13 @@ public class ApprovalTest {
 
         // 결재 테이블 등록 메서드
         // => 실행 후 aprvPk 반환
-        int aprvPk = approvalService.postApproval(
+        ApprovalEntity approvalEntity = approvalService.postApproval(
                 approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
                 approvalRequestDto.getAprvCont(),   // 결재내용
                 approvalRequestDto.getApprovers()   // 검토자
         );
+
+        System.out.println( approvalEntity );
 
         /* 이후 등록 메서드 실행 */
 
