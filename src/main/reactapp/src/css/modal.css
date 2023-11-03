@@ -1,0 +1,71 @@
+/*----------------(모달영역)-------------------*/
+
+.approv_modal{
+	position: absolute; /*화면고정*/
+	width:100%;
+	height: 100%;
+	top:0px;
+	left:0;
+
+	background-color: rgba(0,0,0,0.4); /*검정색바탕에 투명도 50%*/
+	display: none;
+	justify-content: center;
+	align-items: center;
+
+}
+.modal{
+	background-color: #fff;
+	width:1200px;
+	height:350px;
+	border-radius: 30px;
+	padding:20px 20px;
+	text-align: center;
+	display: flex;
+	justify-content: space-between;
+
+}
+.section{
+	width:32%
+}
+.aprvListHeader span {
+	background-color: var(--main02);
+	color:var(--white);
+	text-align: center;
+}
+
+.aprvList{
+	max-height:255px;
+	border:solid 1px var(--main01);
+	overflow-y:auto;
+}
+.aprvList span {display: inline-block; padding:7px 13px;}
+.aprvList .apDept{width:31%;}
+.aprvList .apLv{width:31%;}
+.aprvList .apDeptEmp{width:35%;}
+.aprvListContent {border-bottom:solid 1px var(--main01)}
+.reqlist {
+	height:220px;
+	max-height:255px;
+	border:solid 1px var(--main01);
+	overflow-y:auto;
+}
+.amodalTitle{
+	text-align: center;
+	padding:10px 0;
+}
+.aprvBtnBox {
+
+	display: flex;
+	padding:10px 30px ;
+	justify-content: space-between;
+	align-items: center;
+}
+.aprv_cont{
+	width:350px;
+	height:255px;
+	resize: none;
+	padding:20px;
+	font-size:0.9em;
+	line-height:1.8em;
+	border-radius: 15px;
+}
