@@ -35,19 +35,19 @@ public class SalaryService {
         return salaryDtos;
     }
     @Transactional
-    public SalaryDto slryGet( String empNo ){
-        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findByEmpNo( empNo ) ;
+    public SalaryDto slryGet( int slryNo ){
+        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findBySlryNo( slryNo ) ;
 
         if(optionalSalaryEntity.isPresent()){
 
             SalaryDto salaryDto = new SalaryDto();
 
-            salaryDto.setSlryNo( optionalSalaryEntity.get().getSlryNo());
+            salaryDto.setSlryNo( slryNo );
             salaryDto.setSlryDate( optionalSalaryEntity.get().getSlryDate());
             salaryDto.setSlryPay( optionalSalaryEntity.get().getSlryPay());
             salaryDto.setSlryType( optionalSalaryEntity.get().getSlryType());
             salaryDto.setAprvNo( optionalSalaryEntity.get().getAprvNo().getAprvNo());
-            salaryDto.setEmpNo( empNo );
+            salaryDto.setEmpNo( optionalSalaryEntity.get().getEmpNo().getEmpNo() );
             salaryDto.setCdate( optionalSalaryEntity.get().getCdate());
             salaryDto.setUdate( optionalSalaryEntity.get().getUdate());
             return salaryDto;

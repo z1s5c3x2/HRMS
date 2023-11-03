@@ -33,7 +33,7 @@ public class SalaryEntity extends BaseTime {
     @Column()
     private int slryPay;                // 3. 지급 금액
 
-    @Min(1)
+
     @Max(6)
     @Column()
     private int slryType;               // 4. 지급유형 ( 1:기본급/2:정기상여/3:특별상여/4:성과금/5:명절휴가비/6:퇴직금)
