@@ -3,9 +3,11 @@ package hrms.service.employee;
 import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.RetiredEmployeeDto;
+import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.DepartmentEntity;
 import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.RetiredEmployeeEntity;
+import hrms.model.repository.ApprovalEntityRepository;
 import hrms.model.repository.DepartmentEntityRepository;
 import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.RetiredEmployeeEntityRepository;
@@ -27,25 +29,37 @@ public class EmployeeService {
     RetiredEmployeeEntityRepository retiredEmployeeEntityRepository;
     @Autowired
     DepartmentEntityRepository departmentEntityRepository;
+    @Autowired
+    ApprovalEntityRepository approvalEntityRepository;
     private final int LEAVE_COUNT = 5;
+
+    // 사원 등록
     @Transactional
     public boolean registerEmp(ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
         EmployeeDto employeeDto = employeeDtoApprovalRequestDto.getData();
         System.out.println("employeeDto = " + employeeDto.toString());
-        employeeDto.setEmpNo(generateEmpNumber(employeeDto.getEmpSex()));
+        employeeDto.setEmpNo(generateEmpNumber(employeeDto.getEmpSex())); // pk
         EmployeeEntity employeeEntity = employeeDto.saveToEntity();
+
         Optional<DepartmentEntity> optionalDepartmentEntity =  departmentEntityRepository.findById(employeeDto.getDtpmNo());
+
+        // 결제 메소드 추가
+
+
         if(optionalDepartmentEntity.isPresent())
         {
             employeeEntity.setDptmNo(optionalDepartmentEntity.get());
+            employeeEntity.setAprvNo(new ApprovalEntity()); // 테스트
             employeeRepository.save(employeeEntity);
-            System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
+
+            //System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
             optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity);
+
         }
         return employeeEntity.getEmpNo().length() > 0;
     }
-
+    // 사원 pk 생성
     @Transactional
     public String generateEmpNumber(String _sex)
     {
@@ -58,6 +72,7 @@ public class EmployeeService {
         return _str;
     }
 
+    //사원 조회 ( 페이징 처리 예정)
     @Transactional
     public List<EmployeeDto> getEmpList()
     {
@@ -67,8 +82,18 @@ public class EmployeeService {
         });
         return result;
     }
-
-    /*@Transactional
+    //사원 개별 조회
+    @Transactional
+    public EmployeeDto getOneEmp(String empNo)
+    {
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(empNo);
+        if(optionalEmployeeEntity.isPresent())
+        {
+            return optionalEmployeeEntity.get().allToDto();
+        }
+        return null;
+    }
+  /*  @Transactional
     public boolean leaveEmpStatus(RetiredEmployeeDto retiredEmployeeDto)
     {
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(retiredEmployeeDto.getEmpNo());
@@ -76,9 +101,7 @@ public class EmployeeService {
         System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
         if(optionalEmployeeEntity.isPresent())
         {
-
             EmployeeEntity employeeEntity = optionalEmployeeEntity.get();
-
             employeeEntity.setEmpSta(!employeeEntity.isEmpSta());
 
             setRetiredEmployee(retiredEmployeeDto);
@@ -100,13 +123,16 @@ public class EmployeeService {
             retiredEmployeeEntityRepository.save(retiredEmployeeEntity);
 
             optionalEmployeeEntity.get().getRetiredEmployeeEntities().add(retiredEmployeeEntity);
-            System.out.println("optionalEmployeeEntity.to = " + optionalEmployeeEntity.get().toString());
-            System.out.println("retiredEmployeeEntity = " + retiredEmployeeEntity.toString());
+            System.out.println("optionalEmployeeEntity.to = " + optionalEmployeeEntity.get());
+            System.out.println("retiredEmployeeEntity = " + retiredEmployeeEntity);
+
         }
 
 
 
     }*/
+
+    // 휴직 사원 조회
     @Transactional
     public List<EmployeeDto> getRestList()
     {

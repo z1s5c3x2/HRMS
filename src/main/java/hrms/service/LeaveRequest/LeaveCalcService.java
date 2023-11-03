@@ -18,17 +18,13 @@ public class LeaveCalcService {
     public int calcRestCount(String eno)
     {
         Map<Object,Integer> resultMap = leaveRequestEntityRepository.getRestCountByEmpNo(eno,String.valueOf(LocalDate.now().getYear()));
-        System.out.println("objects.toString() = " + resultMap.toString());
+/*        System.out.println("objects.toString() = " + resultMap.toString());
         System.out.println("objects.get(\"ph\") = " + resultMap.get("ph"));
-        System.out.println("objects.get(\"cnt\") = " + resultMap.get("cnt"));
-        int myRest = 15;
-        if(Integer.parseInt(String.valueOf(resultMap.get("ph"))) > 2)
-        {
-            myRest += Math.round(Integer.parseInt(String.valueOf(resultMap.get("ph")))/2) - Integer.parseInt(String.valueOf(resultMap.get("cnt")));
-            return myRest;
-        }else {
-            return myRest - Integer.parseInt(String.valueOf(resultMap.get("cnt"))) ;
-        }
+        System.out.println("objects.get(\"cnt\") = " + resultMap.get("cnt"));*/
+        int myRest = 15; //15 고정 스타트
+        int ph = Integer.parseInt(String.valueOf(resultMap.get("ph")));
+        myRest += ph > 3 ? ((int)Math.floor( (ph-3) / 2 )+1) : 0;
+        return myRest - Integer.parseInt(String.valueOf(resultMap.get("cnt"))) ;
 
 
     }

@@ -19,6 +19,10 @@ POST http://localhost:80/employee/register
 Content-Type: application/json
 
 {
+  "aprvType": 1,
+  "aprvCont": "결제 내용",
+  "empNo": "231110",
+  "approvers": ["1234","2345"],
   "data": {
     "empName": "John Doe1",
     "empPhone": "123-455-7890",
@@ -43,8 +47,14 @@ PUT http://localhost:80/employee/leave
 Content-Type: application/json
 
 {
-    "empNo" : "231122",
+  "aprvType": 3,
+  "aprvCont": "결제 내용",
+  "empNo": "231110",
+  "approvers": ["1234","2345"],
+  "data": {
+    "empNo" : "231110",
     "rtempCont" : "북한군 침공"
+  }
 }
 
 
@@ -55,3 +65,70 @@ Content-Type: application/json
 
 ### 사원 연차 조회
 GET http://localhost:80/employee/restcount?empNo=231110
+
+
+### 사원 부서 이동
+PUT http://localhost:80/department/chageemp
+Content-Type: application/json
+
+{
+  "aprvType": 3,
+  "aprvCont": "결제 내용",
+  "empNo": "231110",
+  "approvers": ["1234","2345"],
+  "data": {
+    "empNo": "231110",
+    "dptmNo": 2,
+    "dptmName": "개발"
+  }
+}
+
+### 사원 직급 변경
+PUT http://localhost:80/employee/changernk
+Content-Type: application/json
+
+{
+  "aprvType": 4,
+  "aprvCont": "결제 내용",
+  "empNo": "231110",
+  "approvers": ["1234","2345"],
+  "data": {
+    "empName": "John Doe1",
+    "empPhone": "123-455-7890",
+    "empPwd": "password223",
+    "empSex": "male",
+    "empAcn": "123456789",
+    "empSta": true,
+    "empRk": 4,
+    "dtpmNo": 1,
+    "empNo" : "231110"
+  }
+}
+
+### 사원 정보 변경(개인정보)
+PUT http://localhost:80/employee/changeinfo
+Content-Type: application/json
+
+{
+  "aprvType": 2,
+  "aprvCont": "결제 내용",
+  "empNo": "231110",
+  "approvers": ["1234","2345"],
+  "data": {
+    "empName": "John Doe1",
+    "empPhone": "222-455-7890",
+    "empPwd": "password223",
+    "empSex": "male",
+    "empAcn": "123456789",
+    "empSta": true,
+    "empRk": 4,
+    "dtpmNo": 1,
+    "empNo" : "231110"
+  }
+}
+
+
+### 사원 개인정보 조회 (1명)
+GET http://localhost:80/employee/findemp?empNo=231110
+Content-Type: application/json
+

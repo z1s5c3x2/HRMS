@@ -19,7 +19,7 @@ import java.util.List;
 public class DepartmentDto {
     private int dptmNo;                // 부서번호
     private String dptmName;          // 부서이름
-
+    private String empNo;
     public DepartmentEntity saveToAll()
     {
         return DepartmentEntity.builder()

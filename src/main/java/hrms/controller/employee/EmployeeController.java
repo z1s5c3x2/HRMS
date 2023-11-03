@@ -1,6 +1,7 @@
 package hrms.controller.employee;
 
 import hrms.model.dto.ApprovalRequestDto;
+import hrms.model.dto.DepartmentDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.RetiredEmployeeDto;
 import hrms.service.LeaveRequest.LeaveCalcService;
@@ -35,7 +36,6 @@ public class EmployeeController {
     }
 
 
-
     @GetMapping("/restlist")
     public List<EmployeeDto> getRestList()
     {
@@ -47,10 +47,28 @@ public class EmployeeController {
         //System.out.println("EmployeeController.getEmpList");
         return employeeService.getEmpList();
     }
-    @GetMapping("/restcount")
+    @GetMapping("/restcount") // 테스트용
     public int getRestCount(@RequestParam String empNo)
     {
         return leaveCalcService.calcRestCount(empNo);
     }
+    @PutMapping("/changernk")
+    public boolean changeRank(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
+    {
+        System.out.println("employeeDtoApprovalRequestDto = " + employeeDtoApprovalRequestDto);
+        return false;
+    }
+    @PutMapping("/changeinfo")
+    public boolean changeInfo(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
+    {
+        System.out.println("employeeDtoApprovalRequestDto = " + employeeDtoApprovalRequestDto);
+        return false;
+    }
+    @GetMapping("/findemp")
+    public EmployeeDto findByEmployee(@RequestParam String empNo)
+    {
+        return employeeService.getOneEmp(empNo);
+    }
+
 
 }
