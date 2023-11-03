@@ -62,81 +62,95 @@ insert into aprv( cdate, udate, aprv_cont, aprv_type, emp_no ) values ( now(), n
 
 /* 사원관리 테이블 */
 # 생성 번호 [연도,월,성별,누적]
-insert into emp(cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values (NOW(),NOW(),'247123456','김영태','01012345678','1111',1,'남자',true,1,1);
-insert into emp(cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values (NOW(),NOW(),'247123456','최의선','01022345678','1111',2,'남자',false,2,1);
-insert into emp(cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values (NOW(),NOW(),'247123456','김준희','01033345678','1111',3,'여자',true,3,3);
-insert into emp(cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values (NOW(),NOW(),'247123456','화태웅','01044345678','1111',4,'여자',true,4,2);
-insert into emp(cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values (NOW(),NOW(),'247123456','이환희','01055345678','1111',5,'남자',true,5,3);
-insert into emp(cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values (NOW(),NOW(),'247123456','이효재','01066345678','1111',1,'남자',true,36,1);
-insert into emp(cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values (NOW(),NOW(),'247123456','고동하','01077345678','1111',2,'남자',false,37,1);
-insert into emp(cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values (NOW(),NOW(),'247123456','신승현','01088345678','1111',3,'여자',true,38,3);
-insert into emp(cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values (NOW(),NOW(),'247123456','이종영','01099345678','1111',2,'여자',true,39,2);
-insert into emp(cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values (NOW(),NOW(),'247123456','김하빈','01013345678','1111',1,'남자',true,40,3);
+insert into emp(emp_no, cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values ('2311001', NOW(),NOW(),'247123456','김영태','01012345678','1111',1,'남자',true,1,1);
+insert into emp(emp_no, cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values ('2311002', NOW(),NOW(),'247123456','최의선','01022345678','1111',2,'남자',false,2,1);
+insert into emp(emp_no, cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values ('2311003', NOW(),NOW(),'247123456','김준희','01033345678','1111',3,'여자',true,3,3);
+insert into emp(emp_no, cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values ('2311004', NOW(),NOW(),'247123456','화태웅','01044345678','1111',4,'여자',true,4,2);
+insert into emp(emp_no, cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values ('2311005', NOW(),NOW(),'247123456','이환희','01055345678','1111',5,'남자',true,5,3);
+insert into emp(emp_no, cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values ('2311006', NOW(),NOW(),'247123456','이효재','01066345678','1111',1,'남자',true,36,1);
+insert into emp(emp_no, cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values ('2311007', NOW(),NOW(),'247123456','고동하','01077345678','1111',2,'남자',false,37,1);
+insert into emp(emp_no, cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values ('2311008', NOW(),NOW(),'247123456','신승현','01088345678','1111',3,'여자',true,38,3);
+insert into emp(emp_no, cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values ('2311009', NOW(),NOW(),'247123456','이종영','01099345678','1111',2,'여자',true,39,2);
+insert into emp(emp_no, cdate, udate, emp_acn, emp_name, emp_phone, emp_pwd, emp_rk, emp_sex, emp_sta, aprv_no, dptm_no) values ('2311010', NOW(),NOW(),'247123456','김하빈','01013345678','1111',1,'남자',true,40,3);
 
 /* 결재기록관리 테이블 */
-insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 1, 1 );
-insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 2, 2 );
-insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 3, 3 );
-insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 4, 4 );
-insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 5, 5 );
-insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 6, 6 );
-insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 7, 7 );
-insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 8, 8 );
-insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 9, 9 );
-insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 10, 10 );
+insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 1, 2311001 );
+insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 2, 2311001 );
+insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 3, 2311002 );
+insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 4, 2311002 );
+insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 5, 2311005 );
+insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 6, 2311005 );
+insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 7, 2311006 );
+insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 8, 2311007 );
+insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 9, 2311008 );
+insert into aplog( cdate, udate, aplog_sta, aprv_no, emp_no ) values ( now(), now(), 3, 10, 2311009 );
 
 
 
 /* 프로젝트관리 테이블*/
-insert into pjt_mng(cdate, udate, pjt_name, pjt_st, pjt_sta, aprv_no, emp_no) values('2023-10-07', '2023-10-07', '인사관리프로그램', '2023-10-07', 1, 6, 1);
-insert into pjt_mng(cdate, udate, pjt_name, pjt_st, pjt_sta, aprv_no, emp_no) values('2023-10-08', '2023-10-08', '재고관리프로그램', '2023-10-28', 1, 7, 2);
-insert into pjt_mng(cdate, udate, pjt_name, pjt_st, pjt_sta, aprv_no, emp_no) values('2023-10-09', '2023-10-09', 'GS편의점pos기프로그램', '2023-10-12', 1, 8, 3);
-insert into pjt_mng(cdate, udate, pjt_name, pjt_st, pjt_sta, aprv_no, emp_no) values('2023-10-10', '2023-10-10', '급여관리프로그램', '2023-10-12', 1, 9, 4);
-insert into pjt_mng(cdate, udate, pjt_name, pjt_st, pjt_sta, aprv_no, emp_no) values('2023-10-11', '2023-10-11', '출결관리프로그램', '2023-10-12', 1, 10, 5);
+insert into pjt_mng(cdate, udate, pjt_name, pjt_st, aprv_no, emp_no) values('2023-10-07', '2023-10-07', '인사관리프로그램', '2023-10-07', 6, 2311001);
+insert into pjt_mng(cdate, udate, pjt_name, pjt_st, aprv_no, emp_no) values('2023-10-08', '2023-10-08', '재고관리프로그램', '2023-10-28', 7, 2311002);
+insert into pjt_mng(cdate, udate, pjt_name, pjt_st, aprv_no, emp_no) values('2023-10-09', '2023-10-09', 'GS편의점pos기프로그램', '2023-10-12', 8, 2311003);
+insert into pjt_mng(cdate, udate, pjt_name, pjt_st, aprv_no, emp_no) values('2023-10-10', '2023-10-10', '급여관리프로그램', '2023-10-12', 1, 2311004);
+insert into pjt_mng(cdate, udate, pjt_name, pjt_st, aprv_no, emp_no) values('2023-10-11', '2023-10-11', '출결관리프로그램', '2023-10-12', 1, 2311006);
 
 /* 팀원관리 테이블 */
-insert into tm_mng(cdate, udate, tm_end, tm_st, aprv_no, emp_no, pjt_no) values('2023-10-06', '2023-10-06', null, '2023-10-06', 11, 6, 1);
-insert into tm_mng(cdate, udate, tm_end, tm_st, aprv_no, emp_no, pjt_no) values('2023-10-07', '2023-10-07', null, '2023-10-07', 12, 7, 2);
-insert into tm_mng(cdate, udate, tm_end, tm_st, aprv_no, emp_no, pjt_no) values('2023-10-07', '2023-10-07', null, '2023-10-07', 13, 8, 3);
-insert into tm_mng(cdate, udate, tm_end, tm_st, aprv_no, emp_no, pjt_no) values('2023-10-10', '2023-10-10', null, '2023-10-11', 14, 9, 3);
-insert into tm_mng(cdate, udate, tm_end, tm_st, aprv_no, emp_no, pjt_no) values('2023-10-10', '2023-10-10', null, '2023-10-11', 15, 10, 1);
+insert into tm_mng(cdate, udate, tm_end, tm_st, aprv_no, emp_no, pjt_no) values('2023-10-06', '2023-10-06', null, '2023-10-06', 11, 2311006, 1);
+insert into tm_mng(cdate, udate, tm_end, tm_st, aprv_no, emp_no, pjt_no) values('2023-10-07', '2023-10-07', null, '2023-10-07', 12, 2311007, 2);
+insert into tm_mng(cdate, udate, tm_end, tm_st, aprv_no, emp_no, pjt_no) values('2023-10-07', '2023-10-07', null, '2023-10-07', 13, 2311008, 3);
+insert into tm_mng(cdate, udate, tm_end, tm_st, aprv_no, emp_no, pjt_no) values('2023-10-10', '2023-10-10', null, '2023-10-11', 14, 2311009, 3);
+insert into tm_mng(cdate, udate, tm_end, tm_st, aprv_no, emp_no, pjt_no) values('2023-10-10', '2023-10-10', null, '2023-10-11', 15, 2311010, 1);
 
 
 /* 급여관리 테이블*/
-insert into slry (slry_date , slry_pay , slry_type , emp_no , aprv_no) values ('2023-10-30' ,'2000000' , 1 , 1 , 16);
-insert into slry (slry_date , slry_pay , slry_type , emp_no , aprv_no) values ('2023-10-31' ,'1000000' , 2 , 2 , 17);
-insert into slry (slry_date , slry_pay , slry_type , emp_no , aprv_no) values ('2023-10-32' ,'4000000' , 3 , 3 , 18);
-insert into slry (slry_date , slry_pay , slry_type , emp_no , aprv_no) values ('2023-10-33' ,'5000000' , 4 , 4 , 19);
-insert into slry (slry_date , slry_pay , slry_type , emp_no , aprv_no) values ('2023-10-34' ,'6000000' , 5 , 5 , 20);
+insert into slry (slry_date , slry_pay , slry_type , emp_no , aprv_no) values ('2023-10-30' ,'2000000' , 1 , 2311006 , 16);
+insert into slry (slry_date , slry_pay , slry_type , emp_no , aprv_no) values ('2023-10-31' ,'1000000' , 2 , 2311007 , 17);
+insert into slry (slry_date , slry_pay , slry_type , emp_no , aprv_no) values ('2023-11-01' ,'4000000' , 3 , 2311002 , 18);
+insert into slry (slry_date , slry_pay , slry_type , emp_no , aprv_no) values ('2023-11-02' ,'5000000' , 4 , 2311003 , 19);
+insert into slry (slry_date , slry_pay , slry_type , emp_no , aprv_no) values ('2023-11-03' ,'6000000' , 5 , 2311001 , 20);
 
 
 /* 근태관리 테이블 */
-insert into lrq (lrq_type , lrq_st , lrq_end , lrq_srtype , emp_no , aprv_no) values ( 1 , '2023-10-30' , '2024-10-31' , 0 , 1 , 21 );
-insert into lrq (lrq_type , lrq_st , lrq_end , lrq_srtype , emp_no , aprv_no) values ( 1 , '2023-11-01' , '2024-11-02' , 1 , 2 , 22 );
-insert into lrq (lrq_type , lrq_st , lrq_end , lrq_srtype , emp_no , aprv_no) values ( 1 , '2023-11-11' , '2024-11-12' , 0 , 3 , 23 );
-insert into lrq (lrq_type , lrq_st , lrq_end , lrq_srtype , emp_no , aprv_no) values ( 1 , '2023-11-21' , '2024-11-22' , 1 , 4 , 24 );
-insert into lrq (lrq_type , lrq_st , lrq_end , lrq_srtype , emp_no , aprv_no) values ( 1 , '2023-11-31' , '2024-12-30' , 0 , 5 , 25 );
+insert into lrq (lrq_type , lrq_st , lrq_end , lrq_srtype , emp_no , aprv_no) values ( 1 , '2023-10-30' , '2024-10-31' , 0 , 2311006 , 21 );
+insert into lrq (lrq_type , lrq_st , lrq_end , lrq_srtype , emp_no , aprv_no) values ( 1 , '2023-11-01' , '2024-11-02' , 1 , 2311003 , 22 );
+insert into lrq (lrq_type , lrq_st , lrq_end , lrq_srtype , emp_no , aprv_no) values ( 1 , '2023-11-11' , '2024-11-12' , 0 , 2311004 , 23 );
+insert into lrq (lrq_type , lrq_st , lrq_end , lrq_srtype , emp_no , aprv_no) values ( 1 , '2023-11-21' , '2024-11-22' , 1 , 2311005 , 24 );
+insert into lrq (lrq_type , lrq_st , lrq_end , lrq_srtype , emp_no , aprv_no) values ( 1 , '2023-11-30' , '2024-12-30' , 0 , 2311009 , 25 );
 
 
 /* 근태 기록 */
-insert into attd(cdate, udate, attd_wrend, attd_wrst, emp_no) values (now(),now(),now(),now(),1);
-insert into attd(cdate, udate, attd_wrend, attd_wrst, emp_no) values (now(),now(),now(),now(),2);
-insert into attd(cdate, udate, attd_wrend, attd_wrst, emp_no) values (now(),now(),now(),now(),3);
-insert into attd(cdate, udate, attd_wrend, attd_wrst, emp_no) values (now(),now(),now(),now(),4);
-insert into attd(cdate, udate, attd_wrend, attd_wrst, emp_no) values (now(),now(),now(),now(),5);
+insert into attd(cdate, udate, attd_wrend, attd_wrst, emp_no) values (now(),now(),now(),now(),2311001);
+insert into attd(cdate, udate, attd_wrend, attd_wrst, emp_no) values (now(),now(),now(),now(),2311002);
+insert into attd(cdate, udate, attd_wrend, attd_wrst, emp_no) values (now(),now(),now(),now(),2311003);
+insert into attd(cdate, udate, attd_wrend, attd_wrst, emp_no) values (now(),now(),now(),now(),2311004);
+insert into attd(cdate, udate, attd_wrend, attd_wrst, emp_no) values (now(),now(),now(),now(),2311005);
 
 
 /* 퇴사기록 테이블 */
-insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values (now(),now(),'개인사정',now(),26,5);
-insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values (now(),now(),'집안일',now(),27,6);
-insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values (now(),now(),'게임',now(),28,7);
-insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values (now(),now(),'이직',now(),29,8);
-insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values (now(),now(),'이민',now(),30,9);
+insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values (now(),now(),'개인사정',now(),26,2311006);
+insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values (now(),now(),'집안일',now(),27,2311007);
+insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values (now(),now(),'게임',now(),28,2311008);
+insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values (now(),now(),'이직',now(),29,2311009);
+insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values (now(),now(),'이민',now(),30,2311010);
 
 
 /* 직급/부서 번경 테이블 */
-insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),1,31,1,1);
-insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),2,32,2,2);
-insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),3,33,3,3);
-insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),4,34,4,4);
-insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),5,35,5,5);
+insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),1,31,1,2311001);
+insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),2,32,2,2311002);
+insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),3,33,3,2311003);
+insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),4,34,4,2311004);
+insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),5,35,5,2311005);
+
+
+
+select*from aplog;
+select*from aprv;
+select*from attd;
+select*from dptm;
+select*from emp;
+select*from htrdp;
+select*from lrq;
+select*from pjt_mng;
+select*from rtemp;
+select*from slry;
+select*from tm_mng;
