@@ -15,7 +15,7 @@ public class LeaveRequestController {
     private LeaveRequestService leaveRequestService;
 
     @PostMapping("/post")
-    public boolean lrqWrite( LeaveRequestDto leaveRequestDto ){
+    public boolean lrqWrite(@RequestBody LeaveRequestDto leaveRequestDto ){
 
         return leaveRequestService.lrqWrite( leaveRequestDto );
     }

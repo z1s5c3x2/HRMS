@@ -30,7 +30,7 @@ export default function Index( props ){
 
                          {/* Salary */}
                          <Route path='/salary/list' element = { <SalaryList />} />
-                         <Route path='/salary/view' element = { <SalaryView />} />
+                         <Route path='/salary/view/:slryNo' element = { <SalaryView />} />
                          <Route path='/salary/write' element = { <SalaryWrite />} />
 
                     </Routes >
