@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class DepartmentHistoryEntity extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int htrdpNo;       // 부서이동 히스토리 넘버
-    private int htrdpRk;    // 권한레벨(직급)
+    private int htrdpRk;        // 권한레벨(직급)
     @ToString.Exclude
     @JoinColumn(name="dptmNo")
     @ManyToOne

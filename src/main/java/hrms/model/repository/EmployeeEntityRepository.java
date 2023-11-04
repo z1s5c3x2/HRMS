@@ -19,5 +19,4 @@ public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity,I
     List<EmployeeEntity> findAllByEmpStaIsFalse();
     Optional<EmployeeEntity> findByEmpNo(String empNo);
 
-    ArrayList<EmployeeEntity> findByEmpNoIn(ArrayList<String> empNos);
 }

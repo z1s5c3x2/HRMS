@@ -1,5 +1,8 @@
 package hrms.service.employee;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.RetiredEmployeeDto;
@@ -93,9 +96,13 @@ public class EmployeeService {
         }
         return null;
     }
+
+
+
   /*  @Transactional
     public boolean leaveEmpStatus(RetiredEmployeeDto retiredEmployeeDto)
     {
+
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(retiredEmployeeDto.getEmpNo());
         System.out.println("retiredEmployeeDto = " + retiredEmployeeDto);
         System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
@@ -144,4 +151,73 @@ public class EmployeeService {
         return result;
 
     }
+
+    /* 환희 ====================================================================== */
+    // 결재 후 사원 기본정보(전화번호/비밀번호/계좌번호) / 부서 / 직급 변경
+    @Transactional
+    public boolean setEmployeeInfo( int aprvNo ) throws JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+
+        Optional<ApprovalEntity> optionalApprovalEntity = approvalEntityRepository.findById( aprvNo );
+        if( !optionalApprovalEntity.isPresent() ) return false;
+
+        // JSON문자열 => DTO객체로 변환
+        EmployeeDto employeeDto
+                = objectMapper.readValue(optionalApprovalEntity.get().getAprvJson(), EmployeeDto.class);
+        // DTO => Entity 객체로 변환
+        EmployeeEntity employeeEntity = employeeDto.saveToEntity();
+
+        // 수정 전 해당 결재수정안에 대한 data 호출
+        if( optionalApprovalEntity.isPresent() ) {
+
+            // 변경 대상사원 객체 호출
+            Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( employeeEntity.getEmpNo() );
+
+            if( optionalEmployeeEntity.isPresent() ){
+
+                // 결재 타입에 따른 DB변경 실행
+                switch ( optionalApprovalEntity.get().getAprvType() ) {
+
+                    // 사원 기본정보 변경(전화번호/비밀번호/계좌번호)
+                    case 2 :
+                        optionalEmployeeEntity.get().setEmpPhone(employeeEntity.getEmpPhone());
+                        optionalEmployeeEntity.get().setEmpPwd(employeeEntity.getEmpPwd());
+                        optionalEmployeeEntity.get().setEmpAcn(employeeEntity.getEmpAcn());
+                        break;
+
+                    // 사원 부서변경
+                    case 4 :
+
+                        Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById( employeeDto.getDtpmNo() );
+                        if( !optionalDepartmentEntity.isPresent() ) return false;
+
+                        optionalEmployeeEntity.get().setDptmNo(optionalDepartmentEntity.get());
+                        employeeRepository.save(optionalEmployeeEntity.get());
+
+                        break;
+
+                    // 사원 직급변경
+                    case 5 :
+                        optionalEmployeeEntity.get().setEmpRk(employeeEntity.getEmpRk());
+                        break;
+
+                }
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
 }

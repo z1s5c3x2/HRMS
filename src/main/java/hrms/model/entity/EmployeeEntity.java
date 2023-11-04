@@ -18,7 +18,7 @@ public class EmployeeEntity extends BaseTime {
     @Column( )
     private String empName;                // 사원이름
     @Column( )
-    private String empPhone;               // 사원전환번호
+    private String empPhone;               // 사원전화번호
     @Column( )
     private String empPwd;                 // 사원비밀번호
     @Column( )
