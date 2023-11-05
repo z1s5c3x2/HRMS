@@ -1,5 +1,6 @@
 package hrms.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import hrms.model.entity.ProjectEntity;
 import lombok.*;
 

@@ -1,0 +1,85 @@
+## (등록)결재등록
+POST
+http://localhost:80/approval/postAproval
+Content-Type: application/json
+{
+    "aprvType": 1,
+    "aprvCont": "수정보고드립니다",
+    "empNo": "2311001",
+    "approvers": ["2311004", "2311005", "2311006"],
+    "data": {
+        "empPhone": "test",
+        "empPwd": "test",
+        "empAcn": "test",
+        "empRk": 5,
+        "dtpmNo" : 5
+    }
+}
+
+## (수정)결재등록
+POST
+http://localhost:80/approval/putAproval
+Content-Type: application/json
+{
+    "aprvType": 1,
+    "aprvCont": "수정보고드립니다",
+    "empNo": "2311001",
+    "approvers": ["2311004", "2311005", "2311006"],
+    "data": {
+        "empNo": "2311010",
+        "empPhone": "test",
+        "empPwd": "test",
+        "empAcn": "test",
+        "empRk": 5,
+        "dtpmNo" : 5
+    }
+}
+{
+    "aprvType": 13,
+    "aprvCont": "프로젝트 수정보고드립니다",
+    "empNo": "2311001",
+    "approvers": ["2311004", "2311005", "2311006"],
+    "data": {
+      	"pjtNo" : 5,
+        "empNo" : "2311004",
+        "pjtName" : "수정",
+        "pjtSt" : "2023-12-06",
+        "pjtEND" : "2023-12-06"
+     }
+}
+{
+    "aprvType": 16,
+    "aprvCont": "팀 변동사항있습니다",
+    "empNo": "2311001",
+    "approvers": ["2311004", "2311005", "2311006"],
+    "data": {
+        "tmNo" : 5,
+        "tmSt" : "2023-05-07",
+        "tmEnd" : "2023-05-07"
+      }
+}
+
+
+
+## approbate(결재/반려)
+PUThttp://localhost:80/approval/approbate?aprvNo=58&aplogSta=1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
