@@ -1,5 +1,7 @@
 package hrms.controller.teamproject;
 
+import hrms.model.dto.ApprovalRequestDto;
+import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.ProjectDto;
 import hrms.service.teamproject.TeamProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,8 @@ public class TeamProjectController {
 
     // 1. 팀프로젝트 생성
     @PostMapping("/post")
-    public boolean postTeamProject(@RequestBody ProjectDto projectDto /*, ApprovalDto approvalDto*/){
-        boolean result = teamProjectService.postTeamProject(projectDto/*, approvalDto*/);
+    public boolean postTeamProject(@RequestBody ApprovalRequestDto<ProjectDto> approvalRequestDto){
+        boolean result = teamProjectService.postTeamProject(approvalRequestDto);
 
         return result;
     }
