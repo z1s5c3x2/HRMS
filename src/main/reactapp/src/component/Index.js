@@ -32,7 +32,7 @@ import LeaveRequestList from "./leaveRequest/LeaveRequestList"
 
 
 /* Teamproject import */
-//import RegisterEmp from "./employee/RegisterEmp";
+import TeamProjectList from "./teamProject/TeamProjectList";
 
 export default function Index( props ){
     return(<>
@@ -65,6 +65,7 @@ export default function Index( props ){
                                 <Route path='/leaveRequest/view' element={<leaveRequestView/>} />
                                 <Route path='/leaveRequest/list' element={<leaveRequestList/>} />
                             {/* TeamProject */}
+                                <Route path='/teamproject/listAll' element={<TeamProjectList />} />
                         </Routes >
                         </div>
                 </BrowserRouter >
