@@ -21,7 +21,7 @@ import RegisterEmp from "./employee/RegisterEmp";
 //import RegisterEmp from "./employee/RegisterEmp";
 
 /* Teamproject import */
-//import RegisterEmp from "./employee/RegisterEmp";
+import TeamProjectList from './teamProject/TeamProjectList';
 
 export default function Index( props ){
     return(<>
@@ -45,6 +45,7 @@ export default function Index( props ){
 
 
                             {/* TeamProject */}
+                                <Route path='/teamProject/listAll' element = {<TeamProjectList />} />
 
 
                         </Routes >

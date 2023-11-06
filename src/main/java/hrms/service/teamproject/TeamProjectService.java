@@ -48,12 +48,11 @@ public class TeamProjectService {
         if(!employeeEntityOptional.isPresent()){return false;}
 
         // 결제 테이블 생성
-        /*approvalService.postApproval(
+        ApprovalEntity approvalEntity = approvalService.postApproval(
                 approvalRequestDto.getAprvType(),
                 approvalRequestDto.getAprvCont(),
-                approvalRequestDto.getEmpNo(),
                 approvalRequestDto.getApprovers()
-        );*/
+        );
 
         // 팀 프로젝트 생성
         ProjectEntity projectEntity =
@@ -61,8 +60,14 @@ public class TeamProjectService {
         // 팀 프로젝트에 관리자 사원번호 추가
         projectEntity.setEmpNo(employeeEntityOptional.get());
 
+        // 팀 프로젝트에 결제 번호 추가
+        projectEntity.setAprvNo(approvalEntity);
+
         // 사원 엔티티에 팀 프로젝트 엔티티 추가
         employeeEntityOptional.get().getProjectEntities().add(projectEntity);
+
+        // 결재 엔티티에 팀 프로젝트 엔티티 추가
+        approvalEntity.getProjectEntities().add(projectEntity);
 
         return projectEntity.getPjtNo() >= 1;
     }
@@ -133,19 +138,10 @@ public class TeamProjectService {
         return null;
     }
 
-    // 6. 팀프로젝트 수정
-    @Transactional
-    public boolean updateTeamProject(ProjectDto projectDto /*, ApprovalDto approvalDto*/){
+    // 6. 팀프로젝트 수정(approvalService 에서 진행)
 
-        return false;
-    }
+    // 7. 팀프로젝트 삭제(approvalService 에서 진행)
 
-    // 7. 팀프로젝트 삭제
-    @Transactional
-    public boolean deleteTeamProject(int pjtNo){
-
-        return false;
-    }
 
 
 }
