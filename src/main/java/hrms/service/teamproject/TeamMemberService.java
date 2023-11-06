@@ -1,13 +1,16 @@
 package hrms.service.teamproject;
 
+import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.ProjectDto;
 import hrms.model.dto.TeamMemberDto;
+import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.ProjectEntity;
 import hrms.model.entity.TeamMemberEntity;
 import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.ProjectEntityRepository;
 import hrms.model.repository.TeamMemberEntityRepository;
+import hrms.service.approval.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,34 +31,56 @@ public class TeamMemberService {
     @Autowired
     private EmployeeEntityRepository employeeEntityRepository;
 
+    @Autowired
+    ApprovalService approvalService;
+
     // 1. 팀프로젝트 팀원 등록
     @Transactional
-    public boolean postTeamMember(TeamMemberDto teamMemberDto) {
+    public boolean postTeamMember(ApprovalRequestDto<TeamMemberDto> approvalRequestDto) {
 
 
         // 입력한 팀프로젝트 pk번호로 엔티티 호출
         Optional<ProjectEntity> projectEntityOptional =
-                projectEntityRepository.findById(teamMemberDto.getPjtNo());
+                projectEntityRepository.findById(approvalRequestDto.getData().getPjtNo());
 
         // 팀프로젝트 유효성검사
         if(!projectEntityOptional.isPresent()){return false;}
 
         // 입력한 팀원 pk번호로 엔티티 호출
         Optional<EmployeeEntity> employeeEntityOptional =
-                employeeEntityRepository.findByEmpNo(teamMemberDto.getEmpNo());
+                employeeEntityRepository.findByEmpNo(approvalRequestDto.getData().getEmpNo());
 
         // 사원번호 유효성검사
         if(!employeeEntityOptional.isPresent()){return false;}
 
+        // 결제 테이블 생성
+        ApprovalEntity approvalEntity = approvalService.postApproval(
+                approvalRequestDto.getAprvType(),
+                approvalRequestDto.getAprvCont(),
+                approvalRequestDto.getApprovers()
+        );
+
         // 프로젝트 팀원 생성
         TeamMemberEntity teamMemberEntity =
-                teamMemberEntityRepository.save(teamMemberDto.saveToEntity());
+                teamMemberEntityRepository.save(approvalRequestDto.getData().saveToEntity());
 
         // 팀원 엔티티에 팀프로젝트 번호 추가
         teamMemberEntity.setPjtNo(projectEntityOptional.get());
 
         // 팀원 엔티티에 사원 번호 추가
         teamMemberEntity.setEmpNo(employeeEntityOptional.get());
+
+        // 팀원 엔티티에 결제 번호 추가
+        teamMemberEntity.setAprvNo(approvalEntity);
+
+        // 팀프로젝트 엔티티에 팀원 엔티티 추가
+        projectEntityOptional.get().getTeamMemberEntities().add(teamMemberEntity);
+
+        // 사원 엔티티에 팀원 엔티티 추가
+        employeeEntityOptional.get().getTeamMemberEntities().add(teamMemberEntity);
+
+        // 결재 엔티티에 팀원 엔티티 추가
+        approvalEntity.getTeamMemberEntities().add(teamMemberEntity);
 
 
         return teamMemberEntity.getTmNo() >= 1;
@@ -80,11 +105,5 @@ public class TeamMemberService {
         return null;
     }
 
-    /*// 3. 팀프로젝트 팀원 수정
-    @Transactional
-    public boolean updateTeamProject(ProjectDto projectDto *//*, ApprovalDto approvalDto*//*){
-
-        return false;
-    }*/
 
 }
