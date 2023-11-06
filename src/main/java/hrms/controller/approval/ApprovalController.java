@@ -51,8 +51,6 @@ public class ApprovalController {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
         approvalRequestDto.setAprvJson(json);
-        System.out.println( "json" );
-        System.out.println( json );
 
         // 결재 테이블 등록 메서드
         // => 실행 후 실행결과 반환
