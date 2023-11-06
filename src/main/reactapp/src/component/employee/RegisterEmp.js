@@ -20,6 +20,13 @@ export default function RegisterEmp(props) {
 		    })
 	}, []);
     const [selectList, setSelectList] = useState([])
+    const removeItem = (getIndex) => {
+        // filter 함수를 사용하여 특정 인덱스의 요소를 제거
+        const updateList = selectList.filter((item, index) => (
+            index !== getIndex
+        ));
+        setSelectList(updateList);
+    };
 
     return (<>
         <div class="contentBox">
@@ -110,27 +117,23 @@ export default function RegisterEmp(props) {
                                     <span class="apLv">부장</span>
                                     <span class="apDeptEmp">김아무개</span>
                                 </div>*/}
-                                {/*
-                                    aprvList.map( (e)  => (
-                                        <div className="aprvListContent">
-                                            <span className="apDept">인사</span>
-                                            <span className="apLv"> {rkList[e.empRk]} </span>
-                                            <span className="apDeptEmp">{e.empName} </span>
-                                        </div>
-                                    ))
-                                */}
-                                {aprvList.map( (emp) => (
-                                    <div className="aprvListContent" onClick={
-                                        (e)=>{
-                                            setSelectList( [ ...selectList,emp] )
-                                            console.log('asd')
-                                        }
-                                    }>
-                                        <span className="apDept">인사</span>
-                                        <span className="apLv"> {rkList[emp.empRk]} </span>
-                                        <span className="apDeptEmp">{emp.empName} </span>
-                                    </div>
-                                ))}
+                                {
+                                    aprvList.map((emp) => {
+                                        let findEle = selectList.find((em) => emp.empNo === em.empNo);
+                                        return (
+                                            <div className= {"aprvListContent"+( findEle ? " selectEmployee": "")}
+                                                 onClick={(e) => {
+                                                if (!findEle) {
+                                                    setSelectList([...selectList, emp]);
+                                                }
+                                            }}>
+                                                <span className="apDept">인사</span>
+                                                <span className="apLv">{rkList[emp.empRk]}</span>
+                                                <span className="apDeptEmp">{emp.empName}</span>
+                                            </div>
+                                        );
+                                    })
+                                }
                                 {/*<!-- 반복구간 e -->*/}
                             </div>
                         </div>
@@ -153,11 +156,15 @@ export default function RegisterEmp(props) {
                                     <span class="apDeptEmp">김아무개</span>
                                 </div>*/}
                                 {
-                                    selectList.map( (e)=>(
-                                        <div className="aprvListContent">
+                                    selectList.map( (emp,index)=>(
+                                        <div className="aprvListContent" onClick={
+                                            (e)=>{
+                                                removeItem(index)
+                                            }
+                                        }>
                                             <span className="apDept">인사</span>
-                                            <span className="apLv"> {rkList[e.empRk]} </span>
-                                            <span className="apDeptEmp">{e.empName} </span>
+                                            <span className="apLv"> {rkList[emp.empRk]} </span>
+                                            <span className="apDeptEmp">{emp.empName} </span>
                                         </div>
                                     ) )
                                 }
