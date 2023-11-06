@@ -1,13 +1,11 @@
 package hrms.controller.employee;
 
 
+import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.DepartmentDto;
 import hrms.service.department.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/department")
@@ -16,9 +14,10 @@ public class DepartmentController {
     @Autowired
     DepartmentService departmentService;
 
-    @PostMapping("/chageemp")
-    public boolean chagneEmp(@RequestBody DepartmentDto departmentDto)
+    @PutMapping("/chageemp")
+    public boolean chagneEmp(@RequestBody ApprovalRequestDto<DepartmentDto> approvalRequestDto)
     {
+        System.out.println("approvalRequestDto = " + approvalRequestDto);
         return false;
     }
 

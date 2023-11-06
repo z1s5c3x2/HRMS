@@ -1,5 +1,6 @@
 package hrms.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import hrms.model.entity.ProjectEntity;
 import lombok.*;
 
@@ -31,7 +32,6 @@ public class ProjectDto {
                 .pjtName(this.pjtName)
                 .pjtSt(this.pjtSt)
                 .pjtEND(this.pjtEND)
-                .pjtSta(this.pjtSta)
                 .build();
     }
 

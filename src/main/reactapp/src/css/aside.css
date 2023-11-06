@@ -1,0 +1,264 @@
+@charset "UTF-8";
+*{
+	margin:0px;
+	padding:0px;
+	box-sizing: border-box;
+	list-style-type: none;
+	    font-family: 'ONE-Mobile-Regular';
+
+}
+
+/*
+    사용 : var(--white);
+*/
+:root{
+	--white: #ffffff;
+	--dgray: #666666;
+	--lgray: #e8e8e8;
+	--main01: #dde6ed;
+	--main02: #9DB2BF;
+	--main03: #526D82;
+	--main04: #27374d;
+	--lsand :#f1f0e8;
+	--dsand:#dac0a3;
+	--yellow:#f1c232;
+}
+@font-face {
+    font-family: 'ONE-Mobile-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'ONE-Mobile-Title';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Title.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+a {  all: unset; text-decoration: none;}
+a:link { text-decoration: none;  }
+a:visited {text-decoration: none; }
+a:active { text-decoration: none;  }
+input:focus {outline:none;}
+input,select, textarea{border:none;
+	   outline:none;
+	   box-shadow: 0 0 3px var(--main02);}
+button{
+	padding:15px 20px;
+	border:none;
+	border-radius: 10px;
+}
+/* btn정의 */
+.btn01{
+	width:100%;
+	background-color: var(--main02);
+	color:var(--white);
+}
+button:hover{
+	background-color: var(--main03);
+	color:var(--yellow);
+}
+.btn02{
+	width:49%;
+	background-color: var(--main02);
+	color:var(--white);
+}
+.scrollbox{
+    overflow-y: none;
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+}
+.scrollbox::-webkit-scrollbar {
+    display: none; /* 크롬, 사파리, 오페라, 엣지 */
+}
+.wrapContainer{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	width:100vw;
+	height:100vh;
+	background-color:#DDE6ED;
+}
+
+.wrap{
+	position:relative;
+	width:1200px;
+	height:800px;
+	border-radius: 30px;
+	background-color: #fff;
+	justify-content: space-between;
+
+}
+aside{
+	position:absolute;
+	top:0;
+	left:0;
+	width:20%;
+	height:100%;
+	background-color: var(--main04);
+	border-top-left-radius: 30px;
+	border-bottom-left-radius: 30px;
+}
+.logobox{
+	margin:20px;
+	width:200px;height:70px;
+	background-color:var(--white);
+	border-radius: 10px;
+	text-align: center;
+
+}
+
+.logobox img{
+
+	height:70px;
+	object-fit:cover;
+
+}
+.nav{
+	height:600px;
+
+}
+.nav li{
+	padding:10px 0 10px 30px;
+	font-size:1.2rem;
+	color:var(--white);
+	background-color: var(--main02);
+}
+.nav .tmenu{
+	background-color: var(--main03);
+	font-size:1.3rem;
+	padding:20px;
+	font-family: 'ONE-Mobile-Title';
+	color:#f1c232;
+}
+.nav .smenu{
+	background-color: var(--white);
+	color:var(--main04);
+}
+.attendence{
+	margin-top:20px;
+	width:200px;padding:20px 0;
+	margin:0 auto;
+	background-color:#f1c232;
+	border-radius: 10px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 1.4rem;
+	font-family: 'ONE-Mobile-Title';
+	color:var(--main04);
+}
+
+header{
+	position: absolute;
+	left:20%;
+	top:0;
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	height:10%;
+	width:80%;
+	background-color: var(--white);
+	border-top-right-radius: 30px;
+	border-bottom-right-radius: 30px;
+}
+.contentBox{
+	position: absolute;
+	left:20%;
+	top:10%;
+	width:80%;
+	height:90%;
+	padding:20px 30px;
+	border-bottom-right-radius: 30px;
+	color:var(--dgray);
+}
+.contentBox .emp_regs_content{
+	height:90%;
+	width:60%;
+	padding: 30px;
+	margin: 0 auto;
+}
+.eregInputBox{
+	display: flex;
+	padding:13px;
+
+}
+.ls3{  /*자간*/ 	letter-spacing: 3px;}
+.ls5{  /*자간*/ 	letter-spacing: 5px;}
+.ls7{  /*자간*/ 	letter-spacing: 7px;}
+.ls9{  /*자간*/ 	letter-spacing: 9px;}
+.ls15{  /*자간*/ 	letter-spacing: 23px;}
+.ls23{  /*자간*/ 	letter-spacing: 23px;}
+.ws55{  /*자간*/ 	word-spacing: 55px;}
+
+/*----------------(모달영역)-------------------*/
+
+.approv_modal{
+	position: absolute; /*화면고정*/
+	width:100%;
+	height: 100%;
+	top:0px;
+	left:0;
+
+	background-color: rgba(0,0,0,0.4); /*검정색바탕에 투명도 50%*/
+	display: none;
+	justify-content: center;
+	align-items: center;
+
+}
+.modal{
+	background-color: #fff;
+	width:1200px;
+	height:350px;
+	border-radius: 30px;
+	padding:20px 20px;
+	text-align: center;
+	display: flex;
+	justify-content: space-between;
+
+}
+.section{
+	width:32%
+}
+.aprvListHeader span {
+	background-color: var(--main02);
+	color:var(--white);
+	text-align: center;
+}
+
+.aprvList{
+	max-height:255px;
+	border:solid 1px var(--main01);
+	overflow-y:auto;
+}
+.aprvList span {display: inline-block; padding:7px 13px;}
+.aprvList .apDept{width:31%;}
+.aprvList .apLv{width:31%;}
+.aprvList .apDeptEmp{width:35%;}
+.aprvListContent {border-bottom:solid 1px var(--main01)}
+.reqlist {
+	height:220px;
+	max-height:255px;
+	border:solid 1px var(--main01);
+	overflow-y:auto;
+}
+.amodalTitle{
+	text-align: center;
+	padding:10px 0;
+}
+.aprvBtnBox {
+
+	display: flex;
+	padding:10px 30px ;
+	justify-content: space-between;
+	align-items: center;
+}
+.aprv_cont{
+	width:350px;
+	height:255px;
+	resize: none;
+	padding:20px;
+	font-size:0.9em;
+	line-height:1.8em;
+	border-radius: 15px;
+}

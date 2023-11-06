@@ -14,7 +14,7 @@ public class RetiredEmployeeDto {
     private int rtempNo;
     private String rtempCont;
     private String rtempDate;
-    private int empNo;
+    private String empNo;
 
     public RetiredEmployeeEntity saveToEntity()
     {
