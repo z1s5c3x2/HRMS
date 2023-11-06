@@ -29,10 +29,7 @@ test {
     useJUnitPlatform()
 }
 
-/*
-// ---------------------------- 리액트(빌드) 통합 ------------------------ //
-// *. 터미널에서 리액트 실행하지 않고 gradle 이 리액트를 빌드해서 빌드된 파일을 스프링쪽으로 이동
-// 1. 리액트 코드파일이 있는 리액트프로젝트 폴더 경로 정의
+
 def frontendDir = "$projectDir/src/main/reactapp"; // $projectDir/src/main/{리액트프로젝트폴더명}
 // $projectDir : gradle 프로젝트 의 위치
 // 2. 리액트 코드파일을 빌드해서 빌드된 파일을 어디로 이동할지.. 정의
@@ -79,4 +76,3 @@ task copyReactBuildFiles( type: Copy ){
     from   "$frontendDir/build"    // 복사할 파일이 어디에서
     into   "$projectDir/src/main/resources/static"  // 복사할 파일을 어디로
 }
-*/
