@@ -2,6 +2,7 @@ package hrms.service.approval;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.org.apache.xalan.internal.xsltc.trax.XSLTCSource;
 import hrms.model.dto.EmployeeDto;
@@ -47,6 +48,7 @@ public class ApprovalService {
         }
         */
 
+        // 상신자
         // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( "2311004" );
 
@@ -90,6 +92,7 @@ public class ApprovalService {
         }
         */
 
+        // 상신자
         // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( "2311004" );
 
@@ -213,6 +216,10 @@ public class ApprovalService {
                 case 13:
                     return updateProjectInfoAproval( optionalApproval.get().getAprvNo() );
 
+                // 프로젝트 / 프로젝트 팀원 삭제
+                case 14: case 17:
+                    return deleteProjectApproval( optionalApproval.get().getAprvNo() );
+
                 // 프로젝트 팀 사원 수정
                 case 16:
                     return updateTeamMemberApproval( optionalApproval.get().getAprvNo() );
@@ -309,11 +316,11 @@ public class ApprovalService {
         Optional<ProjectEntity> optionalProjectEntity = projectRepository.findById( projectDto.getPjtNo() );
 
         if( optionalProjectEntity.isPresent() ){
-            
+
             // 수정 PM ENTITY 호출
             Optional<EmployeeEntity> pmEntity = employeeRepository.findByEmpNo( projectDto.getEmpNo() );
             // 프로젝트 변경
-            optionalProjectEntity.get().setEmpNo( pmEntity.get() );       // 프로젝트PM
+            optionalProjectEntity.get().setEmpNo( pmEntity.get() );                 // 프로젝트PM
             optionalProjectEntity.get().setPjtName( projectEntity.getPjtName() );   // 프로젝트명
             optionalProjectEntity.get().setPjtSt( projectEntity.getPjtSt() );       // 시작일자
             optionalProjectEntity.get().setPjtEND( projectEntity.getPjtEND() );     // 마감일자
@@ -362,7 +369,39 @@ public class ApprovalService {
         return false;
     }
 
+    // 결재 완료된 프로젝트 '삭제' 기능 메서드
+    @Transactional
+    public boolean deleteProjectApproval( int aprvNo ) throws JsonProcessingException {
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+
+        Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById( aprvNo );
+        if( !optionalApprovalEntity.isPresent() ) return false;
+
+        // JSON문자열 => 객체로 변환
+        int typeNo = optionalApprovalEntity.get().getAprvType();
+        int idNo = objectMapper.readValue(optionalApprovalEntity.get().getAprvJson(), Integer.class);
+
+        switch ( typeNo ) {
+
+            // 프로젝트 삭제
+            case 14:
+                Optional<ProjectEntity> optionalProjectEntity = projectRepository.findById( idNo );
+                if( !optionalProjectEntity.isPresent() ) return false;
+                projectRepository.deleteById( idNo );
+                return true;
+
+            // 프로젝트 팀원 삭제
+            case 17:
+                Optional<TeamMemberEntity> optionalTeamMemberEntity = teamMemberRepository.findById( idNo );
+                if( !optionalTeamMemberEntity.isPresent() ) return false;
+                teamMemberRepository.deleteById( idNo );
+                return true;
+        }
+
+        return false;
+    }
 
 
 

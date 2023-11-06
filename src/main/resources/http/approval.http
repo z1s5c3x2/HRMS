@@ -1,4 +1,4 @@
-### (등록)결재등록
+### (등록안)결재등록
 POST http://localhost:80/approval/postAproval
 Content-Type: application/json
 
@@ -16,7 +16,7 @@ Content-Type: application/json
     }
 }
 
-### (수정)결재등록
+### (수정안)결재등록
 POST
 http://localhost:80/approval/putAproval
 Content-Type: application/json
@@ -59,10 +59,18 @@ Content-Type: application/json
       }
 }
 
+## (삭제안)결재등록
+http://localhost:80/approval/deleteAproval
+{
+    "aprvType": 14,
+    "aprvCont": "프로젝트 삭제하겠습니다2",
+    "approvers": ["2311004", "2311005", "2311006"],
+  	"data" : 5
+}
 
 
 ## approbate(결재/반려)
-PUThttp://localhost:80/approval/approbate?aprvNo=58&aplogSta=1
+PUThttp://localhost:80/approval/approbate?aprvNo=123&aplogSta=1
 
 
 
