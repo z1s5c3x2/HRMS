@@ -54,6 +54,17 @@ public class SalaryService {
         }
         return null;
     }
+    public List<SalaryDto> slryGetMeAll(String empNo) {
+        // 1. 해당 empNo에 맞는 엔티티 호출
+        List<SalaryEntity> salaryEntities = salaryRepository.findByEmpNoEmpNo(empNo);
+
+        List<SalaryDto> salaryDtos = new ArrayList<>();
+        salaryEntities.forEach(e -> {
+            salaryDtos.add(e.allToDto());
+        });
+
+        return salaryDtos;
+    }
     // 3.
     public boolean slryUpdate( SalaryDto salaryDto ){
         // 수정할 엔티티 찾기
