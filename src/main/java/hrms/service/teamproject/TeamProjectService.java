@@ -1,5 +1,7 @@
 package hrms.service.teamproject;
 
+import hrms.model.dto.ApprovalRequestDto;
+import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.ProjectDto;
 import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.ApprovalLogEntity;
@@ -7,6 +9,7 @@ import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.ProjectEntity;
 import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.ProjectEntityRepository;
+import hrms.service.approval.ApprovalService;
 import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,20 +33,31 @@ public class TeamProjectService {
     @Autowired
     private EmployeeEntityRepository employeeRepository;
 
+    @Autowired
+    ApprovalService approvalService;
+
     // 팀 프로젝트 생성
     @Transactional
-    public boolean postTeamProject(ProjectDto projectDto/*, ApprovalDto approvalDto*/){
+    public boolean postTeamProject(ApprovalRequestDto<ProjectDto> approvalRequestDto){
 
         // 입력한 팀프로젝트 관리자 pk번호 호출
         Optional<EmployeeEntity> employeeEntityOptional =
-                employeeRepository.findByEmpNo(projectDto.getEmpNo());
+                employeeRepository.findByEmpNo(approvalRequestDto.getData().getEmpNo());
 
         // 사원번호 유효성검사
         if(!employeeEntityOptional.isPresent()){return false;}
 
+        // 결제 테이블 생성
+        /*approvalService.postApproval(
+                approvalRequestDto.getAprvType(),
+                approvalRequestDto.getAprvCont(),
+                approvalRequestDto.getEmpNo(),
+                approvalRequestDto.getApprovers()
+        );*/
+
         // 팀 프로젝트 생성
         ProjectEntity projectEntity =
-                projectRepository.save(projectDto.saveToEntity());
+                projectRepository.save( approvalRequestDto.getData().saveToEntity() );
         // 팀 프로젝트에 관리자 사원번호 추가
         projectEntity.setEmpNo(employeeEntityOptional.get());
 
