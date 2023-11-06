@@ -7,6 +7,7 @@ import{ BrowserRouter , Routes , Route , Link   } from 'react-router-dom';
 import Header from './Header';
 import Aside from './Aside';
 import Main from './Main';
+import styles from '../css/Index.css';
 
 /* Approval import */
 import ApprovalList from "./approval/ApprovalList";
@@ -18,10 +19,20 @@ import AttendanceList from "./attendance/AttendanceList";
 import RegisterEmp from "./employee/RegisterEmp";
 
 /* Salary import */
-//import RegisterEmp from "./employee/RegisterEmp";
+import SalaryMain from "./salary/SalaryMain";
+import SalaryWrite from "./salary/SalaryWrite";
+import SalaryView from "./salary/SalaryView";
+import SalaryList from "./salary/SalaryList"
+
+/* LeaveRequest */
+import LeaveRequestMain from "./leaveRequest/LeaveRequestMain";
+import LeaveRequestWrite from "./leaveRequest/LeaveRequestWrite";
+import LeaveRequestView from "./leaveRequest/LeaveRequestView";
+import LeaveRequestList from "./leaveRequest/LeaveRequestList"
+
 
 /* Teamproject import */
-import TeamProjectList from './teamProject/TeamProjectList';
+//import RegisterEmp from "./employee/RegisterEmp";
 
 export default function Index( props ){
     return(<>
@@ -31,7 +42,9 @@ export default function Index( props ){
                 <BrowserRouter >
                     <Aside/>
                        <Header />
-                        <Routes >
+                        <div className="content">
+                        <Routes>
+
                             {/* MAIN*/}
                             <Route path='/' element = { <Main />} />
                             {/* Approval*/}
@@ -42,14 +55,18 @@ export default function Index( props ){
                                 <Route path='/employee' element={<RegisterEmp/>} />
 
                             {/* Salary*/}
-
-
+                                <Route path='/salary' element={<SalaryMain/>} />
+                                <Route path='/salary/write' element={<SalaryWrite/>} />
+                                <Route path='/salary/view' element={<SalaryView/>} />
+                                <Route path='/salary/list' element={<SalaryList/>} />
+                            {/* LeaveRequest*/}
+                                <Route path='/leaveRequest' element={<leaveRequestMain/>} />
+                                <Route path='/leaveRequest/write' element={<leaveRequestWrite/>} />
+                                <Route path='/leaveRequest/view' element={<leaveRequestView/>} />
+                                <Route path='/leaveRequest/list' element={<leaveRequestList/>} />
                             {/* TeamProject */}
-                                <Route path='/teamProject/listAll' element = {<TeamProjectList />} />
-
-
                         </Routes >
-
+                        </div>
                 </BrowserRouter >
             </div>
         </div>

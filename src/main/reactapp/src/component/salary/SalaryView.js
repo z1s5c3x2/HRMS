@@ -5,24 +5,11 @@ import axios from "axios";
 export default function SalaryView( props ){
     const params = useParams(); //  useParams() 훅 : 경로[URL]상의 매개변수 가져올때
 
-    const [ board , setBoard ] = useState( { } ); // *게시물 메모리
 
-
-    useEffect( // 1. 서버로 부터 해당 게시물번호의 게시물정보 -> useState[board]  요청
-        ()=>axios.get( "/salary/get" , { params : { slryNo: params.slryNo } } )
-        .then( res => { setBoard( res.data)} )
-    , [] )
-
-    /*
-    const [ login , setLogin ] = useState( { } ); // *로그인정보 메모리
-    useEffect( // 2. 서버로 부터 해당 로그인된 회원의 아이디 [ MemberService : getloginMno() return 반환 [ 1. null[공백] or 2.[아이디] ]
-        ()=>axios.get("/member/getloginMno").then( res => { setLogin( res.data ); } )
-    ,[] )
-    */
 
     return(
         <div>
-
+            <h3>급여 상세보기</h3>
         </div>
     )
 }
