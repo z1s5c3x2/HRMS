@@ -9,12 +9,7 @@ export default function SalaryView( props ){
 
     return(
         <div>
-            <div> { params.slryNo }</div>
-            <div> { params.slryDate }</div>
-            <div> { params.slryPay }</div>
-            <div> { params.slryType }</div>
-            <div> { params.aprvNo }</div>
-            <div> { params.empNo }</div>
+            <h3>급여 상세보기</h3>
         </div>
     )
 }
