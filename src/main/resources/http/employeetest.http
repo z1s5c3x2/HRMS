@@ -21,14 +21,14 @@ Content-Type: application/json
 
 {
   "aprvType": 1,
-  "aprvCont": "결제 내용",
-  "empNo": "231110",
-  "approvers": ["1234","2345"],
+  "aprvCont": "사원 가입",
+  "empNo": "2311001",
+  "approvers": ["2311004", "2311005", "2311006"],
   "data": {
     "empName": "John Doe1",
     "empPhone": "123-455-7890",
     "empPwd": "password223",
-    "empSex": "male",
+    "empSex": "남자",
     "empAcn": "123456789",
     "empSta": true,
     "empRk": 3,

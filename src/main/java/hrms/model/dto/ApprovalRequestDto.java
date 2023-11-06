@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @Setter
 @ToString
 @Builder
-public class ApprovalRequestDto<T> {
+public class ApprovalRequestDto<T>{
 
     private int aprvType;                   // 결재 타입
     private String aprvCont;                // 결재내용

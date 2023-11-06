@@ -23,7 +23,7 @@ public class EmployeeController {
     @PostMapping("/register") //사원 등록 결제 정보 받아오기
     public boolean registerEmp(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
-        //System.out.println("employeeDto = " + employeeDto);
+        System.out.println("employeeDto = " + employeeDtoApprovalRequestDto);
         return employeeService.registerEmp(employeeDtoApprovalRequestDto);
     }
 

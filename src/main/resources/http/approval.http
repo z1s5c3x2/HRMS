@@ -1,7 +1,7 @@
-## (등록)결재등록
-POST
-http://localhost:80/approval/postAproval
+### (등록)결재등록
+POST http://localhost:80/approval/postAproval
 Content-Type: application/json
+
 {
     "aprvType": 1,
     "aprvCont": "수정보고드립니다",
@@ -16,7 +16,7 @@ Content-Type: application/json
     }
 }
 
-## (수정)결재등록
+### (수정)결재등록
 POST
 http://localhost:80/approval/putAproval
 Content-Type: application/json

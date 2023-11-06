@@ -9,7 +9,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/leaveRequest")
-@CrossOrigin("http://localhost:3000")
 public class LeaveRequestController {
     @Autowired
     private LeaveRequestService leaveRequestService;
