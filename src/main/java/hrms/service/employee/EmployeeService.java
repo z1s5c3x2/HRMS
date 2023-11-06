@@ -14,6 +14,7 @@ import hrms.model.repository.ApprovalEntityRepository;
 import hrms.model.repository.DepartmentEntityRepository;
 import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.RetiredEmployeeEntityRepository;
+import hrms.service.approval.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +35,8 @@ public class EmployeeService {
     DepartmentEntityRepository departmentEntityRepository;
     @Autowired
     ApprovalEntityRepository approvalEntityRepository;
+    @Autowired
+    ApprovalService approvalService;
     private final int LEAVE_COUNT = 5;
 
     // 사원 등록
@@ -45,6 +48,12 @@ public class EmployeeService {
         employeeDto.setEmpNo(generateEmpNumber(employeeDto.getEmpSex())); // pk
         EmployeeEntity employeeEntity = employeeDto.saveToEntity();
 
+        ApprovalEntity approvalEntity = approvalService.postApproval(
+                employeeDtoApprovalRequestDto.getAprvType()
+                , employeeDtoApprovalRequestDto.getAprvCont()
+                ,employeeDtoApprovalRequestDto.getApprovers());
+
+
         Optional<DepartmentEntity> optionalDepartmentEntity =  departmentEntityRepository.findById(employeeDto.getDtpmNo());
 
         // 결제 메소드 추가
@@ -53,7 +62,7 @@ public class EmployeeService {
         if(optionalDepartmentEntity.isPresent())
         {
             employeeEntity.setDptmNo(optionalDepartmentEntity.get());
-            employeeEntity.setAprvNo(new ApprovalEntity()); // 테스트
+            employeeEntity.setAprvNo(approvalEntity); // 테스트
             employeeRepository.save(employeeEntity);
 
             //System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
@@ -69,7 +78,7 @@ public class EmployeeService {
         LocalDate now = LocalDate.now();
         String _str = String.valueOf(now.getYear()).substring(2); //년
         _str += String.valueOf(now.getMonthValue());   //월
-        _str += _sex.equals("male") ? "1" : "2"; // 성별
+        _str += _sex.equals("남자") ? "1" : "2"; // 성별
         _str += String.valueOf(employeeRepository.countNowEmployee(String.valueOf(now.getYear()))) ;
         System.out.println("_str = " + _str);
         return _str;
