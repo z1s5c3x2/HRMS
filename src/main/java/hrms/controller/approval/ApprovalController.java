@@ -64,6 +64,26 @@ public class ApprovalController {
         return false;
     }
 
+    @PostMapping("/deleteAproval")
+    public boolean deleteAproval(@RequestBody ApprovalRequestDto<Integer> approvalRequestDto) throws JsonProcessingException {
+
+        // DTO객체 => json 문자열
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
+        approvalRequestDto.setAprvJson(json);
+
+        // 결재 테이블 등록 메서드
+        // => 실행 후 실행결과 반환
+        boolean result = approvalService.updateApproval(
+                approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
+                approvalRequestDto.getAprvCont(),   // 결재내용
+                approvalRequestDto.getApprovers(),  // 검토자
+                approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
+        );
+
+        return false;
+    }
+
     // 검토자 1명 승인
     @PutMapping("/approbate")
     public boolean approbate( @RequestParam int aprvNo, @RequestParam int aplogSta ) throws JsonProcessingException {
