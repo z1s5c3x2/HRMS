@@ -1,4 +1,4 @@
-import styles from '../css/aside.css';
+import styles from '../css/header.css';
 import { Link }from "react-router-dom" //
 
 export default function Header( props ){

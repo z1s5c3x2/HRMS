@@ -30,15 +30,35 @@ export default function BoardList(props){
     let [ rows , setRows ] = useState( [ ] )
     // 1. axios를 이용한 스프링의 컨트롤과 통신
      const loadView = ( slryNo ) => {
-            window.location.href = '/salary/view/'+slryNo
+            window.location.href = '/salary/view?slryNo='+slryNo
             // 조회수 처리 할 예정
         }
+
     useEffect( ()=>{ // 컴포넌트가 생성될때 1번 실행되는 axios
         axios.get('/salary/getAll').then( r =>{
                 setRows(r.data); // 응답받은 모든 게시물을 상태변수에 ㅈ ㅓ장
                 // setState : 해당 컴포넌트가 업데이트 (새로고침/재랜더링/return재실행)
              });
     } , []);
+
+    function getSlryTypeLabel(slryType) {
+              switch (slryType) {
+                case 1:
+                  return "기본급";
+                case 2:
+                  return "정기상여";
+                case 3:
+                  return "특별상여";
+                case 4:
+                  return "성과금";
+                case 5:
+                  return "명절휴가비";
+                case 6:
+                  return "퇴직금";
+                default:
+                  return "알 수 없는 타입";
+              }
+            }
 
     return(<>
         <h3> 급여 목록 </h3>
@@ -66,7 +86,7 @@ export default function BoardList(props){
                          <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
                          <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
                          <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
-                         <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryType}</TableCell>
+                         <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
                          <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
                          <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empNo}</TableCell>
 
