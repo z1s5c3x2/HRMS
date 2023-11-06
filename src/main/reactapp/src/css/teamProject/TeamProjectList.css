@@ -6,3 +6,9 @@
     backgroundcolor: #DDE6ED;
     color : white;
 }
+
+.checkboxList{
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0px;
+}

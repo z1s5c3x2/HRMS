@@ -18,14 +18,15 @@ export default function TeamProjectList(props){
     // 컴포넌트 상태변수 관리
     let [rows, setRows] = useState( [] )
 
-
-    useEffect( () => {
-        axios
-            .get('/teamproject/getAll')
-            .then(r => {
-                setRows(r.data);    // 응답받은 값들을 상태변수에 저장
-            })
-    }, []);
+    const getAll = () =>{
+        useEffect( () => {
+                axios
+                    .get('/teamproject/getAll')
+                    .then(r => {
+                        setRows(r.data);    // 응답받은 값들을 상태변수에 저장
+                    })
+            }, []);
+    }
 
     const checkOnlyOne = (element) => {
       const checkboxes = document.getElementsByName("cb");
@@ -42,10 +43,31 @@ export default function TeamProjectList(props){
     return(<>
         <div className="listWrap">
             <div className="checkboxList">
-                <span>전체보기<input type="checkbox" name="cb" value='all' className="cb1" onClick={(e) => checkOnlyOne(e.target)} defaultChecked /></span>
-                <span>승인완료<input type="checkbox" name="cb" value=1 className="cb2" onClick={(e) => checkOnlyOne(e.target)} /></span>
-                <span>반려됨<input type="checkbox" name="cb" value=2 className="cb3" onClick={(e) => checkOnlyOne(e.target)} /></span>
-                <span>검토중<input type="checkbox" name="cb" value=3 className="cb4" onClick={(e) => checkOnlyOne(e.target)} /></span>
+                <span>전체보기<input type="checkbox"
+                name="cb"
+                value='all'
+                className="cb1"
+                onClick={(e) => checkOnlyOne(e.target)}
+                defaultChecked /></span>
+
+                <span>승인완료<input type="checkbox"
+                name="cb"
+                value=1
+                className="cb2"
+                onClick={(e) => checkOnlyOne(e.target)} /></span>
+
+                <span>반려됨<input type="checkbox"
+                name="cb"
+                value=2
+                className="cb3"
+                onClick={(e) => checkOnlyOne(e.target)} /></span>
+
+                <span>검토중<input type="checkbox"
+                name="cb"
+                value=3
+                className="cb4"
+                onClick={(e) => checkOnlyOne(e.target)} /></span>
+
             </div>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
