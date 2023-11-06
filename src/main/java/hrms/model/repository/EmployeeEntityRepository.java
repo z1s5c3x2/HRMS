@@ -1,5 +1,6 @@
 package hrms.model.repository;
 
+import hrms.model.entity.DepartmentEntity;
 import hrms.model.entity.EmployeeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +19,6 @@ public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity,I
     int countNowEmployee(String nowYear);
     List<EmployeeEntity> findAllByEmpStaIsFalse();
     Optional<EmployeeEntity> findByEmpNo(String empNo);
+    List<EmployeeEntity> findByDptmNoOrderByEmpRkDesc(DepartmentEntity dptmNo);
 
 }
