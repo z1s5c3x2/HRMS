@@ -1,5 +1,5 @@
 
-import styles from '../../css/registerEmp.css';
+
 export default function RegisterEmp( props ){
 
 function onModal(e){
