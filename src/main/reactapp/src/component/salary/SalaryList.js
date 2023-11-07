@@ -36,7 +36,7 @@ export default function BoardList(props){
 
     useEffect( ()=>{ // 컴포넌트가 생성될때 1번 실행되는 axios
         axios.get('/salary/getAll').then( r =>{
-                setRows(r.data); // 응답받은 모든 게시물을 상태변수에 ㅈ ㅓ장
+                setRows(r.data); // 응답받은 모든 게시물을 상태변수에 저장
                 // setState : 해당 컴포넌트가 업데이트 (새로고침/재랜더링/return재실행)
              });
     } , []);
