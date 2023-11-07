@@ -138,7 +138,7 @@ export default function TeamProjectList(props){
             </TableContainer>
             <div style = { {display: 'flex', justifyContent : 'center', margin: '10px'} }>
                 {/* count = 전체 페이지수, onChange : 페이지를 클릭했을때 생기는 이벤트 */}
-                <Pagination count={10} onChange={onPageSelect}/>
+                <Pagination count={rows.totalPages} onChange={onPageSelect}/>
                 {/*
                 <div style = { {margin: '10px'} }>
                     <select

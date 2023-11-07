@@ -110,7 +110,14 @@ public class TeamProjectService {
     @Transactional
     public PageDto getPermitAllTeamProject(int approval, int page) {
         // 페이징처리 라이브러리
-        Pageable pageable = PageRequest.of(page-1, 5);
+        // 한페이지에 보여질 팀프로젝트 수
+        int pagesize = 5;
+        Pageable pageable = PageRequest.of(page-1, pagesize);
+
+        // 총 페이지수
+        int totalPages = 0;
+        // 총 게시물수
+        long totalCount = 0;
 
         Page<ProjectEntity> projectEntities = projectRepository.findAll(pageable);
         List<ProjectDto> projectDtos = new ArrayList<>();
@@ -130,23 +137,23 @@ public class TeamProjectService {
                 }
             }
 
+            // 각 경우의 수마다 totalCount 1씩증가
             if (approval == 1 && allStaThree) {
                 // 모두 1(승인) 상태일 때 승인
                 projectDtos.add(projectEntity.allToDto());
+                totalCount++;
             } else if (approval == 2 && hasRejection) {
                 // 2(반려) 상태가 하나라도 있을 때 반려
                 projectDtos.add(projectEntity.allToDto());
+                totalCount++;
             } else if (approval == 3 && !allStaThree) {
                 // 나머지 경우의 수, 3(검토중) 상태가 있을 때 검토중
                 projectDtos.add(projectEntity.allToDto());
+                totalCount++;
             }
         }
-        Page<ProjectDto> projectDtoPage = (Page)projectDtos;
+        totalPages = ( ( (int)(totalCount-1) ) / pagesize ) + 1;
 
-        // 총 페이지수
-        int totalPages = projectDtoPage.getTotalPages();
-        // 총 게시물수
-        long totalCount = projectDtoPage.getTotalElements();
 
         // PageDto구성
         PageDto<ProjectDto> pageDto = PageDto.<ProjectDto>builder()
