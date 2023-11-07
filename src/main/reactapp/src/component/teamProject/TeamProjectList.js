@@ -18,7 +18,7 @@ export default function TeamProjectList(props){
     // 컴포넌트 상태변수 관리
     let [rows, setRows] = useState( [] )
 
-    const getAll = () =>{
+    const GetAll = () =>{
         useEffect( () => {
                 axios
                     .get('/teamproject/getAll')
@@ -52,19 +52,19 @@ export default function TeamProjectList(props){
 
                 <span>승인완료<input type="checkbox"
                 name="cb"
-                value=1
+                value={1}
                 className="cb2"
                 onClick={(e) => checkOnlyOne(e.target)} /></span>
 
                 <span>반려됨<input type="checkbox"
                 name="cb"
-                value=2
+                value={2}
                 className="cb3"
                 onClick={(e) => checkOnlyOne(e.target)} /></span>
 
                 <span>검토중<input type="checkbox"
                 name="cb"
-                value=3
+                value={3}
                 className="cb4"
                 onClick={(e) => checkOnlyOne(e.target)} /></span>
 
