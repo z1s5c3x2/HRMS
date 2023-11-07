@@ -186,6 +186,12 @@ header .topmenu{
 	padding: 0px 30px 20px;
 	margin: 0 auto;
 }
+.contentBox .list_content{
+	height:90%;
+	width:100$
+	padding: 30px;
+	margin: 0 auto;
+}
 .eregInputBox{
 	display: flex;
 	padding:13px;
