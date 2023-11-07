@@ -1,3 +1,5 @@
+import styles from '../../css/employee.css';
+
 import {useEffect, useState} from "react";
 import axios from "axios";
 
