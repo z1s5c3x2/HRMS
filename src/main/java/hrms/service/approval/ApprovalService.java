@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.org.apache.xalan.internal.xsltc.trax.XSLTCSource;
+import hrms.model.dto.ApprovalDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.ProjectDto;
 import hrms.model.dto.TeamMemberDto;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -404,7 +407,44 @@ public class ApprovalService {
     }
 
 
+    // 개별 상신목록 조회
+    public ArrayList<ApprovalDto> getApprovalHistory(){
 
+        /*
+        타입 정리가 확실히 될 시 유효성 검사 추가 예정
+
+        if( aprvType == 0 ){
+            return null;
+        }
+        */
+
+        // 상신자
+        // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( "2311004" );
+
+        // 개별 상신 전체 조회
+        List<ApprovalEntity> approvalList
+            = approvalRepository.findByAllempNo( optionalEmployeeEntity.get().getEmpNo() );
+        System.out.println( approvalList.toString() );
+
+        // 유효성 검사
+            // 값이 비어있으면 true / null이면 false
+        if( approvalList.isEmpty() ){
+            return null;
+        }
+
+        for( ApprovalEntity approvalEntity : approvalList ){
+
+            for( int i=0; i<approvalEntity.getApprovalLogEntities().size(); i++ ){
+
+                approvalEntity.getApprovalLogEntities().get(i).getAplogSta();
+
+            }
+
+        }
+
+        return null;
+    }
 
 
 

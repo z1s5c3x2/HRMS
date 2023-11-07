@@ -16,7 +16,7 @@ import java.util.List;
 @ToString
 @Table( name = "APRV" )
 // 결재테이블
-public class ApprovalEntity<T> extends BaseTime {
+public class ApprovalEntity extends BaseTime {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -32,9 +32,13 @@ public class ApprovalEntity<T> extends BaseTime {
     @ManyToOne
     @JoinColumn(name="empNo")
     private EmployeeEntity empNo;  // 상신자
+
+
     @Builder.Default
     @OneToMany(mappedBy="aprvNo")
     private List<ApprovalLogEntity> approvalLogEntities = new ArrayList<>();
+
+
     @Builder.Default
     @OneToMany(mappedBy="aprvNo")
     private List<LeaveRequestEntity> leaveRequestEntities = new ArrayList<>();

@@ -28,6 +28,7 @@ public class ApprovalLogEntity extends BaseTime{
     @JoinColumn(name="empNo")
     @ManyToOne
     private EmployeeEntity empNo;             // fk 검토자
+
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name="aprvNo")
