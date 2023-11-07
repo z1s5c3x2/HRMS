@@ -10,33 +10,67 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
+// ------------ page nation -----------------
+import * as React from 'react';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 // -------------------------------------------
 
 
 export default function TeamProjectList(props){
 
-    // 컴포넌트 상태변수 관리
-    let [rows, setRows] = useState( [] )
+    // 컴포넌트 상태변수 (스프링에서 전달받은 객체)
+    let [rows, setRows] = useState( {
+        someList : [],
+        totalPages : 0,
+        totalCount : 0
+    } )
+    // 체크박스 상태변수
+    let [check, setCheck] = useState( [] )
+    // 페이지 상태변수 관리
+    const [page, setPage] = useState( 1 )
 
-    const getAll = () =>{
-        useEffect( () => {
-                axios
-                    .get('/teamproject/getAll')
-                    .then(r => {
-                        setRows(r.data);    // 응답받은 값들을 상태변수에 저장
-                    })
-            }, []);
-    }
+    useEffect( () => {
 
+        // 전체보기 체크시
+        if(check == 0){
+            axios
+                .get('/teamproject/getAll', { params : {page : page} } )
+                .then(r => {
+                    console.log(r.data);
+                    setRows(r.data);    // 응답받은 값들을 상태변수에 저장
+                })
+        }
+        // 승인, 반려, 검토중 체크시
+        else if(check > 0){
+            axios
+                .get('/teamproject/getPermitAll', { params : { approval : check , page : page} })
+                .then(r => {
+                    console.log(r.data);
+                    setRows(r.data);    // 응답받은 값들을 상태변수에 저장
+                })
+        }
+
+    }, [check,page]);
+
+    // 체크박스는 하나만 체크될수 있게하는 함수
     const checkOnlyOne = (element) => {
-      const checkboxes = document.getElementsByName("cb");
+        const checkboxes = document.getElementsByName("cb");
 
-      checkboxes.forEach((c) => {
-          c.checked = false;
-      });
-
-      element.checked = true;
+        checkboxes.forEach((c) => {
+            c.checked = false;
+        });
+        console.log(check)
+        setCheck(element.value);
+        element.checked = true;
     };
+
+    // 페이지 번호를 클릭했을때
+    const onPageSelect = (e, value) => {
+        console.log(value);
+        setPage(value)
+    }
 
 
 
@@ -45,26 +79,26 @@ export default function TeamProjectList(props){
             <div className="checkboxList">
                 <span>전체보기<input type="checkbox"
                 name="cb"
-                value='all'
+                value={0}
                 className="cb1"
                 onClick={(e) => checkOnlyOne(e.target)}
                 defaultChecked /></span>
 
                 <span>승인완료<input type="checkbox"
                 name="cb"
-                value=1
+                value={1}
                 className="cb2"
                 onClick={(e) => checkOnlyOne(e.target)} /></span>
 
                 <span>반려됨<input type="checkbox"
                 name="cb"
-                value=2
+                value={2}
                 className="cb3"
                 onClick={(e) => checkOnlyOne(e.target)} /></span>
 
                 <span>검토중<input type="checkbox"
                 name="cb"
-                value=3
+                value={3}
                 className="cb4"
                 onClick={(e) => checkOnlyOne(e.target)} /></span>
 
@@ -84,7 +118,7 @@ export default function TeamProjectList(props){
                 </TableHead>
                 {/* 테이블 내용 구역 */}
                 <TableBody>
-                  {rows.map((row) => (
+                  {rows.someList.map((row) => (
                     <TableRow
                       key={row.name}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -102,6 +136,26 @@ export default function TeamProjectList(props){
                 </TableBody>
               </Table>
             </TableContainer>
+            <div style = { {display: 'flex', justifyContent : 'center', margin: '10px'} }>
+                {/* count = 전체 페이지수, onChange : 페이지를 클릭했을때 생기는 이벤트 */}
+                <Pagination count={10} onChange={onPageSelect}/>
+                {/*
+                <div style = { {margin: '10px'} }>
+                    <select
+
+
+                    >
+                        <option value="btitle"> 제목 </option>
+                        <option value="bcontent"> 내용 </option>
+                    </select>
+                    <input type="text"
+
+
+                    />
+                    <button type="button"> 검색 </button>
+                </div>
+                */}
+            </div>
         </div>
     </>)
 }

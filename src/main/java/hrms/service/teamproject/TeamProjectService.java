@@ -2,6 +2,7 @@ package hrms.service.teamproject;
 
 import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.EmployeeDto;
+import hrms.model.dto.PageDto;
 import hrms.model.dto.ProjectDto;
 import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.ApprovalLogEntity;
@@ -12,6 +13,9 @@ import hrms.model.repository.ProjectEntityRepository;
 import hrms.service.approval.ApprovalService;
 import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +51,7 @@ public class TeamProjectService {
         // 사원번호 유효성검사
         if(!employeeEntityOptional.isPresent()){return false;}
 
-        // 결제 테이블 생성
+        // 결재 테이블 생성
         ApprovalEntity approvalEntity = approvalService.postApproval(
                 approvalRequestDto.getAprvType(),
                 approvalRequestDto.getAprvCont(),
@@ -60,7 +64,7 @@ public class TeamProjectService {
         // 팀 프로젝트에 관리자 사원번호 추가
         projectEntity.setEmpNo(employeeEntityOptional.get());
 
-        // 팀 프로젝트에 결제 번호 추가
+        // 팀 프로젝트에 결재 번호 추가
         projectEntity.setAprvNo(approvalEntity);
 
         // 사원 엔티티에 팀 프로젝트 엔티티 추가
@@ -74,22 +78,41 @@ public class TeamProjectService {
 
     // 전체 팀프로젝트 출력
     @Transactional
-    public List<ProjectDto> getAllTeamProject(){
+    public PageDto getAllTeamProject(int page){
 
-        List<ProjectEntity> projectEntities = projectRepository.findAll();
+        // 페이징처리 라이브러리
+        Pageable pageable = PageRequest.of(page-1, 5);
+
+        Page<ProjectEntity> projectEntities = projectRepository.findAll(pageable);
         List<ProjectDto> projectDtos = new ArrayList<>();
 
         for(ProjectEntity projectEntity : projectEntities){
             projectDtos.add(projectEntity.allToDto());
         }
 
-        return projectDtos;
+        // 총 페이지수
+        int totalPages = projectEntities.getTotalPages();
+        // 총 게시물수
+        long totalCount = projectEntities.getTotalElements();
+
+        // pageDto를 구성해서 전달
+        // 제네릭 타입의 List를 구성하기위해 PageDto.<ProjectDto>builder() 형식으로 사용
+        PageDto<ProjectDto> pageDto = PageDto.<ProjectDto>builder()
+                .someList(projectDtos)
+                .totalPages(totalPages)
+                .totalCount(totalCount)
+                .build();
+
+        return pageDto;
     }
 
     // 3. 팀프로젝트 출력(approval이 1 = 승인, 2 = 반려, 3 = 검토중)
     @Transactional
-    public List<ProjectDto> getPermitAllTeamProject(int approval) {
-        List<ProjectEntity> projectEntities = projectRepository.findAll();
+    public PageDto getPermitAllTeamProject(int approval, int page) {
+        // 페이징처리 라이브러리
+        Pageable pageable = PageRequest.of(page-1, 5);
+
+        Page<ProjectEntity> projectEntities = projectRepository.findAll(pageable);
         List<ProjectDto> projectDtos = new ArrayList<>();
 
         for (ProjectEntity projectEntity : projectEntities) {
@@ -118,8 +141,21 @@ public class TeamProjectService {
                 projectDtos.add(projectEntity.allToDto());
             }
         }
+        Page<ProjectDto> projectDtoPage = (Page)projectDtos;
 
-        return projectDtos;
+        // 총 페이지수
+        int totalPages = projectDtoPage.getTotalPages();
+        // 총 게시물수
+        long totalCount = projectDtoPage.getTotalElements();
+
+        // PageDto구성
+        PageDto<ProjectDto> pageDto = PageDto.<ProjectDto>builder()
+                .someList(projectDtos)
+                .totalPages(totalPages)
+                .totalCount(totalCount)
+                .build();
+
+        return pageDto;
     }
 
     
