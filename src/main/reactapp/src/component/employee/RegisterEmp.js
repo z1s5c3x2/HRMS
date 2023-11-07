@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-
+import css1 from "../../css/employee.css"
 
 export default function RegisterEmp(props) {
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
