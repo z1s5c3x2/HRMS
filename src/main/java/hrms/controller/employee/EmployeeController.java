@@ -4,6 +4,7 @@ import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.DepartmentDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.RetiredEmployeeDto;
+import hrms.model.entity.EmployeeEntity;
 import hrms.service.LeaveRequest.LeaveCalcService;
 import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class EmployeeController {
     public boolean registerEmp(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
         System.out.println("employeeDto = " + employeeDtoApprovalRequestDto);
-        return employeeService.registerEmp(employeeDtoApprovalRequestDto);
+        EmployeeEntity asd = employeeService.registerEmp(employeeDtoApprovalRequestDto);
+        return false;
     }
 
     @PutMapping("/leave")
@@ -35,35 +37,35 @@ public class EmployeeController {
         return false;
     }
 
-    @GetMapping("getaprvlist")
+    @GetMapping("getaprvlist") // 결제 받을 인사팀 가져오기
     public List<EmployeeDto> getAprvList()
     {
         return employeeService.getAprvList();
     }
-    @GetMapping("/restlist")
+    @GetMapping("/restlist") // 휴직 사원 불러오기
     public List<EmployeeDto> getRestList()
     {
         return employeeService.getRestList();
     }
-    @GetMapping("/list")
+    @GetMapping("/list") //사원 전체 조회
     public List<EmployeeDto> getEmpList()
     {
         //System.out.println("EmployeeController.getEmpList");
         return employeeService.getEmpList();
     }
-    @PutMapping("/changernk")
+    @PutMapping("/changernk") // 사원 직급 변경
     public boolean changeRank(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
         System.out.println("employeeDtoApprovalRequestDto = " + employeeDtoApprovalRequestDto);
         return false;
     }
-    @PutMapping("/changeinfo")
+    @PutMapping("/changeinfo") //  사원 정보 변경
     public boolean changeInfo(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
         System.out.println("employeeDtoApprovalRequestDto = " + employeeDtoApprovalRequestDto);
         return false;
     }
-    @GetMapping("/findemp")
+    @GetMapping("/findemp") // 개별 사원 조회
     public EmployeeDto findByEmployee(@RequestParam String empNo)
     {
         return employeeService.getOneEmp(empNo);

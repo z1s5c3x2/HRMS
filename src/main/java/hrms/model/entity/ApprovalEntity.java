@@ -16,7 +16,7 @@ import java.util.List;
 @ToString
 @Table( name = "APRV" )
 // 결재테이블
-public class ApprovalEntity<T> extends BaseTime {
+public class ApprovalEntity extends BaseTime {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
