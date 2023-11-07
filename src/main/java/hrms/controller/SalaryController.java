@@ -26,15 +26,20 @@ public class SalaryController {
     }
 
     // 2.
-    @GetMapping("/getAll")
+    @GetMapping("/getAll") // 인사팀전용 전체 급여지급 목록 확인하기
     public List<SalaryDto> slryGetAll(){
 
         return salaryService.slryGetAll();
     }
-    @GetMapping("/get")
+    @GetMapping("/get") // 인사팀전용 전체 급여지급 목록에서 클릭된 특정 급여 상세보기 정보
     public SalaryDto slryGet(int slryNo){
 
         return salaryService.slryGet(slryNo);
+    }
+    @GetMapping("/getMe") // 메인페이지전용 세션에서 들어온 본인 사번으로 본인정보 출력
+    public List<SalaryDto> slryGetMeAll(String empNo){
+
+        return salaryService.slryGetMeAll(empNo);
     }
 
     // 3.

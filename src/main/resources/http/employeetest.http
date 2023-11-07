@@ -38,7 +38,11 @@ Content-Type: application/json
 
 ### 사원 리스트조회
 
-GET http://localhost:80/employee/list
+GET http://localhost/employee/list
+Content-Type: application/json
+
+### 결제 테스트
+GET http://localhost/employee/getaprvlist
 Content-Type: application/json
 
 

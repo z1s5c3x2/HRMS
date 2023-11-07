@@ -105,7 +105,19 @@ public class EmployeeService {
         }
         return null;
     }
+    
+    @Transactional
+    public List<EmployeeDto> getAprvList()
+    {
+        //List<EmployeeEntity> result = employeeRepository.findByDptmNoAndEmpRkGreaterThan(1,0);
+        List<EmployeeEntity> result = employeeRepository.findByDptmNoOrderByEmpRkDesc(departmentEntityRepository.findById(1).get());
+        List<EmployeeDto> response = new ArrayList<>();
+        result.forEach( e ->{
+            response.add(e.allToDto());
+        });
 
+        return response;
+    }
 
 
   /*  @Transactional
