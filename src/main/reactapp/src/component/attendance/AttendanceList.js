@@ -1,4 +1,4 @@
-export default function AttendanceList(props){
+export default function AttendanceList(props){  
     return (<>
 
         <div class="contentBox">
