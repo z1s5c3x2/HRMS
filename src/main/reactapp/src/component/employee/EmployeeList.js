@@ -17,12 +17,12 @@ export default function EmployeeList() {
         return { name, calories, fat, carbs, protein };
     }
     const [empList, setEmpList] = useState([]) // 사원 리스트 저장
-    const [pageInfo, setPageInfo] = useState({ page:1, dptmNo:0,Sta:'0',totalCount:0,totalPages:0 })  // 페이지 정보 저장
+    const [pageInfo, setPageInfo] = useState({ page:1, dptmNo:0,sta:'0',totalCount:0,totalPages:0 })  // 페이지 정보 저장
 
     useEffect(() => {
         console.log( pageInfo )
         getList()
-    }, [pageInfo.page,pageInfo.Sta,pageInfo.dptmNo]); //페이지가 바뀌거나 카테고리가 바뀌면 호출
+    }, [pageInfo.page,pageInfo.sta,pageInfo.dptmNo]); //페이지가 바뀌거나 카테고리가 바뀌면 호출
 
     const getList = (event)=>{ // 페이지 정보를 이용하여 사원 리스트 요청
         axios
@@ -43,7 +43,7 @@ export default function EmployeeList() {
             <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">사원목록</span></div>
             <select
                 value = { pageInfo.sta }
-                onChange={ (e)=>{  setPageInfo( { ...pageInfo , sta : e.target.value,page:'1'} );  } }
+                onChange={ (e)=>{  setPageInfo( { ...pageInfo , sta : e.target.value,page:"1"} );  } }
             >
                 <option value="0"> 상태 전체 </option>
                 <option value="1"> 재직 </option>
@@ -54,10 +54,10 @@ export default function EmployeeList() {
                 onChange={ (e)=>{  setPageInfo( { ...pageInfo , dptmNo : e.target.value,page:'1'} );  } }
             >
                 <option value="0"> 부서 전체 </option>
-                <option value="0"> 인사팀 </option>
-                <option value="1"> 기획팀(PM) </option>
-                <option value="2"> 개발팀 </option>
-                <option value="3"> DBA팀 </option>
+                <option value="1"> 인사팀 </option>
+                <option value="2"> 기획팀(PM) </option>
+                <option value="3"> 개발팀 </option>
+                <option value="4"> DBA팀 </option>
 
             </select>
             <div className="emp_regs_content"></div>
@@ -81,7 +81,7 @@ export default function EmployeeList() {
                                 <TableCell align="center">{emp.empSex}</TableCell>
                                 <TableCell align="center">{ emp.empSta ? '재직':'휴직' }</TableCell>
                                 <TableCell align="center">{rkList[emp.empRk]}</TableCell>
-                                <TableCell align="center">{dptList[emp.dtpmNo]}</TableCell>
+                                <TableCell align="center">{dptList[emp.dtpmNo-1]}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

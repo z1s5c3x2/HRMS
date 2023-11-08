@@ -96,11 +96,12 @@ public class EmployeeService {
 
     //사원 조회 ( 페이징 처리 예정)
     @Transactional
-    public PageDto<EmployeeDto> getEmpList(int page,int Sta,int dptmNo)
+    public PageDto<EmployeeDto> getEmpList(int page,int sta,int dptmNo)
     {
         //List<EmployeeDto> result = new ArrayList<>();
+        System.out.println("page = " + page + ", Sta = " + sta + ", dptmNo = " + dptmNo);
         Pageable pageable = PageRequest.of(page-1,5); //현재 페이지와 한 페이지에 보여줄 데이터 수 설정
-        Page<EmployeeEntity> result = employeeRepository.findByEmpPage(Sta,dptmNo,pageable); //pageable을 인자로 넘겨서 findAll 페이징 처리
+        Page<EmployeeEntity> result = employeeRepository.findByEmpPage(sta,dptmNo,pageable); //pageable을 인자로 넘겨서 findAll 페이징 처리
         PageDto<EmployeeDto> pageDto = PageDto.<EmployeeDto>builder()
                 .totalCount(result.getTotalElements()) // 검색된 row 개수
                 .totalPages(result.getTotalPages())   // 총 페이지 수
