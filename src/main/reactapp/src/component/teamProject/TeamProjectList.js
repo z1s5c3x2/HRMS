@@ -63,6 +63,7 @@ export default function TeamProjectList(props){
         });
         console.log(check)
         setCheck(element.value);
+        setPage(1);
         element.checked = true;
     };
 
@@ -76,6 +77,11 @@ export default function TeamProjectList(props){
 
     return(<>
         <div className="listWrap">
+            <div className="topText">
+                <span>프로젝트팀관리</span>
+                >
+                <span>팀조회</span>
+            </div>
             <div className="checkboxList">
                 <span>전체보기<input type="checkbox"
                 name="cb"
@@ -138,7 +144,7 @@ export default function TeamProjectList(props){
             </TableContainer>
             <div style = { {display: 'flex', justifyContent : 'center', margin: '10px'} }>
                 {/* count = 전체 페이지수, onChange : 페이지를 클릭했을때 생기는 이벤트 */}
-                <Pagination count={rows.totalPages} onChange={onPageSelect}/>
+                <Pagination count={rows.totalPages} page={page} onChange={onPageSelect}/>
                 {/*
                 <div style = { {margin: '10px'} }>
                     <select
