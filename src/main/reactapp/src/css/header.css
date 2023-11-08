@@ -16,7 +16,7 @@ a{ text-decoration: none; outline: none; }
 
 /* 헤더 */
 header {
-    width: 100%;
+    width: 90%;
     height: 80px;
     display: flex;
     align-items: center;

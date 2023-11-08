@@ -65,7 +65,7 @@ button:hover{
 	color:var(--white);
 }
 .scrollbox{
-    overflow-y: none;
+    overflow-y: hidden;
     -ms-overflow-style: none; /* 인터넷 익스플로러 */
     scrollbar-width: none; /* 파이어폭스 */
 }
@@ -148,13 +148,13 @@ aside{
 	font-family: 'ONE-Mobile-Title';
 	color:var(--main04);
 }
+/*----------------(헤더 영역)-------------------*/
 
 header{
 	position: absolute;
 	left:20%;
-	top:0;
 	display:flex;
-	justify-content:space-between;
+	justify-content:space-around;
 	align-items:center;
 	height:10%;
 	width:80%;
@@ -162,19 +162,33 @@ header{
 	border-top-right-radius: 30px;
 	border-bottom-right-radius: 30px;
 }
+header .topmenu{
+	width:80%;
+	height:60px;
+	border-bottom: solid 1px var(--lgray);
+}
+
 .contentBox{
 	position: absolute;
-	left:20%;
 	top:10%;
-	width:80%;
+	width:100%;
 	height:90%;
 	padding:20px 30px;
 	border-bottom-right-radius: 30px;
 	color:var(--dgray);
 }
+.contentBox .pageinfo{
+    padding-bottom:20px;
+}
 .contentBox .emp_regs_content{
 	height:90%;
 	width:60%;
+	padding: 0px 30px 20px;
+	margin: 0 auto;
+}
+.contentBox .list_content{
+	height:90%;
+	width:100%;
 	padding: 30px;
 	margin: 0 auto;
 }
@@ -187,9 +201,9 @@ header{
 .ls5{  /*자간*/ 	letter-spacing: 5px;}
 .ls7{  /*자간*/ 	letter-spacing: 7px;}
 .ls9{  /*자간*/ 	letter-spacing: 9px;}
-.ls15{  /*자간*/ 	letter-spacing: 23px;}
-.ls23{  /*자간*/ 	letter-spacing: 23px;}
-.ws55{  /*자간*/ 	word-spacing: 55px;}
+.ls15{  /*자간*/ letter-spacing: 23px;}
+.ls23{  /*자간*/ letter-spacing: 23px;}
+.ws55{  /*자간*/ word-spacing: 55px;}
 
 /*----------------(모달영역)-------------------*/
 

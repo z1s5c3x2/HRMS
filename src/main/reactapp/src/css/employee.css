@@ -1,0 +1,68 @@
+
+.selectEmployee{
+    color: #9DB2BF;
+}
+
+
+/*----------------사원등록페이지 ()-------------------*/
+.eregInputBox .input_title{
+	width:30%;
+
+}
+.eregInputBox .input_box{
+	width:70%;
+
+}
+.emp_regs_content input[type="text"]{
+	padding:7px;
+	width:100%;
+	padding-left:20px;
+
+}
+.emp_regs_content input[type="radio"]:not(:first-of-type){
+	margin-left:20px;
+}
+.emp_regs_content select{
+	padding:7px;
+	width:70%;
+	padding-left:10px;
+	border:none;
+
+}
+
+
+.topMenuList{
+	display: flex;
+	justify-content: space-around;
+}
+.topMenuList li{
+	font-family: 'ONE-Mobile-Title' !important;
+	font-size: 1.3rem;
+	padding:15px;
+	color:var(--main02);
+}
+.topMenuList li:hover{
+	color:var(--main03);
+}
+header .userbox{
+	width:18%;
+	padding-right: 20px;
+	justify-content:right;
+	align-items: center;
+}
+.emp_name{
+	font-weight:bold;
+	color:var(--main04);
+}
+.emp_name:hover{color:pink; }
+
+header .userbox img{
+	width:60px;
+	height:60px;
+	margin-left:10px;
+	object-fit:contain;
+	border-radius: 50%;
+}
+.eregBtnBox{
+	padding:30px 0;
+}

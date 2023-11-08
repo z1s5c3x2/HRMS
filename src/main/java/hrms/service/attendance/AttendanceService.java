@@ -1,4 +1,4 @@
-package hrms.service;
+package hrms.service.attendance;
 
 import hrms.model.repository.AttendanceEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
