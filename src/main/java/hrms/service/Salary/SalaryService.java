@@ -3,8 +3,10 @@ package hrms.service.Salary;
 
 import hrms.model.dto.LeaveRequestDto;
 import hrms.model.dto.SalaryDto;
+import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.LeaveRequestEntity;
 import hrms.model.entity.SalaryEntity;
+import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.SalaryEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,15 +19,37 @@ import java.util.Optional;
 public class SalaryService {
     @Autowired
     private SalaryEntityRepository salaryRepository;
+    @Autowired
+    private EmployeeEntityRepository employeeEntityRepository;
+
 
     @Transactional
-    public boolean slryWrite( SalaryDto salaryDto ){
-        salaryDto.setSlryDate(salaryDto.getSlryDate().plusDays(1));
-        SalaryEntity salaryEntity
-                = salaryRepository.save( salaryDto.saveToEntity());
-        // 2.
-        if( salaryEntity.getSlryNo() >= 1){ return true;} return false;
+    public boolean slryWrite(SalaryDto salaryDto) {
+        // 1. 사원 번호(empNo)를 사용하여 EmployeeEntity를 찾습니다.
+        String empNoString = salaryDto.getEmpNo();
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeEntityRepository.findByEmpNo(empNoString);
+
+        if (optionalEmployeeEntity.isPresent()) {
+
+            EmployeeEntity employeeEntity = optionalEmployeeEntity.get();
+            // 2. SalaryEntity를 생성하고 EmployeeEntity를 설정합니다.
+            SalaryEntity salaryEntity = SalaryEntity.builder()
+                    .slryDate(salaryDto.getSlryDate().plusDays(1))
+                    .slryPay(salaryDto.getSlryPay())
+                    .slryType(salaryDto.getSlryType())
+                    .empNo(employeeEntity) // Optional을 사용하여 EmployeeEntity를 가져옵니다.
+                    .build();
+
+            salaryRepository.save(salaryEntity);
+
+            if (salaryEntity.getSlryNo() >= 1) {
+                return true;
+            }
+        }
+
+        return false;
     }
+
 
     @Transactional
     public List<SalaryDto> slryGetAll(){

@@ -41,17 +41,20 @@ public class EmployeeController {
     {
         return employeeService.getRestList();
     }
+
     @GetMapping("/list")
     public List<EmployeeDto> getEmpList()
     {
         //System.out.println("EmployeeController.getEmpList");
         return employeeService.getEmpList();
     }
+
     @GetMapping("/restcount") // 테스트용
     public int getRestCount(@RequestParam String empNo)
     {
         return leaveCalcService.calcRestCount(empNo);
     }
+
     @PutMapping("/changernk")
     public boolean changeRank(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
