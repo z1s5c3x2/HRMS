@@ -1,9 +1,6 @@
 package hrms.controller.employee;
 
-import hrms.model.dto.ApprovalRequestDto;
-import hrms.model.dto.DepartmentDto;
-import hrms.model.dto.EmployeeDto;
-import hrms.model.dto.RetiredEmployeeDto;
+import hrms.model.dto.*;
 import hrms.model.entity.EmployeeEntity;
 import hrms.service.LeaveRequest.LeaveCalcService;
 import hrms.service.employee.EmployeeService;
@@ -46,11 +43,14 @@ public class EmployeeController {
     {
         return employeeService.getRestList();
     }
-    @GetMapping("/list") //사원 전체 조회
-    public List<EmployeeDto> getEmpList()
+    @GetMapping("/findAll") //사원 전체 조회
+    public PageDto<EmployeeDto> getEmpList(
+            @RequestParam int page,
+            @RequestParam int Sta,
+            @RequestParam int dptmNo)
     {
         //System.out.println("EmployeeController.getEmpList");
-        return employeeService.getEmpList();
+        return employeeService.getEmpList(page,Sta,dptmNo);
     }
     @PutMapping("/changernk") // 사원 직급 변경
     public boolean changeRank(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
