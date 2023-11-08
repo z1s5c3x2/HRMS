@@ -22,13 +22,13 @@ import RegisterEmp from "./employee/RegisterEmp";
 import SalaryMain from "./salary/SalaryMain";
 import SalaryWrite from "./salary/SalaryWrite";
 import SalaryView from "./salary/SalaryView";
-import SalaryList from "./salary/SalaryList"
+import SalaryList from "./salary/SalaryList";
 
 /* LeaveRequest */
 import LeaveRequestMain from "./leaveRequest/LeaveRequestMain";
 import LeaveRequestWrite from "./leaveRequest/LeaveRequestWrite";
 import LeaveRequestView from "./leaveRequest/LeaveRequestView";
-import LeaveRequestList from "./leaveRequest/LeaveRequestList"
+import LeaveRequestList from "./leaveRequest/LeaveRequestList";
 
 
 /* Teamproject import */
@@ -61,10 +61,10 @@ export default function Index( props ){
                                 <Route path='/salary/view' element={<SalaryView/>} />
                                 <Route path='/salary/list' element={<SalaryList/>} />
                             {/* LeaveRequest*/}
-                                <Route path='/leaveRequest' element={<leaveRequestMain/>} />
-                                <Route path='/leaveRequest/write' element={<leaveRequestWrite/>} />
-                                <Route path='/leaveRequest/view' element={<leaveRequestView/>} />
-                                <Route path='/leaveRequest/list' element={<leaveRequestList/>} />
+                                <Route path='/leaveRequest' element={<LeaveRequestMain/>} />
+                                <Route path='/leaveRequest/write' element={<LeaveRequestWrite/>} />
+                                <Route path='/leaveRequest/view' element={<LeaveRequestView/>} />
+                                <Route path='/leaveRequest/list' element={<LeaveRequestList/>} />
                             {/* TeamProject */}
                                 <Route path='/teamproject' element={<TeamProjectMain />} />
                                 <Route path='/teamproject/listAll' element={<TeamProjectList />} />

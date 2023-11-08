@@ -20,6 +20,7 @@ public class SalaryService {
 
     @Transactional
     public boolean slryWrite( SalaryDto salaryDto ){
+        salaryDto.setSlryDate(salaryDto.getSlryDate().plusDays(1));
         SalaryEntity salaryEntity
                 = salaryRepository.save( salaryDto.saveToEntity());
         // 2.

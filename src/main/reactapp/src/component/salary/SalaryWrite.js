@@ -26,7 +26,7 @@ export default function SalaryWrite(props) {
     console.log(data);
 
     // Axios를 사용하여 서버로 데이터 전송
-    axios.post("http://localhost:80/salary/post", data)
+    axios.post("/salary/post", data)
       .then((response) => {
         console.log("데이터가 성공적으로 전송되었습니다.", response);
         // 성공 시 어떤 작업을 수행하거나 리다이렉트할 수 있습니다.
@@ -39,6 +39,7 @@ export default function SalaryWrite(props) {
 
   return (
     <div>
+        {/* 급여지급 관련 입력구역  */}
       <form className="boardForm">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DesktopDatePicker
@@ -55,7 +56,7 @@ export default function SalaryWrite(props) {
           onChange={(e) => setAmount(e.target.value)}
         />
         <TextField
-          label="지급 타입"
+          label="지급 타입( 1:기본급/2:정기상여/3:특별상여/4:성과금/5:명절휴가비/6:퇴직금)"
           type="number"
           value={paymentType}
           onChange={(e) => setPaymentType(e.target.value)}
@@ -64,6 +65,14 @@ export default function SalaryWrite(props) {
           제출
         </Button>
       </form>
+      {/* 사원 목록 출력구역 */}
+
+
+
+
+
+
+
     </div>
   );
 }

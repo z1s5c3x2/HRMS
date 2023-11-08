@@ -1,7 +1,9 @@
 package hrms.service.LeaveRequest;
 
 import hrms.model.dto.LeaveRequestDto;
+import hrms.model.dto.SalaryDto;
 import hrms.model.entity.LeaveRequestEntity;
+import hrms.model.entity.SalaryEntity;
 import hrms.model.repository.LeaveRequestEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,9 +22,18 @@ public class LeaveRequestService {
 
     @Transactional
     public boolean lrqWrite( LeaveRequestDto leaveRequestDto ){
+
+        //
+        leaveRequestDto.setLrqSt(leaveRequestDto.getLrqSt().plusDays(1));
+        leaveRequestDto.setLrqEnd(leaveRequestDto.getLrqEnd().plusDays(1));
+
         LeaveRequestEntity leaveRequestEntity
                 = leaveRequestRepository.save( leaveRequestDto.saveToEntity());
         // 2.
+        System.out.println("service");
+        System.out.println( leaveRequestEntity.getLrqSt() );
+        System.out.println( leaveRequestEntity.getLrqEnd() );
+
         if( leaveRequestEntity.getLrqNo() >= 1){ return true;} return false;
     }
 
@@ -37,25 +48,36 @@ public class LeaveRequestService {
     }
     // 2-2. 개별 출력
     @Transactional
-    public LeaveRequestDto lrqGet( String empNo ){
-        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findByEmpNo( empNo ) ;
+    public LeaveRequestDto lrqGet( int lrqNo ){
+        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById( lrqNo ) ;
 
         if(optionalLeaveRequestEntity.isPresent()){
 
             LeaveRequestDto leaveRequestDto = new LeaveRequestDto();
 
-            leaveRequestDto.setLrqNo( optionalLeaveRequestEntity.get().getLrqNo());
+            leaveRequestDto.setLrqNo( lrqNo );
             leaveRequestDto.setLrqSt( optionalLeaveRequestEntity.get().getLrqSt());
             leaveRequestDto.setLrqEnd( optionalLeaveRequestEntity.get().getLrqEnd());
             leaveRequestDto.setLrqType( optionalLeaveRequestEntity.get().getLrqType());
             leaveRequestDto.setLrqSrtype( optionalLeaveRequestEntity.get().getLrqSrtype());
             leaveRequestDto.setAprvNo( optionalLeaveRequestEntity.get().getAprvNo().getAprvNo());
-            leaveRequestDto.setEmpNo( empNo );
+            leaveRequestDto.setEmpNo( optionalLeaveRequestEntity.get().getEmpNo().getEmpNo() );
             leaveRequestDto.setCdate( optionalLeaveRequestEntity.get().getCdate());
             leaveRequestDto.setUdate( optionalLeaveRequestEntity.get().getUdate());
             return leaveRequestDto;
         }
         return null;
+    }
+    public List<LeaveRequestDto> lrqGetMeAll(String empNo) {
+        // 1. 해당 empNo에 맞는 엔티티 호출
+        List<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findByEmpNoEmpNo(empNo);
+
+        List<LeaveRequestDto> leaveRequestDtos = new ArrayList<>();
+        leaveRequestEntities.forEach(e -> {
+            leaveRequestDtos.add(e.allToDto());
+        });
+
+        return leaveRequestDtos;
     }
     //3. 수정
     @Transactional
