@@ -146,7 +146,7 @@ public class TeamProjectService {
                 // 2(반려) 상태가 하나라도 있을 때 반려
                 projectDtos.add(projectEntity.allToDto());
                 totalCount++;
-            } else if (approval == 3 && !allStaThree) {
+            } else if(approval == 3){
                 // 나머지 경우의 수, 3(검토중) 상태가 있을 때 검토중
                 projectDtos.add(projectEntity.allToDto());
                 totalCount++;
