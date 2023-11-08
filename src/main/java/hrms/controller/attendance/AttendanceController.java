@@ -15,24 +15,24 @@ public class AttendanceController {
     //출근처리
     @PostMapping("/")
     public boolean setAttendanceGoWork(@RequestBody AttendanceDto attendDto) {
-        return false;
+        return attendanceService.setAttendanceGoWork(attendDto);
     }
 
     //근태출력 - 달력에 표시할 모든사원 or 사원하나
-    @GetMapping("/get1")
+    @GetMapping("/getList")
     public boolean getAttendanceListAll(){
         return false;
     }
 
 
     //출결조회 - 출근지각/결근/ 모든사원 or 사원하나
-    @GetMapping("/get2")
+    @GetMapping("/dailyAttd")
     public boolean getAttendanceInfo(){
         return false;
     }
 
     //근무시간조회 - 모든사원 or 한명의 사원
-    @GetMapping("/get3")
+    @GetMapping("/workingTime")
     public boolean getWorkTime(){
         return false;
     }
@@ -40,8 +40,9 @@ public class AttendanceController {
     //퇴근처리
     @PutMapping("/")
     public boolean setAttendanceLeaveWork(@RequestBody AttendanceDto attendDto) {
-        return false;
-    }  //휴가 /병가 등록 하나의 사원
+        return attendanceService.setAttendanceLeaveWork(attendDto);
+    }
+
 
 
 

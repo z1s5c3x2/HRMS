@@ -6,7 +6,7 @@ import {useState, useEffect} from 'react'
 export default function Aside( props ){
     return(<>
         <aside className="maside">
-        		<div className="logobox"><img src="logo_is.png"/></div>
+        		<div className="logobox"><img src="../../logo_is.png"/></div>
         		{/*-- 사이드 메뉴 --*/}
 
         		<ul className="nav">
@@ -16,6 +16,7 @@ export default function Aside( props ){
         			<li className="smenu">A메뉴서브3</li>
         			<li>A메뉴서브4</li>
         		</ul>
+        		<div className="templogin"><Link to='/member/Login'> 로그인</Link></div>
         		<div className="attendence" onClick="changeState()"><i class="fa-solid fa-arrow-right-to-bracket"></i> 출 근</div>
         	</aside>
 

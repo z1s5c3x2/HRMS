@@ -116,7 +116,7 @@ aside{
 
 }
 .nav{
-	height:600px;
+	height:500px;
 
 }
 .nav li{
@@ -147,6 +147,21 @@ aside{
 	font-size: 1.4rem;
 	font-family: 'ONE-Mobile-Title';
 	color:var(--main04);
+}
+
+.templogin{
+	margin-top:20px;
+	width:200px;
+	padding:20px 0;
+	margin:0 auto;
+	background-color:var(--main01);
+	border-radius: 10px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 1.4rem;
+	font-family: 'ONE-Mobile-Title';
+	color:var(--main04);
+	margin-bottom:5px;
 }
 /*----------------(헤더 영역)-------------------*/
 
@@ -275,4 +290,45 @@ header .topmenu{
 	font-size:0.9em;
 	line-height:1.8em;
 	border-radius: 15px;
+}
+
+/*----------------(로그인화면)-------------------*/
+.loginWrap{
+	/*height:100vh;*/
+	background-color:var(--white);
+	padding-top:7vh;
+}
+.loginWrap .logo{
+    padding: 20px;
+	width:100%;
+	text-align: center;
+	color:var(--main03);
+}
+.loginBox{
+	width:400px;
+	height: 500px;
+	padding:30px;
+	margin: 0 auto ;
+	border-radius: 10px;
+    border: solid 1px var(--main01);
+}
+.loginBox input[type=text] {
+	border:none;
+	outline:none;
+	padding:15px;
+	margin:10px 0;
+	width:100%;
+	border-radius:5px;
+	background-color: var(--white);
+	box-shadow: 0 0 3px var(--main02);
+	font-size: 0.9em;
+}
+
+.loginBox button {
+    margin-top: 20px;
+    width:100%;
+    background-color:var(--main02);
+    font-size: 1.2em;
+    color: var(--white);
+    etter-spacing: 0.6em;
 }
