@@ -38,7 +38,7 @@ Content-Type: application/json
 
 ### 사원 리스트조회
 
-GET http://localhost/employee/list
+GET http://localhost/employee/findAll?page=1
 Content-Type: application/json
 
 ### 결제 테스트
