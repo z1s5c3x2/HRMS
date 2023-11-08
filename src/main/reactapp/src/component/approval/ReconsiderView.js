@@ -6,17 +6,18 @@ import { Link } from 'react-router-dom';
 export default function ReconsiderView(props){
 
     // 상신내역 요청
-    const getReconsidering = r => {
+    useEffect( () => {
+        const getReconsidering = r => {
 
-        axios.get( '/approval/getApprovalHistory' )
-        .then( result => {
+        }
 
-            console.log( result )
+axios.get( '/approval/getApprovalHistory' )
+            .then( result => {
+                console.log(111)
+                console.log( result )
 
-        })
-
-    }
-
+            })
+    }, [])
 
 
     return (<>
