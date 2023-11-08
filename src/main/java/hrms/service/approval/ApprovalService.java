@@ -233,6 +233,26 @@ public class ApprovalService {
         return true;
     }
 
+    // 결재건에 대한 결재 진행상태 확인 ( 1:결재완료  2:반려  3:검토중 )
+    public int checkApprovalState( ApprovalEntity approvalEntity ){
+
+        // 1개의 결재건에 대한 검토자리스트 호출
+        for( int i=0; i<approvalEntity.getApprovalLogEntities().size(); i++ ){
+
+            // 1명의 검토자 비교
+            switch ( approvalEntity.getApprovalLogEntities().get(i).getAplogSta() ){
+
+                case 2: return 2;   // 결재상태 : 반려
+                case 1: return 1;   // 결재상태 : 완료
+                case 3: return 3;   // 결재상태 : 검토중
+
+            }
+
+        }
+        return -1;
+    }
+
+
     // 결재 완료된 사원 '수정' 기능 메서드
     @Transactional
     public boolean updateMemberInfoAproval( int aprvNo ) throws JsonProcessingException {
@@ -408,7 +428,7 @@ public class ApprovalService {
 
 
     // 개별 상신목록 조회
-    public ArrayList<ApprovalDto> getApprovalHistory(){
+    public List<ApprovalDto> getApprovalHistory(){
 
         /*
         타입 정리가 확실히 될 시 유효성 검사 추가 예정
@@ -422,28 +442,28 @@ public class ApprovalService {
         // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( "2311004" );
 
-        // 개별 상신 전체 조회
+        // 개별 상신(결재)내역 전체 조회
         List<ApprovalEntity> approvalList
             = approvalRepository.findByAllempNo( optionalEmployeeEntity.get().getEmpNo() );
-        System.out.println( approvalList.toString() );
 
         // 유효성 검사
             // 값이 비어있으면 true / null이면 false
-        if( approvalList.isEmpty() ){
-            return null;
-        }
+        if( approvalList.isEmpty() )    return null;
 
-        for( ApprovalEntity approvalEntity : approvalList ){
+        // 변환할 DTO 리스트
+        List<ApprovalDto> approvalDtos = new ArrayList<>();
 
-            for( int i=0; i<approvalEntity.getApprovalLogEntities().size(); i++ ){
+        approvalList.forEach( e -> {
 
-                approvalEntity.getApprovalLogEntities().get(i).getAplogSta();
+            // 변환된 DTO 리스트 삽입
+            approvalDtos.add( e.toApprovalDto() );
+            // 마지막 추가된 DTO
+                // => 현재 결재 진행상태를 확인하여 저장
+            approvalDtos.get( approvalDtos.size()-1 ).setApState( checkApprovalState( e ) );
 
-            }
+        });
 
-        }
-
-        return null;
+        return approvalDtos;
     }
 
 
