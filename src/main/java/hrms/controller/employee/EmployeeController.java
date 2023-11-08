@@ -25,7 +25,7 @@ public class EmployeeController {
     public boolean registerEmp(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
 //        System.out.println("employeeDto = " + employeeDtoApprovalRequestDto);
-         return employeeService.registerEmp(employeeDtoApprovalRequestDto).;
+         return employeeService.registerEmp(employeeDtoApprovalRequestDto);
     }
 
     @PutMapping("/leave")
