@@ -41,7 +41,7 @@ public class EmployeeService {
 
     // 사원 등록
     @Transactional
-    public EmployeeEntity registerEmp(ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
+    public boolean registerEmp(ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
         EmployeeDto employeeDto = employeeDtoApprovalRequestDto.getData(); // 결제정보를 포함한 dto에서 사원 데이터 추출
         System.out.println("employeeDto = " + employeeDto.toString());
@@ -63,24 +63,17 @@ public class EmployeeService {
         if(optionalDepartmentEntity.isPresent())
         {
             EmployeeEntity employeeEntity = employeeRepository.save(employeeDto.saveToEntity());
-
-
-
-            //System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
-
-            System.out.println("employeeEntity = " + employeeEntity);
             employeeEntity.setDptmNo(optionalDepartmentEntity.get());
-            employeeEntity.setAprvNo(approvalEntity);
+            optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity);
+            employeeEntity.getApprovalEntities().add(approvalEntity);
 
-            System.out.println( employeeEntity.getEmpNo() );
-            approvalEntity.getEmployeeEntities().add( employeeEntity );
-            System.out.println( approvalEntity );
-            System.out.println( approvalEntity.getEmployeeEntities() );
+            System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity.get().getEmployeeEntities());
+            System.out.println("employeeEntity.getApprovalEntities() = " + employeeEntity.getApprovalEntities());
 
-            return employeeEntity;
+            return !employeeEntity.getEmpNo().isEmpty();
 
         }
-        return null;
+        return false;
     }
     // 사원 pk 생성
     @Transactional
@@ -101,10 +94,6 @@ public class EmployeeService {
     public List<EmployeeDto> getEmpList()
     {
         List<EmployeeDto> result = new ArrayList<>();
-        employeeRepository.findAll().forEach(e ->{
-            System.out.println("check"+e.getDepartmentEntities());
-            result.add(e.allToDto());
-        });
         return result;
     }
     //사원 개별 조회
