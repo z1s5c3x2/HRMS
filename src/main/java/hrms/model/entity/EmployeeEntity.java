@@ -34,10 +34,6 @@ public class EmployeeEntity extends BaseTime {
     @JoinColumn(name="dptmNo")
     @ManyToOne
     private DepartmentEntity dptmNo;
-    @ToString.Exclude
-    @JoinColumn(name="aprvNo")
-    @ManyToOne
-    private ApprovalEntity aprvNo;
 
     @Builder.Default
     @OneToMany(mappedBy = "empNo")         // 결재테이블연결
@@ -53,7 +49,7 @@ public class EmployeeEntity extends BaseTime {
     private List<AttendanceEntity> attendanceEntities = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "empNo")
-    private List<DepartmentHistoryEntity> departmentEntities = new ArrayList<>();
+    private List<DepartmentHistoryEntity> departmentHistoryEntities = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "empNo")
     private List<LeaveRequestEntity> leaveRequestEntities = new ArrayList<>();
