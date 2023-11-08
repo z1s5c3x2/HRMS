@@ -19,20 +19,20 @@ public class AttendanceController {
     }
 
     //근태출력 - 달력에 표시할 모든사원 or 사원하나
-    @GetMapping("/")
+    @GetMapping("/get1")
     public boolean getAttendanceListAll(){
         return false;
     }
 
 
     //출결조회 - 출근지각/결근/ 모든사원 or 사원하나
-    @GetMapping("/")
+    @GetMapping("/get2")
     public boolean getAttendanceInfo(){
         return false;
     }
 
     //근무시간조회 - 모든사원 or 한명의 사원
-    @GetMapping("/")
+    @GetMapping("/get3")
     public boolean getWorkTime(){
         return false;
     }
