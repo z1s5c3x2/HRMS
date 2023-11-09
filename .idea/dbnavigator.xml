@@ -22,7 +22,9 @@ select * from pjt_mng;]]></console>
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="17a6a52e-a75e-4aa0-bad3-41443bbba459" object-ref="consoles/Connection" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
