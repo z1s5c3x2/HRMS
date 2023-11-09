@@ -35,6 +35,7 @@ export default function TeamProjectMain( props ){
         console.log(projectInfo);
     }
 
+    // 날짜값을 입력할때마다 프로젝트팀 데이터에 값 넣어줌
     useEffect( () =>{
         projectInfo.pjtSt = selectedSDate;
         projectInfo.pjtEND = selectedEDate;
