@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState , useEffect } from 'react';
 import {BrowserRouter, Routes, Route, Link, useSearchParams} from 'react-router-dom';
-import styles from '../../css/teamProject/TeamProjectList.css';
+
 // -------------- mui table ----------------
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,7 +16,7 @@ import * as React from 'react';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 // -------------------------------------------
-
+import styles from '../../css/Table.css';
 
 export default function TeamProjectList(props){
 
@@ -76,12 +76,9 @@ export default function TeamProjectList(props){
 
 
     return(<>
-        <div className="listWrap">
-            <div className="topText">
-                <span>프로젝트팀관리</span>
-                >
-                <span>팀조회</span>
-            </div>
+     <div className="contentBox">
+        <div className="pageinfo"><span className="lv0">프로젝트팀관리</span> > <span className="lv1">팀조회</span></div>
+        <div className="cont">
             <div className="checkboxList">
                 <span>전체보기<input type="checkbox"
                 name="cb"
@@ -112,13 +109,13 @@ export default function TeamProjectList(props){
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
-                  <TableRow className="table_head">
-                    <TableCell align="center">번호</TableCell>
-                    <TableCell align="center">프로젝트명</TableCell>
-                    <TableCell align="center">PM</TableCell>
-                    <TableCell align="center">프로젝트시작일</TableCell>
-                    <TableCell align="center">프로젝트기한</TableCell>
-                    <TableCell align="center">프로젝트상태</TableCell>
+                  <TableRow className="table_head th01">
+                    <TableCell  align="center" className="th_cell">번호</TableCell>
+                    <TableCell className="th_cell" align="center">프로젝트명</TableCell>
+                    <TableCell className="th_cell" align="center">PM</TableCell>
+                    <TableCell className="th_cell" align="center">프로젝트시작일</TableCell>
+                    <TableCell className="th_cell" align="center">프로젝트기한</TableCell>
+                    <TableCell className="th_cell" align="center">프로젝트상태</TableCell>
                   </TableRow>
                 {/* 테이블 제목 구역 */}
                 </TableHead>
@@ -126,13 +123,12 @@ export default function TeamProjectList(props){
                 <TableBody>
                   {rows.someList.map((row) => (
                     <TableRow
+                      className="tbody_tr"
                       key={row.name}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell align="center">{row.pjtNo}</TableCell>
-                      <TableCell align="center">
-                      {row.pjtName}
-                      </TableCell>
+                      <TableCell align="center">{row.pjtName}</TableCell>
                       <TableCell align="center">{row.empName}</TableCell>
                       <TableCell align="center">{row.pjtSt}</TableCell>
                       <TableCell align="center">{row.pjtEND}</TableCell>
@@ -161,6 +157,7 @@ export default function TeamProjectList(props){
                     <button type="button"> 검색 </button>
                 </div>
                 */}
+                </div>
             </div>
         </div>
     </>)
