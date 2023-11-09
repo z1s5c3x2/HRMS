@@ -37,27 +37,27 @@ public class ApprovalEntity extends BaseTime {
 
 
     @Builder.Default
-    @OneToMany(mappedBy="aprvNo")
+    @OneToMany( fetch = FetchType.LAZY  , cascade = CascadeType.ALL ,mappedBy="aprvNo")
     private List<ApprovalLogEntity> approvalLogEntities = new ArrayList<>();
 
 
     @Builder.Default
-    @OneToMany(mappedBy="aprvNo")
+    @OneToMany( fetch = FetchType.LAZY  , cascade = CascadeType.ALL ,mappedBy="aprvNo")
     private List<LeaveRequestEntity> leaveRequestEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprvNo")
+    @OneToMany( fetch = FetchType.LAZY  , cascade = CascadeType.ALL ,mappedBy = "aprvNo")
     private List<ProjectEntity> projectEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprvNo")
+    @OneToMany( fetch = FetchType.LAZY  , cascade = CascadeType.ALL ,mappedBy = "aprvNo")
     private List<TeamMemberEntity> teamMemberEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprvNo")
+    @OneToMany( fetch = FetchType.LAZY  , cascade = CascadeType.ALL ,mappedBy = "aprvNo")
     private List<DepartmentHistoryEntity> departmentHistoryEntities = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprvNo")
+    @OneToMany( fetch = FetchType.LAZY  , cascade = CascadeType.ALL ,mappedBy = "aprvNo")
     private List<RetiredEmployeeEntity> retiredEmployees = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "aprvNo")
+    @OneToMany( fetch = FetchType.LAZY  , cascade = CascadeType.ALL , mappedBy = "aprvNo")
     private List<SalaryEntity> salaryEntities = new ArrayList<>();
 
 

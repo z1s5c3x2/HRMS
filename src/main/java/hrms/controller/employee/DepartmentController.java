@@ -7,12 +7,13 @@ import hrms.service.department.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {
 
-    @Autowired
-    DepartmentService departmentService;
+    @Autowired DepartmentService departmentService;
 
     @PutMapping("/chageemp")
     public boolean chagneEmp(@RequestBody ApprovalRequestDto<DepartmentDto> approvalRequestDto)
@@ -26,5 +27,10 @@ public class DepartmentController {
     {
         System.out.println("departmentDto = " + departmentDto.toString());
         return departmentService.insertDpm(departmentDto);
+    }
+
+    @GetMapping("/findAll")
+    public List<DepartmentDto> findAllDptm() {
+        return departmentService.findAllDptm();
     }
 }

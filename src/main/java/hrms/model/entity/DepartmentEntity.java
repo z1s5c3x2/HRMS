@@ -1,5 +1,6 @@
 package hrms.model.entity;
 
+import hrms.model.dto.DepartmentDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,9 +22,15 @@ public class DepartmentEntity extends BaseTime{
     private String dptmName;          // 부서이름
 
     @Builder.Default
-    @OneToMany(mappedBy = "dptmNo")
+    @OneToMany( fetch = FetchType.LAZY  , cascade = CascadeType.ALL ,mappedBy = "dptmNo")
     private List<DepartmentHistoryEntity> departmentHistory = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "dptmNo")
+    @OneToMany( fetch = FetchType.LAZY  , cascade = CascadeType.ALL ,mappedBy = "dptmNo")
     private List<EmployeeEntity> employeeEntities = new ArrayList<>();
+
+    public DepartmentDto allToDto() {
+        return DepartmentDto.builder()
+                .dptmName(this.dptmName)
+                .dptmNo(this.dptmNo).build();
+    }
 }

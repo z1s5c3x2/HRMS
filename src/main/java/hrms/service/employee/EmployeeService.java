@@ -43,7 +43,6 @@ public class EmployeeService {
     @Autowired
     ApprovalService approvalService;
     private final int LEAVE_COUNT = 5;
-
     // 사원 등록
     @Transactional
     public boolean registerEmp(ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
