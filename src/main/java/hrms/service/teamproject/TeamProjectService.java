@@ -40,11 +40,11 @@ public class TeamProjectService {
     @Autowired
     ApprovalService approvalService;
 
-    // 팀 프로젝트 생성
+    // 프로젝트팀 생성
     @Transactional
     public boolean postTeamProject(ApprovalRequestDto<ProjectDto> approvalRequestDto){
 
-        // 입력한 팀프로젝트 관리자 pk번호 호출
+        // 입력한 프로젝트팀 관리자 pk번호 호출
         Optional<EmployeeEntity> employeeEntityOptional =
                 employeeRepository.findByEmpNo(approvalRequestDto.getData().getEmpNo());
 
@@ -58,25 +58,25 @@ public class TeamProjectService {
                 approvalRequestDto.getApprovers()
         );
 
-        // 팀 프로젝트 생성
+        // 프로젝트팀 생성
         ProjectEntity projectEntity =
                 projectRepository.save( approvalRequestDto.getData().saveToEntity() );
-        // 팀 프로젝트에 관리자 사원번호 추가
+        // 프로젝트팀에 관리자 사원번호 추가
         projectEntity.setEmpNo(employeeEntityOptional.get());
 
-        // 팀 프로젝트에 결재 번호 추가
+        // 프로젝트팀에 결재 번호 추가
         projectEntity.setAprvNo(approvalEntity);
 
-        // 사원 엔티티에 팀 프로젝트 엔티티 추가
+        // 사원 엔티티에 프로젝트팀 엔티티 추가
         employeeEntityOptional.get().getProjectEntities().add(projectEntity);
 
-        // 결재 엔티티에 팀 프로젝트 엔티티 추가
+        // 결재 엔티티에 프로젝트팀 엔티티 추가
         approvalEntity.getProjectEntities().add(projectEntity);
 
         return projectEntity.getPjtNo() >= 1;
     }
 
-    // 전체 팀프로젝트 출력
+    // 전체 프로젝트팀 출력
     @Transactional
     public PageDto getAllTeamProject(int page){
 
@@ -106,7 +106,7 @@ public class TeamProjectService {
         return pageDto;
     }
 
-    // 3. 팀프로젝트 출력(approval이 1 = 승인, 2 = 반려, 3 = 검토중)
+    // 3. 프로젝트팀 출력(approval이 1 = 승인, 2 = 반려, 3 = 검토중)
     @Transactional
     public PageDto getPermitAllTeamProject(int approval, int page) {
         // 페이징처리 라이브러리
@@ -166,7 +166,7 @@ public class TeamProjectService {
     }
 
     
-    // 5. 개별 프로젝트 조회(팀원정보도 출력)
+    // 5. 개별 프로젝트팀 조회(팀원정보도 출력)
     @Transactional
     public ProjectDto getOneTeamProject(int pjtNo){
 
@@ -181,9 +181,9 @@ public class TeamProjectService {
         return null;
     }
 
-    // 6. 팀프로젝트 수정(approvalService 에서 진행)
+    // 6. 프로젝트팀 수정(approvalService 에서 진행)
 
-    // 7. 팀프로젝트 삭제(approvalService 에서 진행)
+    // 7. 프로젝트팀 삭제(approvalService 에서 진행)
 
 
 

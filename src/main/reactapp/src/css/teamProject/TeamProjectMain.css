@@ -80,3 +80,18 @@ header .userbox img{
 .css-165mck{
     width: 100%;
 }
+
+.pmBox{
+    height: 54px;
+}
+
+.pmNo{
+    width: 68% !important;
+}
+
+.pmBtn{
+    height: 30px;
+    padding: 8px 20px;
+    margin-left: 10px;
+}
+
