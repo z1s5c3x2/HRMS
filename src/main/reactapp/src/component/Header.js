@@ -1,7 +1,13 @@
 import styles from '../css/header.css';
 import { Link }from "react-router-dom" //
+import { useState } from "react"
+import Aside from "./Aside"
 
 export default function Header( props ){
+
+   // let [menuType, setMenuType] = useState("HR");
+   // console.log("header :: "+menuType)
+
     return(<>
         <header>
         			<div className="topmenu">

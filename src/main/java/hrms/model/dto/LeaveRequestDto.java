@@ -28,6 +28,8 @@ public class LeaveRequestDto {
     // +
     private LocalDateTime cdate;
     private LocalDateTime udate;
+    // +
+    private String empName;
 
     //DTO -> entity
     // 1. entity 저장할때

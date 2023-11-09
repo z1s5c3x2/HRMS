@@ -62,6 +62,7 @@ public class LeaveRequestEntity extends BaseTime { // 휴직/연차/병가 테�
                 .empNo(this.empNo.getEmpNo())
                 .aprvNo(this.aprvNo.getAprvNo())
                 .cdate(this.getCdate()).udate(this.getUdate())
+                .empName(this.getEmpNo().getEmpName())
                 .build();
     }
     // 1. 개별출력
@@ -75,6 +76,7 @@ public class LeaveRequestEntity extends BaseTime { // 휴직/연차/병가 테�
                 .empNo(this.empNo.getEmpNo())
                 .aprvNo(this.aprvNo.getAprvNo())
                 .cdate(this.getCdate()).udate(this.getUdate())
+                .empName(this.getEmpNo().getEmpName())
                 .build();
     }
 

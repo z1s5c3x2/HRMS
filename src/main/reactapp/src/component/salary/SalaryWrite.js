@@ -72,7 +72,7 @@ export default function SalaryWrite(props) {
     // 0. 컴포넌트 상태변수 관리
         let [ rows , setRows ] = useState( [ ] )
   useEffect( ()=>{ // 컴포넌트가 생성될때 1번 실행되는 axios
-          axios.get('/employee/list').then( r =>{
+          axios.get('/employee/findAll').then( r =>{
                     console.log(r);
                   setRows(r.data); // 응답받은 모든 게시물을 상태변수에 저장
                   // setState : 해당 컴포넌트가 업데이트 (새로고침/재랜더링/return재실행)
@@ -176,12 +176,6 @@ export default function SalaryWrite(props) {
                            </TableBody>
                          </Table>
                        </TableContainer>
-
-
-
-
-
-
     </div>
   );
 }
