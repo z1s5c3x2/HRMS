@@ -1,12 +1,4 @@
-.listWrap{
-    padding: 5px;
-}
-
-.table_head{
-    backgroundcolor: #DDE6ED;
-    color : white;
-}
-
+/* 체크리스트 박스를 감싸는 전체 영역 */
 .checkboxList{
     display: flex;
     justify-content: space-around;
