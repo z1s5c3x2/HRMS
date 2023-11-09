@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.EmployeeDto;
+import hrms.model.dto.PageDto;
 import hrms.model.dto.RetiredEmployeeDto;
 import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.DepartmentEntity;
@@ -16,6 +17,9 @@ import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.RetiredEmployeeEntityRepository;
 import hrms.service.approval.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -24,6 +28,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -91,10 +96,17 @@ public class EmployeeService {
 
     //사원 조회 ( 페이징 처리 예정)
     @Transactional
-    public List<EmployeeDto> getEmpList()
+    public PageDto<EmployeeDto> getEmpList(int page,int Sta,int dptmNo)
     {
-        List<EmployeeDto> result = new ArrayList<>();
-        return result;
+        //List<EmployeeDto> result = new ArrayList<>();
+        Pageable pageable = PageRequest.of(page-1,5); //현재 페이지와 한 페이지에 보여줄 데이터 수 설정
+        Page<EmployeeEntity> result = employeeRepository.findByEmpPage(Sta,dptmNo,pageable); //pageable을 인자로 넘겨서 findAll 페이징 처리
+        PageDto<EmployeeDto> pageDto = PageDto.<EmployeeDto>builder()
+                .totalCount(result.getTotalElements()) // 검색된 row 개수
+                .totalPages(result.getTotalPages())   // 총 페이지 수
+                .someList(result.stream().map(emp -> emp.allToDto()).collect(Collectors.toList())) // 검색된 Entity 를 dto로 형변환한다
+                .build();
+        return pageDto;
     }
     //사원 개별 조회
     @Transactional

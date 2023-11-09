@@ -11,6 +11,7 @@ import styles from '../css/Index.css';
 
 /* Approval import */
 import ApprovalList from "./approval/ApprovalList";
+import ReconsiderView from "./approval/ReconsiderView";
 
 /* Attendance import */
 import AttendanceList from "./attendance/AttendanceList";
@@ -30,10 +31,13 @@ import LeaveRequestWrite from "./leaveRequest/LeaveRequestWrite";
 import LeaveRequestView from "./leaveRequest/LeaveRequestView";
 import LeaveRequestList from "./leaveRequest/LeaveRequestList";
 
-
 /* Teamproject import */
 import TeamProjectList from "./teamProject/TeamProjectList";
 import TeamProjectMain from "./teamProject/TeamProjectMain";
+import EmployeeList from "./employee/EmployeeList";
+
+/* Login import */
+import Login from "./member/Login";
 
 export default function Index( props ){
     return(<>
@@ -49,11 +53,13 @@ export default function Index( props ){
                             {/* MAIN*/}
                             <Route path='/' element = { <Main />} />
                             {/* Approval*/}
-                                <Route path='/approval' element = { ApprovalList } />
+                                <Route path='/approval' element = { <ApprovalList/> } />
+                                <Route path='/reconsider' element = { <ReconsiderView/> } />
                             {/* Attendance*/}
                                 <Route path='/attendance' element={<AttendanceList/>} />
                             {/* Employee*/}
-                                <Route path='/employee' element={<RegisterEmp/>} />
+                                <Route path='/employee/list' element={<EmployeeList/>} />
+                                <Route path='/employee/register' element={<RegisterEmp/>} />
 
                             {/* Salary*/}
                                 <Route path='/salary' element={<SalaryMain/>} />
@@ -68,6 +74,8 @@ export default function Index( props ){
                             {/* TeamProject */}
                                 <Route path='/teamproject' element={<TeamProjectMain />} />
                                 <Route path='/teamproject/listAll' element={<TeamProjectList />} />
+                             {/* Login */}
+                                <Route path='/member/login' element={<Login/>} />
                         </Routes >
                         </div>
                 </BrowserRouter >
