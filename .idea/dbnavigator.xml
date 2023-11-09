@@ -13,18 +13,14 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="17a6a52e-a75e-4aa0-bad3-41443bbba459">
-      <console name="Connection" type="STANDARD" schema="hrms" session="Main"><![CDATA[use hrms;
-
-select * from pjt_mng;]]></console>
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="17a6a52e-a75e-4aa0-bad3-41443bbba459" object-ref="consoles/Connection" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
