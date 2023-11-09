@@ -74,14 +74,13 @@ public class ApprovalController {
 
         // 결재 테이블 등록 메서드
         // => 실행 후 실행결과 반환
-        boolean result = approvalService.updateApproval(
+        return  approvalService.updateApproval(
                 approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
                 approvalRequestDto.getAprvCont(),   // 결재내용
                 approvalRequestDto.getApprovers(),  // 검토자
                 approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
         );
 
-        return false;
     }
 
     // 검토자 1명 승인

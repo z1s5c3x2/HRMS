@@ -3,7 +3,6 @@
 export default function ApprovalList(props){
 
 
-
     return (<>
 
         <div class="contentBox">
