@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import {useEffect, useState} from "react";
 import axios from "axios";
 import Pagination from "@mui/material/Pagination";
+import RegisterEmp from "./RegisterEmp";
 
 export default function EmployeeList() {
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
@@ -18,12 +19,11 @@ export default function EmployeeList() {
     }
     const [empList, setEmpList] = useState([]) // 사원 리스트 저장
     const [pageInfo, setPageInfo] = useState({ page:1, dptmNo:0,sta:'0',totalCount:0,totalPages:0 })  // 페이지 정보 저장
-
+    
     useEffect(() => {
         console.log( pageInfo )
         getList()
     }, [pageInfo.page,pageInfo.sta,pageInfo.dptmNo]); //페이지가 바뀌거나 카테고리가 바뀌면 호출
-
     const getList = (event)=>{ // 페이지 정보를 이용하여 사원 리스트 요청
         axios
             .get("/employee/findAll",{params:pageInfo})
@@ -60,6 +60,7 @@ export default function EmployeeList() {
                 <option value="4"> DBA팀 </option>
 
             </select>
+
             <div className="emp_regs_content"></div>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
