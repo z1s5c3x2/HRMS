@@ -53,11 +53,11 @@ export default function LeaveRequestList( props ){
                 // 3. 검색 버튼을 눌렀을 때.
                 const onSearch = ( e ) => {
                     setPageInfo({ ...pageInfo , page :1 } ); // 첫페이지 1페이지 초기화
-                getBoard();
+                //getBoard();
                 }
                 const DeleteSearch = ( e ) => {
                      setPageInfo({ ...pageInfo,page :1 ,key : '' ,keyword : '' ,view : 5} ); // 첫페이지 1페이지 초기화
-                     getBoard();
+                     //getBoard();
                 }
                 // 날짜 출력 함수 (오늘이면 시간 , 오늘이 아니면 날짜)
                 function formatDateTime(dateTime) {
