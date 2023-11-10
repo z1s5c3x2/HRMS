@@ -6,11 +6,11 @@ export default function ApprovalMoal(props)
 {
     //모달창 호출할때 기입한 데이터가 여기에 담김
     const [ApprovalDetailsData, setApprovalDetailsData] = useState(props.data)
-    //입력 데이터아 맞는 url세팅
+    //입력 데이터와 맞는 url세팅
     const [targetUrl, setTargetUrl] = useState(props.targetUrl)
-    //입력 데이터아 맞는 url세팅
+    //입력 데이터와 맞는 url세팅
     const [successUrl, setSuccessUrl] = useState(props.successUrl)
-    //저장이후 이동항 rul
+    //저장이후 이동할 url
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
     const [aprvList, setAprvList] = useState([]) // 인사팀 전체 리스트
     const [selectList, setSelectList] = useState([]) // 결제 요청받을 리스트 저장

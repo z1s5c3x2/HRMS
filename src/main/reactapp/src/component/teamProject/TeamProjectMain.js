@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
+import ApprovalMoal from "../employee/ApprovalMoal";
 
 import styles from '../../css/teamProject/TeamProjectMain.css';
 
@@ -24,8 +25,8 @@ export default function TeamProjectMain( props ){
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
     // 결재 모달창 여는 함수
     function onModal(e) {
-        document.querySelector('.approv_modal').style.display = 'flex';
-        //setIsOn(!isOn)
+        //document.querySelector('.approv_modal').style.display = 'flex';
+        setIsOn(!isOn)
     }
 
     // 인사팀 전체 리스트
@@ -42,6 +43,7 @@ export default function TeamProjectMain( props ){
     const [selectedSDate, setSelectedSDate] = useState(null);
     const [selectedEDate, setSelectedEDate] = useState(null);
 
+    /*
     // 실제 axios로 보낼 데이터
     const [approvalRequest, setApprovalRequest] = useState({
         aprvType:12,        // 12 : 프로젝트 등록
@@ -71,6 +73,7 @@ export default function TeamProjectMain( props ){
         ));
         setSelectList(updateList);
     };
+    */
 
     // input 값이 입력되면 그 값을 appovalInfo에 저장하는 함수
     const updateApprovalInfo = (e) =>{
@@ -86,6 +89,7 @@ export default function TeamProjectMain( props ){
         console.log(projectInfo);
     }, [selectedSDate, selectedEDate])
 
+    /*
     //결제 요청 버튼시 실행되는 함수
     const submitApproval = (e)=>{
         // 결제받을 사원 리스트 id만 추출
@@ -106,7 +110,7 @@ export default function TeamProjectMain( props ){
                 console.log( e )
             })
     }
-
+*/
 
 
     return(<>
@@ -127,7 +131,7 @@ export default function TeamProjectMain( props ){
                     <div class="input_title " className="inputPm">프로젝트매니저</div>
                     <div class="input_box">
                         <input type="text" class="pmNo" name="empNo"/>
-                        <span><button onClick={onModal2} class="pmBtn" type="button">사원찾기</button></span>
+                        <span><button class="pmBtn" type="button">사원찾기</button></span>
                     </div>
                 </div>
                 <div class="eregInputBox">
@@ -160,27 +164,25 @@ export default function TeamProjectMain( props ){
             </div>
             {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
                 { isOn ? <> <ApprovalMoal data={projectInfo}
-                                          targetUrl={"/employee/postEmp"}
+                                          targetUrl={"/teamproject/post"}
                                           aprvType={12}
-                                          successUrl={"/employee/list"}>
+                                          successUrl={"/teamproject"}>
                 </ApprovalMoal></> : <> </> }
 
 
 
         </div>
 
-        {/*!-- 결제 모달 Start -->*/}
+        {/*!-- 결제 모달 Start -->
         <div class="approv_modal">
 
             <form class="Approv_form">
                 <div class="modal">
-                    {/*!-- 1 -->*/}
                     <div class="section">
                         <div class="amodalTitle">결제요청내용</div>
                         <textarea class="aprv_cont"></textarea>
 
                     </div>
-                    {/*!-- 2 -->*/}
                     <div class="section">
                         <div class="amodalTitle">전체사원리스트</div>
                         <div class="aprvList">
@@ -189,14 +191,7 @@ export default function TeamProjectMain( props ){
                                 <span class="apLv">직급</span>
                                 <span class="apDeptEmp">이름</span>
                             </div>
-                            {/*!-- 사원목록 구역 Start -->*/}
                             <div class="aprvListContentBox">
-                                {/*!-- 반복 Start -->*/}
-                                {/*<div class="aprvListContent">
-                                    <span class="apDept">인사</span>
-                                    <span class="apLv">부장</span>
-                                    <span class="apDeptEmp">김아무개</span>
-                                </div>*/}
                                 {
                                     aprvList.map((emp) => {
                                         let findEle = selectList.find((em) => emp.empNo === em.empNo);
@@ -214,11 +209,9 @@ export default function TeamProjectMain( props ){
                                         );
                                     })
                                 }
-                                {/*<!-- 반복구간 e -->*/}
                             </div>
                         </div>
                     </div>
-                    {/*!-- 3-->*/}
                     <div class="section">
                         <div class="amodalTitle">결제요청리스트</div>
                         <div class="aprvList reqlist">
@@ -227,14 +220,7 @@ export default function TeamProjectMain( props ){
                                 <span class="apLv">직급</span>
                                 <span class="apDeptEmp">이름</span>
                             </div>
-                            {/*<!-- 사원목록  -->*/}
                             <div class="aprvListContentBox">
-                                {/*<!-- 선택사원 표시 구역 -->*/}
-                                {/*<div class="aprvListContent">
-                                    <span class="apDept">인사</span>
-                                    <span class="apLv">부장</span>
-                                    <span class="apDeptEmp">김아무개</span>
-                                </div>*/}
                                 {
                                     selectList.map( (emp,index)=>(
                                         <div className="aprvListContent" onClick={
@@ -249,7 +235,6 @@ export default function TeamProjectMain( props ){
                                     ) )
                                 }
 
-                                {/*<!-- 선택사원 표시 구역 e -->*/}
                             </div>
                         </div>
                         <div class="aprvBtnBox">
@@ -260,6 +245,7 @@ export default function TeamProjectMain( props ){
                 </div>
             </form>
         </div>
+        */}
 
     </>)
 }
