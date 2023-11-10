@@ -31,8 +31,7 @@ public class ProjectEntity extends BaseTime {
     private String pjtSt;      // 프로젝트 시작날짜
     @Column
     private String pjtEND;     // 프로젝트 기한
-    @Column(nullable = false)
-    @ColumnDefault("1")         // 프로젝트 상태 디폴트값(1 = 진행중)
+    @Column(nullable = false, columnDefinition = "int default 1")        // 프로젝트 상태 디폴트값(1 = 진행중)
     private int pjtSta;        // 프로젝트 상태
     @ToString.Exclude
     @ManyToOne
