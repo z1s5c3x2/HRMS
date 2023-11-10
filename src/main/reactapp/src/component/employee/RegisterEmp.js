@@ -3,12 +3,12 @@ import styles from '../../css/employee.css';
 import {useImperativeHandle, useEffect, useState} from "react";
 import axios from "axios";
 import css1 from "../../css/employee.css"
-import ApprovalMoal from "./ApprovalMoal";
+import ApprovalModal from "../approval/ApprovalModal";
 
 export default function RegisterEmp(props) {
     /*모달 호출 선언 필요*/
     const [isOn, setIsOn] = useState(false)
-    function onModal(e) {
+    const modalController = (e)=> {
         //console.log( aprovalInfo )
         //document.querySelector('.approv_modal').style.display = 'flex';
         setIsOn(!isOn)
@@ -86,17 +86,18 @@ export default function RegisterEmp(props) {
                     </select>
                 </div>
                 <div class="eregBtnBox">
-                    <button onClick={onModal} class="btn01" type="button">사 원 정 보 저 장</button>
+                    <button onClick={modalController} class="btn01" type="button">사 원 정 보 저 장</button>
                 </div>
             </div>
 
         </div>
         {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
-        { isOn ? <> <ApprovalMoal data={aprovalInfo}
-                                  targetUrl={"/employee/postEmp"}
-                                  aprvType={1}
-                                  successUrl={"/employee/list"}>
-        </ApprovalMoal></> : <> </> }
+        { isOn ? <> <ApprovalModal data={aprovalInfo}
+                                   aprvType={1}
+                                   targetUrl={"/employee/postEmp"}
+                                   successUrl={"/employee/list"}
+                                   modalControll={modalController}>
+        </ApprovalModal></> : <> </> }
 
     </>)
 }
