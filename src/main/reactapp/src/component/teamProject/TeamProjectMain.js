@@ -13,6 +13,13 @@ import Button from "@mui/material/Button";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 // -----------------------//
 dayjs.locale('ko');
 
@@ -48,13 +55,6 @@ export default function TeamProjectMain( props ){
     const [selectedSDate, setSelectedSDate] = useState(null);
     const [selectedEDate, setSelectedEDate] = useState(null);
 
-    /*
-    // 실제 axios로 보낼 데이터
-    const [approvalRequest, setApprovalRequest] = useState({
-        aprvType:12,        // 12 : 프로젝트 등록
-        empNo:"2311001",    // 세션에서 받아올 empNo
-    })
-    */
 
     // 결제 요청받을 사원 리스트 저장
     const [selectList, setSelectList] = useState([])
@@ -71,17 +71,6 @@ export default function TeamProjectMain( props ){
             })
     }, []);
 
-    /*
-    //결제받을 사원  클릭시 리스트에서 제외
-    const removeItem = (getIndex) => {
-        // filter 함수를 사용하여 특정 인덱스의 요소를 제거
-        const updateList = selectList.filter((item, index) => (
-            index !== getIndex
-        ));
-        setSelectList(updateList);
-    };
-    */
-
     // input 값이 입력되면 그 값을 appovalInfo에 저장하는 함수
     const updateApprovalInfo = (e) =>{
         projectInfo.pjtName = e.target.value;
@@ -96,28 +85,27 @@ export default function TeamProjectMain( props ){
         console.log(projectInfo);
     }, [selectedSDate, selectedEDate])
 
-    /*
-    //결제 요청 버튼시 실행되는 함수
-    const submitApproval = (e)=>{
-        // 결제받을 사원 리스트 id만 추출
-        approvalRequest.approvers = selectList.map( s =>{
-            return s.empNo
-        })
-        // axios로 보낼 사원 데이터 key:data로 저장
-        approvalRequest.data = projectInfo
+    /* 사원 직급설정 함수 */
+    function getrankLabel(empRk) {
+        switch (empRk) {
+          case 1:
+            return "사원";
+          case 2:
+            return "주임";
+          case 3:
+            return "대리";
+          case 4:
+            return "과장";
+          case 5:
+            return "팀장";
+          case 6:
+            return "부장";
+          default:
+            return "직급";
+        }
+      }
 
-        //console.log( approvalRequest )
-        axios
-            .post("/teamproject/post",approvalRequest)
-            .then( (r) => {
-                console.log( r )
-                window.location.reload();
-             })
-            .catch( (e) =>{
-                console.log( e )
-            })
-    }
-*/
+
 
 
     return(<>
