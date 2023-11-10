@@ -17,21 +17,15 @@ dayjs.locale('ko');
 
 
 export default function TeamProjectMain( props ){
+    /*모달 호출 선언 필요*/
+    const [isOn, setIsOn] = useState(false)
+
     // 사원 직급 배열
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
     // 결재 모달창 여는 함수
     function onModal(e) {
         document.querySelector('.approv_modal').style.display = 'flex';
-    }
-
-    // 결재 모달창 닫는 함수
-    function closeModal(e) {
-        document.querySelector('.approv_modal').style.display = 'none';
-    }
-
-    // PM사원 설정 모달창 여는 함수
-    function onModal2(e) {
-        document.querySelector('.approv_modal2').style.display = 'flex';
+        //setIsOn(!isOn)
     }
 
     // 인사팀 전체 리스트
@@ -163,9 +157,15 @@ export default function TeamProjectMain( props ){
                 <div class="eregBtnBox">
                     <button class="btn01" type="button" onClick={onModal}>프로젝트팀등록</button>
                 </div>
-
-
             </div>
+            {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
+                { isOn ? <> <ApprovalMoal data={projectInfo}
+                                          targetUrl={"/employee/postEmp"}
+                                          aprvType={12}
+                                          successUrl={"/employee/list"}>
+                </ApprovalMoal></> : <> </> }
+
+
 
         </div>
 
@@ -261,97 +261,5 @@ export default function TeamProjectMain( props ){
             </form>
         </div>
 
-
-        {/*!-- PM사원 설정 모달 Start -->*/}
-        <div class="approv_modal2" style={{ display : 'none' }}>
-
-            <form class="Approv_form">
-                <div class="modal">
-                    {/*!-- 1 -->*/}
-                    <div class="section">
-                        <div class="amodalTitle">결제요청내용</div>
-                        <textarea class="aprv_cont"></textarea>
-
-                    </div>
-                    {/*!-- 2 -->*/}
-                    <div class="section">
-                        <div class="amodalTitle">전체사원리스트</div>
-                        <div class="aprvList">
-                            <div class="aprvListHeader">
-                                <span class="apDept">부서</span>
-                                <span class="apLv">직급</span>
-                                <span class="apDeptEmp">이름</span>
-                            </div>
-                            {/*!-- 사원목록 구역 Start -->*/}
-                            <div class="aprvListContentBox">
-                                {/*!-- 반복 Start -->*/}
-                                {/*<div class="aprvListContent">
-                                    <span class="apDept">인사</span>
-                                    <span class="apLv">부장</span>
-                                    <span class="apDeptEmp">김아무개</span>
-                                </div>*/}
-                                {
-                                    aprvList.map((emp) => {
-                                        let findEle = selectList.find((em) => emp.empNo === em.empNo);
-                                        return (
-                                            <div className= {"aprvListContent"+( findEle ? " selectEmployee": "")}
-                                                 onClick={(e) => {
-                                                if (!findEle) {
-                                                    setSelectList([...selectList, emp]);
-                                                }
-                                            }}>
-                                                <span className="apDept">인사</span>
-                                                <span className="apLv">{rkList[emp.empRk]}</span>
-                                                <span className="apDeptEmp">{emp.empName}</span>
-                                            </div>
-                                        );
-                                    })
-                                }
-                                {/*<!-- 반복구간 e -->*/}
-                            </div>
-                        </div>
-                    </div>
-                    {/*!-- 3-->*/}
-                    <div class="section">
-                        <div class="amodalTitle">결제요청리스트</div>
-                        <div class="aprvList reqlist">
-                            <div class="aprvListHeader">
-                                <span class="apDept">부서</span>
-                                <span class="apLv">직급</span>
-                                <span class="apDeptEmp">이름</span>
-                            </div>
-                            {/*<!-- 사원목록  -->*/}
-                            <div class="aprvListContentBox">
-                                {/*<!-- 선택사원 표시 구역 -->*/}
-                                {/*<div class="aprvListContent">
-                                    <span class="apDept">인사</span>
-                                    <span class="apLv">부장</span>
-                                    <span class="apDeptEmp">김아무개</span>
-                                </div>*/}
-                                {
-                                    selectList.map( (emp,index)=>(
-                                        <div className="aprvListContent" onClick={
-                                            (e)=>{
-                                                removeItem(index)
-                                            }
-                                        }>
-                                            <span className="apDept">인사</span>
-                                            <span className="apLv"> {rkList[emp.empRk]} </span>
-                                            <span className="apDeptEmp">{emp.empName} </span>
-                                        </div>
-                                    ) )
-                                }
-
-                                {/*<!-- 선택사원 표시 구역 e -->*/}
-                            </div>
-                        </div>
-                        <div class="aprvBtnBox">
-                            <button onClick="" class="btn02" type="button">취 소</button>
-                            <button onClick={submitApproval} class="btn02" type="button">결제요청하기</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
     </>)
 }
