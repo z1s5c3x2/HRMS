@@ -10,6 +10,8 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import RegisterEmp from "./RegisterEmp";
+import {Link} from "react-router-dom";
+import CellOrInput from "../publiccomponent/CellOrInput";
 
 export default function EmployeeList() {
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
@@ -38,6 +40,7 @@ export default function EmployeeList() {
                 console.log( e )
             })
     }
+
     return (<>
         <div className="contentBox">
             <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">사원목록</span></div>
@@ -70,20 +73,21 @@ export default function EmployeeList() {
                             <TableCell align="center">전화번호 </TableCell>
                             <TableCell align="center">성별</TableCell>
                             <TableCell align="center">근무 상태</TableCell>
-                            <TableCell align="center">직급</TableCell>
+                            <TableCell align="center">프로젝트기한</TableCell>
                             <TableCell align="center">부서</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {empList.map((emp) => (
-                            <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                <TableCell align="center">{emp.empName}</TableCell>
-                                <TableCell align="center">{emp.empPhone}</TableCell>
-                                <TableCell align="center">{emp.empSex}</TableCell>
-                                <TableCell align="center">{ emp.empSta ? '재직':'휴직' }</TableCell>
-                                <TableCell align="center">{rkList[emp.empRk]}</TableCell>
-                                <TableCell align="center">{dptList[emp.dtpmNo-1]}</TableCell>
+                            <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                                    <TableCell align="center">{emp.empName}</TableCell>
+                                    <CellOrInput content={emp.empPhone} tagType={false} align="center"> </CellOrInput>
+                                    <TableCell align="center">{emp.empSex}</TableCell>
+                                    <TableCell align="center">{emp.empSta ? '재직' : '휴직'}</TableCell>
+                                    <TableCell align="center">{rkList[emp.empRk]}</TableCell>
+                                    <TableCell align="center">{dptList[emp.dtpmNo - 1]}</TableCell>
                             </TableRow>
+
                         ))}
                     </TableBody>
                 </Table>

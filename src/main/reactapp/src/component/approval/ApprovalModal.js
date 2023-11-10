@@ -4,24 +4,15 @@ import axios from "axios";
 
 export default function ApprovalModal(props)
 {
-    // 결제 타입
-    const [aprvType, setAprvType] = useState(props.aprvType)
-    //모달창 호출할때 기입한 데이터가 여기에 담김
-    const [ApprovalDetailsData, setApprovalDetailsData] = useState(props.data)
-    //입력 데이터아 맞는 url세팅
-    const [targetUrl, setTargetUrl] = useState(props.targetUrl)
-    //입력 데이터아 맞는 url세팅
-    const [successUrl, setSuccessUrl] = useState(props.successUrl)
     //저장이후 이동항 rul
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
     const [aprvList, setAprvList] = useState([]) // 인사팀 전체 리스트
     const [selectList, setSelectList] = useState([]) // 결제 요청받을 리스트 저장
     // 실제 axios로 보낼 데이터
     const [approvalRequest, setApprovalRequest] = useState({
-        aprvType:aprvType,
+        aprvType: props.aprvType,
         empNo:"2311001",
     })
-    const modalControll = props.modalControll
     //최초로 인사팀 전부 호출
     useEffect(() => {
         axios
@@ -41,23 +32,23 @@ export default function ApprovalModal(props)
         ));
         setSelectList(updateList);
     };
-    console.log( targetUrl )
-    console.log( ApprovalDetailsData )
+    /*console.log( props.targetUrl )
+    console.log( props.data )*/
     //결제 요청 버튼
     const submitApproval = (e)=>{
         // 결제받을 사원 리스트 id만 추출
         approvalRequest.approvers = selectList.map( s =>{
             return s.empNo
         })
-        approvalRequest.data = ApprovalDetailsData
+        approvalRequest.data = props.data
 
 
         axios
-            .post(targetUrl,approvalRequest)
+            .post(props.targetUrl,approvalRequest)
             .then( (r) => {
                 if(r.data)
                 {
-                    window.location.href=successUrl
+                    window.location.href=props.successUrl
                 }
             })
             .catch( (e) =>{
@@ -132,7 +123,7 @@ export default function ApprovalModal(props)
                                     <span class="apDeptEmp">김아무개</span>
                                 </div>*/}
                                 {
-                                    selectList.map( (emp,index)=>(
+                                    selectList.map( (emp,index) =>(
                                         <div className="aprvListContent" onClick={
                                             (e)=>{
                                                 removeItem(index)
@@ -149,7 +140,7 @@ export default function ApprovalModal(props)
                             </div>
                         </div>
                         <div className="aprvBtnBox">
-                            <button onClick={modalControll} className="btn02" type="button">취 소</button>
+                            <button onClick={props.modalControll} className="btn02" type="button">취 소</button>
                             <button onClick={submitApproval} className="btn02" type="button">결제요청하기</button>
                         </div>
                     </div>
