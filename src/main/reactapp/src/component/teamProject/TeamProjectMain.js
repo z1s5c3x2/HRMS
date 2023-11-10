@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import ApprovalModal from "../approval/ApprovalModal";
 // -----------------------//
 dayjs.locale('ko');
 
@@ -50,7 +51,8 @@ export default function TeamProjectMain( props ){
 
     // 결제 요청받을 사원 리스트 저장
     const [selectList, setSelectList] = useState([])
-
+    const onModal2 = (e) =>{}
+    const closeModal =  (e) =>{}
     //최초로 인사팀 전부 호출
     useEffect(() => {
         axios
@@ -159,11 +161,11 @@ export default function TeamProjectMain( props ){
                 </div>
             </div>
             {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
-                { isOn ? <> <ApprovalMoal data={projectInfo}
+                { isOn ? <> <ApprovalModal data={projectInfo}
                                           targetUrl={"/employee/postEmp"}
                                           aprvType={12}
                                           successUrl={"/employee/list"}>
-                </ApprovalMoal></> : <> </> }
+                </ApprovalModal></> : <> </> }
 
 
 

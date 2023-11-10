@@ -2,8 +2,10 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 
-export default function ApprovalMoal(props)
+export default function ApprovalModal(props)
 {
+    // 결제 타입
+    const [aprvType, setAprvType] = useState(props.aprvType)
     //모달창 호출할때 기입한 데이터가 여기에 담김
     const [ApprovalDetailsData, setApprovalDetailsData] = useState(props.data)
     //입력 데이터아 맞는 url세팅
@@ -16,10 +18,10 @@ export default function ApprovalMoal(props)
     const [selectList, setSelectList] = useState([]) // 결제 요청받을 리스트 저장
     // 실제 axios로 보낼 데이터
     const [approvalRequest, setApprovalRequest] = useState({
-        aprvType:1,
+        aprvType:aprvType,
         empNo:"2311001",
     })
-
+    const modalControll = props.modalControll
     //최초로 인사팀 전부 호출
     useEffect(() => {
         axios
@@ -147,7 +149,7 @@ export default function ApprovalMoal(props)
                             </div>
                         </div>
                         <div className="aprvBtnBox">
-                            <button onClick="" className="btn02" type="button">취 소</button>
+                            <button onClick={modalControll} className="btn02" type="button">취 소</button>
                             <button onClick={submitApproval} className="btn02" type="button">결제요청하기</button>
                         </div>
                     </div>
