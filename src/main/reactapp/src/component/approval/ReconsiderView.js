@@ -13,10 +13,15 @@ export default function ReconsiderView(props){
 
         axios.get( '/approval/getApprovalHistory' )
             .then( result => {
+                console.log( result.data );
                 setReconsiderList( result.data );
         })
 
     }, [])
+
+    const getApprovalType = r => {
+        reconsiderList
+    }
 
 
     /*
