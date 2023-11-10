@@ -2,6 +2,8 @@ package hrms.controller;
 
 
 
+import hrms.model.dto.ApprovalRequestDto;
+import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.SalaryDto;
 import hrms.service.Salary.SalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,10 @@ public class SalaryController {
     private SalaryService salaryService;
 
     @PostMapping("/post") // 급여 등록
-    public boolean slryWrite(@RequestBody SalaryDto salaryDto ){
-        return salaryService.slryWrite( salaryDto );
+    public boolean slryWrite(@RequestBody ApprovalRequestDto<SalaryDto> approvalRequestDto ){
+
+
+        return salaryService.slryWrite( approvalRequestDto );
     }
 
     // 2.

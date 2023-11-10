@@ -1,13 +1,16 @@
 package hrms.service.Salary;
 
 
+import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.LeaveRequestDto;
 import hrms.model.dto.SalaryDto;
+import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.LeaveRequestEntity;
 import hrms.model.entity.SalaryEntity;
 import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.SalaryEntityRepository;
+import hrms.service.approval.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -21,10 +24,23 @@ public class SalaryService {
     private SalaryEntityRepository salaryRepository;
     @Autowired
     private EmployeeEntityRepository employeeEntityRepository;
+    @Autowired
+    private ApprovalService approvalService;
 
 
     @Transactional
-    public boolean slryWrite(SalaryDto salaryDto) {
+    public boolean slryWrite(ApprovalRequestDto<SalaryDto> approvalRequestDto) {
+
+        // 결재 테이블 등록 메서드
+        // => 실행 후 aprv엔티티 객체 반환
+        ApprovalEntity approvalEntity = approvalService.postApproval(
+                approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
+                approvalRequestDto.getAprvCont(),   // 결재내용
+                approvalRequestDto.getApprovers()   // 검토자
+        );
+
+        SalaryDto salaryDto = approvalRequestDto.getData();
+
         // 1. 사원 번호(empNo)를 사용하여 EmployeeEntity를 찾습니다.
         String empNoString = salaryDto.getEmpNo();
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeEntityRepository.findByEmpNo(empNoString);
@@ -36,11 +52,15 @@ public class SalaryService {
             SalaryEntity salaryEntity = SalaryEntity.builder()
                     .slryDate(salaryDto.getSlryDate().plusDays(1))
                     .slryPay(salaryDto.getSlryPay())
+                    .aprvNo(approvalEntity)
                     .slryType(salaryDto.getSlryType())
                     .empNo(employeeEntity) // Optional을 사용하여 EmployeeEntity를 가져옵니다.
                     .build();
 
             salaryRepository.save(salaryEntity);
+
+            // 양방향
+            approvalEntity.getSalaryEntities().add(salaryEntity);
 
             if (salaryEntity.getSlryNo() >= 1) {
                 return true;
