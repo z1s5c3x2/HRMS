@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -13,14 +13,23 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="17a6a52e-a75e-4aa0-bad3-41443bbba459">
-      <console name="Connection" type="STANDARD" schema="" session="Main" />
+      <console name="Connection" type="STANDARD" schema="hrms" session="Main"><![CDATA[use hrms;
+
+select * from emp;
+select * from pjt_mng;
+delete from emp where emp_no = '2311110';]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="17a6a52e-a75e-4aa0-bad3-41443bbba459" object-ref="consoles/Connection" />
+    </open-files>
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="17a6a52e-a75e-4aa0-bad3-41443bbba459" dataset="hrms.emp" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
