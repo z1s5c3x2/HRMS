@@ -19,9 +19,9 @@ export default function ReconsiderView(props){
 
     }, [])
 
-    const getApprovalType = r => {
+    /*const getApprovalType = r => {
         reconsiderList
-    }
+    }*/
 
 
     /*
