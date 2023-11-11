@@ -34,9 +34,10 @@ public class SalaryEntity extends BaseTime {
     private int slryPay;                // 3. 지급 금액
 
 
-    @Max(6)
+    @Max(7)
+    @Min(1)
     @Column()
-    private int slryType;               // 4. 지급유형 ( 1:기본급/2:정기상여/3:특별상여/4:성과금/5:명절휴가비/6:퇴직금)
+    private int slryType;               // 4. 지급유형 ( 1:기본급/2:정기상여/3:특별상여/4:성과금/5:명절휴가비/6:퇴직금/ 7:경조사비/8:연가보상비 )
 
     @ToString.Exclude
     @JoinColumn(name="empNo")
