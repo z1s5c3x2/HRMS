@@ -39,6 +39,7 @@ import EmployeeList from "./employee/EmployeeList";
 
 /* Login import */
 import Login from "./member/Login";
+import UpdateEmployee from "./employee/UpdateEmployee";
 
 export default function Index( props ){
     return(<>
@@ -61,7 +62,7 @@ export default function Index( props ){
                             {/* Employee*/}
                                 <Route path='/employee/list' element={<EmployeeList/>} />
                                 <Route path='/employee/register' element={<RegisterEmp/>} />
-
+                                <Route path='/employee/update' element={<UpdateEmployee/>} />
 
                             {/* Salary*/}
                                 <Route path='/salary' element={<SalaryMain/>} />

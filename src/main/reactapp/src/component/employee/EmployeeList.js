@@ -79,9 +79,9 @@ export default function EmployeeList() {
                     </TableHead>
                     <TableBody>
                         {empList.map((emp) => (
-                            <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                            <TableRow component={Link} to={"/employee/update?empNo="+emp.empNo} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                                     <TableCell align="center">{emp.empName}</TableCell>
-                                    <CellOrInput content={emp.empPhone} tagType={false} align="center"> </CellOrInput>
+                                    <TableCell align="center"> {emp.empPhone} </TableCell>
                                     <TableCell align="center">{emp.empSex}</TableCell>
                                     <TableCell align="center">{emp.empSta ? '재직' : '휴직'}</TableCell>
                                     <TableCell align="center">{rkList[emp.empRk]}</TableCell>
