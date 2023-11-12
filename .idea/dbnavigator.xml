@@ -24,9 +24,7 @@ delete from emp where emp_no = '2311110';]]></console>
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="17a6a52e-a75e-4aa0-bad3-41443bbba459" object-ref="consoles/Connection" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="17a6a52e-a75e-4aa0-bad3-41443bbba459" dataset="hrms.emp" active-filter-id="" />

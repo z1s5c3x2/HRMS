@@ -29,47 +29,28 @@ export default function TeamProjectMain( props ){
     /*모달 호출 선언 필요*/
     const [isOn, setIsOn] = useState(false)
 
-    // 사원 직급 배열
-    const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
     // 결재 모달창 여는 함수
     function onModal(e) {
         //document.querySelector('.approv_modal').style.display = 'flex';
         setIsOn(!isOn)
     }
-
-    function onModal2(e){
-        document.querySelector('.approv_modal').style.display = 'flex';
-    }
-
-    // 인사팀 전체 리스트
-    const [aprvList, setAprvList] = useState([])
-
     // 프로젝트팀 데이터
     const [projectInfo, setProjectInfo] = useState({
         pjtName : null,
         pjtSt : null,
         pjtEND : null,
-        empNo : "2311002"
+        empNo : null
      });
     // 날짜 데이터
     const [selectedSDate, setSelectedSDate] = useState(null);
     const [selectedEDate, setSelectedEDate] = useState(null);
 
+    // 사원정보 데이터
+    const [empNumber, setEmpNumber] = useState('');
+    const [empName, setEmpName] = useState('');
 
     // 결제 요청받을 사원 리스트 저장
     const [selectList, setSelectList] = useState([])
-
-    //최초로 인사팀 전부 호출
-    useEffect(() => {
-        axios
-            .get("/employee/getaprvlist")
-            .then( (r) => {
-                setAprvList(r.data)
-             })
-            .catch( (e) =>{
-                console.log( e )
-            })
-    }, []);
 
     // input 값이 입력되면 그 값을 appovalInfo에 저장하는 함수
     const updateApprovalInfo = (e) =>{
@@ -103,8 +84,23 @@ export default function TeamProjectMain( props ){
           default:
             return "직급";
         }
-      }
+    }
 
+    // 사원데이터 상태변수 관리
+    let [ rows , setRows ] = useState( [ ] )
+
+    useEffect( ()=>{
+          axios.get('/employee/findAll').then( r =>{
+                    console.log(r);
+                  setRows(r.data); // 응답받은 값을 rows에 저장
+               });
+    } , []);
+
+    // 프로젝트팀 매니저가 변경될때마다 projectInfo 값을 바꿔줌
+    useEffect( () =>{
+        projectInfo.empNo = empNumber;
+        console.log(projectInfo);
+    }, [empNumber])
 
 
 
@@ -125,8 +121,7 @@ export default function TeamProjectMain( props ){
                 <div class="eregInputBox pmBox">
                     <div class="input_title " className="inputPm">프로젝트매니저</div>
                     <div class="input_box">
-                        <input type="text" class="pmNo" name="empNo"/>
-                        <span><button onClick={onModal2} class="pmBtn" type="button">사원찾기</button></span>
+                        <input value={empName} type="text" class="pmNo" name="empNo"/>
                     </div>
                 </div>
                 <div class="eregInputBox">
@@ -163,25 +158,49 @@ export default function TeamProjectMain( props ){
                                           aprvType={12}
                                           successUrl={"/teamproject"}>
                 </ApprovalModal></> : <> </> }
+            {/* 사원리스트 출력 공간 */}
+            <div>
+                <h3> 사원 목록 </h3>
+                <TableContainer component={Paper}>
+                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                     {/* 테이블 제목 구역 */}
+                       <TableHead>
+                         <TableRow>
+                           <TableCell align="right">사원번호</TableCell>
+                           <TableCell align="right">이름</TableCell>
+                           <TableCell align="right">전화번호</TableCell>
+                           <TableCell align="right">사원성별</TableCell>
+                            <TableCell align="right">계좌번호</TableCell>
+                            <TableCell align="right">직급</TableCell>
+                         </TableRow>
+                       </TableHead>
+                       {/* 테이블 내용 구역 */}
+                       <TableBody>
+                         {rows.map((row) => (
+                           <TableRow
+                             onClick={() =>{
+                             setEmpName(row.empName);
+                             setEmpNumber(row.empNo);
+                             }}
+                             key={row.name}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 
+                             <TableCell  align="right">{row.empNo}</TableCell>
+                             <TableCell  align="right">{row.empName}</TableCell>
+                             <TableCell  align="right">{row.empPhone}</TableCell>
+                             <TableCell  align="right">{row.empSex}</TableCell>
+                             <TableCell  align="right">{row.empAcn}</TableCell>
+                             <TableCell  align="right">{getrankLabel(row.empRk)}</TableCell>
 
+                           </TableRow>
+                         ))}
+                       </TableBody>
+                     </Table>
+                </TableContainer>
 
+            </div>
         </div>
 
-        {/*!-- 사원리스트 모달 Start -->*/
-        <div class="approv_modal">
-
-            <form class="Approv_form">
-                <div class="modal">
-                    {
-                       <EmployeeList />
-                    }
-
-                    {/* 삭제된 곳 */}
-                </div>
-            </form>
-        </div>
-        }
 
     </>)
 }
