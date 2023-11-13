@@ -4,6 +4,7 @@ package hrms.controller;
 
 import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.EmployeeDto;
+import hrms.model.dto.PageDto;
 import hrms.model.dto.SalaryDto;
 import hrms.service.Salary.SalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,12 @@ public class SalaryController {
 
     // 2.
     @GetMapping("/getAll") // ( 인사팀 전용 ) 전체 급여지급 목록내역 확인하기
-    public List<SalaryDto> slryGetAll(){
+    public PageDto slryGetAll(@RequestParam int page  ,
+                              @RequestParam String key ,
+                              @RequestParam String keyword ,
+                              @RequestParam int view ){
 
-        return salaryService.slryGetAll();
+        return salaryService.slryGetAll(page , key , keyword , view);
     }
     @GetMapping("/get") // ( 인사팀 전용 ) 전체 급여지급 목록에서 선택된 급여 상세보기
     public SalaryDto slryGet(int slryNo){
@@ -37,9 +41,9 @@ public class SalaryController {
         return salaryService.slryGet(slryNo);
     }
     @GetMapping("/getMe") // SalaryMain 페이지에서 세션을 통한 본인 사번으로 본인정보 출력
-    public List<SalaryDto> slryGetMeAll(String empNo){
+    public PageDto slryGetMeAll(@RequestParam int page  , @RequestParam int view , @RequestParam String empNo){
 
-        return salaryService.slryGetMeAll(empNo);
+        return salaryService.slryGetMeAll(page , view , empNo);
     }
 
     // 3.

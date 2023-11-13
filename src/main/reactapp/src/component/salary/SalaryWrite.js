@@ -51,11 +51,11 @@ const data = {
     // Use Axios to send the data to the server
     axios.post("/salary/post", data)
       .then((response) => {
-        console.log("Data has been successfully sent.", response);
+        console.log("데이터가 성공적으로 전송되었습니다.", response);
         // Perform any actions or redirection on success.
       })
       .catch((error) => {
-        console.error("Error occurred while sending data.", error);
+        console.error("데이터 전송 중 오류가 발생했습니다.", error);
         // You can add error handling logic here.
       });
   };
@@ -110,6 +110,7 @@ const data = {
       <div>
         {/* 급여지급 관련 입력구역 */}
         <form className="boardForm">
+
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DesktopDatePicker className="valueBox" size="small" value={selectedDate} onChange={(date) => setSelectedDate(date)} renderInput={(params) => <TextField {...params} label="날짜" />} format="YYYY-MM-DD" />
           </LocalizationProvider>

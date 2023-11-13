@@ -3,6 +3,7 @@ package hrms.service.Salary;
 
 import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.LeaveRequestDto;
+import hrms.model.dto.PageDto;
 import hrms.model.dto.SalaryDto;
 import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.EmployeeEntity;
@@ -12,11 +13,15 @@ import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.SalaryEntityRepository;
 import hrms.service.approval.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SalaryService {
@@ -72,12 +77,24 @@ public class SalaryService {
 
 
     @Transactional
-    public List<SalaryDto> slryGetAll(){
+    public PageDto slryGetAll( int page , String key ,
+                               String keyword , int view ){
         // 1. 모두 출력
-        List<SalaryEntity> salaryEntities = salaryRepository.findAll();
+        // 페이징처리
+        Pageable pageable = PageRequest.of( page-1 , view  );
+        // 1. 모든 게시물 호출한다.
+        Page<SalaryEntity> salaryEntities = salaryRepository.findBySearch( key , keyword , pageable );
+
         List<SalaryDto> salaryDtos = new ArrayList<>();
         salaryEntities.forEach( e ->{ salaryDtos.add( e.allToDto()); });
-        return salaryDtos;
+
+        // 5. pageDto 구성해서 axios에게 전달
+        PageDto<SalaryDto> pageDto = PageDto.<SalaryDto>builder()
+                .totalPages(salaryEntities.getTotalPages()) // 총페이지
+                .totalCount(salaryEntities.getTotalElements()) // 검색된 row개수
+                .someList( salaryEntities.stream().map(slry -> slry.allToDto()).collect(Collectors.toList()) )
+                .build();
+        return pageDto;
     }
     @Transactional
     public SalaryDto slryGet( int slryNo ){
@@ -99,16 +116,25 @@ public class SalaryService {
         }
         return null;
     }
-    public List<SalaryDto> slryGetMeAll(String empNo) {
+    public PageDto slryGetMeAll(int page , int view ,String empNo) {
+        // 페이징처리
+        Pageable pageable = PageRequest.of( page-1 , view  );
+
         // 1. 해당 empNo에 맞는 엔티티 호출
-        List<SalaryEntity> salaryEntities = salaryRepository.findByEmpNoEmpNo(empNo);
+        Page<SalaryEntity> salaryEntities = salaryRepository.findByEmpNo_EmpNo(empNo , pageable);
 
         List<SalaryDto> salaryDtos = new ArrayList<>();
         salaryEntities.forEach(e -> {
             salaryDtos.add(e.allToDto());
         });
+        // 5. pageDto 구성해서 axios에게 전달
+        PageDto<SalaryDto> pageDto = PageDto.<SalaryDto>builder()
+                .totalPages(salaryEntities.getTotalPages()) // 총페이지
+                .totalCount(salaryEntities.getTotalElements()) // 검색된 row개수
+                .someList( salaryEntities.stream().map(slry -> slry.allToDto()).collect(Collectors.toList()) )
+                .build();
 
-        return salaryDtos;
+        return pageDto;
     }
     // 3.
     public boolean slryUpdate( SalaryDto salaryDto ){
