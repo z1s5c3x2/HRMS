@@ -4,6 +4,7 @@ import hrms.model.dto.TeamMemberDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -21,10 +22,10 @@ public class TeamMemberEntity extends BaseTime{
     @ManyToOne
     private EmployeeEntity empNo;            // 사원번호 (fk)
     @Column
-    private String tmSt;     // 투입 날짜
+    private LocalDate tmSt;     // 투입 날짜
 
     @Column
-    private String tmEnd;    // 투입 종료 날짜
+    private LocalDate tmEnd;    // 투입 종료 날짜
 
     @ToString.Exclude
     @ManyToOne

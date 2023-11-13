@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import hrms.model.entity.ProjectEntity;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,8 +17,8 @@ public class ProjectDto {
     private String empNo;    // 프로젝트 관리자 사원번호(fk)
     private String empName;    // 프로젝트 관리자 사원이름
     private String pjtName;    // 프로젝트명
-    private String pjtSt;      // 프로젝트 시작날짜
-    private String pjtEND;     // 프로젝트 기한
+    private LocalDate pjtSt;      // 프로젝트 시작날짜
+    private LocalDate pjtEND;     // 프로젝트 기한
     private int pjtSta;        // 프로젝트 상태
     private int aprvNo;            // 결재번호(fk)
 
@@ -30,8 +31,8 @@ public class ProjectDto {
     public ProjectEntity saveToEntity(){
         return ProjectEntity.builder()
                 .pjtName(this.pjtName)
-                .pjtSt(this.pjtSt)
-                .pjtEND(this.pjtEND)
+                .pjtSt(this.pjtSt.plusDays(1))
+                .pjtEND(this.pjtEND.plusDays(1))
                 .build();
     }
 

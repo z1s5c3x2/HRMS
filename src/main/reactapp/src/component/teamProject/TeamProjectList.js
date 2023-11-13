@@ -126,10 +126,13 @@ export default function TeamProjectList(props){
                     <TableRow
                       className="tbody_tr"
                       key={row.name}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell align="center">{row.pjtNo}</TableCell>
-                      <TableCell align="center">{row.pjtName}</TableCell>
+                      <TableCell align="center">
+                        <Link to={'/teamproject/teammember/print?pjtNo=' + row.pjtNo}>
+                            {row.pjtName}
+                        </Link>
+                      </TableCell>
                       <TableCell align="center">{row.empName}</TableCell>
                       <TableCell align="center">{row.pjtSt}</TableCell>
                       <TableCell align="center">{row.pjtEND}</TableCell>
