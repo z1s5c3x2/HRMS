@@ -37,8 +37,8 @@ export default function TeamMemberWrite( props ){
     // 프로젝트팀 팀원 데이터
     const [teamMemberInfo, setteamMemberInfo] = useState({
         tmSt : null,
-        pjtNo : 1,
-        empNo : "2311002"
+        pjtNo : 0,
+        empNo : null,
      });
     // 날짜 데이터
     const [selectedSDate, setSelectedSDate] = useState(null);
@@ -80,12 +80,12 @@ export default function TeamMemberWrite( props ){
     // 사원데이터 상태변수 관리
     let [ rows , setRows ] = useState( [ ] )
 
-    useEffect( ()=>{
+    /*useEffect( ()=>{
           axios.get('/employee/findAll').then( r =>{
                     console.log(r);
                   setRows(r.data); // 응답받은 값을 rows에 저장
                });
-    } , []);
+    } , []);*/
 
     // 프로젝트팀 팀원이 변경될때마다 teamMemberInfo 값을 바꿔줌
     useEffect( () =>{
@@ -97,8 +97,10 @@ export default function TeamMemberWrite( props ){
     let [ projectTeam , setProjectTeam ] = useState( [ ] )
 
     useEffect( ()=>{
-          axios.get('/getSelectAll', { approval : { approval : 1 } }).then( r =>{
-                    console.log(r);
+          axios
+            .get('/teamproject/getSelectAll', { params : { approval : 1 } })
+            .then( r =>{
+                  console.log(r.data);
                   setProjectTeam(r.data); // 응답받은 값을 projectTeam에 저장
                });
     } , []);
@@ -150,12 +152,11 @@ export default function TeamMemberWrite( props ){
                 </ApprovalModal></> : <> </> }
         </div>
         <div>
-            {/* 사원리스트 출력 공간 */}
+            { /*사원리스트 출력 공간 */}
                 <div>
                     <h3> 사원 목록 </h3>
                     <TableContainer component={Paper}>
                          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                         {/* 테이블 제목 구역 */}
                            <TableHead>
                              <TableRow>
                                <TableCell align="right">사원번호</TableCell>
@@ -166,7 +167,6 @@ export default function TeamMemberWrite( props ){
                                 <TableCell align="right">직급</TableCell>
                              </TableRow>
                            </TableHead>
-                           {/* 테이블 내용 구역 */}
                            <TableBody>
                              {rows.map((row) => (
                                <TableRow
