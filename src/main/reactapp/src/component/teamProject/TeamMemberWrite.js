@@ -13,6 +13,13 @@ import Button from "@mui/material/Button";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 // -----------------------//
 dayjs.locale('ko');
 
@@ -25,11 +32,6 @@ export default function TeamMemberWrite( props ){
     function onModal(e) {
         //document.querySelector('.approv_modal').style.display = 'flex';
         setIsOn(!isOn)
-    }
-
-    // 사원찾기 모달창 여는 함수
-    function onModal2(e){
-        document.querySelector('.approv_modal').style.display = 'flex';
     }
 
     // 프로젝트팀 팀원 데이터
@@ -47,6 +49,66 @@ export default function TeamMemberWrite( props ){
         console.log(teamMemberInfo);
     }, [selectedSDate])
 
+    // 사원정보 데이터
+    const [empNumber, setEmpNumber] = useState('');
+    const [empName, setEmpName] = useState('');
+
+    // 프로젝트팀 데이터
+    const [pjtNumber, setPjtNumber] = useState('');
+    const [pjtName, setPjtName] = useState('');
+
+    /* 사원 직급설정 함수 */
+    function getrankLabel(empRk) {
+        switch (empRk) {
+          case 1:
+            return "사원";
+          case 2:
+            return "주임";
+          case 3:
+            return "대리";
+          case 4:
+            return "과장";
+          case 5:
+            return "팀장";
+          case 6:
+            return "부장";
+          default:
+            return "직급";
+        }
+    }
+
+    // 사원데이터 상태변수 관리
+    let [ rows , setRows ] = useState( [ ] )
+
+    useEffect( ()=>{
+          axios.get('/employee/findAll').then( r =>{
+                    console.log(r);
+                  setRows(r.data); // 응답받은 값을 rows에 저장
+               });
+    } , []);
+
+    // 프로젝트팀 팀원이 변경될때마다 teamMemberInfo 값을 바꿔줌
+    useEffect( () =>{
+        teamMemberInfo.empNo = pjtNumber;
+        console.log(teamMemberInfo);
+    }, [pjtNumber])
+
+    // 프로젝트팀 상태변수 관리
+    let [ projectTeam , setProjectTeam ] = useState( [ ] )
+
+    useEffect( ()=>{
+          axios.get('/getSelectAll', { approval : { approval : 1 } }).then( r =>{
+                    console.log(r);
+                  setProjectTeam(r.data); // 응답받은 값을 projectTeam에 저장
+               });
+    } , []);
+
+    // 프로젝트팀이 변경될때마다 teamMemberInfo 값을 바꿔줌
+    useEffect( () =>{
+        teamMemberInfo.pjtNo = empNumber;
+        console.log(teamMemberInfo);
+    }, [empNumber])
+
     return(<>
         <div class="contentBox">
             <div class="pageinfo"><span class="lv0">프로젝트팀관리</span> > <span class="lv1">프로젝트팀 팀원등록</span></div>
@@ -55,8 +117,13 @@ export default function TeamMemberWrite( props ){
                 <div class="eregInputBox pmBox">
                     <div class="input_title " className="inputPm">프로젝트팀원</div>
                     <div class="input_box">
-                        <input type="text" class="empNo" name="empNo"/>
-                        <span><button onClick={onModal2} class="empBtn" type="button">사원찾기</button></span>
+                        <input type="text" value={empName} class="empNo" name="empNo"/>
+                    </div>
+                </div>
+                <div class="eregInputBox pmBox">
+                    <div class="input_title " className="inputPm">프로젝트팀</div>
+                    <div class="input_box">
+                        <input type="text" value={pjtName} class="pjtNo" name="pjtNo"/>
                     </div>
                 </div>
                 <div class="eregInputBox">
@@ -81,25 +148,93 @@ export default function TeamMemberWrite( props ){
                                           aprvType={15}
                                           successUrl={"/teamproject/teammember/write"}>
                 </ApprovalModal></> : <> </> }
+        </div>
+        <div>
+            {/* 사원리스트 출력 공간 */}
+                <div>
+                    <h3> 사원 목록 </h3>
+                    <TableContainer component={Paper}>
+                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                         {/* 테이블 제목 구역 */}
+                           <TableHead>
+                             <TableRow>
+                               <TableCell align="right">사원번호</TableCell>
+                               <TableCell align="right">이름</TableCell>
+                               <TableCell align="right">전화번호</TableCell>
+                               <TableCell align="right">사원성별</TableCell>
+                                <TableCell align="right">계좌번호</TableCell>
+                                <TableCell align="right">직급</TableCell>
+                             </TableRow>
+                           </TableHead>
+                           {/* 테이블 내용 구역 */}
+                           <TableBody>
+                             {rows.map((row) => (
+                               <TableRow
+                                 onClick={() =>{
+                                 setEmpName(row.empName);
+                                 setEmpNumber(row.empNo);
+                                 }}
+                                 key={row.name}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 
+                                 <TableCell  align="right">{row.empNo}</TableCell>
+                                 <TableCell  align="right">{row.empName}</TableCell>
+                                 <TableCell  align="right">{row.empPhone}</TableCell>
+                                 <TableCell  align="right">{row.empSex}</TableCell>
+                                 <TableCell  align="right">{row.empAcn}</TableCell>
+                                 <TableCell  align="right">{getrankLabel(row.empRk)}</TableCell>
 
+                               </TableRow>
+                             ))}
+                           </TableBody>
+                         </Table>
+                    </TableContainer>
+
+                </div>{/* 사원리스트 end */}
+
+                {/* 프로젝트팀 리스트 출력공간 */}
+                <div>
+                    <h3> 프로젝트 팀 목록 </h3>
+                    <TableContainer component={Paper}>
+                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                         {/* 테이블 제목 구역 */}
+                           <TableHead>
+                             <TableRow>
+                               <TableCell align="right">번호</TableCell>
+                               <TableCell align="right">프로젝트명</TableCell>
+                               <TableCell align="right">PM</TableCell>
+                               <TableCell align="right">프로젝트시작일</TableCell>
+                                <TableCell align="right">프로젝트기한</TableCell>
+                             </TableRow>
+                           </TableHead>
+                           {/* 테이블 내용 구역 */}
+                           <TableBody>
+                             {projectTeam.map((row) => (
+                               <TableRow
+                                 onClick={() =>{
+                                 setPjtName(row.pjtName);
+                                 setPjtNumber(row.pjtNo);
+                                 }}
+                                 key={row.name}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+
+                                 <TableCell  align="right">{row.pjtNo}</TableCell>
+                                 <TableCell  align="right">{row.pjtName}</TableCell>
+                                 <TableCell  align="right">{row.empPhone}</TableCell>
+                                 <TableCell  align="right">{row.empName}</TableCell>
+                                 <TableCell  align="right">{row.pjtSt}</TableCell>
+                                 <TableCell  align="right">{row.pjtEND}</TableCell>
+
+                               </TableRow>
+                             ))}
+                           </TableBody>
+                         </Table>
+                    </TableContainer>
+
+                </div>{/* 사원리스트 end */}
 
         </div>
 
-        {/*!-- 사원리스트 모달 Start -->*/
-        <div class="approv_modal">
-
-            <form class="Approv_form">
-                <div class="modal">
-                    {
-                       <EmployeeList />
-                    }
-
-                    {/* 삭제된 곳 */}
-                </div>
-            </form>
-        </div>
-        }
 
     </>)
 }
