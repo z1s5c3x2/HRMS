@@ -16,7 +16,7 @@ let currentMenu = location == '' ? 'employee' : location;
 
     return(<>
         <aside className="maside">
-        	<div className="logobox"><img src="../../logo_is.png"/></div>
+        	<div className="logobox"><Link to='/'><img src="../../logo_is.png"/></Link></div>
         		{/*-- 사이드 메뉴 --*/}
 
                 <ul className="nav">
@@ -26,7 +26,7 @@ let currentMenu = location == '' ? 'employee' : location;
                     <li className="tmenu">인사관리</li>
                     <li className="smenu"><Link to='/employee/list'>사원 조회</Link></li>
                     <li><Link to='/employee/register'>사원등록</Link></li>
-                    <li><Link to='/department/update'>사원 부서 변경</Link></li>
+                    <li><Link to='/employee/update'>사원 부서 변경</Link></li>
                     <li><Link to='/employee/register'>사원 직급 변경</Link></li>
                     <li><Link to='/employee/register'>사원 연차 조회</Link></li>
                     <li><Link to='/employee/register'>연차 등록</Link></li>
@@ -56,8 +56,8 @@ let currentMenu = location == '' ? 'employee' : location;
                 <>
                    <li className="tmenu">근태관리</li>
                    <li className="smenu"><Link to='/attendance'>전사원 근태리스트</Link></li>
-                   <li><Link to='/attendance'>개인근태캘린더</Link></li>
-                   <li><Link to='/attendance'>출결캘린더</Link></li>
+                   <li><Link to='/attendance/pcalendar'>나의근무현황캘린더</Link></li>
+                   <li><Link to='/attendance'>나의출결캘린더</Link></li>
                    <li><Link to='/attendance'>출결리스트</Link></li>
                    <li><Link to='/attendance'>병가신청</Link></li>
                    <li><Link to='/attendance'>휴직신청</Link></li>
