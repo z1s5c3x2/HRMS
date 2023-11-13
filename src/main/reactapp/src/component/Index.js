@@ -20,6 +20,7 @@ import AttendanceList from "./attendance/AttendanceList";
 
 /* Employee import */
 import RegisterEmp from "./employee/RegisterEmp";
+import EmployeeList from "./employee/EmployeeList";
 
 /* Salary import */
 import SalaryMain from "./salary/SalaryMain";
@@ -38,7 +39,9 @@ import TeamProjectList from "./teamProject/TeamProjectList";
 import TeamProjectMain from "./teamProject/TeamProjectMain";
 import TeamMemberWrite from "./teamProject/TeamMemberWrite";
 import TeamMemberList from "./teamProject/TeamMemberList";
-import EmployeeList from "./employee/EmployeeList";
+import TeamMemberUpdate from "./teamProject/TeamMemberUpdate";
+import TeamProjectUpdate from "./teamProject/TeamProjectUpdate";
+
 
 /* Login import */
 import Login from "./member/Login";
@@ -83,8 +86,10 @@ export default function Index( props ){
                             {/* TeamProject */}
                                 <Route path='/teamproject' element={<TeamProjectMain />} />
                                 <Route path='/teamproject/listAll' element={<TeamProjectList />} />
+                                <Route path='/teamproject/update' element={<TeamProjectUpdate />} />
                                 <Route path='/teamproject/teammember/write' element={<TeamMemberWrite />} />
                                 <Route path='/teamproject/teammember/print' element={<TeamMemberList />} />
+                                <Route path='/teamproject/teammember/update' element={<TeamMemberUpdate />} />
                              {/* Login */}
                                 <Route path='/member/login' element={<Login/>} />
                         </Routes >

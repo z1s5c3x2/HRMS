@@ -16,9 +16,20 @@ import * as React from 'react';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 // -------------------------------------------
+import ApprovalModal from "../approval/ApprovalModal";
 import styles from '../../css/Table.css';
 
 export default function TeamProjectList(props){
+
+    /*모달 호출 선언 필요*/
+    const [isOn, setIsOn] = useState(false)
+
+    // 결재 모달창 여는 함수
+    function onModal(e) {
+        //document.querySelector('.approv_modal').style.display = 'flex';
+        setIsOn(!isOn)
+    }
+
 
     // 컴포넌트 상태변수 (스프링에서 전달받은 객체)
     let [rows, setRows] = useState( {
@@ -30,6 +41,8 @@ export default function TeamProjectList(props){
     let [check, setCheck] = useState( [] )
     // 페이지 상태변수 관리
     const [page, setPage] = useState( 1 )
+    // 프로젝트팀번호 상태변수 관리
+    const [projectNum, setProjectNum] = useState( [] );
 
     useEffect( () => {
 
@@ -73,6 +86,13 @@ export default function TeamProjectList(props){
         setPage(value)
     }
 
+    // 삭제 버튼을 누르면 실행되는 함수
+    const projectDelete = (e)=>{
+        setProjectNum(e);
+        console.log(projectNum);
+        onModal();
+    }
+
 
 
     return(<>
@@ -104,7 +124,6 @@ export default function TeamProjectList(props){
                 value={3}
                 className="cb4"
                 onClick={(e) => checkOnlyOne(e.target)} /></span>
-
             </div>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -138,8 +157,12 @@ export default function TeamProjectList(props){
                       <TableCell align="center">{row.pjtEND}</TableCell>
                       <TableCell align="center">{row.pjtSta == 1 ? '진행중' : '완료'}</TableCell>
                       <TableCell align="center">
-                        <button type="button" > 수정 </button>
-                        <button type="button" > 삭제 </button>
+                        <button type="button" >
+                            <Link to={'/teamproject/update?pjtNo=' + row.pjtNo}>
+                                수정
+                            </Link>
+                        </button>
+                        <button onClick={ () => {projectDelete(row.pjtNo)} } type="button" > 삭제 </button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -149,24 +172,14 @@ export default function TeamProjectList(props){
             <div style = { {display: 'flex', justifyContent : 'center', margin: '10px'} }>
                 {/* count = 전체 페이지수, onChange : 페이지를 클릭했을때 생기는 이벤트 */}
                 <Pagination count={rows.totalPages} page={page} onChange={onPageSelect}/>
-                {/*
-                <div style = { {margin: '10px'} }>
-                    <select
-
-
-                    >
-                        <option value="btitle"> 제목 </option>
-                        <option value="bcontent"> 내용 </option>
-                    </select>
-                    <input type="text"
-
-
-                    />
-                    <button type="button"> 검색 </button>
-                </div>
-                */}
                 </div>
             </div>
         </div>
+        {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
+        { isOn ? <> <ApprovalModal data={projectNum}
+                                  targetUrl={"/approval/deleteAproval"}
+                                  aprvType={14}
+                                  successUrl={"/teamProject/listAll"}>
+        </ApprovalModal></> : <> </> }
     </>)
 }
