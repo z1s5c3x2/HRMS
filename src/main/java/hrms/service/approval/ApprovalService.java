@@ -17,10 +17,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ApprovalService {
@@ -247,7 +245,6 @@ public class ApprovalService {
                 case 3: return 3;   // 결재상태 : 검토중
 
             }
-
         }
         return -1;
     }
@@ -463,28 +460,51 @@ public class ApprovalService {
         // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( "2311004" );
 
-        // 개별 상신(결재)내역 전체 조회
-        List<ApprovalEntity> approvalList
-                = approvalRepository.findByAllempNo( optionalEmployeeEntity.get().getEmpNo() );
+        // 개별 결재내역 전체 조회
+        List<ApprovalLogEntity> approvalLogList
+                = approvalLogRepository.findByEmpNo( optionalEmployeeEntity.get() );
 
-        // 유효성 검사
-        // 값이 비어있으면 true / null이면 false
-        if( approvalList.isEmpty() )    return null;
-
+        /*
         // 변환할 DTO 리스트
         List<ApprovalDto> approvalDtos = new ArrayList<>();
+        */
 
-        approvalList.forEach( e -> {
+        // 이전 검토자에 대한 검토완료 여부 및 최초 검토여부 확인할 STACK 선언
 
+
+        // 검토자에 해당 되는 결재건 탐색
+        approvalLogList.stream().map( e -> {
+
+            // 본인이 검토를 완료했을 경우
+                // AplogSta(결재상태)   = 1:완료  2:반려
+            if( e.getAplogSta()==1 || e.getAplogSta()==2 ){
+
+            }
+            
+            // 해당 결재 건에 대한 다수의 검토자 결재여부 탐색 실시
+            for( int i=0; i<e.getAprvNo().getApprovalLogEntities().size(); i++ ){
+                // 탐색 중 본인에 해당되는 인덱스 식별
+                if( e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals("2311004") ){
+                    
+                     
+                    if( e.getAprvNo().getApprovalLogEntities().get(i).getAplogSta() != 3 ){
+                        
+                    }
+                }
+            }
+
+/*
             // 변환된 DTO 리스트 삽입
             approvalDtos.add( e.toApprovalDto() );
             // 마지막 추가된 DTO
             // => 현재 결재 진행상태를 확인하여 저장
-            approvalDtos.get( approvalDtos.size()-1 ).setApState( checkApprovalState( e ) );
+            approvalDtos.get( approvalDtos.size()-1 ).setApState( checkApprovalState( e ) );*/
 
-        });
+            return null;
 
-        return approvalDtos;
+        }).collect( Collectors.toList() );
+
+        return null;
     }
 
 
