@@ -8,6 +8,8 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +30,11 @@ public class ProjectEntity extends BaseTime {
     @Column
     private String pjtName;    // 프로젝트명
     @Column
-    private String pjtSt;      // 프로젝트 시작날짜
+    private LocalDate pjtSt;      // 프로젝트 시작날짜
     @Column
-    private String pjtEND;     // 프로젝트 기한
-    @Column(nullable = false, columnDefinition = "int default 1")        // 프로젝트 상태 디폴트값(1 = 진행중)
+    private LocalDate pjtEND;     // 프로젝트 기한
+    @Column       // 프로젝트 상태 디폴트값(1 = 진행중)
+    @ColumnDefault("1")
     private int pjtSta;        // 프로젝트 상태
     @ToString.Exclude
     @ManyToOne

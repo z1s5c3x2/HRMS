@@ -35,6 +35,7 @@ import LeaveRequestList from "./leaveRequest/LeaveRequestList";
 import TeamProjectList from "./teamProject/TeamProjectList";
 import TeamProjectMain from "./teamProject/TeamProjectMain";
 import TeamMemberWrite from "./teamProject/TeamMemberWrite";
+import TeamMemberList from "./teamProject/TeamMemberList";
 import EmployeeList from "./employee/EmployeeList";
 
 /* Login import */
@@ -80,6 +81,7 @@ export default function Index( props ){
                                 <Route path='/teamproject' element={<TeamProjectMain />} />
                                 <Route path='/teamproject/listAll' element={<TeamProjectList />} />
                                 <Route path='/teamproject/teammember/write' element={<TeamMemberWrite />} />
+                                <Route path='/teamproject/teammember/print' element={<TeamMemberList />} />
                              {/* Login */}
                                 <Route path='/member/login' element={<Login/>} />
                         </Routes >

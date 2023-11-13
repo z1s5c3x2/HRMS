@@ -3,6 +3,20 @@
     color: #9DB2BF;
 }
 
+.contentBox{
+    position : relative;
+    padding-bottom : 0px;
+}
+
+.contentBox2{
+    height : 300px;
+    overflow-y : scroll;
+}
+
+.selectBox{
+    display : flex;
+}
+
 
 /*----------------사원등록페이지 ()-------------------*/
 .eregInputBox .input_title{
@@ -27,7 +41,6 @@
 	width:70%;
 	padding-left:10px;
 	border:none;
-
 }
 
 

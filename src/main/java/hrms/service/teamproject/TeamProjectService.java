@@ -133,7 +133,7 @@ public class TeamProjectService {
 
                 if (aplogSta == 2) {
                     hasRejection = true;
-                } else if (aplogSta != 1) {
+                } else if (aplogSta == 3) {
                     allStaThree = false;
                 }
             }

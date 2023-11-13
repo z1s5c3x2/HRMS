@@ -9,6 +9,7 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.time.LocalDate;
 
 @AllArgsConstructor@NoArgsConstructor
 @Getter@Setter@ToString
@@ -18,8 +19,8 @@ public class TeamMemberDto {
     private int tmNo;        // 프로젝트 팀원 번호
     private String empName;     // 사원 이름
     private String empNo;       // 사원번호 (fk)
-    private String tmSt;     // 투입 날짜
-    private String tmEnd;    // 투입 종료 날짜
+    private LocalDate tmSt;     // 투입 날짜
+    private LocalDate tmEnd;    // 투입 종료 날짜
 
     private int pjtNo;         // 프로젝트 번호(fk)
     private String pjtName;     // 프로젝트명
@@ -29,7 +30,7 @@ public class TeamMemberDto {
     // entity 저장할때 메소드
     public TeamMemberEntity saveToEntity(){
         return TeamMemberEntity.builder()
-                .tmSt(this.tmSt)
+                .tmSt(this.tmSt.plusDays(1))
                 .build();
     }
 
