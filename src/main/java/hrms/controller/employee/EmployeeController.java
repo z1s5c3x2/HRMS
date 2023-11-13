@@ -1,7 +1,6 @@
 package hrms.controller.employee;
 
 import hrms.model.dto.*;
-import hrms.model.entity.EmployeeEntity;
 import hrms.service.LeaveRequest.LeaveCalcService;
 import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,13 +51,21 @@ public class EmployeeController {
         //System.out.println("EmployeeController.getEmpList");
         return employeeService.getEmpList(page,sta,dptmNo);
     }
-    @PutMapping("/changernk") // 사원 직급 변경
-    public boolean changeRank(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
+    @PostMapping("/changernk") // 사원 직급 변경
+    public boolean changeRank(@RequestBody ApprovalRequestDto<ChangeDptmAndRankDto> employeeDtoApprovalRequestDto)
     {
+        System.out.println("EmployeeController.changeRank");
         System.out.println("employeeDtoApprovalRequestDto = " + employeeDtoApprovalRequestDto);
         return false;
     }
-    @PutMapping("/changeinfo") //  사원 정보 변경
+    @PostMapping("/changedptm") // 사원 부서 변경
+    public boolean changeDepartment(@RequestBody ApprovalRequestDto<ChangeDptmAndRankDto> employeeDtoApprovalRequestDto)
+    {
+        System.out.println("EmployeeController.changeDepartment");
+        System.out.println("employeeDtoApprovalRequestDto = " + employeeDtoApprovalRequestDto);
+        return employeeService.changeEmployeeDepartment(employeeDtoApprovalRequestDto);
+    }
+    @PostMapping("/changeinfo") //  사원 정보 변경
     public boolean changeInfo(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
         System.out.println("employeeDtoApprovalRequestDto = " + employeeDtoApprovalRequestDto);

@@ -1,27 +1,20 @@
 package hrms.service.employee;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import hrms.model.dto.ApprovalRequestDto;
+import hrms.model.dto.ChangeDptmAndRankDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.PageDto;
-import hrms.model.dto.RetiredEmployeeDto;
 import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.DepartmentEntity;
+import hrms.model.entity.DepartmentHistoryEntity;
 import hrms.model.entity.EmployeeEntity;
-import hrms.model.entity.RetiredEmployeeEntity;
-import hrms.model.repository.ApprovalEntityRepository;
-import hrms.model.repository.DepartmentEntityRepository;
-import hrms.model.repository.EmployeeEntityRepository;
-import hrms.model.repository.RetiredEmployeeEntityRepository;
+import hrms.model.repository.*;
 import hrms.service.approval.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -40,6 +33,8 @@ public class EmployeeService {
     DepartmentEntityRepository departmentEntityRepository;
     @Autowired
     ApprovalEntityRepository approvalEntityRepository;
+    @Autowired
+    DepartmentHistoryEntityRepository departmentHistoryEntityRepository;
     @Autowired
     ApprovalService approvalService;
     private final int LEAVE_COUNT = 5;
@@ -66,10 +61,11 @@ public class EmployeeService {
         // 부서 유효성 검사 및 fk 매핑
         if(optionalDepartmentEntity.isPresent())
         {
+            //사원 저장
             EmployeeEntity employeeEntity = employeeRepository.save(employeeDto.saveToEntity());
-            employeeEntity.setDptmNo(optionalDepartmentEntity.get());
-            optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity);
-            employeeEntity.getApprovalEntities().add(approvalEntity);
+            employeeEntity.setDptmNo(optionalDepartmentEntity.get()); // 사원 부서 fk
+            optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity); //부서 pk
+            employeeEntity.getApprovalEntities().add(approvalEntity); // 결제 pk
 
             System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity.get().getEmployeeEntities());
             System.out.println("employeeEntity.getApprovalEntities() = " + employeeEntity.getApprovalEntities());
@@ -187,7 +183,46 @@ public class EmployeeService {
 
     }
 
+    @Transactional
+    public boolean changeEmployeeDepartment(ApprovalRequestDto<ChangeDptmAndRankDto> approvalRequestDto)
+    {
+        //결제 등록
+        ApprovalEntity approvalEntity = approvalService.postApproval(
+                approvalRequestDto.getAprvType()
+                , approvalRequestDto.getAprvCont()
+                ,approvalRequestDto.getApprovers());
 
+        //부서, 사원 id로 가져오기
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(approvalRequestDto.getEmpNo());
+        Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(approvalRequestDto.getData().getInfoData());
+
+        // 부서,사원을 성공적으로 가져오면 실행
+        if(optionalEmployeeEntity.isPresent() && optionalDepartmentEntity.isPresent())
+        {
+            //사원이 현재 일하고 있는 부서의 마지막 날 설정
+            departmentHistoryEntityRepository.findTop1ByEmpNoAndHdptmEndIsNullOrderByHdptmEndDesc(optionalEmployeeEntity.get()).ifPresent( d ->{
+                d.setHdptmEnd(approvalRequestDto.getData().getChangeDate());
+            });
+            //부서 저장
+            DepartmentHistoryEntity departmentHistoryEntity = DepartmentHistoryEntity.builder()
+                    .htrdpRk(optionalEmployeeEntity.get().getEmpRk())
+                    .dptmNo(optionalDepartmentEntity.get())
+                    .empNo(optionalEmployeeEntity.get())
+                    .hdptmStart(approvalRequestDto.getData().getChangeDate())
+                    .aprvNo(approvalEntity).build();
+
+            /* 단방향 */
+            departmentHistoryEntityRepository.save(departmentHistoryEntity);
+            /* 양방향 */
+            optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
+            optionalEmployeeEntity.get().getDepartmentHistoryEntities().add(departmentHistoryEntity);
+            approvalEntity.getDepartmentHistoryEntities().add(departmentHistoryEntity);
+            return true;
+        }
+
+
+        return false;
+    }
 
 
 

@@ -3,8 +3,8 @@ package hrms.model.entity;
 import hrms.model.dto.ApprovalDto;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +73,5 @@ public class ApprovalEntity extends BaseTime {
                 .apState( 0 )                    // 결재완료 여부( 1:완료 / 2:검토중 / 3:반려 )
                 .build();
     }
-
 
 }

@@ -22,9 +22,7 @@ export default function RegisterEmp(props) {
         setAprovalInfo( {...aprovalInfo,[e.target.name] :e.target.value})
     }
 
-    const empGetData = (e)=>{
-        console.log( aprovalInfo )
-    }
+
 
 
     return (<>

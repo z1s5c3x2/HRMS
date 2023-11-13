@@ -20,7 +20,6 @@ public class DepartmentEntity extends BaseTime{
     private int dptmNo;                // 부서번호
     @Column( )
     private String dptmName;          // 부서이름
-
     @Builder.Default
     @OneToMany( fetch = FetchType.LAZY  , cascade = CascadeType.ALL ,mappedBy = "dptmNo")
     private List<DepartmentHistoryEntity> departmentHistory = new ArrayList<>();
