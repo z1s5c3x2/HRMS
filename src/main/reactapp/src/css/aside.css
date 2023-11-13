@@ -49,12 +49,19 @@ button{
 	border:none;
 	border-radius: 10px;
 }
+/*hr*/
+hr{border: solid 1px var(--main01);}
 /* btn정의 */
 .btn01{
 	width:100%;
 	background-color: var(--main02);
 	color:var(--white);
 }
+.btn{
+	background-color: var(--main02);
+	color:var(--white);
+}
+.w20{width: 20%;}
 button:hover{
 	background-color: var(--main03);
 	color:var(--yellow);
@@ -218,8 +225,11 @@ header .topmenu{
 	padding:13px;
 
 }
+.ls0{  /*자간*/ 	letter-spacing: 0px;}
+.ls2{  /*자간*/ 	letter-spacing: 2px;}
 .ls3{  /*자간*/ 	letter-spacing: 3px;}
 .ls5{  /*자간*/ 	letter-spacing: 5px;}
+.ls6{  /*자간*/ 	letter-spacing: 6px;}
 .ls7{  /*자간*/ 	letter-spacing: 7px;}
 .ls9{  /*자간*/ 	letter-spacing: 9px;}
 .ls15{  /*자간*/ letter-spacing: 23px;}

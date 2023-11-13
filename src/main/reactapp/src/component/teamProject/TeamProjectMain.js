@@ -126,50 +126,55 @@ export default function TeamProjectMain( props ){
     return(<>
         <div class="contentBox">
             <div class="pageinfo"><span class="lv0">프로젝트팀관리</span> > <span class="lv1">프로젝트팀등록</span></div>
-            <div class="emp_regs_content">
-
-                <div class="eregInputBox">
-                    <div class="input_title ls23" className="inputPname"> 프로젝트명</div>
-                    <div class="input_box"><input
-                        type="text"
-                        className=""
-                        name="pjtName"
-                        onChange={updateApprovalInfo}
-                     /></div>
-                </div>
-                <div class="eregInputBox pmBox">
-                    <div class="input_title " className="inputPm">프로젝트매니저</div>
-                    <div class="input_box">
-                        <input value={empName} type="text" class="pmNo" name="empNo"/>
+            <div class="emp_regs_content divstep2">
+                <div class="div_left45">
+                    <div class="eregInputBox" >
+                        <div class="input_title ls6" className="inputPname"> 프로젝트명</div>
+                        <div class="input_box"><input
+                            type="text"
+                            className=""
+                            name="pjtName"
+                            onChange={updateApprovalInfo}
+                         /></div>
+                    </div>
+                    <div class="eregInputBox pmBox">
+                        <div class="input_title ls2" className="inputPm">프로젝트매니저</div>
+                        <div class="input_box">
+                            <input value={empName} type="text" class="pmNo" name="empNo"/>
+                        </div>
                     </div>
                 </div>
-                <div class="eregInputBox">
-                    <div class="input_title ">프로젝트시작날짜</div>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DesktopDatePicker
-                        value={selectedSDate}
-                        sx={{ width: '70%'}}
-                        renderInput={(params) => <TextField {...params} label="날짜" />}
-                        format="YYYY-MM-DD"
-                        onChange={(date)=> setSelectedSDate(date)}
-                      />
-                    </LocalizationProvider>
-                </div>
-                <div class="eregInputBox">
-                    <div class="input_title ">프로젝트완료날짜</div>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DesktopDatePicker
-                        value={selectedEDate}
-                        sx={{ width: '70%'}}
-                        renderInput={(params) => <TextField {...params} label="날짜" />}
-                        format="YYYY-MM-DD"
-                        onChange={(date)=> setSelectedEDate(date)}
-                      />
-                    </LocalizationProvider>
-                </div>
-                <div class="eregBtnBox">
-                    <button class="btn01" type="button" onClick={onModal}>프로젝트팀등록</button>
-                </div>
+                <div class="div_right55">
+                    <div class="eregInputBox">
+                        <div class="input_title ">프로젝트시작날짜</div>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DesktopDatePicker
+                            value={selectedSDate}
+                            sx={{ width: '70%'}}
+                            renderInput={(params) => <TextField {...params} label="날짜" />}
+                            format="YYYY-MM-DD"
+                            onChange={(date)=> setSelectedSDate(date)}
+                          />
+                        </LocalizationProvider>
+                    </div>
+                    <div class="eregInputBox">
+                        <div class="input_title ">프로젝트완료날짜</div>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DesktopDatePicker
+                            value={selectedEDate}
+                            sx={{ width: '70%'}}
+                            renderInput={(params) => <TextField {...params} label="날짜" />}
+                            format="YYYY-MM-DD"
+                            onChange={(date)=> setSelectedEDate(date)}
+                          />
+                        </LocalizationProvider>
+                                </div>
+                    </div>
+
+            </div>
+            <hr/>
+            <div style={{paddingTop:'10px', textAlign:'right'}}>
+                <button class="btn w20" type="button" onClick={onModal}>프로젝트팀등록</button>
             </div>
             {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
                 { isOn ? <> <ApprovalModal data={projectInfo}
@@ -205,7 +210,7 @@ export default function TeamProjectMain( props ){
              <TableContainer component={Paper}>
                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
                      <TableHead>
-                         <TableRow>
+                         <TableRow className="table_head th01" style={{color:'#fff!important'}}>
                              <TableCell align="center">이름</TableCell>
                              <TableCell align="center">전화번호 </TableCell>
                              <TableCell align="center">성별</TableCell>
@@ -217,6 +222,7 @@ export default function TeamProjectMain( props ){
                      <TableBody>
                          {empList.map((emp) => (
                              <TableRow
+                                className="tbody_tr"
                                 onClick={() => {
                                     setEmpName(emp.empName);
                                     setEmpNumber(emp.empNo);

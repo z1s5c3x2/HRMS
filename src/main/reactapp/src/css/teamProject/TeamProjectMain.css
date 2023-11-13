@@ -9,6 +9,7 @@
 }
 
 .contentBox2{
+    padding:20px 30px 30px;
     height : 300px;
     overflow-y : scroll;
 }
@@ -81,13 +82,13 @@ header .userbox img{
 }
 
 .inputPname{
-    letter-spacing: 11px !important;
-    width: 30%;
+    letter-spacing: 8px !important;
+    width: 35%;
 }
 
 .inputPm{
-    letter-spacing: 2px !important;
-    width: 30%;
+    letter-spacing: 1px !important;
+    width: 35%;
 }
 
 .css-165mck{
@@ -99,7 +100,7 @@ header .userbox img{
 }
 
 .pmNo{
-    width: 68% !important;
+   /*    width: 68% !important;*/
 }
 
 .pmBtn{
@@ -107,4 +108,49 @@ header .userbox img{
     padding: 8px 20px;
     margin-left: 10px;
 }
+/* 팀등록 페이지*/
+.divstep2{
+    width:100% !important;
+    display:flex;
+    justify-content: space-between;
+    padding-bottom:0px !important;
+}
+.div_left45{
+    width:45%;
+}
+.div_right55{
+    width:55%;
+}
 
+/* 체크리스트 박스를 감싸는 전체 영역 */
+.checkboxList{
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0px;
+}
+
+.topText{
+    margin-bottom : 20px;
+}
+/* input checkbox*/
+input[name="cb"]{
+    vertical-align: middle;
+    margin-left: 5px;
+}
+/* 테이블 헤더 타이틀바*/
+.th01{
+    background-color:var(--main04);
+    font-weight:bold;
+}
+.th_cell{
+    padding:10px 0 !important ;
+    color:#fff !important;
+    font-weight:bold !important;
+}
+/* 테이블 바디*/
+.tbody_tr{
+    padding:10px 0 !important ;
+}
+.tbody_tr:hover{
+    background-color: var(--main01);
+}
