@@ -3,6 +3,7 @@
 export default function ApprovalList(props){
 
 
+
     return (<>
 
         <div class="contentBox">
@@ -12,5 +13,6 @@ export default function ApprovalList(props){
             <h3> 결재메인페이지 </h3>
 
         </div>
+
     </>)
 }

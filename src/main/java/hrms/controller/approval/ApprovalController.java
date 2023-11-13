@@ -92,11 +92,13 @@ public class ApprovalController {
     }
 
     // 개별 상신목록 조회
-    @GetMapping("/getApprovalHistory")
+    @GetMapping("/getReconsiderHistory")
     public List<ApprovalDto> getApprovalHistory() throws JsonProcessingException {
 
-        return approvalService.getApprovalHistory();
+        return approvalService.getReconsiderHistory();
     }
+    
+    // 개별 결재목록 조회
 
 
 

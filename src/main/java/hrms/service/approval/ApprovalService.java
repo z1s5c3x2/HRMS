@@ -428,15 +428,7 @@ public class ApprovalService {
 
 
     // 개별 상신목록 조회
-    public List<ApprovalDto> getApprovalHistory(){
-
-        /*
-        타입 정리가 확실히 될 시 유효성 검사 추가 예정
-
-        if( aprvType == 0 ){
-            return null;
-        }
-        */
+    public List<ApprovalDto> getReconsiderHistory(){
 
         // 상신자
         // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
@@ -466,7 +458,36 @@ public class ApprovalService {
         return approvalDtos;
     }
 
+    // 개별 결재목록 조회
+    public List<ApprovalDto> getApprovalHistory(){
 
+        // 결재자
+        // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( "2311004" );
+
+        // 개별 상신(결재)내역 전체 조회
+        List<ApprovalEntity> approvalList
+                = approvalRepository.findByAllempNo( optionalEmployeeEntity.get().getEmpNo() );
+
+        // 유효성 검사
+        // 값이 비어있으면 true / null이면 false
+        if( approvalList.isEmpty() )    return null;
+
+        // 변환할 DTO 리스트
+        List<ApprovalDto> approvalDtos = new ArrayList<>();
+
+        approvalList.forEach( e -> {
+
+            // 변환된 DTO 리스트 삽입
+            approvalDtos.add( e.toApprovalDto() );
+            // 마지막 추가된 DTO
+            // => 현재 결재 진행상태를 확인하여 저장
+            approvalDtos.get( approvalDtos.size()-1 ).setApState( checkApprovalState( e ) );
+
+        });
+
+        return approvalDtos;
+    }
 
 
 
