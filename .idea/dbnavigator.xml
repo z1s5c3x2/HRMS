@@ -13,11 +13,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="17a6a52e-a75e-4aa0-bad3-41443bbba459">
-      <console name="Connection" type="STANDARD" schema="hrms" session="Main"><![CDATA[use hrms;
-
-select * from emp;
-select * from pjt_mng;
-delete from emp where emp_no = '2311110';]]></console>
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
