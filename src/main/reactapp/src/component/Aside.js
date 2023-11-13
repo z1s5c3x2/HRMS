@@ -79,8 +79,8 @@ let currentMenu = location == '' ? 'employee' : location;
                 <>
                    <li className="tmenu">결재관리</li>
                    <li className="smenu"><Link to='/approval'>전사원결재 조회</Link></li>
-                   <li><Link to='/approval'>개별 상신한 리스트 조회</Link></li>
-                   <li><Link to='/approval'>개별 결재한 리스트 조회</Link></li>
+                   <li><Link to='/reconsider'>개별 상신한 리스트 조회</Link></li>
+                   <li><Link to='/approvalview'>개별 결재한 리스트 조회</Link></li>
                 </>)}
 
             </ul>

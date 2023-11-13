@@ -12,6 +12,8 @@ import styles from '../css/Index.css';
 /* Approval import */
 import ApprovalList from "./approval/ApprovalList";
 import ReconsiderView from "./approval/ReconsiderView";
+import ApprovalView from "./approval/ApprovalView";
+
 
 /* Attendance import */
 import AttendanceList from "./attendance/AttendanceList";
@@ -56,6 +58,7 @@ export default function Index( props ){
                             {/* Approval*/}
                                 <Route path='/approval' element = { <ApprovalList/> } />
                                 <Route path='/reconsider' element = { <ReconsiderView/> } />
+                                <Route path='/approvalview' element = { <ApprovalView/> } />
                             {/* Attendance*/}
                                 <Route path='/attendance' element={<AttendanceList/>} />
                             {/* Employee*/}
