@@ -8,23 +8,15 @@ import {DesktopDatePicker} from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 
-export default function UpdateEmployee(props)
+export default function EmployeeUpdate(props)
 {
     /*모달 호출 선언 필요*/
     const [isOn, setIsOn] = useState(false)
     /* 변경 데이터 재 지정 */
-    const [changeData, setChangeData] = useState({})
-
+    const [changeDepartment, setChangeDepartment] = useState({empNo:"2311001"})
     const modalController = (e)=> {
-        if(!isOn && aprvType != 0)
-        {
-            setChangeData( {...changeData,empNo:empInfo.empNo,infoData: aprvType==3 ? empInfo.empRk:empInfo.dtpmNo})
-        }
         setIsOn(!isOn)
     }
-    // 정보 리스트
-    const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
-    const dptList = ['인사팀','기획팀(PM)','개발팀','DBA팀']
 
     // url 파라미터 서치
     const [ searchParams , setSearchParams ]  = useSearchParams()
@@ -34,7 +26,6 @@ export default function UpdateEmployee(props)
     const [aprvType, setAprvType] = useState(0)
     const [saveDp, setSaveDp] = useState()
     const [saveRk, setSaveRk] = useState()
-    const [startDate, setStartDate] = useState()
     useEffect(() => {
         axios
             .get("/employee/findemp?empNo="+searchParams.get('empNo'))
@@ -52,10 +43,13 @@ export default function UpdateEmployee(props)
         if( (e.target.name == "empRk" && saveDp != empInfo.dtpmNo) || (e.target.name == "dtpmNo" && saveRk != empInfo.empRk)  )
         {
             alert("한개씩 수정 해주세요")
-        }else{
+        }else if(e.target.name == "empRk") {
             setEmpInfo( {...empInfo,[e.target.name]:e.target.value})
-            // 직급 수정시 3 부서 수정시 4
-            setAprvType(e.target.name == "empRk" ? 5:4)
+            // 직급 수정시 5 부서 수정시 4
+            setAprvType(5)
+        }else{
+            setChangeDepartment({...changeDepartment,dtpmNo:e.target.value})
+            setAprvType(4)
         }
     }
 
@@ -71,10 +65,11 @@ export default function UpdateEmployee(props)
                 번호 : <input value={empInfo.empPhone} disabled={true}/><br/>
                 성별 : <input value={empInfo.empSex} disabled={true}/><br/>
                 이름 : <input value={empInfo.empSta ? "재직" : "휴직"} disabled={true}/><br/>
-                부서 : <select name="dtpmNo" onChange={changeInfo} value={empInfo.dtpmNo}>
+                부서 : <select name="dtpmNo" onChange={ changeInfo} value={changeDepartment.dtpmNo}>
                     <option value={1}>인사팀</option>
                     <option value={2}>기획팀(PM)</option>
-                    <option value={3}>DBA팀</option>
+                    <option value={3}>기획팀(PM)</option>
+                    <option value={4}>DBA팀</option>
                     </select><br/>
                 직급 : <select name="empRk" onChange={changeInfo}  value={empInfo.empRk} >
                         <option value={6}>부장 </option>
@@ -88,14 +83,14 @@ export default function UpdateEmployee(props)
                 <br/>
             </div>
             {
-                aprvType != 0 ? <>
+                aprvType == 4 ? <>
                     변경 날짜 : <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DesktopDatePicker
-                        value={startDate}
-                        sx={{ width: '70%'}}
+                        value={changeDepartment.hdtpmStart}
+                        sx={{ width: '30%',height:"100px"}}
                         renderInput={(params) => <TextField {...params} label="날짜" />}
                         format="YYYY-MM-DD"
-                        onChange={(date)=> setChangeData({...changeData,changeDate : date})}
+                        onChange={(date)=> setChangeDepartment({...changeDepartment,hdtpmStart : date})}
                     />
                 </LocalizationProvider>
                 </> : <></>
@@ -104,7 +99,7 @@ export default function UpdateEmployee(props)
             <button onClick={modalController}> 결제</button>
 
         </div>
-        { isOn ? <> <ApprovalModal data={changeData}
+        { isOn ? <> <ApprovalModal data={aprvType == 5 ? empInfo : changeDepartment }
                                    aprvType={aprvType}
                                    targetUrl={aprvType == 5 ? "/employee/changernk ": "/employee/changedptm"}
                                    successUrl={"/employee/list"}

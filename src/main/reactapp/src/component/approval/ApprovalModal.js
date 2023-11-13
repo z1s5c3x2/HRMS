@@ -49,6 +49,8 @@ export default function ApprovalModal(props)
                 if(r.data)
                 {
                     window.location.href=props.successUrl
+                }else{
+                    alert("결제 실패")
                 }
             })
             .catch( (e) =>{

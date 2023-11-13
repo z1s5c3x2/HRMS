@@ -9,8 +9,6 @@ export default function RegisterEmp(props) {
     /*모달 호출 선언 필요*/
     const [isOn, setIsOn] = useState(false)
     const modalController = (e)=> {
-        //console.log( aprovalInfo )
-        //document.querySelector('.approv_modal').style.display = 'flex';
         setIsOn(!isOn)
     }
     /*모달 호출 선언 필요*/

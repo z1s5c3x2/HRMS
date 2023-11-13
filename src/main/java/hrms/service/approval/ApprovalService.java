@@ -2,9 +2,7 @@ package hrms.service.approval;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.org.apache.xalan.internal.xsltc.trax.XSLTCSource;
 import hrms.model.dto.ApprovalDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.ProjectDto;
@@ -12,14 +10,12 @@ import hrms.model.dto.TeamMemberDto;
 import hrms.model.entity.*;
 import hrms.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,6 +34,39 @@ public class ApprovalService {
     @Autowired
     private  TeamMemberEntityRepository teamMemberRepository;
 
+    @Transactional // 로그가 남는 변경 기능 업데이트 정보 까지 받아서 올린 후 pk 반환
+    public ApprovalEntity updateLogApproval(int aprvType, String aprvCont, ArrayList<String> approvers, String aprvJson)
+    {
+        // 상신자
+        // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( "2311004" );
+
+        if( optionalEmployeeEntity.isPresent() ) {
+
+            ApprovalEntity approvalEntity = ApprovalEntity
+                    .builder()
+                    .aprvType(aprvType)
+                    .aprvJson(aprvJson)
+                    .aprvCont(aprvCont)
+                    .empNo(optionalEmployeeEntity.get())
+                    .build();
+            // DB 저장
+            ApprovalEntity result = approvalRepository.save( approvalEntity );
+            /* 단방향 */
+            // 검토자에 대한 사원테이블 JPA 단방향 관계 정립
+            result.setEmpNo( optionalEmployeeEntity.get() );
+            /* 양방향 */
+            // 사원테이블 JPA 단방향 관계 정립
+            optionalEmployeeEntity.get().getApprovalEntities().add( result );
+
+            // 검토자 DB 저장을 위한 메서드 실행
+            postApprovalLog( approvers, result.getAprvNo() );
+
+            if( result.getAprvNo() >= 1 )  return result;
+        }
+
+        return null;
+    }
 
     // 최초등록 : 결재 테이블 등록 [등록 기능에 관한 테이블]
     @Transactional

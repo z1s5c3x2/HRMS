@@ -2,21 +2,21 @@ package hrms.controller.approval;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hrms.model.dto.*;
+import hrms.model.dto.ApprovalDto;
+import hrms.model.dto.ApprovalRequestDto;
+import hrms.model.dto.EmployeeDto;
+import hrms.model.dto.TeamMemberDto;
 import hrms.model.entity.ApprovalEntity;
-import hrms.model.entity.ProjectEntity;
 import hrms.service.approval.ApprovalService;
 import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/approval")
 public class ApprovalController {
-
     @Autowired
     ApprovalService approvalService;
     @Autowired

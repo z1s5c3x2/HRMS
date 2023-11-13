@@ -1,7 +1,9 @@
 package hrms.service.employee;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hrms.model.dto.ApprovalRequestDto;
-import hrms.model.dto.ChangeDptmAndRankDto;
+import hrms.model.dto.DepartmentHistoryDto;
 import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.PageDto;
 import hrms.model.entity.ApprovalEntity;
@@ -128,8 +130,46 @@ public class EmployeeService {
 
         return response;
     }
+    public boolean changeInfo(ApprovalRequestDto<EmployeeDto> approvalRequestDto)
+    {
+        EmployeeDto employeeDto = approvalRequestDto.getData();
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(employeeDto.getEmpNo());
+        if(optionalEmployeeEntity.isPresent())
+        {
+            System.out.println("step1");
+            System.out.println(optionalEmployeeEntity.get().getEmpPwd() +"db 비번" );
+            System.out.println(employeeDto.getEmpPwd() + " 입력 비번");
+            if(optionalEmployeeEntity.get().getEmpPwd().equals(employeeDto.getEmpPwd()))
+            {
+                System.out.println("step2");
+                if(!employeeDto.getEmpNewPwd().isEmpty())
+                {
+                    System.out.println("step3");
+                    employeeDto.setEmpPwd(employeeDto.getEmpNewPwd());
+                }
+                try{
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String json = objectMapper.writeValueAsString(employeeDto);
+                    approvalRequestDto.setAprvJson(json);
 
+                    // 결재 테이블 등록 메서드
+                    // => 실행 후 실행결과 반환
 
+                    return approvalService.updateApproval(
+                            approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
+                            approvalRequestDto.getAprvCont(),   // 결재내용
+                            approvalRequestDto.getApprovers(),  // 검토자
+                            approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
+                    );
+
+                }catch(Exception e) {
+                    System.out.println("changeInfo" + e);
+                }
+            }
+            System.out.println("step4");
+        }
+        return false;
+    }
   /*  @Transactional
     public boolean leaveEmpStatus(RetiredEmployeeDto retiredEmployeeDto)
     {
@@ -184,43 +224,80 @@ public class EmployeeService {
     }
 
     @Transactional
-    public boolean changeEmployeeDepartment(ApprovalRequestDto<ChangeDptmAndRankDto> approvalRequestDto)
+    public boolean changeEmployeeRank(ApprovalRequestDto<EmployeeDto> approvalRequestDto)
     {
-        //결제 등록
-        ApprovalEntity approvalEntity = approvalService.postApproval(
-                approvalRequestDto.getAprvType()
-                , approvalRequestDto.getAprvCont()
-                ,approvalRequestDto.getApprovers());
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
+            approvalRequestDto.setAprvJson(json);
 
-        //부서, 사원 id로 가져오기
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(approvalRequestDto.getEmpNo());
-        Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(approvalRequestDto.getData().getInfoData());
+            // 결재 테이블 등록 메서드
+            // => 실행 후 실행결과 반환
 
-        // 부서,사원을 성공적으로 가져오면 실행
-        if(optionalEmployeeEntity.isPresent() && optionalDepartmentEntity.isPresent())
-        {
-            //사원이 현재 일하고 있는 부서의 마지막 날 설정
-            departmentHistoryEntityRepository.findTop1ByEmpNoAndHdptmEndIsNullOrderByHdptmEndDesc(optionalEmployeeEntity.get()).ifPresent( d ->{
-                d.setHdptmEnd(approvalRequestDto.getData().getChangeDate());
-            });
-            //부서 저장
-            DepartmentHistoryEntity departmentHistoryEntity = DepartmentHistoryEntity.builder()
-                    .htrdpRk(optionalEmployeeEntity.get().getEmpRk())
-                    .dptmNo(optionalDepartmentEntity.get())
-                    .empNo(optionalEmployeeEntity.get())
-                    .hdptmStart(approvalRequestDto.getData().getChangeDate())
-                    .aprvNo(approvalEntity).build();
-
-            /* 단방향 */
-            departmentHistoryEntityRepository.save(departmentHistoryEntity);
-            /* 양방향 */
-            optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
-            optionalEmployeeEntity.get().getDepartmentHistoryEntities().add(departmentHistoryEntity);
-            approvalEntity.getDepartmentHistoryEntities().add(departmentHistoryEntity);
-            return true;
+            return approvalService.updateApproval(
+                    approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
+                    approvalRequestDto.getAprvCont(),   // 결재내용
+                    approvalRequestDto.getApprovers(),  // 검토자
+                    approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
+            );
+        }catch(Exception e) {
+            System.out.println("changeEmployeeRank" + e);
         }
 
+        return false;
+    }
+    @Transactional
+    public boolean changeEmployeeDepartment(ApprovalRequestDto<DepartmentHistoryDto> approvalRequestDto)
+    {
+        try{
+            System.out.println("approvalRequestDto = " + approvalRequestDto);
+            // DTO객체 => json 문자열
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
+            approvalRequestDto.setAprvJson(json);
 
+            // 결재 테이블 등록 메서드
+            // => 실행 후 실행결과 반환
+            ApprovalEntity approvalEntity = approvalService.updateLogApproval(
+                    approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
+                    approvalRequestDto.getAprvCont(),   // 결재내용
+                    approvalRequestDto.getApprovers(),  // 검토자
+                    approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
+            );
+            // 날짜 맞추기
+            approvalRequestDto.getData().setHdtpmStart(approvalRequestDto.getData().getHdtpmStart().plusDays(1));
+
+            //부서, 사원 id로 가져오기
+            Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(approvalRequestDto.getEmpNo());
+            Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(approvalRequestDto.getData().getDtpmNo());
+
+            // 부서,사원을 성공적으로 가져오면 실행
+            if(optionalEmployeeEntity.isPresent() && optionalDepartmentEntity.isPresent())
+            {
+                //사원이 현재 일하고 있는 부서의 마지막 날 설정
+                departmentHistoryEntityRepository.findTop1ByEmpNoAndHdptmEndIsNullOrderByHdptmEndDesc(optionalEmployeeEntity.get()).ifPresent( d ->{
+                    d.setHdptmEnd(approvalRequestDto.getData().getHdtpmStart());
+                });
+                //부서 저장
+                DepartmentHistoryEntity departmentHistoryEntity = DepartmentHistoryEntity.builder()
+                        .htrdpRk(optionalEmployeeEntity.get().getEmpRk())
+                        .dptmNo(optionalDepartmentEntity.get())
+                        .empNo(optionalEmployeeEntity.get())
+                        .hdptmStart(approvalRequestDto.getData().getHdtpmStart())
+                        .aprvNo(approvalEntity).build();
+
+                /* 단방향 */
+                departmentHistoryEntityRepository.save(departmentHistoryEntity);
+                /* 양방향 */
+                optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
+                optionalEmployeeEntity.get().getDepartmentHistoryEntities().add(departmentHistoryEntity);
+                approvalEntity.getDepartmentHistoryEntities().add(departmentHistoryEntity);
+                return true;
+            }
+        }catch(Exception e) {
+            System.out.println("changeEmployeeDepartment" + e);
+        }
         return false;
     }
 

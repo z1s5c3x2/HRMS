@@ -52,14 +52,14 @@ public class EmployeeController {
         return employeeService.getEmpList(page,sta,dptmNo);
     }
     @PostMapping("/changernk") // 사원 직급 변경
-    public boolean changeRank(@RequestBody ApprovalRequestDto<ChangeDptmAndRankDto> employeeDtoApprovalRequestDto)
+    public boolean changeRank(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
         System.out.println("EmployeeController.changeRank");
         System.out.println("employeeDtoApprovalRequestDto = " + employeeDtoApprovalRequestDto);
-        return false;
+        return employeeService.changeEmployeeRank(employeeDtoApprovalRequestDto);
     }
     @PostMapping("/changedptm") // 사원 부서 변경
-    public boolean changeDepartment(@RequestBody ApprovalRequestDto<ChangeDptmAndRankDto> employeeDtoApprovalRequestDto)
+    public boolean changeDepartment(@RequestBody ApprovalRequestDto<DepartmentHistoryDto> employeeDtoApprovalRequestDto)
     {
         System.out.println("EmployeeController.changeDepartment");
         System.out.println("employeeDtoApprovalRequestDto = " + employeeDtoApprovalRequestDto);
@@ -69,7 +69,7 @@ public class EmployeeController {
     public boolean changeInfo(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
         System.out.println("employeeDtoApprovalRequestDto = " + employeeDtoApprovalRequestDto);
-        return false;
+        return employeeService.changeInfo(employeeDtoApprovalRequestDto);
     }
     @GetMapping("/findemp") // 개별 사원 조회
     public EmployeeDto findByEmployee(@RequestParam String empNo)

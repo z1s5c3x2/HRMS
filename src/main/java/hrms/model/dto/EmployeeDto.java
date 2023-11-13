@@ -18,7 +18,7 @@ public class EmployeeDto {
     private int empRk;                     // 사원 직급
     private int restCnt;                    //연차 조회
     private int dtpmNo;
-
+    private String empNewPwd;
     public EmployeeEntity saveToEntity()
     {
         return EmployeeEntity.builder()
