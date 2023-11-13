@@ -10,23 +10,42 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import Paper from '@mui/material/Paper';
+import Pagination from "@mui/material/Pagination";
 
 export default function SalaryMain(props) {
-    // 0. 컴포넌트 상태변수 관리
-    let [rows, setRows] = useState([]);
+     // 0. 컴포넌트 상태변수 관리
+       let [ pageDto , setPageDto ] = useState( {
+                      someList : [] , totalPages : 0 , totalCount : 0
+        } );
+     // 0. 스프링에게 전달할 객체
+               const [ pageInfo , setPageInfo ] = useState( {
+                   page : 1 ,  view : 5 , empNo : "2311006" // 추후 세션으로 가져와 변경
+    }); console.log( pageInfo );
     /*
     // 3. 현재 로그인된 회원의 번호
     const login = JSON.parse(sessionStorage.getItem('login_token'));
     const empNo = login != null ? login.empNo : null;
-
-
-    useEffect(() => { // 컴포넌트가 생성될때 1번 실행되는 axios
-        axios.get('/salary/getMe', { params: { empNo: empNo } })
-            .then(r => {
-                setRows(r.data); // 응답받은 모든 게시물을 상태변수에 저장
-            })
-    }, []);
     */
+    // 특정 레코드 클릭시 해당 레코드 상세보기
+        const loadView = ( slryNo ) => {
+                        window.location.href = '/salary/view?slryNo='+slryNo
+                    }
+
+    // 1-1.  axios를 이용한 스프링의 컨트롤과 통신
+          const getslryMe = (e) => {
+                axios.get('/salary/getMe' , { params : pageInfo } )
+                        .then( r =>{  // r.data : PageDto  // r.data.boardDtos : PageDto 안에 있는 boardDtos
+                             setPageDto( r.data ); // 응답받은 모든 게시물을 상태변수에 저장 // setState : 해당 컴포넌트가 업데이트(새로고침/재랜더링/return재실행)
+                          });
+                     }
+     // 1-2 컴포넌트가 생성될 때 // + 의존성 배열 : page 변경될떄 // + 의존성 배열 : view 변경될 때
+                    useEffect( () => { getslryMe(); }, [ pageInfo.page , pageInfo.view ] );
+     // 2. 페이지 번호를 클릭했을 때.
+                         const onPageSelect = ( e , value )=>{
+                                 pageInfo.page = value; // 클릭한 페이지번호로 변경
+                                  setPageInfo( { ...pageInfo } ); // 새로고침 [ 상태변수의 주소 값이 바뀌면 재랜더링 ]
+                        }
+
     function getSlryTypeLabel(slryType) {
         switch (slryType) {
             case 1:
@@ -47,11 +66,17 @@ export default function SalaryMain(props) {
     }
 
     return (<>
-            <h3>{/* row.empNo */} 이젠님 급여보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
-            <a href="/salary/write">(인사팀전용)급여 작성</a>   <br/>
-            <a href="/salary/list">(인사팀전용)전체 급여 목록</a>  <br/>
+            <h3>{ /*row.empNo*/ } 이효재(2311006)님 급여 내역보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
+            <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
+                         <select
+                                  value = { pageInfo.view }
+                                  onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
+                                  >
+                                    <option value="5"> 5 </option>
+                                    <option value="10"> 10 </option>
+                                   <option value="20"> 20 </option>
+                         </select>
 
-             {/*
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -64,20 +89,23 @@ export default function SalaryMain(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {pageDto.someList.map((row) => (
                             <TableRow
                                 key={row.name}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                <TableCell align="right">{row.slryNo}</TableCell>
-                                <TableCell align="right">{row.slryDate}</TableCell>
-                                <TableCell align="right">{row.slryPay}</TableCell>
-                                <TableCell align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
-                                <TableCell align="right">{row.aprvNo}</TableCell>
+                                <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
+                                <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
+                                <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
+                                <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
+                                <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-            */}
+            <div style = {{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }} >
+             { /* page : 현재페이지    count : 전체페이지수   onChange : 페이지번호를 클릭/변경 했을떄 이벤트 */}
+              <Pagination page = { pageInfo.page }  count={ pageDto.totalPages } onChange={ onPageSelect } />
+             </div>
         </>)
 }

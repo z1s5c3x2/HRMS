@@ -9,27 +9,35 @@ import Button from "@mui/material/Button";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import RegisterEmp from "../employee/RegisterEmp";
+import ApprovalModal from "../approval/ApprovalModal";
 // -----------------------//
 dayjs.locale('ko');
+
 export default function LeaveRequestWrite(props) {
+ const [isOn, setIsOn] = useState(false);
+
+  const modalController = () => {
+    setIsOn(!isOn);
+  };
   const [selectedDate1, setSelectedDate1] = useState(null); // 초기 값 null로 설정
   const [selectedDate2, setSelectedDate2] = useState(null); // 초기 값 null로 설정
   const [amount, setAmount] = useState("");
   const [paymentType, setPaymentType] = useState("");
-
-
+const data = {
+      lrqSt: selectedDate1,
+      lrqEnd: selectedDate2,
+      lrqType: Number(amount),
+      lrqSrtype: Number(paymentType),
+      empNo: '2311006' // 추후에 세션 구현하면 접속한 본인 사번 대입
+    };
+    console.log(data);
 
   const handleSubmit = () => {
     // 서버로 보낼 데이터 준비
 
     console.log(selectedDate1);  console.log(selectedDate2);
-    const data = {
-      lrqSt: selectedDate1,
-      lrqEnd: selectedDate2,
-      lrqType: Number(amount),
-      lrqSrtype: Number(paymentType),
-    };
-    console.log(data);
+
 
     // Axios를 사용하여 서버로 데이터 전송
     axios.post("/leaveRequest/post", data)
@@ -42,8 +50,13 @@ export default function LeaveRequestWrite(props) {
         // 오류 처리 로직을 추가할 수 있습니다.
       });
   };
-
+    const rkList = ["대기", "사원", "주임", "대리", "과장", "팀장", "부장"];
+     const dptList = ['인사팀', '기획팀(PM)', '개발팀', 'DBA팀'];
+      function createData(name, calories, fat, carbs, protein) {
+         return { name, calories, fat, carbs, protein };
+       }
   return (
+  <>
     <div>
       <h3>시작날짜</h3>
       <form className="boardForm">
@@ -76,10 +89,22 @@ export default function LeaveRequestWrite(props) {
           value={paymentType}
           onChange={(e) => setPaymentType(e.target.value)}
         />
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        <Button variant="contained" color="primary" onClick={modalController}>
           제출
         </Button>
       </form>
-    </div>
+      {isOn ? (
+                <ApprovalModal
+                  data={data}
+                  aprvType={ data.lrqType === 1 ? 6 : data.lrqType === 2 ? 10
+                                             : data.lrqType === 3 ? 8 : null }
+                  targetUrl="/leaveRequest/post"
+                  successUrl="/leaveRequest/write"
+                  modalControll={modalController}
+                />
+              ) : null}
+
+        </div>
+    </>
   );
 }
