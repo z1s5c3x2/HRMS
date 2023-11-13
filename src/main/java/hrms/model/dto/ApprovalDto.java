@@ -1,5 +1,6 @@
 package hrms.model.dto;
 
+import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.EmployeeEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -24,5 +25,6 @@ public class ApprovalDto {
     private String empNo;             // 상신자
     private LocalDateTime cdate;   // 상신일
     private int apState;           // 결재완료 여부( 1:완료 / 2:검토중 / 3:반려 )
+
 
 }

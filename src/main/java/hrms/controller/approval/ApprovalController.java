@@ -93,12 +93,18 @@ public class ApprovalController {
 
     // 개별 상신목록 조회
     @GetMapping("/getReconsiderHistory")
-    public List<ApprovalDto> getApprovalHistory() throws JsonProcessingException {
+    public List<ApprovalDto> getReconsiderHistory() throws JsonProcessingException {
 
         return approvalService.getReconsiderHistory();
     }
     
     // 개별 결재목록 조회
+        // 해당 검토자의 검토대상 결재건 / 완료 혹은 반려 결재건
+    @GetMapping("/getApprovalHistory")
+    public List<ApprovalDto> getApprovalHistory() throws JsonProcessingException {
+
+        return approvalService.getApprovalHistory();
+    }
 
 
 
