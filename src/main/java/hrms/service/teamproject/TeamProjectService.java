@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -163,6 +164,43 @@ public class TeamProjectService {
                 .build();
 
         return pageDto;
+    }
+
+    public List<ProjectDto> getSelectTeamProject(int approval){
+
+        List<ProjectEntity> projectEntities = projectRepository.findAll();
+        List<ProjectDto> projectDtos = new ArrayList<>();
+
+        for (ProjectEntity projectEntity : projectEntities) {
+            List<ApprovalLogEntity> approvalLogEntities = projectEntity.getAprvNo().getApprovalLogEntities();
+            boolean allStaThree = true;     // 검토중 판단
+            boolean hasRejection = false;   // 반려상태 판단
+
+            for (ApprovalLogEntity approvalLogEntity : approvalLogEntities) {
+                int aplogSta = approvalLogEntity.getAplogSta();
+
+                if (aplogSta == 2) {
+                    hasRejection = true;
+                } else if (aplogSta != 1) {
+                    allStaThree = false;
+                }
+            }
+
+            // 각 경우의 수마다 totalCount 1씩증가
+            if (approval == 1 && allStaThree) {
+                // 모두 1(승인) 상태일 때 승인
+                projectDtos.add(projectEntity.allToDto());
+            } else if (approval == 2 && hasRejection) {
+                // 2(반려) 상태가 하나라도 있을 때 반려
+                projectDtos.add(projectEntity.allToDto());
+            } else if(approval == 3){
+                // 나머지 경우의 수, 3(검토중) 상태가 있을 때 검토중
+                projectDtos.add(projectEntity.allToDto());
+            }
+        }
+
+
+        return projectDtos;
     }
 
     

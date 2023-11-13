@@ -116,6 +116,7 @@ export default function TeamProjectList(props){
                     <TableCell className="th_cell" align="center">프로젝트시작일</TableCell>
                     <TableCell className="th_cell" align="center">프로젝트기한</TableCell>
                     <TableCell className="th_cell" align="center">프로젝트상태</TableCell>
+                    <TableCell className="th_cell" align="center"></TableCell>
                   </TableRow>
                 {/* 테이블 제목 구역 */}
                 </TableHead>
@@ -133,6 +134,10 @@ export default function TeamProjectList(props){
                       <TableCell align="center">{row.pjtSt}</TableCell>
                       <TableCell align="center">{row.pjtEND}</TableCell>
                       <TableCell align="center">{row.pjtSta == 1 ? '진행중' : '완료'}</TableCell>
+                      <TableCell align="center">
+                        <button type="button" > 수정 </button>
+                        <button type="button" > 삭제 </button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

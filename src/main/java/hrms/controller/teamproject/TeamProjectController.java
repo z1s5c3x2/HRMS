@@ -42,6 +42,12 @@ public class TeamProjectController {
         return teamProjectService.getPermitAllTeamProject(approval, page);
     }
 
+    // 2-2. 승인,반려, 검토중 상태에 따른 팀프로젝트 출력(프로젝트 선택용)
+    @GetMapping("/getSelectAll")
+    public List<ProjectDto> getSelectTeamProject(@RequestParam int approval){
+        return teamProjectService.getSelectTeamProject(approval);
+    }
+
     // 3. 개별 팀프로젝트 출력
     @GetMapping("/getOne")
     public ProjectDto getOneTeamProject(@RequestParam int pjtNo){
