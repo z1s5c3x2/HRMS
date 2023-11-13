@@ -44,6 +44,7 @@ import EmployeeList from "./employee/EmployeeList";
 import Login from "./member/Login";
 import EmployeeUpdate from "./employee/EmployeeUpdate";
 import EmployeeDetails from "./employee/EmployeeDetails";
+import EmployeeSearch from "./employee/EmployeeSearch";
 
 export default function Index( props ){
     return(<>
@@ -69,6 +70,7 @@ export default function Index( props ){
                                 <Route path='/employee/register' element={<RegisterEmp/>} />
                                 <Route path='/employee/update' element={<EmployeeUpdate/>} />
                                 <Route path='/employee/details' element={<EmployeeDetails/>} />
+                                <Route path='/employee/searchemp' element={<EmployeeSearch/>} />
 
                             {/* Salary*/}
                                 <Route path='/salary' element={<SalaryMain/>} />

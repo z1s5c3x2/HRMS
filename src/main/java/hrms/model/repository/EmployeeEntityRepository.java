@@ -29,5 +29,6 @@ public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity,I
             "  and IF( :dptmNo = 0, true,\n" +
             "         :dptmNo = dptm_no)",nativeQuery = true)
     Page<EmployeeEntity> findByEmpPage(int pageSta, int dptmNo,Pageable pageable);
+    //사원 검색 생각중..
 
 }

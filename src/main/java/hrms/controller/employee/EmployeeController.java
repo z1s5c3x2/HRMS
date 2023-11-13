@@ -78,4 +78,11 @@ public class EmployeeController {
     }
 
 
+    @GetMapping("/findoneoption")
+    public EmployeeDto findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
+    {
+        System.out.println("employeeSearchOptionDto = " + employeeSearchOptionDto);
+        return employeeService.findOneOption(employeeSearchOptionDto);
+    }
+
 }
