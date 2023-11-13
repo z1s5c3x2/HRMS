@@ -199,6 +199,7 @@ public class TeamProjectService {
             }
         }
 
+        System.out.println("projectDtos = " + projectDtos);
 
         return projectDtos;
     }
