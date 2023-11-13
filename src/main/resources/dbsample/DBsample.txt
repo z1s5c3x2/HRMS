@@ -135,11 +135,11 @@ insert into rtemp(cdate, udate, rtemp_cont, rtemp_date, aprv_no, emp_no) values 
 
 
 /* 직급/부서 번경 테이블 */
-insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),1,31,1,2311001);
-insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),2,32,2,2311002);
-insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),3,33,3,2311003);
-insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),4,34,4,2311004);
-insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no) value (now(),now(),5,35,5,2311005);
+insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no,hdptm_start) value (now(),now(),1,31,1,2311001,2023-11-13 15:17:28);
+insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no,hdptm_start) value (now(),now(),2,32,2,2311002,2023-11-13 15:17:28);
+insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no,hdptm_start) value (now(),now(),3,33,3,2311003,2023-11-13 15:17:28);
+insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no,hdptm_start) value (now(),now(),4,34,4,2311004,2023-11-13 15:17:28);
+insert into htrdp(cdate, udate, htrdp_rk, aprv_no, dptm_no, emp_no,hdptm_start) value (now(),now(),5,35,5,2311005,2023-11-13 15:17:28);
 
 
 
