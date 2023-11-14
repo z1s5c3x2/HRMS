@@ -1,9 +1,9 @@
-/*import styles from '../../css/approval.css';
+import styles from '../../css/approval.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import ApprovalList from './ApprovalList';
+import { getTypeName } from './ListOutputConverter';
 
 export default function ReconsiderView(props){
 
@@ -39,7 +39,7 @@ export default function ReconsiderView(props){
             { reconsiderList.map( r =>(
                 <tr>
                     <td> 제 {r.apState}호 </td>
-                    <td> { props.getTypeName( r.aprvType ) } </td>
+                    <td> { getTypeName( r.aprvType ) } </td>
                     <td> {r.aprvCont} </td>
                     <td>
                         <span> { (r.cdate.split("T"))[0] } </span>
@@ -56,4 +56,4 @@ export default function ReconsiderView(props){
 
     </>)
 
-}*/
+}
