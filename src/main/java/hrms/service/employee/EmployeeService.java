@@ -33,6 +33,8 @@ public class EmployeeService {
     DepartmentHistoryEntityRepository departmentHistoryEntityRepository;
     @Autowired
     ApprovalService approvalService;
+    @Autowired
+    ApprovalLogEntityRepository approvalLogEntityRepository;
     private final int LEAVE_COUNT = 5;
     // 사원 등록
     @Transactional
@@ -315,6 +317,8 @@ public class EmployeeService {
                     .stream()
                     .filter(a -> a.getApprovalLogEntities().stream().anyMatch(l -> l.getAplogSta() == 3))
                     .count());
+            // 사원 양방향 -> 결제 로그 리스트에서 결제타입 3인(검토중) 카운트 집계
+            employeeSearchDto.setApLogCount((int)optionalEmployeeEntity.get().getApprovalLogs().stream().filter( l -> l.getAplogSta() == 3).count());
             return employeeSearchDto;
         }
         return null;

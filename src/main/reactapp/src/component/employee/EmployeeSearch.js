@@ -169,7 +169,8 @@ export default function EmployeeSearch(props) {
                                 근무 상태 : <input value={empInfo.empSta ? '재직' : '휴직'} disabled={true}/> <br/>
                                 직급 : <input value={rkList[empInfo.empRk]} disabled={true}/> <br/>
                                 부서 : <input value={empInfo.dptmName} disabled={true}/> <br/>
-                                진행중인 결제 건수 : <input value={empInfo.aprvCount} disabled={true}/> <br/>
+                                진행중인 결제 수 : <input value={empInfo.aprvCount} disabled={true}/> <br/>
+                                처리 필요한 결제 수 : <input value={empInfo.apLogCount} disabled={true}/> <br/>
                                 <button onClick={(e) => {
                                     setRetiredInfo({...retiredInfo,empNo:empInfo.empNo})
                                     setTextIsOn(!textIsOn)

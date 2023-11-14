@@ -17,4 +17,5 @@ public class EmployeeSearchDto {
     private int empRk;                     // 사원 직급
     private String dptmName;                    //부서
     private int aprvCount;                  //해당 사원이 올린 완료 안된 결제 수
+    private int apLogCount;                 //해당 사원이 처리해야 하는 결제 수
 }
