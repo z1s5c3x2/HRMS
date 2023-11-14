@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,6 +39,8 @@ public class EmployeeService {
     @Autowired
     ApprovalService approvalService;
     private final int LEAVE_COUNT = 5;
+    // 비밀번호 인코딩
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     // 사원 등록
     @Transactional
     public boolean registerEmp(ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
@@ -61,6 +65,7 @@ public class EmployeeService {
         if(optionalDepartmentEntity.isPresent())
         {
             //사원 저장
+            employeeDto.setEmpPwd(passwordEncoder.encode(employeeDto.getEmpPwd() ) );
             EmployeeEntity employeeEntity = employeeRepository.save(employeeDto.saveToEntity());
             employeeEntity.setDptmNo(optionalDepartmentEntity.get()); // 사원 부서 fk
             optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity); //부서 pk
