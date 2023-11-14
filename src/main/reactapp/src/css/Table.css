@@ -30,3 +30,71 @@ input[name="cb"]{
 .tbody_tr:hover{
     background-color: var(--main01);
 }
+
+/* */
+.searchBox {
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.searchBox input, select {
+    margin-left:5px;
+    padding:5px;
+    border:none;
+	outline:none;
+	box-shadow: 0 0 3px var(--main02);
+}
+.searchBox .keyword{
+    margin-right:5px;
+    width:100px;
+}
+.hr01{
+    border:solid .5px var(--main01);
+    margin:10px 0 20px;
+
+}
+.tableTypeA{
+    border-collapse: collapse;
+    border:none;
+    width:100%;
+    max-height:530px;
+    overflow:hidden;
+
+}
+.tableTypeA th {
+    background-color:var(--main04);
+    color:var(--white);
+    padding:10px 20px;
+}
+.tableTypeA .th_w30{ width:30%}
+.tableTypeA .th_w25{ width:25%}
+.tableTypeA .th_w20{ width:20%}
+.tableTypeA .th_w15{ width:15%}
+.tableTypeA .th_w10{ width:10%}
+
+.tableTypeA td {
+
+    text-align:center;
+    border:solid 1px var(--lgray);
+}
+.tableTypeB tr:hover {
+    background-color:var(--main01);
+}
+.tableTypeA .dataArea{
+    max-height:500px;
+    overflow-y:auto;
+    vertical-align:top;
+    border:0px;
+}
+.tableTypeB{
+    border-collapse: collapse;
+    border:none;
+    border-top:solid 1px var(--main04);
+    width:100%;
+
+}
+.tableTypeB td{
+    padding:10px;
+    text-align:center;
+}

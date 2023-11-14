@@ -18,6 +18,8 @@ import ApprovalView from "./approval/ApprovalView";
 /* Attendance import */
 import AttendanceList from "./attendance/AttendanceList";
 import AttendancePCalendar from "./attendance/AttendancePCalendar";
+import AttendanceDailyCal from "./attendance/AttendanceDailyCal";
+import AttendanceDailyAll from "./attendance/AttendanceDailyAll";
 
 /* Employee import */
 import RegisterEmp from "./employee/RegisterEmp";
@@ -70,6 +72,8 @@ export default function Index( props ){
                             {/* Attendance*/}
                                 <Route path='/attendance' element={<AttendanceList/>} />
                                 <Route path='/attendance/pcalendar' element={<AttendancePCalendar/>} />
+                                <Route path='/attendance/dcalendar' element={<AttendanceDailyCal/>} />
+                                <Route path='/attendance/dall' element={<AttendanceDailyAll/>} />
                             {/* Employee*/}
                                 <Route path='/employee/list' element={<EmployeeList/>} />
                                 <Route path='/employee/register' element={<RegisterEmp/>} />

@@ -5,13 +5,53 @@ import {useState, useEffect} from 'react'
 import { useLocation } from 'react-router-dom';
 
 export default function Aside( props ){
-//useLocation을 이용해서 현재 페이지의 pathname을 가져와서 / 문자를 제거한 1번인덱스를 추출
- const location = useLocation().pathname.split('/')[1];
- console.log(location)
+    //useLocation을 이용해서 현재 페이지의 pathname을 가져와서 / 문자를 제거한 1번인덱스를 추출
+    const location = useLocation().pathname.split('/')[1];
+    console.log(location)
 
-//location이 null이면 employee를 기본값으로 셋팅, !null이면 location값
-let currentMenu = location == '' ? 'employee' : location;
- console.log(currentMenu)
+    //location이 null이면 employee를 기본값으로 셋팅, !null이면 location값
+    let currentMenu = location == '' ? 'employee' : location;
+    console.log(currentMenu)
+
+    const [isAttendance, setAttendance] = useState(false);
+    console.log("현재상태 :: "+ isAttendance);
+    useEffect (() =>{},[isAttendance])
+
+    //1. 출근기록 - 초기값은 설정
+
+    const changeAttendance = (e)=>{
+
+        if(isAttendance) { //출근상태(true)면
+            if(window.confirm("퇴근하시나요?")){
+                 setAttendance(!isAttendance);
+                 console.log(isAttendance);
+            }
+            axios.put('/attendance/', {
+                empNo: '2023110005'
+            })
+            .then((r)=>{ console.log(r.data);})
+
+        } else { //퇴근상태(false)면
+            alert(" Have a Wonderful day! ")
+            setAttendance(!isAttendance);
+            console.log(isAttendance);
+            axios.post('/attendance/', {
+                        empNo: '2023110005',
+                        attdWrst : new Date().toLocaleString()
+                    })
+                .then( r=>{ console.log(r.data); })
+        }
+
+
+
+    }
+
+
+
+
+
+
+
 
 
     return(<>
@@ -45,10 +85,10 @@ let currentMenu = location == '' ? 'employee' : location;
                 {currentMenu === 'attendance' && (
                 <>
                    <li className="tmenu">근태관리</li>
-                   <li className="smenu"><Link to='/attendance'>전사원 근태리스트</Link></li>
+                   <li className="smenu"><Link to='/attendance'>전사원 근무현황</Link></li>
                    <li><Link to='/attendance/pcalendar'>나의근무현황캘린더</Link></li>
-                   <li><Link to='/attendance'>나의출결캘린더</Link></li>
-                   <li><Link to='/attendance'>출결리스트</Link></li>
+                   <li><Link to='/attendance/dall'>전사원출결현황</Link></li>
+                   <li><Link to='/attendance/dcalendar'>나의출결캘린더</Link></li>
                    <li><Link to='/attendance'>병가신청</Link></li>
                    <li><Link to='/attendance'>휴직신청</Link></li>
                    <li><Link to='/attendance'>개인연차내역</Link></li>
@@ -75,7 +115,11 @@ let currentMenu = location == '' ? 'employee' : location;
 
             </ul>
             <div className="templogin"><Link to='/member/Login'> 로그인</Link></div>
-            <div className="attendence" onClick="changeState()"><i class="fa-solid fa-arrow-right-to-bracket"></i> 출 근</div>
+            <div className="attendence" onClick={ changeAttendance }><i class="fa-solid fa-arrow-right-to-bracket"></i>
+            {
+                isAttendance == true ? (<>퇴 근</>) : (<>출 근</>)
+            }
+            </div>
         </aside>
 
     </>)

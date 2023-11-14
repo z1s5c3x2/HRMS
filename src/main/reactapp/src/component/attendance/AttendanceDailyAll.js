@@ -6,7 +6,7 @@ export default function AttendanceList(props){
     return (<>
 
         <div class="contentBox">
-            <div class="pageinfo"><span class="lv0">근태관리</span>  > <span class="lv1">전사원근무현황</span> </div>
+            <div class="pageinfo"><span class="lv0">근태관리</span>  > <span class="lv1">전사원출결현황</span> </div>
             <div class="searchBox">
                 <div>
                 조회기간 : <input type="date" className="periodStart" /> ~  <input type="date" className="periodEnd" />
@@ -46,26 +46,28 @@ export default function AttendanceList(props){
             <hr class="hr01"/>
             <table className="tableTypeA">
                 <tr>
-                    <th className="th_w25">날짜</th>
-                    <th className="th_w15">부서</th>
+                    <th className="th_w20">날짜</th>
+                    <th className="th_w10">부서</th>
                     <th className="th_w15">사원명</th>
-                    <th className="th_w15">직급</th>
-                    <th className="th_w15">근무상태</th>
-                    <th className="th_w15">근무현황</th>
+                    <th className="th_w10">직급</th>
+                    <th className="th_w15">출결현황</th>
+                    <th className="th_w15">출근시간</th>
+                    <th className="th_w15">퇴근시간</th>
 
 
                 </tr>
-                <tr>
-                    <td colspan="6" class="dataArea">
+                <tr class="dataArea">
+                    <td colspan="7" >
 
                     <table class="tableTypeB">
                         <tr>
-                            <td className="th_w25">2023-11-07</td>
-                            <td className="th_w15">개발팀</td>
+                            <td className="th_w20">2023-11-07</td>
+                            <td className="th_w10">개발팀</td>
                             <td className="th_w15">김개발</td>
-                            <td className="th_w15">대리</td>
-                            <td className="th_w15">재직</td>
-                            <td className="th_w15">근무</td>
+                            <td className="th_w10">대리</td>
+                            <td className="th_w15">출근</td>
+                            <td className="th_w15">09:00</td>
+                            <td className="th_w15">18:00</td>
 
                         </tr>
                         <tr>
@@ -73,7 +75,7 @@ export default function AttendanceList(props){
                             <td>개발팀</td>
                             <td>김개발</td>
                             <td>대리</td>
-                            <td>휴직</td>
+                            <td>결근</td>
                             <td>출근</td>
                         </tr>
                         <tr>
@@ -81,7 +83,7 @@ export default function AttendanceList(props){
                             <td>개발팀</td>
                             <td>김개발</td>
                             <td>대리</td>
-                            <td>병가</td>
+                            <td>지각</td>
                             <td>출근</td>
                         </tr>
                         <tr>
@@ -89,7 +91,7 @@ export default function AttendanceList(props){
                             <td>개발팀</td>
                             <td>김개발</td>
                             <td>대리</td>
-                            <td>병가</td>
+                            <td>조퇴</td>
                             <td>출근</td>
                         </tr>
                         <tr>

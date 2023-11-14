@@ -45,7 +45,7 @@ public class AttendanceEntity extends BaseTime{
                 .build();
     }
 
-    //1. //출근 날짜정보가 오늘날짜와 일치하면 (오늘의 출근 정보가 존재하면) true 아니면 false반환
+    //1. //cdate 오늘날짜와 일치하면 (오늘의 출근 정보가 존재하면) true 아니면 false반환
 
     public boolean toDateOrTime(LocalDateTime dateTime){
 
