@@ -60,7 +60,7 @@ export default function RegisterEmp(props) {
                 </div>
                 <div class="eregInputBox">
                     <div class="input_title ws55">부 서</div>
-                    <select name="dtpmNo" onChange={ updateApprovalInfo} >
+                    <select name="dptmNo" onChange={ updateApprovalInfo} >
                         <option value="">부서를 선택하세요</option>
                         <option value={1}>인사팀</option>
                         <option value={2}>기획팀(PM)</option>

@@ -27,7 +27,7 @@ let currentMenu = location == '' ? 'employee' : location;
                     <li className="smenu"><Link to='/employee/list'>사원 조회</Link></li>
                     <li><Link to='/employee/register'>사원등록</Link></li>
                     <li><Link to='/employee/details'>사원 수정</Link></li>
-                    <li><Link to='/employee/searchemp'>사원 정보 조회</Link></li>
+                    <li><Link to='/employee/searchemp'>사원 검색</Link></li>
                 </>
                 )}
 

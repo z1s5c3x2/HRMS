@@ -44,6 +44,8 @@ export default function EmployeeList() {
     return (<>
         <div className="contentBox">
             <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">사원목록</span></div>
+            <div className="emp_regs_content"></div>
+            {/* 필터 구역*/}
             <select
                 value = { pageInfo.sta }
                 onChange={ (e)=>{  setPageInfo( { ...pageInfo , sta : e.target.value,page:"1"} );  } }
@@ -63,8 +65,8 @@ export default function EmployeeList() {
                 <option value="4"> DBA팀 </option>
 
             </select>
-
-            <div className="emp_regs_content"></div>
+            {/* 필터 구역*/}
+            {/* 리스트 출력*/}
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -79,25 +81,28 @@ export default function EmployeeList() {
                     </TableHead>
                     <TableBody>
                         {empList.map((emp) => (
-                            <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                            <TableRow component={Link} to={"/employee/update?empNo="+emp.empNo} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                                     <TableCell align="center">{emp.empName}</TableCell>
                                     <TableCell align="center"> {emp.empPhone} </TableCell>
                                     <TableCell align="center">{emp.empSex}</TableCell>
                                     <TableCell align="center">{emp.empSta ? '재직' : '휴직'}</TableCell>
-                                    <TableCell component={Link} to={"/employee/update?empNo="+emp.empNo} align="center">{rkList[emp.empRk]}</TableCell>
-                                    <TableCell component={Link} to={"/employee/update?empNo="+emp.empNo} align="center">{dptList[emp.dtpmNo - 1]}</TableCell>
+                                    <TableCell align="center">{rkList[emp.empRk]}</TableCell>
+                                    <TableCell align="center">{dptList[emp.dptmNo - 1]}</TableCell>
                             </TableRow>
 
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+            {/*리스트 출력*/}
+            {/* 페이지 버튼 */}
             <div style = {{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }} >
                 <Pagination page = { pageInfo.page }  count={ pageInfo.totalPages }  onChange = { (e,value) => {
                     setPageInfo( { ...pageInfo , page : value })
                 }
                 } />
             </div>
+            {/*페이지 버튼*/}
         </div>
         </>);
 }

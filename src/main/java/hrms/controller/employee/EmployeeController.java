@@ -24,12 +24,11 @@ public class EmployeeController {
          return employeeService.registerEmp(employeeDtoApprovalRequestDto);
     }
 
-    @PutMapping("/leave")
-    public boolean leaveEmpStatus(@RequestBody ApprovalRequestDto<RetiredEmployeeDto> retiredEmployeeDtoApprovalRequestDto)
+    @PostMapping("/retired")
+    public boolean leaveEmpStatus(@RequestBody ApprovalRequestDto<RetiredEmployeeDto> approvalRequestDto)
     {
-        //System.out.println("EmployeeController.setEmpStatus");
-        //return employeeService.leaveEmpStatus(retiredEmployeeDtoApprovalRequestDto);
-        return false;
+        System.out.println("approvalRequestDto = " + approvalRequestDto);
+        return employeeService.setRtiredEmployee(approvalRequestDto);
     }
 
     @GetMapping("getaprvlist") // 결제 받을 인사팀 가져오기
@@ -79,10 +78,14 @@ public class EmployeeController {
 
 
     @GetMapping("/findoneoption")
-    public EmployeeDto findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
+    public PageDto<EmployeeDto> findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
     {
         System.out.println("employeeSearchOptionDto = " + employeeSearchOptionDto);
         return employeeService.findOneOption(employeeSearchOptionDto);
     }
-
+    @GetMapping("/searchempinfo")
+    EmployeeSearchDto findEmpInfo(@RequestParam String empNo)
+    {
+        return employeeService.empSearchInfo(empNo);
+    }
 }

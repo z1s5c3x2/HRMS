@@ -331,7 +331,7 @@ public class ApprovalService {
                 // 사원 부서변경
                 case 4:
 
-                    Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(employeeDto.getDtpmNo());
+                    Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(employeeDto.getDptmNo());
                     if (!optionalDepartmentEntity.isPresent()) return false;
 
                     optionalEmployeeEntity.get().setDptmNo(optionalDepartmentEntity.get());

@@ -3,10 +3,7 @@ package hrms.service.employee;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hrms.model.dto.*;
-import hrms.model.entity.ApprovalEntity;
-import hrms.model.entity.DepartmentEntity;
-import hrms.model.entity.DepartmentHistoryEntity;
-import hrms.model.entity.EmployeeEntity;
+import hrms.model.entity.*;
 import hrms.model.repository.*;
 import hrms.service.approval.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +50,7 @@ public class EmployeeService {
                 ,employeeDtoApprovalRequestDto.getApprovers());
         System.out.println(approvalEntity.toString());
         // 입력한 부서의 fk 호출
-        Optional<DepartmentEntity> optionalDepartmentEntity =  departmentEntityRepository.findById(employeeDto.getDtpmNo());
+        Optional<DepartmentEntity> optionalDepartmentEntity =  departmentEntityRepository.findById(employeeDto.getDptmNo());
         System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
         // 결제 메소드 추가
 
@@ -99,7 +96,7 @@ public class EmployeeService {
         PageDto<EmployeeDto> pageDto = PageDto.<EmployeeDto>builder()
                 .totalCount(result.getTotalElements()) // 검색된 row 개수
                 .totalPages(result.getTotalPages())   // 총 페이지 수
-                .someList(result.stream().map(emp -> emp.allToDto()).collect(Collectors.toList())) // 검색된 Entity 를 dto로 형변환한다
+                .someList(result.stream().map(EmployeeEntity::allToDto).collect(Collectors.toList())) // 검색된 Entity 를 dto로 형변환한다
                 .build();
         return pageDto;
     }
@@ -131,17 +128,17 @@ public class EmployeeService {
     {
         EmployeeDto employeeDto = approvalRequestDto.getData();
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(employeeDto.getEmpNo());
+        //변경한 사원의 현재 비밀번호와 일치하면 수정을 완료하고 새로운 비밀번호가 입력 됐으면
+        // 새로운 비밀번호를 대입하여 수정 테이블에 삽입
         if(optionalEmployeeEntity.isPresent())
         {
-            System.out.println("step1");
-            System.out.println(optionalEmployeeEntity.get().getEmpPwd() +"db 비번" );
-            System.out.println(employeeDto.getEmpPwd() + " 입력 비번");
+
+            /*System.out.println(optionalEmployeeEntity.get().getEmpPwd() +"db 비번" );
+            System.out.println(employeeDto.getEmpPwd() + " 입력 비번");*/
             if(optionalEmployeeEntity.get().getEmpPwd().equals(employeeDto.getEmpPwd()))
             {
-                System.out.println("step2");
                 if(!employeeDto.getEmpNewPwd().isEmpty())
                 {
-                    System.out.println("step3");
                     employeeDto.setEmpPwd(employeeDto.getEmpNewPwd());
                 }
                 try{
@@ -163,49 +160,37 @@ public class EmployeeService {
                     System.out.println("changeInfo" + e);
                 }
             }
-            System.out.println("step4");
         }
         return false;
     }
-  /*  @Transactional
-    public boolean leaveEmpStatus(RetiredEmployeeDto retiredEmployeeDto)
-    {
 
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(retiredEmployeeDto.getEmpNo());
-        System.out.println("retiredEmployeeDto = " + retiredEmployeeDto);
-        System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
-        if(optionalEmployeeEntity.isPresent())
-        {
-            EmployeeEntity employeeEntity = optionalEmployeeEntity.get();
-            employeeEntity.setEmpSta(!employeeEntity.isEmpSta());
-
-            setRetiredEmployee(retiredEmployeeDto);
-            return true;
-        }else{
-            return false;
-        }
-
-    }
     @Transactional
-    public void setRetiredEmployee(ApprovalRequestDto<RetiredEmployeeDto> approvalRequestDto)
+    public boolean setRtiredEmployee(ApprovalRequestDto<RetiredEmployeeDto> approvalRequestDto)
     {
-        RetiredEmployeeDto retiredEmployeeDto = approvalRequestDto.getData();
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(retiredEmployeeDto.getEmpNo());
+        // 결제 등록
+        ApprovalEntity approvalEntity = approvalService.postApproval(
+                approvalRequestDto.getAprvType()
+                , approvalRequestDto.getAprvCont()
+                ,approvalRequestDto.getApprovers());
+        RetiredEmployeeEntity retiredEmployeeEntity = approvalRequestDto.getData().saveToEntity();
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(approvalRequestDto.getData().getEmpNo());
         if(optionalEmployeeEntity.isPresent())
         {
-            RetiredEmployeeEntity retiredEmployeeEntity = retiredEmployeeDto.saveToEntity();
+            retiredEmployeeEntityRepository.save(retiredEmployeeEntity); // 엔티티 저장
+            //단방향
+            retiredEmployeeEntity.setAprvNo(approvalEntity);
             retiredEmployeeEntity.setEmpNo(optionalEmployeeEntity.get());
-            retiredEmployeeEntityRepository.save(retiredEmployeeEntity);
-
+            // 양방향
             optionalEmployeeEntity.get().getRetiredEmployeeEntities().add(retiredEmployeeEntity);
-            System.out.println("optionalEmployeeEntity.to = " + optionalEmployeeEntity.get());
-            System.out.println("retiredEmployeeEntity = " + retiredEmployeeEntity);
-
+            approvalEntity.getRetiredEmployees().add(retiredEmployeeEntity);
+            System.out.println(optionalEmployeeEntity.get().getRetiredEmployeeEntities());
+            System.out.println(approvalEntity.getRetiredEmployees());
+            System.out.println(optionalEmployeeEntity.get().getRetiredEmployeeEntities());
+            return true;
         }
 
-
-
-    }*/
+        return false;
+    }
 
     // 휴직 사원 조회
     @Transactional
@@ -297,10 +282,32 @@ public class EmployeeService {
         }
         return false;
     }
-    public EmployeeDto findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
+    @Transactional
+    public PageDto<EmployeeDto> findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
     {
         System.out.println("employeeSearchOptionDto = " + employeeSearchOptionDto);
+        Pageable pageable = PageRequest.of(employeeSearchOptionDto.getPage()-1,10);  // 현재 페이지 수 설정
+        Page<EmployeeEntity> searchResult =  employeeRepository.searchToOption(employeeSearchOptionDto.getSearchNameOrEmpNo(),
+                employeeSearchOptionDto.getSearchValue(),pageable);
+        System.out.println("searchResult = " + searchResult);
+        PageDto<EmployeeDto> result = PageDto.<EmployeeDto>builder()
+                .totalCount(searchResult.getTotalElements())
+                .totalPages(searchResult.getTotalPages())
+                .someList(searchResult.stream().map(EmployeeEntity::searchToDto).collect(Collectors.toList())).build();
+        return result;
+    }
 
+    @Transactional
+    public EmployeeSearchDto empSearchInfo(String empNo)
+    {
+
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(empNo);
+        if(optionalEmployeeEntity.isPresent())
+        {
+            EmployeeSearchDto employeeSearchDto = optionalEmployeeEntity.get().searchInfoToDto();
+            employeeSearchDto.setAprvCount(employeeRepository.findAprvCount(empNo));
+            return employeeSearchDto;
+        }
         return null;
     }
 

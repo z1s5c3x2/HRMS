@@ -1,8 +1,9 @@
 package hrms.model.dto;
 
-import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.RetiredEmployeeEntity;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import lombok.*;
 public class RetiredEmployeeDto {
     private int rtempNo;
     private String rtempCont;
-    private String rtempDate;
+    private LocalDate rtempDate;
     private String empNo;
 
     public RetiredEmployeeEntity saveToEntity()

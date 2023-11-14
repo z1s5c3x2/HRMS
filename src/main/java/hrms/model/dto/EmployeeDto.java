@@ -17,8 +17,9 @@ public class EmployeeDto {
     private boolean empSta;                 // 근무상태
     private int empRk;                     // 사원 직급
     private int restCnt;                    //연차 조회
-    private int dtpmNo;
-    private String empNewPwd;
+    private int dptmNo;                    // 부서 번호
+    private String dptmName;                //부서 이름
+    private String empNewPwd;             //  정보 수정시 새로운 패스워드
     public EmployeeEntity saveToEntity()
     {
         return EmployeeEntity.builder()
@@ -31,4 +32,6 @@ public class EmployeeDto {
                 .empSta(this.empSta)
                 .empRk(this.empRk).build();
     }
+
+
 }

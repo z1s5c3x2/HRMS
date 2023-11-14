@@ -4,6 +4,7 @@ package hrms.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,7 +19,7 @@ public class RetiredEmployeeEntity extends BaseTime {
     @Column( )
     private String rtempCont;
     @Column()
-    private String rtempDate;
+    private LocalDate rtempDate;
 
     @ToString.Exclude
     @JoinColumn(name="empNo")

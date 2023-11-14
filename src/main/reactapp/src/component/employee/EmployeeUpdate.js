@@ -14,6 +14,7 @@ export default function EmployeeUpdate(props)
     const [isOn, setIsOn] = useState(false)
     /* 변경 데이터 재 지정 */
     const [changeDepartment, setChangeDepartment] = useState({empNo:"2311001"})
+    /* 모달 키고 끄기*/
     const modalController = (e)=> {
         setIsOn(!isOn)
     }
@@ -31,7 +32,7 @@ export default function EmployeeUpdate(props)
             .get("/employee/findemp?empNo="+searchParams.get('empNo'))
             .then( (r) => {
                 setEmpInfo(r.data)
-                setSaveDp(r.data.dtpmNo.toString())
+                setSaveDp(r.data.dptmNo.toString())
                 setSaveRk(r.data.empRk.toString())
              })
             .catch( (e) =>{
@@ -40,7 +41,7 @@ export default function EmployeeUpdate(props)
     }, []);
     const changeInfo = (e) =>{
         // 부서 직급 변경의 결제타입이 다름, 한번에 하나씩 수정
-        if( (e.target.name == "empRk" && saveDp != empInfo.dtpmNo) || (e.target.name == "dtpmNo" && saveRk != empInfo.empRk)  )
+        if( (e.target.name == "empRk" && saveDp != empInfo.dptmNo) || (e.target.name == "dptmNo" && saveRk != empInfo.empRk)  )
         {
             alert("한개씩 수정 해주세요")
         }else if(e.target.name == "empRk") {
@@ -48,7 +49,7 @@ export default function EmployeeUpdate(props)
             // 직급 수정시 5 부서 수정시 4
             setAprvType(5)
         }else{
-            setChangeDepartment({...changeDepartment,dtpmNo:e.target.value})
+            setChangeDepartment({...changeDepartment,dptmNo:e.target.value})
             setAprvType(4)
         }
     }
@@ -65,7 +66,7 @@ export default function EmployeeUpdate(props)
                 번호 : <input value={empInfo.empPhone} disabled={true}/><br/>
                 성별 : <input value={empInfo.empSex} disabled={true}/><br/>
                 이름 : <input value={empInfo.empSta ? "재직" : "휴직"} disabled={true}/><br/>
-                부서 : <select name="dtpmNo" onChange={ changeInfo} value={changeDepartment.dtpmNo}>
+                부서 : <select name="dptmNo" onChange={ changeInfo} value={changeDepartment.dptmNo}>
                     <option value={1}>인사팀</option>
                     <option value={2}>기획팀(PM)</option>
                     <option value={3}>기획팀(PM)</option>
@@ -86,11 +87,11 @@ export default function EmployeeUpdate(props)
                 aprvType == 4 ? <>
                     변경 날짜 : <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DesktopDatePicker
-                        value={changeDepartment.hdtpmStart}
+                        value={changeDepartment.hdptmStart}
                         sx={{ width: '30%',height:"100px"}}
                         renderInput={(params) => <TextField {...params} label="날짜" />}
                         format="YYYY-MM-DD"
-                        onChange={(date)=> setChangeDepartment({...changeDepartment,hdtpmStart : date})}
+                        onChange={(date)=> setChangeDepartment({...changeDepartment,hdptmStart : date})}
                     />
                 </LocalizationProvider>
                 </> : <></>
