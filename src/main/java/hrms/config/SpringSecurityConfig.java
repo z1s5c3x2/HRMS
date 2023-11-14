@@ -26,8 +26,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 0. 인증(로그인)된 권환(허가) 통해 페이지 접근 제한  UserDetails 내 유저네임과 일치시켜야함
         http.authorizeHttpRequests()    // 1. 인증된
-                //.antMatchers("/info").hasRole("USER")   // 인증된 권환중에 ROLE_USER이면 HTTP 허용
-                //.antMatchers("/board/write").hasRole("USER")
+                //.antMatchers("/info").hasRole("인사")   // 인증된 권한중에 인사팀이면 HTTP 허용
+                .antMatchers("/teamproject/teammember/print").hasRole("인사")
+                .antMatchers("/teamproject/teammember/write").hasRole("인사")
                 .antMatchers("/**").permitAll();     // 모든 페이지는 권한 모두 허용
         // 1. 인증(로그인) 커스텀
         http.formLogin()                                    // 1. 시큐리티 로그인 사용[form전송]
@@ -43,7 +44,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // 2. 로그아웃 커스텀[시큐리티 사용전에 컨트롤러와 서비스에 구현한 logout 관련 메소드 제거]
         http.logout()           // 1. 로그인(인증) 로그아웃 처림
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))         // 2. 로그아웃 처리할 HTTP 주소 정의
-                .logoutSuccessUrl("/")             // 3. 로그아웃 성공했을때 이동할 HTTP주소
+                .logoutSuccessUrl("/member/Login")             // 3. 로그아웃 성공했을때 이동할 HTTP주소
                 .invalidateHttpSession(true);        // 4. 로그아웃 할때 http 세션 모두 초기화[ true : 초기화/ false : 초기화x]
 
         // 3. csrf 커스텀

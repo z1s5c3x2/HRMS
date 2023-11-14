@@ -94,7 +94,8 @@ public class SecurityService implements UserDetailsService {
 
         // 2-1 권한 목록 추가
         List<GrantedAuthority> authList = new ArrayList<>();
-        authList.add(new SimpleGrantedAuthority((employeeEntity.getEmpRk() + "" ) ) );
+        authList.add(new SimpleGrantedAuthority((employeeEntity.getDptmNo().getDptmName() ) ) );
+        System.out.println("설정된 권한 = " + employeeEntity.getDptmNo().getDptmName());
 
         // 2-2 DTO 만들기
         EmployeeDto employeeDto = EmployeeDto.builder()
