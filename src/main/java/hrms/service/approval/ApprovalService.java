@@ -124,13 +124,13 @@ public class ApprovalService {
             return null;
         }
         */
-
+        System.out.println(222);
         // 상신자
         // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo("2311004");
-
+        System.out.println(333);
         if (optionalEmployeeEntity.isPresent()) {
-
+            System.out.println(444);
             ApprovalEntity approvalEntity = ApprovalEntity
                     .builder()
                     .aprvType(aprvType)
@@ -138,16 +138,17 @@ public class ApprovalService {
                     .aprvJson(aprvJson)
                     .empNo(optionalEmployeeEntity.get())
                     .build();
-
+            System.out.println(5555);
             // DB 저장
             ApprovalEntity result = approvalRepository.save(approvalEntity);
             /* 단방향 */
             // 검토자에 대한 사원테이블 JPA 단방향 관계 정립
             result.setEmpNo(optionalEmployeeEntity.get());
+            System.out.println(666);
             /* 양방향 */
             // 사원테이블 JPA 단방향 관계 정립
             optionalEmployeeEntity.get().getApprovalEntities().add(result);
-
+            System.out.println(777);
             // 검토자 DB 저장을 위한 메서드 실행
             postApprovalLog(approvers, result.getAprvNo());
 

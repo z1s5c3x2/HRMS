@@ -35,8 +35,13 @@ export default function TeamMemberUpdate( props ){
     const [teamMemberInfo, setteamMemberInfo] = useState({
         tmSt : null,
         tmEnd : null,
-        tmNo : Number(searchParams),
+        tmNo : 0,
      });
+
+     useEffect( () => {
+        teamMemberInfo.tmNo = tmNo;
+        console.log(teamMemberInfo);
+     }, [searchParams])
 
     // 날짜 데이터
     const [selectedSDate, setSelectedSDate] = useState(null);
