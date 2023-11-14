@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import ApprovalModal from "../approval/ApprovalModal";
 import EmployeeList from '../employee/EmployeeList';
+import {BrowserRouter, Routes, Route, Link, useSearchParams} from 'react-router-dom';
 
 import styles from '../../css/teamProject/TeamProjectMain.css';
 
@@ -30,6 +31,11 @@ dayjs.locale('ko');
 
 
 export default function TeamProjectUpdate( props ){
+
+    // url param 값 가져오기
+    const [ searchParams, setSearchParams ] = useSearchParams();
+    const pjtNo = searchParams.get('pjtNo');
+
     /*모달 호출 선언 필요*/
     const [isOn, setIsOn] = useState(false)
 
@@ -43,7 +49,8 @@ export default function TeamProjectUpdate( props ){
         pjtName : null,
         pjtSt : null,
         pjtEND : null,
-        empNo : null
+        empNo : null,
+        pjtNo : Number(searchParams)
      });
     // 날짜 데이터
     const [selectedSDate, setSelectedSDate] = useState(null);
@@ -121,6 +128,15 @@ export default function TeamProjectUpdate( props ){
             })
     }
 
+    // url param으로 불러온 pjtNo로 프로젝트팀 정보 호출
+    useEffect( () =>{
+        axios
+            .get("/teamproject/getOne",{params: { pjtNo : Number(searchParams) } })
+            .then( (r) => {
+                console.log(r.data);
+            })
+    }, [])
+
 
 
     return(<>
@@ -168,14 +184,14 @@ export default function TeamProjectUpdate( props ){
                     </LocalizationProvider>
                 </div>
                 <div class="eregBtnBox">
-                    <button class="btn01" type="button" onClick={onModal}>프로젝트팀등록</button>
+                    <button class="btn01" type="button" onClick={onModal}>프로젝트팀수정</button>
                 </div>
             </div>
             {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
                 { isOn ? <> <ApprovalModal data={projectInfo}
-                                          targetUrl={"/teamproject/post"}
-                                          aprvType={12}
-                                          successUrl={"/teamproject"}>
+                                          targetUrl={"/approval/putAproval"}
+                                          aprvType={16}
+                                          successUrl={"/teamproject/listAll"}>
                 </ApprovalModal></> : <> </> }
         </div>
         {/* 사원리스트 출력 공간 */}
