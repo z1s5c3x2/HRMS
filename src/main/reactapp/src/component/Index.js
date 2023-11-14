@@ -50,6 +50,8 @@ import EmployeeUpdate from "./employee/EmployeeUpdate";
 import EmployeeDetails from "./employee/EmployeeDetails";
 import EmployeeSearch from "./employee/EmployeeSearch";
 
+/* error */
+
 export default function Index( props ){
     return(<>
         <div class="wrapContainer scrollbox" >

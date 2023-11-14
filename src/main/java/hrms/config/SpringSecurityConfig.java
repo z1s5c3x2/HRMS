@@ -29,7 +29,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/info").hasRole("인사")   // 인증된 권한중에 인사팀이면 HTTP 허용
                 .antMatchers("/teamproject/teammember/print").hasRole("인사")
                 .antMatchers("/teamproject/teammember/write").hasRole("인사")
-                .antMatchers("/**").permitAll();     // 모든 페이지는 권한 모두 허용
+                .antMatchers("/**").permitAll()     // 모든 페이지는 권한 모두 허용
+                .and()
+                .formLogin()
+                .and()
+                .exceptionHandling().accessDeniedPage("/access-denied");
         // 1. 인증(로그인) 커스텀
         http.formLogin()                                    // 1. 시큐리티 로그인 사용[form전송]
                 .loginPage("/member/Login")                        // 2. 시큐리티 로그인으로 사용할 VIEW 페이지 HTTP주소
