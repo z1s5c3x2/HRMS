@@ -9,8 +9,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+// --------------------------------------------
+import ApprovalModal from "../approval/ApprovalModal";
 
 export default function TeamMemberList(props){
+
+    /*모달 호출 선언 필요*/
+    const [isOn, setIsOn] = useState(false)
+
+    // 결재 모달창 여는 함수
+    function onModal(e) {
+        //document.querySelector('.approv_modal').style.display = 'flex';
+        setIsOn(!isOn)
+    }
+
+    const [ teamMemberNum, setTeamMemberNum ] = useState( [] );
 
     // url param 값 가져오기
     const [ searchParams, setSearchParams ] = useSearchParams();
@@ -30,11 +43,9 @@ export default function TeamMemberList(props){
 
     // 삭제 버튼을 누르면 실행되는 함수
     const teamMemberDelete = (e)=>{
-        axios
-            .post("/approval/deleteAproval")
-            .then( (r) => {
-                console.log(r.data);
-            })
+        setTeamMemberNum(e);
+        console.log(teamMemberNum);
+        onModal();
     }
 
     return(<>
@@ -65,8 +76,12 @@ export default function TeamMemberList(props){
                           <TableCell align="center">{row.tmSt}</TableCell>
                           <TableCell align="center">{row.aprvSta == 1 ? '승인' : row.aprvSta == 2 ? '반려' : '검토중'}</TableCell>
                           <TableCell align="center">
-                            <button type="button" > 수정 </button>
-                            <button onClick={ teamMemberDelete } type="button" > 삭제 </button>
+                            <button type="button" >
+                                <Link to={'/teamproject/teammember/update?tmNo=' + row.tmNo}>
+                                    수정
+                                </Link>
+                            </button>
+                            <button onClick={ () => {teamMemberDelete(row.tmNo)} } type="button" > 삭제 </button>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -75,5 +90,11 @@ export default function TeamMemberList(props){
                 </TableContainer>
             </div>
         </div>
+        {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
+        { isOn ? <> <ApprovalModal data={teamMemberNum}
+                                  targetUrl={"/approval/deleteAproval"}
+                                  aprvType={17}
+                                  successUrl={"/teamProject/listAll"}>
+        </ApprovalModal></> : <> </> }
     </>)
 }
