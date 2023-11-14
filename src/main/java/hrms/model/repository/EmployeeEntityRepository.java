@@ -31,7 +31,7 @@ public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity,I
     @Query(value = "select * from emp where IF( :option = '0', emp_no like %:searchValue% ,emp_name like %:searchValue%)",nativeQuery = true)
     Page<EmployeeEntity> searchToOption(String option,String searchValue,Pageable pageable);
 
-    @Query(value = "SELECT COUNT(*) AS row_count\n" +
+    /*@Query(value = "SELECT COUNT(*) AS row_count\n" +
             "FROM aprv AS a\n" +
             "WHERE emp_no = :empNo\n" +
             "  AND (\n" +
@@ -39,5 +39,5 @@ public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity,I
             "          FROM aplog\n" +
             "          WHERE a.aprv_no = aplog.aprv_no AND aplog_sta = 3\n" +
             "      ) = false", nativeQuery = true)
-    int findAprvCount(String empNo);
+    int findAprvCount(String empNo);*/
 }

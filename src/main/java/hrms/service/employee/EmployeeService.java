@@ -137,7 +137,7 @@ public class EmployeeService {
             System.out.println(employeeDto.getEmpPwd() + " 입력 비번");*/
             if(optionalEmployeeEntity.get().getEmpPwd().equals(employeeDto.getEmpPwd()))
             {
-                if(!employeeDto.getEmpNewPwd().isEmpty())
+                if(employeeDto.getEmpNewPwd() != null)
                 {
                     employeeDto.setEmpPwd(employeeDto.getEmpNewPwd());
                 }
@@ -297,15 +297,24 @@ public class EmployeeService {
         return result;
     }
 
-    @Transactional
+    @Transactional //검색 페이지에서의 사원 상세 정보 호출
     public EmployeeSearchDto empSearchInfo(String empNo)
     {
-
+        // empno로 사원 정보 db에서 호출
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(empNo);
         if(optionalEmployeeEntity.isPresent())
         {
+            //사원 entity를 페이지에 맞는 정보를 dto로 초기화
             EmployeeSearchDto employeeSearchDto = optionalEmployeeEntity.get().searchInfoToDto();
-            employeeSearchDto.setAprvCount(employeeRepository.findAprvCount(empNo));
+            //조회 사원의 결제리스트 호출
+            //사원의 결제 리스트를 호출하여 filter로 반복
+            //반복중인 결제건의 로그를 확인,필터 반복문
+            //anymatch를 사용하여 올린 결제로그의 타입을 확인하여 결제 진행중(sta = 3)인것만 반환하여 카운트 집계, 설정
+            employeeSearchDto.setAprvCount((int) optionalEmployeeEntity.get()
+                    .getApprovalEntities()
+                    .stream()
+                    .filter(a -> a.getApprovalLogEntities().stream().anyMatch(l -> l.getAplogSta() == 3))
+                    .count());
             return employeeSearchDto;
         }
         return null;
