@@ -17,6 +17,7 @@ import ApprovalView from "./approval/ApprovalView";
 
 /* Attendance import */
 import AttendanceList from "./attendance/AttendanceList";
+import AttendancePCalendar from "./attendance/AttendancePCalendar";
 
 /* Employee import */
 import RegisterEmp from "./employee/RegisterEmp";
@@ -47,6 +48,7 @@ import TeamProjectUpdate from "./teamProject/TeamProjectUpdate";
 import Login from "./member/Login";
 import EmployeeUpdate from "./employee/EmployeeUpdate";
 import EmployeeDetails from "./employee/EmployeeDetails";
+import EmployeeSearch from "./employee/EmployeeSearch";
 
 export default function Index( props ){
     return(<>
@@ -67,22 +69,25 @@ export default function Index( props ){
                                 <Route path='/approvalview' element = { <ApprovalView/> } />
                             {/* Attendance*/}
                                 <Route path='/attendance' element={<AttendanceList/>} />
+                                <Route path='/attendance/pcalendar' element={<AttendancePCalendar/>} />
                             {/* Employee*/}
                                 <Route path='/employee/list' element={<EmployeeList/>} />
                                 <Route path='/employee/register' element={<RegisterEmp/>} />
                                 <Route path='/employee/update' element={<EmployeeUpdate/>} />
                                 <Route path='/employee/details' element={<EmployeeDetails/>} />
+                                <Route path='/employee/searchemp' element={<EmployeeSearch/>} />
 
                             {/* Salary*/}
                                 <Route path='/salary' element={<SalaryMain/>} />
                                 <Route path='/salary/write' element={<SalaryWrite/>} />
                                 <Route path='/salary/view' element={<SalaryView/>} />
                                 <Route path='/salary/list' element={<SalaryList/>} />
-                            {/* LeaveRequest*/}
+                            {/* LeaveRequest
                                 <Route path='/leaveRequest' element={<LeaveRequestMain/>} />
                                 <Route path='/leaveRequest/write' element={<LeaveRequestWrite/>} />
                                 <Route path='/leaveRequest/view' element={<LeaveRequestView/>} />
                                 <Route path='/leaveRequest/list' element={<LeaveRequestList/>} />
+                                */}
                             {/* TeamProject */}
                                 <Route path='/teamproject' element={<TeamProjectMain />} />
                                 <Route path='/teamproject/listAll' element={<TeamProjectList />} />

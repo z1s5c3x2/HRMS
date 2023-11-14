@@ -2,10 +2,7 @@ package hrms.service.employee;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import hrms.model.dto.ApprovalRequestDto;
-import hrms.model.dto.DepartmentHistoryDto;
-import hrms.model.dto.EmployeeDto;
-import hrms.model.dto.PageDto;
+import hrms.model.dto.*;
 import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.DepartmentEntity;
 import hrms.model.entity.DepartmentHistoryEntity;
@@ -300,9 +297,12 @@ public class EmployeeService {
         }
         return false;
     }
+    public EmployeeDto findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
+    {
+        System.out.println("employeeSearchOptionDto = " + employeeSearchOptionDto);
 
-
-
+        return null;
+    }
 
 
 

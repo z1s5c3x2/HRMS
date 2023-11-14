@@ -73,19 +73,19 @@ export default function EmployeeList() {
                             <TableCell align="center">전화번호 </TableCell>
                             <TableCell align="center">성별</TableCell>
                             <TableCell align="center">근무 상태</TableCell>
-                            <TableCell align="center">프로젝트기한</TableCell>
+                            <TableCell align="center">직급</TableCell>
                             <TableCell align="center">부서</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {empList.map((emp) => (
-                            <TableRow component={Link} to={"/employee/update?empNo="+emp.empNo} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                            <TableRow sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                                     <TableCell align="center">{emp.empName}</TableCell>
                                     <TableCell align="center"> {emp.empPhone} </TableCell>
                                     <TableCell align="center">{emp.empSex}</TableCell>
                                     <TableCell align="center">{emp.empSta ? '재직' : '휴직'}</TableCell>
-                                    <TableCell align="center">{rkList[emp.empRk]}</TableCell>
-                                    <TableCell align="center">{dptList[emp.dtpmNo - 1]}</TableCell>
+                                    <TableCell component={Link} to={"/employee/update?empNo="+emp.empNo} align="center">{rkList[emp.empRk]}</TableCell>
+                                    <TableCell component={Link} to={"/employee/update?empNo="+emp.empNo} align="center">{dptList[emp.dtpmNo - 1]}</TableCell>
                             </TableRow>
 
                         ))}

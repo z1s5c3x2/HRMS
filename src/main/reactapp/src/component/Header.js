@@ -12,7 +12,7 @@ export default function Header( props ){
         <header>
         			<div className="topmenu">
         				<ul className="topMenuList">
-        					<li className=""><Link to='/employee'>인사관리</Link></li>
+        					<li className=""><Link to='/employee/list'>인사관리</Link></li>
         					<li className=""><Link to='/teamProject'>프로젝트팀관리</Link></li>
         					<li className=""><Link to='/attendance'>근태관리</Link></li>
         					<li className=""><Link to='/salary'>급여관리</Link></li>

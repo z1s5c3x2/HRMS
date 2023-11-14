@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -512,12 +513,21 @@ public class ApprovalService {
 
         // 검토자에 해당 되는 결재건 탐색
         return approvalLogList.stream().map(e -> {
+            
+            // 반환할 DTO
+            ApprovalDto approvalDto = e.getAprvNo().toApprovalDto();
 
             // 해당 검토자가 검토를 완료했을 경우
             // AplogSta(결재상태)   = 1:완료  2:반려
-            if (e.getAplogSta() == 1 || e.getAplogSta() == 2) {
-                return e.getAprvNo().toApprovalDto();
+            if(e.getAplogSta() == 1) {
+                approvalDto.setApState(1);  // 결재완료 여부 저장 후 반환
+                return approvalDto;
             }
+            if(e.getAplogSta() == 2){
+                approvalDto.setApState(2);  // 결재완료 여부 저장 후 반환
+                return approvalDto;
+            }
+            
             // 해당 결재 건에 대한 다수의 검토자 결재여부 탐색 실시
             // ※ '반려' 혹은 '검토 중'일 시 탐색대상에서 제외
             for (int i = 0; i < e.getAprvNo().getApprovalLogEntities().size(); i++) {
@@ -526,19 +536,23 @@ public class ApprovalService {
 // 추후 "2311004" => userDetails 기입 예정
                 if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals("ccc")
                         && i == 0) {
-                    return e.getAprvNo().toApprovalDto();
+                    approvalDto.setApState(3);  // 결재완료 여부 저장 후 반환
+                    return approvalDto;
                 }
                 // - 이전 검토자가 결재를 '완료' 하였을 경우
 // 추후 "2311004" => userDetails 기입 예정
                 if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals("ccc")
                         && e.getAprvNo().getApprovalLogEntities().get(i - 1).getAplogSta() == 1) {
-                    return e.getAprvNo().toApprovalDto();
+                    approvalDto.setApState(3);  // 결재완료 여부 저장 후 반환
+                    return approvalDto;
                 }
             }
 
             return null;
 
-        }).collect(Collectors.toList());
+        })
+        .filter(Objects::nonNull) // null을 제외하고 필터링
+        .collect(Collectors.toList());
 
     }
 

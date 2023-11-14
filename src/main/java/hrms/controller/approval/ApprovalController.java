@@ -87,10 +87,8 @@ public class ApprovalController {
 
     // 검토자 1명 승인
     @PutMapping("/approbate")
-    public boolean approbate( @RequestParam int aprvNo, @RequestParam int aplogSta ) throws JsonProcessingException {
-        // aplogSta : 1:결재 / 2: 반려 / 3:검토중
-
-        return approvalService.approbate( aprvNo, aplogSta );
+    public boolean approbate( @RequestBody ApprovalDto approvalDto ) throws JsonProcessingException {
+        return approvalService.approbate( approvalDto.getAprvNo(), approvalDto.getApState() );
     }
 
     // 개별 상신목록 조회
