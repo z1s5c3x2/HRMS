@@ -130,7 +130,12 @@ public class ApprovalController {
         return approvalService.getApprovalHistory();
     }
 
+    // 전사원 상신목록 조회
+    @GetMapping("/getAllEmployeesApproval")
+    public List<ApprovalDto> getAllEmployeesApproval() throws JsonProcessingException {
 
+        return approvalService.getAllEmployeesApproval();
+    }
 
 
 
