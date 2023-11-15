@@ -31,7 +31,7 @@ public class EmployeeController {
     public boolean leaveEmpStatus(@RequestBody ApprovalRequestDto<RetiredEmployeeDto> approvalRequestDto)
     {
         System.out.println("approvalRequestDto = " + approvalRequestDto);
-        return employeeService.setRtiredEmployee(approvalRequestDto);
+        return employeeService.setRetiredEmployee(approvalRequestDto);
     }
 
     @GetMapping("getaprvlist") // 결제 받을 인사팀 가져오기

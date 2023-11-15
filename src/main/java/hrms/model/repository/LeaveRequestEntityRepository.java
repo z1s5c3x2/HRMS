@@ -1,16 +1,14 @@
 package hrms.model.repository;
 
+import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.LeaveRequestEntity;
-import hrms.model.entity.SalaryEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public interface LeaveRequestEntityRepository extends JpaRepository<LeaveRequestEntity,Integer> {
@@ -27,4 +25,6 @@ public interface LeaveRequestEntityRepository extends JpaRepository<LeaveRequest
             " if( :key = 'lrqType' , lrq_type like %:keyword% , true ) ) ) order by lrq_st desc" // [조건3]
             , nativeQuery = true )
     Page<LeaveRequestEntity> findBySearch(String key , String keyword , Pageable pageable );
+
+    LeaveRequestEntity findByAprvNo(ApprovalEntity aprvNo);
 }

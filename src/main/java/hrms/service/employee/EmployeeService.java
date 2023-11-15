@@ -131,7 +131,7 @@ public class EmployeeService {
 
         return response;
     }
-    public boolean changeInfo(ApprovalRequestDto<EmployeeDto> approvalRequestDto)
+    public boolean changeInfo(ApprovalRequestDto<EmployeeDto> approvalRequestDto) //사원 개인정보 수정
     {
         EmployeeDto employeeDto = approvalRequestDto.getData();
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(employeeDto.getEmpNo());
@@ -172,7 +172,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    public boolean setRtiredEmployee(ApprovalRequestDto<RetiredEmployeeDto> approvalRequestDto)
+    public boolean setRetiredEmployee(ApprovalRequestDto<RetiredEmployeeDto> approvalRequestDto)
     {
         // 결제 등록
         ApprovalEntity approvalEntity = approvalService.postApproval(
@@ -212,7 +212,7 @@ public class EmployeeService {
 
     }
 
-    @Transactional
+    @Transactional //사원 직급 변경
     public boolean changeEmployeeRank(ApprovalRequestDto<EmployeeDto> approvalRequestDto)
     {
         try{
@@ -235,7 +235,7 @@ public class EmployeeService {
 
         return false;
     }
-    @Transactional
+    @Transactional //사원 부서 변경
     public boolean changeEmployeeDepartment(ApprovalRequestDto<DepartmentHistoryDto> approvalRequestDto)
     {
         try{
@@ -245,51 +245,23 @@ public class EmployeeService {
             objectMapper.registerModule(new JavaTimeModule());
             String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
             approvalRequestDto.setAprvJson(json);
-
+            // 날짜 맞추기
+            approvalRequestDto.getData().setHdtpmStart(approvalRequestDto.getData().getHdtpmStart().plusDays(1));
             // 결재 테이블 등록 메서드
             // => 실행 후 실행결과 반환
-            ApprovalEntity approvalEntity = approvalService.updateLogApproval(
+            return approvalService.updateApproval(
                     approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
                     approvalRequestDto.getAprvCont(),   // 결재내용
                     approvalRequestDto.getApprovers(),  // 검토자
                     approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
             );
-            // 날짜 맞추기
-            approvalRequestDto.getData().setHdtpmStart(approvalRequestDto.getData().getHdtpmStart().plusDays(1));
 
-            //부서, 사원 id로 가져오기
-            Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(approvalRequestDto.getEmpNo());
-            Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(approvalRequestDto.getData().getDtpmNo());
-
-            // 부서,사원을 성공적으로 가져오면 실행
-            if(optionalEmployeeEntity.isPresent() && optionalDepartmentEntity.isPresent())
-            {
-                //사원이 현재 일하고 있는 부서의 마지막 날 설정
-                departmentHistoryEntityRepository.findTop1ByEmpNoAndHdptmEndIsNullOrderByHdptmEndDesc(optionalEmployeeEntity.get()).ifPresent( d ->{
-                    d.setHdptmEnd(approvalRequestDto.getData().getHdtpmStart());
-                });
-                //부서 저장
-                DepartmentHistoryEntity departmentHistoryEntity = DepartmentHistoryEntity.builder()
-                        .htrdpRk(optionalEmployeeEntity.get().getEmpRk())
-                        .dptmNo(optionalDepartmentEntity.get())
-                        .empNo(optionalEmployeeEntity.get())
-                        .hdptmStart(approvalRequestDto.getData().getHdtpmStart())
-                        .aprvNo(approvalEntity).build();
-
-                /* 단방향 */
-                departmentHistoryEntityRepository.save(departmentHistoryEntity);
-                /* 양방향 */
-                optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
-                optionalEmployeeEntity.get().getDepartmentHistoryEntities().add(departmentHistoryEntity);
-                approvalEntity.getDepartmentHistoryEntities().add(departmentHistoryEntity);
-                return true;
-            }
         }catch(Exception e) {
             System.out.println("changeEmployeeDepartment" + e);
         }
         return false;
     }
-    @Transactional
+    @Transactional // 사원 검색 페이지에서의 페이징 처리
     public PageDto<EmployeeDto> findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
     {
         System.out.println("employeeSearchOptionDto = " + employeeSearchOptionDto);

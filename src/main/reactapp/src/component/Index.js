@@ -51,6 +51,7 @@ import Login from "./member/Login";
 import EmployeeUpdate from "./employee/EmployeeUpdate";
 import EmployeeDetails from "./employee/EmployeeDetails";
 import EmployeeSearch from "./employee/EmployeeSearch";
+import LeaveRequestUpdate from "./leaveRequest/LeaveRequestUpdate";
 
 /* error */
 
@@ -94,6 +95,7 @@ export default function Index( props ){
                                 <Route path='/leaveRequest/write' element={<LeaveRequestWrite/>} />
                                 <Route path='/leaveRequest/view' element={<LeaveRequestView/>} />
                                 <Route path='/leaveRequest/list' element={<LeaveRequestList/>} />
+                                <Route path='/leaveRequest/update' element={<LeaveRequestUpdate/>} />
 
                             {/* TeamProject */}
                                 <Route path='/teamproject' element={<TeamProjectMain />} />

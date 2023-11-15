@@ -3,10 +3,7 @@ package hrms.service.approval;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hrms.model.dto.ApprovalDto;
-import hrms.model.dto.EmployeeDto;
-import hrms.model.dto.ProjectDto;
-import hrms.model.dto.TeamMemberDto;
+import hrms.model.dto.*;
 import hrms.model.entity.*;
 import hrms.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,40 +32,11 @@ public class ApprovalService {
     private ProjectEntityRepository projectRepository;
     @Autowired
     private TeamMemberEntityRepository teamMemberRepository;
+    @Autowired
+    private LeaveRequestEntityRepository leaveRequestEntityRepository;
+    @Autowired
+    private DepartmentHistoryEntityRepository departmentHistoryEntityRepository;
 
-    @Transactional // 로그가 남는 변경 기능 업데이트 정보 까지 받아서 올린 후 pk 반환
-    public ApprovalEntity updateLogApproval(int aprvType, String aprvCont, ArrayList<String> approvers, String aprvJson)
-    {
-        // 상신자
-        // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( "2311004" );
-
-        if( optionalEmployeeEntity.isPresent() ) {
-
-            ApprovalEntity approvalEntity = ApprovalEntity
-                    .builder()
-                    .aprvType(aprvType)
-                    .aprvJson(aprvJson)
-                    .aprvCont(aprvCont)
-                    .empNo(optionalEmployeeEntity.get())
-                    .build();
-            // DB 저장
-            ApprovalEntity result = approvalRepository.save( approvalEntity );
-            /* 단방향 */
-            // 검토자에 대한 사원테이블 JPA 단방향 관계 정립
-            result.setEmpNo( optionalEmployeeEntity.get() );
-            /* 양방향 */
-            // 사원테이블 JPA 단방향 관계 정립
-            optionalEmployeeEntity.get().getApprovalEntities().add( result );
-
-            // 검토자 DB 저장을 위한 메서드 실행
-            postApprovalLog( approvers, result.getAprvNo() );
-
-            if( result.getAprvNo() >= 1 )  return result;
-        }
-
-        return null;
-    }
 
     // 최초등록 : 결재 테이블 등록 [등록 기능에 관한 테이블]
     @Transactional
@@ -331,13 +299,11 @@ public class ApprovalService {
 
                 // 사원 부서변경
                 case 4:
-
                     Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(employeeDto.getDptmNo());
                     if (!optionalDepartmentEntity.isPresent()) return false;
 
                     optionalEmployeeEntity.get().setDptmNo(optionalDepartmentEntity.get());
-                    employeeRepository.save(optionalEmployeeEntity.get());
-
+                    if(commitChangeDepartment(aprvNo)) employeeRepository.save(optionalEmployeeEntity.get());
                     break;
 
                 // 사원 직급변경
@@ -351,12 +317,74 @@ public class ApprovalService {
         return false;
 
     }
+    @Transactional
+    public boolean commitChangeDepartment(int aprvNo)
+    {
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+
+            Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
+            if (!optionalApprovalEntity.isPresent()) return false;
+
+            // JSON문자열 => DTO객체로 변환
+            DepartmentHistoryDto departmentHistoryDto
+                    = objectMapper.readValue(optionalApprovalEntity.get().getAprvJson(), DepartmentHistoryDto.class);
+            //부서, 사원 id로 가져오기
+            Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(departmentHistoryDto.getEmpNo());
+            Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(departmentHistoryDto.getDtpmNo());
+
+            // 부서,사원을 성공적으로 가져오면 실행
+            if(optionalEmployeeEntity.isPresent() && optionalDepartmentEntity.isPresent())
+            {
+                //사원이 현재 일하고 있는 부서의 마지막 날 설정
+                departmentHistoryEntityRepository.findTop1ByEmpNoAndHdptmEndIsNullOrderByHdptmEndDesc(optionalEmployeeEntity.get()).ifPresent( d ->{
+                    d.setHdptmEnd(departmentHistoryDto.getHdtpmStart());
+                });
+                //부서 저장
+                DepartmentHistoryEntity departmentHistoryEntity = DepartmentHistoryEntity.builder()
+                        .htrdpRk(optionalEmployeeEntity.get().getEmpRk())
+                        .dptmNo(optionalDepartmentEntity.get())
+                        .empNo(optionalEmployeeEntity.get())
+                        .hdptmStart(departmentHistoryDto.getHdtpmStart())
+                        .aprvNo(optionalApprovalEntity.get()).build();
+
+                /* 단방향 */
+                departmentHistoryEntityRepository.save(departmentHistoryEntity);
+                /* 양방향 */
+                optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
+                optionalEmployeeEntity.get().getDepartmentHistoryEntities().add(departmentHistoryEntity);
+                optionalApprovalEntity.get().getDepartmentHistoryEntities().add(departmentHistoryEntity);
+                return true;
+            }
+        }catch(Exception e) {
+            System.out.println("commitChangeDepartment" + e);
+        }
+
+
+
+        return false;
+    }
 
     // 결재 완료된 (휴직/연차/병가) 기간/급여지급여부 '수정' 기능 메서드
     @Transactional
     public boolean updateLeaveRequestInfoAproval(int aprvNo) throws JsonProcessingException {
 
-        return false;
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+
+        Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
+        if (!optionalApprovalEntity.isPresent()) return false;
+        LeaveRequestEntity leaveRequestEntity = leaveRequestEntityRepository.findByAprvNo(optionalApprovalEntity.get()); // 휴가 신청 테이블 조인
+
+        // JSON문자열 => DTO객체로 변환
+        LeaveRequestDto leaveRequestDto  = objectMapper.readValue(optionalApprovalEntity.get().getAprvJson(), LeaveRequestDto.class);
+
+        leaveRequestEntity.setLrqSrtype(leaveRequestDto.getLrqSrtype()); // 급여 지급 수정
+        leaveRequestEntity.setLrqSt(leaveRequestDto.getLrqSt()); // 휴가 시작날 수정
+        leaveRequestEntity.setLrqEnd(leaveRequestDto.getLrqEnd()); // 휴가 복귀날 수정
+
+        return true;
     }
 
     // 결재 완료된 프로젝트 '수정' 기능 메서드

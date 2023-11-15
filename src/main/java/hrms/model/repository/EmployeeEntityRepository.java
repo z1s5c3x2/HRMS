@@ -17,17 +17,17 @@ public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity,I
             "FROM emp\n" +
             "WHERE DATE_FORMAT(cdate, '%Y') = :nowYear\n"
             ,nativeQuery = true)
-    int countNowEmployee(String nowYear);
-    List<EmployeeEntity> findAllByEmpStaIsFalse();
-    Optional<EmployeeEntity> findByEmpNo(String empNo);
-    List<EmployeeEntity> findByDptmNoOrderByEmpRkDesc(DepartmentEntity dptmNo);
+    int countNowEmployee(String nowYear); // 해당 해에 입사한 사원 수
+    List<EmployeeEntity> findAllByEmpStaIsFalse(); // 근무 상태가 false사원 모두 찾기
+    Optional<EmployeeEntity> findByEmpNo(String empNo); // 사원 개별 조회
+    List<EmployeeEntity> findByDptmNoOrderByEmpRkDesc(DepartmentEntity dptmNo); // 부서내의 사원을 직급 순으로 조회
     @Query(value = "select *\n" +
             "from emp\n" +
             "where IF( :pageSta = 0, true,\n" +
             "         IF( :pageSta = 1, emp_sta, not emp_sta))\n" +
             "  and IF( :dptmNo = 0, true,\n" +
             "         :dptmNo = dptm_no)",nativeQuery = true)
-    Page<EmployeeEntity> findByEmpPage(int pageSta, int dptmNo,Pageable pageable);
+    Page<EmployeeEntity> findByEmpPage(int pageSta, int dptmNo,Pageable pageable);   // 부서와 사원의 근무 상태 필터를 기준으로 출력
     @Query(value = "select * from emp where IF( :option = '0', emp_no like %:searchValue% ,emp_name like %:searchValue%)",nativeQuery = true)
     Page<EmployeeEntity> searchToOption(String option,String searchValue,Pageable pageable);
 

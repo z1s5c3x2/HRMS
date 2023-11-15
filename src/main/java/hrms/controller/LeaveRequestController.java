@@ -44,7 +44,18 @@ public class LeaveRequestController {
         return leaveCalcService.calcRestCount(empNo);
     }
 
-
+    @GetMapping("/findone")
+    public LeaveRequestDto findOneLrq(@RequestParam int lrqNo)
+    {
+        System.out.println("lrqNo = " + lrqNo);
+        System.out.println("LeaveRequestController.findOneLrq");
+        return leaveRequestService.findOneLrq(lrqNo);
+    }
+    @PostMapping("/updateyearleave")
+    public boolean updateYearLrq(@RequestBody ApprovalRequestDto<LeaveRequestDto> approvalRequestDto)
+    {
+        return leaveRequestService.updateYearLrq(approvalRequestDto);
+    }
     // 3.
     @PutMapping("/put")
     public boolean lrqUpdate(LeaveRequestDto leaveRequestDto) {

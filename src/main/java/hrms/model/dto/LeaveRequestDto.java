@@ -1,13 +1,8 @@
 package hrms.model.dto;
 
-import hrms.model.entity.ApprovalEntity;
-import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.LeaveRequestEntity;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -30,7 +25,8 @@ public class LeaveRequestDto {
     private LocalDateTime udate;
     // +
     private String empName;
-
+    // 남은 연차 수
+    private int leaveCnt;
     //DTO -> entity
     // 1. entity 저장할때
     public LeaveRequestEntity saveToEntity( ){
