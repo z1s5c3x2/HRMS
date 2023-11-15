@@ -3,6 +3,7 @@ package hrms.controller.employee;
 import hrms.model.dto.*;
 import hrms.service.LeaveRequest.LeaveCalcService;
 import hrms.service.employee.EmployeeService;
+import hrms.service.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,8 @@ public class EmployeeController {
     EmployeeService employeeService;
     @Autowired
     LeaveCalcService leaveCalcService;
+    @Autowired
+    SecurityService securityService;
 
     @PostMapping("/postEmp") //사원 등록 결제 정보 받아오기
     public boolean registerEmp(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
@@ -88,4 +91,11 @@ public class EmployeeController {
     {
         return employeeService.empSearchInfo(empNo);
     }
+
+    // 로그인상태 응답
+    @GetMapping("/get")
+    public EmployeeDto getEmp(){
+        return securityService.getEmp();
+    }
+
 }

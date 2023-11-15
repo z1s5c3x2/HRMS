@@ -5,13 +5,26 @@ import {useState, useEffect} from 'react'
 import { useLocation } from 'react-router-dom';
 
 export default function Aside( props ){
-//useLocation을 이용해서 현재 페이지의 pathname을 가져와서 / 문자를 제거한 1번인덱스를 추출
- const location = useLocation().pathname.split('/')[1];
- console.log(location)
+    //useLocation을 이용해서 현재 페이지의 pathname을 가져와서 / 문자를 제거한 1번인덱스를 추출
+     const location = useLocation().pathname.split('/')[1];
+     console.log(location)
 
-//location이 null이면 employee를 기본값으로 셋팅, !null이면 location값
-let currentMenu = location == '' ? 'employee' : location;
- console.log(currentMenu)
+    //location이 null이면 employee를 기본값으로 셋팅, !null이면 location값
+    let currentMenu = location == '' ? 'employee' : location;
+    console.log(currentMenu)
+
+    // 로그아웃버튼을 눌렀을때 실행되는 함수
+    const logout = (e) => {
+        axios
+            .get('/member/logout')
+            .then( r => {
+                if(r.data){
+                    alert('로그아웃 되었습니다.')
+                    sessionStorage.removeItem('login_token')
+                    window.location.reload();   // 새로고침
+                }
+            })
+    }
 
 
     return(<>
@@ -75,6 +88,7 @@ let currentMenu = location == '' ? 'employee' : location;
 
             </ul>
             <div className="templogin"><Link to='/member/Login'> 로그인</Link></div>
+            <div className="templogin" onClick={logout}> 로그아웃 </div>
             <div className="attendence" onClick="changeState()"><i class="fa-solid fa-arrow-right-to-bracket"></i> 출 근</div>
         </aside>
 
