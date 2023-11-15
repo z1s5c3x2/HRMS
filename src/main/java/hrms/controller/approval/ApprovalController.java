@@ -40,7 +40,7 @@ public class ApprovalController {
 
         return false;
     }
-
+/*
     // 결재-'수정' 기능 결재 상신 메소드
         // 사원 기본정보(전화번호/비밀번호/계좌번호) / 직급 / 부서변경
         // Approval Type이 다음중 하나인 경우
@@ -64,6 +64,30 @@ public class ApprovalController {
                 approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
         );
 
+    }
+*/
+    // 결재-'수정' 기능 결재 상신 메소드
+    // 사원 기본정보(전화번호/비밀번호/계좌번호) / 직급 / 부서변경
+    // Approval Type이 다음중 하나인 경우
+    // case 2: case 4: case 5: case 7: case 9: case 11: case 13: case 16:
+    @PostMapping("/putAproval")
+    public boolean putAproval(@RequestBody ApprovalRequestDto<TeamMemberDto> approvalRequestDto) throws JsonProcessingException {
+
+        // DTO객체 => json 문자열
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
+        approvalRequestDto.setAprvJson(json);
+
+        // 결재 테이블 등록 메서드
+        // => 실행 후 실행결과 반환
+        boolean result = approvalService.updateApproval(
+                approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
+                approvalRequestDto.getAprvCont(),   // 결재내용
+                approvalRequestDto.getApprovers(),  // 검토자
+                approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
+        );
+
+        return false;
     }
 
     @PostMapping("/deleteAproval")
