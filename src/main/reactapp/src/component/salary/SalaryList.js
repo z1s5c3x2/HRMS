@@ -34,7 +34,7 @@ export default function BoardList(props){
 
     // 0. 스프링에게 전달할 객체
         const [ pageInfo , setPageInfo ] = useState( {
-            page : 1 , key : 'empNo' , keyword : '' , view : 5
+            page : 1 , key : 'empNo' , keyword : '' , view : 5 , empRk : 0 , dptmNo : 0 , slryType : 0 ,
         }); console.log( pageInfo );
 
     // 1. 급여목록에서 특정 레코드 클릭시 해당 레코드 상세보기
@@ -50,7 +50,7 @@ export default function BoardList(props){
                 });
     }
     // 1-2. 컴포넌트가 생성 될떄 // + 의존성배열 : page (주소값) 변경될때 //+의존성배열 : view (주소값) 변경될때
-    useEffect( ()=>{   getSalary();  } , [ pageInfo.page  , pageInfo.view ] );
+    useEffect( ()=>{   getSalary();  } , [ pageInfo.page  , pageInfo.view , pageInfo.empRk , pageInfo.dptmNo , pageInfo.slryType ] );
 
     // 2. 페이지 번호를 클릭했을떄.
     const onPageSelect = ( e , value )=>{  console.log( value );
@@ -81,6 +81,41 @@ export default function BoardList(props){
                   return "알 수 없는 타입";
               }
             }
+    function getrankLabel(empRk) {
+        switch (empRk) {
+          case 1:
+            return "사원";
+          case 2:
+            return "주임";
+          case 3:
+            return "대리";
+          case 4:
+            return "과장";
+          case 5:
+            return "팀장";
+          case 6:
+            return "부장";
+          default:
+            return "직급";
+        }
+      }
+
+    function getdptmLabel(dptmNo) {
+            switch (dptmNo) {
+              case 1:
+                return "인사";
+              case 2:
+                return "기획";
+              case 3:
+                return "개발";
+              case 4:
+                return "경영지원";
+              case 5:
+                return "마케팅";
+              default:
+                return "부서";
+            }
+          }
 
     return(<>
         <h3> 전체 사원 급여지급 목록 </h3>
@@ -93,6 +128,43 @@ export default function BoardList(props){
                     <option value="10"> 10 </option>
                     <option value="20"> 20 </option>
                 </select>
+        <select
+                    value = { pageInfo.slryType }
+                    onChange={ (e)=>{  setPageInfo( { ...pageInfo ,  slryType : e.target.value} );  } }
+                    >
+                    <option  value="0"> 전체유형 </option>
+                    <option  value="1"> 기본급 </option>
+                    <option  value="2"> 정기상여 </option>
+                    <option  value="3"> 특별상여 </option>
+                    <option  value="4"> 성과금 </option>
+                    <option  value="5"> 명절휴가비 </option>
+                    <option  value="6"> 퇴직금 </option>
+                    <option  value="7"> 경조사비 </option>
+                    <option  value="8"> 연가비 </option>
+                </select>
+        <select
+                            value = { pageInfo.empRk }
+                            onChange={ (e)=>{  setPageInfo( { ...pageInfo , empRk : e.target.value} );  } }
+                            >
+                            <option  value="0"> 전체직급 </option>
+                            <option  value="1"> 사원 </option>
+                            <option  value="2"> 주임 </option>
+                            <option  value="3"> 대리 </option>
+                            <option  value="4"> 과장 </option>
+                            <option  value="5"> 팀장 </option>
+                            <option  value="6"> 부장 </option>
+                        </select>
+        <select
+                            value = { pageInfo.dptmNo }
+                            onChange={ (e)=>{  setPageInfo( { ...pageInfo , dptmNo : e.target.value} );  } }
+                            >
+                            <option  value="0"> 전체부서 </option>
+                            <option  value="1"> 인사 </option>
+                            <option  value="2"> 기획 </option>
+                            <option  value="3"> 개발 </option>
+                            <option  value="4"> 경영지원 </option>
+                            <option  value="5"> 마케팅 </option>
+                        </select>
                 { /* 삼항연산자 를 이용한 조건부 랜더링 */}
                 {
                     pageInfo.keyword == '' ?
@@ -105,12 +177,14 @@ export default function BoardList(props){
                  {/* 테이블 제목 구역 */}
                    <TableHead>
                      <TableRow>
-                       <TableCell style={{ width : '10%' }} align="right">번호</TableCell>
-                       <TableCell style={{ width : '30%' }} align="right">지급날짜</TableCell>
-                       <TableCell style={{ width : '20%' }} align="right">지급금액</TableCell>
+                       <TableCell style={{ width : '5%' }} align="right">번호</TableCell>
+                       <TableCell style={{ width : '13%' }} align="right">지급날짜</TableCell>
+                       <TableCell style={{ width : '13%' }} align="right">지급금액</TableCell>
                        <TableCell style={{ width : '10%' }} align="right">지급유형</TableCell>
-                        <TableCell style={{ width : '10%' }} align="right">결재번호</TableCell>
-                        <TableCell style={{ width : '20%' }} align="right">사원번호</TableCell>
+                        <TableCell style={{ width : '5%' }} align="right">결재번호</TableCell>
+                        <TableCell style={{ width : '15%' }} align="right">이름(사원번호)</TableCell>
+                        <TableCell style={{ width : '8%' }} align="right">직급</TableCell>
+                        <TableCell style={{ width : '10%' }} align="right">부서</TableCell>
                      </TableRow>
                    </TableHead>
                    {/* 테이블 내용 구역 */}
@@ -118,14 +192,16 @@ export default function BoardList(props){
                      {pageDto.someList.map((row) => (
                        <TableRow
                          key={row.name}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        >
 
-                         <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
-                         <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
-                         <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
-                         <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
-                         <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
-                         <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empNo}</TableCell>
+                         <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
+                         <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
+                         <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
+                         <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
+                         <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
+                         <TableCell style={{ width : '15%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empName + "(" + row.empNo + ")"}</TableCell>
+                        <TableCell style={{ width : '8%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getrankLabel(row.empRk)}</TableCell>
+                        <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getdptmLabel(row.dptmNo)}</TableCell>
                        </TableRow>
                      ))}
                    </TableBody>
@@ -145,7 +221,6 @@ export default function BoardList(props){
                                        }
                                    >
                                    <option value="empNo"> 사번 </option>
-                                   <option value="slryType"> 급여유형 </option>
                                </select>
 
                                <input type="text"

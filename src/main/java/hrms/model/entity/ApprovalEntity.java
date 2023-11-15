@@ -28,7 +28,7 @@ public class ApprovalEntity extends BaseTime {
     @ColumnDefault( "''" )          // default
     @Column( length = 40 )
     private String aprvCont;       // 간단한 결재내용
-    @Column
+    @Column(columnDefinition = "LONGTEXT")
     private String aprvJson;       // json형식의 문자열[테이블별 변경할 객체 정보 저장]
     @ToString.Exclude
     @ManyToOne

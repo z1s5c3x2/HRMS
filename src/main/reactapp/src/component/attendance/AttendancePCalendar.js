@@ -3,24 +3,26 @@ import axios from 'axios';
 import {useState, useEffect} from 'react'
 
 export default function AttendancePCalendar(props){
-const[month, setMonth] = useState(
-     new Date().getMonth()+1  // 현재 월[0~11] +1
-)
-console.log("month :: "+month)
-const year = new Date().getFullYear(); //현재연도
-const date = new Date().getDate();// 현재 날
-const day = new Date().getDay();// 현재 날
-console.log(year, month, date, day)
+const now = new Date();
+const [calOption, setCalOption] = useState({
+     month: now.getMonth()+1,  // 현재 월[0~11] +1
+     year: now.getFullYear() //현재연도
+})
+console.log("month :: "+calOption.month)
+console.log("year :: "+calOption.year)
+const date = now.getDate();// 현재 날
+const day = now.getDay();// 현재 날
+console.log(calOption.year, calOption.month, date, day)
 
-useEffect( ()=>{ calPrint() },[month])
+useEffect( ()=>{ calPrint() },[calOption.month, calOption.year])
 //달력 출력
 const calPrint =(e)=>{
 	//1. 현재 연도와 월을 출력
-	document.querySelector('.caldate').innerHTML = `${year}년 ${month}월`;
+	document.querySelector('.caldate').innerHTML = `${calOption.year}년 ${calOption.month}월`;
 	console.log('현재 날짜의 getDate()  :  '+new Date().getDate());
 
-	let now = new Date( year, month-1, 1); //month의 경우 +1했던 값이므로 원상태로 돌려줌. 2023년의 1일을 반환
-	let prevdate = new Date(year,month-1,0).getDate();
+	let now = new Date( calOption.year, calOption.month-1, 1); //month의 경우 +1했던 값이므로 원상태로 돌려줌. 2023년의 1일을 반환
+	let prevdate = new Date(calOption.year,calOption.month-1,0).getDate();
 	console.log("prevdate:::"+prevdate)
 	//console.log('현재 날짜의 now  :  '+now);
  	//2. 요일과 일 출력
@@ -28,7 +30,7 @@ const calPrint =(e)=>{
  	let sWeek = now.getDay(); // 현재 월의 시작 요일/
 	console.log('요일 :(0일요일~6토요일)  :'+sWeek)
 	//현재달에 해당하는 마지막 날 구하기 ( 30? 28? 31 ? 29??)
-	let now2= new Date(year, month, 0); //  현재달 +1 (8월)	,  이전달의  뒤로(0)
+	let now2= new Date(calOption.year, calOption.month, 0); //  현재달 +1 (8월)	,  이전달의  뒤로(0)
 	let eDay = now2.getDate();
     let blankDate = (sWeek+eDay >35)? 42-eDay-sWeek : 35-eDay-sWeek;
 	let calendar = document.querySelector('.calDate');
@@ -61,19 +63,15 @@ const calPrint =(e)=>{
 
 const onNext = (check)=>{
 	console.log("check ::: " + check);
-	if(check == -1){
-		//만약에 월을 차감했는데 1보다 작아지면 12월로 변경하되 연도 1 차람
+	if(check == - 1){
+		//만약에 월을 차감했는데 1보다 작아지면 12월로 변경하되 연도 1차람
 		//23년도 1월	인데 1차감되면 2022년 12월로
-		if(month-1 < 1 ){ setMonth(12); year--;}
-		setMonth(month--)
+		if(calOption.month-1 < 1 ){ setCalOption( { month:12, year: calOption.year-- })}
+		else{ setCalOption({ month : calOption.month-1, year:calOption.year }) }
 	} else if (check == 1) {
-		if(month+1>12){setMonth(1); year++;}
-		month ++;
+    	if(calOption.month+1>12){setCalOption( { month:1, year: calOption.year++ })}
+		else{ setCalOption({ month : calOption.month+1,year:calOption.year }) }
 	}
-
-	//setMonth(month+check);
-
-
 	calPrint();
 }
     return(<>

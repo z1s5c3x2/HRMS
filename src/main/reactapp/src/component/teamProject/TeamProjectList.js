@@ -148,9 +148,9 @@ export default function TeamProjectList(props){
                     >
                       <TableCell align="center">{row.pjtNo}</TableCell>
                       <TableCell align="center">
-                        <Link to={'/teamproject/teammember/print?pjtNo=' + row.pjtNo}>
+                        <a href={'/teamproject/teammember/print?pjtNo=' + row.pjtNo}>
                             {row.pjtName}
-                        </Link>
+                        </a>
                       </TableCell>
                       <TableCell align="center">{row.empName}</TableCell>
                       <TableCell align="center">{row.pjtSt}</TableCell>

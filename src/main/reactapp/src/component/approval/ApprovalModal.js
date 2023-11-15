@@ -50,7 +50,7 @@ export default function ApprovalModal(props)
                 {
                     window.location.href=props.successUrl
                 }else{
-                    alert("결제 실패")
+                    alert("결재 실패")
                 }
             })
             .catch( (e) =>{

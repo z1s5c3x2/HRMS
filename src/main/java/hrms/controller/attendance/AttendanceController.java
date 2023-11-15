@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/attendence")
+@RequestMapping("/attendance")
 public class AttendanceController {
 
     @Autowired
@@ -17,6 +17,12 @@ public class AttendanceController {
     public boolean setAttendanceGoWork(@RequestBody AttendanceDto attendDto) {
         return attendanceService.setAttendanceGoWork(attendDto);
     }
+    //퇴근처리
+    @PutMapping("/")
+    public boolean setAttendanceLeaveWork( AttendanceDto attendDto) {
+        return attendanceService.setAttendanceLeaveWork(attendDto);
+    }
+
 
     //근태출력 - 달력에 표시할 모든사원 or 사원하나
     @GetMapping("/getList")
@@ -37,11 +43,6 @@ public class AttendanceController {
         return false;
     }
     
-    //퇴근처리
-    @PutMapping("/")
-    public boolean setAttendanceLeaveWork(@RequestBody AttendanceDto attendDto) {
-        return attendanceService.setAttendanceLeaveWork(attendDto);
-    }
 
 
 

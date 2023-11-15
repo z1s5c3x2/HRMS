@@ -2,6 +2,7 @@ package hrms.controller.approval;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hrms.model.dto.ApprovalDto;
 import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.EmployeeDto;
@@ -39,11 +40,36 @@ public class ApprovalController {
 
         return false;
     }
-
+/*
     // 결재-'수정' 기능 결재 상신 메소드
         // 사원 기본정보(전화번호/비밀번호/계좌번호) / 직급 / 부서변경
         // Approval Type이 다음중 하나인 경우
         // case 2: case 4: case 5: case 7: case 9: case 11: case 13: case 16:
+    @PostMapping("/putAproval")
+    public boolean putAproval(@RequestBody ApprovalRequestDto<TeamMemberDto> approvalRequestDto) throws JsonProcessingException {
+        System.out.println("approvalRequestDto = " + approvalRequestDto);
+        // DTO객체 => json 문자열
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
+        approvalRequestDto.setAprvJson(json);
+
+
+        // 결재 테이블 등록 메서드
+        // => 실행 후 실행결과 반환
+        return approvalService.updateApproval(
+                approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
+                approvalRequestDto.getAprvCont(),   // 결재내용
+                approvalRequestDto.getApprovers(),  // 검토자
+                approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
+        );
+
+    }
+*/
+    // 결재-'수정' 기능 결재 상신 메소드
+    // 사원 기본정보(전화번호/비밀번호/계좌번호) / 직급 / 부서변경
+    // Approval Type이 다음중 하나인 경우
+    // case 2: case 4: case 5: case 7: case 9: case 11: case 13: case 16:
     @PostMapping("/putAproval")
     public boolean putAproval(@RequestBody ApprovalRequestDto<TeamMemberDto> approvalRequestDto) throws JsonProcessingException {
 
@@ -104,7 +130,12 @@ public class ApprovalController {
         return approvalService.getApprovalHistory();
     }
 
+    // 전사원 상신목록 조회
+    @GetMapping("/getAllEmployeesApproval")
+    public List<ApprovalDto> getAllEmployeesApproval() throws JsonProcessingException {
 
+        return approvalService.getAllEmployeesApproval();
+    }
 
 
 

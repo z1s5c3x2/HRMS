@@ -13,6 +13,59 @@ export default function Aside( props ){
 let currentMenu = location == '' ? 'employee' : location;
  console.log(currentMenu)
 
+    // 로그아웃버튼을 눌렀을때 실행되는 함수
+    const logout = (e) => {
+        axios
+            .get('/member/logout')
+            .then( r => {
+                if(r.data){
+                    alert('로그아웃 되었습니다.')
+                    sessionStorage.removeItem('login_token')
+                    window.location.reload();   // 새로고침
+                }
+            })
+    }
+
+    const [isAttendance, setAttendance] = useState(false);
+    console.log("현재상태 :: "+ isAttendance);
+    useEffect (() =>{},[isAttendance])
+
+    //1. 출근기록 - 초기값은 설정
+
+    const changeAttendance = (e)=>{
+
+        if(isAttendance) { //출근상태(true)면
+            if(window.confirm("퇴근하시나요?")){
+                 setAttendance(!isAttendance);
+                 console.log(isAttendance);
+            }
+            axios.put('/attendance/', {
+                empNo: '2023110005'
+            })
+            .then((r)=>{ console.log(r.data);})
+
+        } else { //퇴근상태(false)면
+            alert(" Have a Wonderful day! ")
+            setAttendance(!isAttendance);
+            console.log(isAttendance);
+            axios.post('/attendance/', {
+                        empNo: '2023110005',
+                        attdWrst : new Date().toLocaleString()
+                    })
+                .then( r=>{ console.log(r.data); })
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
 
     return(<>
         <aside className="maside">
@@ -27,7 +80,7 @@ let currentMenu = location == '' ? 'employee' : location;
                     <li className="smenu"><Link to='/employee/list'>사원 조회</Link></li>
                     <li><Link to='/employee/register'>사원등록</Link></li>
                     <li><Link to='/employee/details'>사원 수정</Link></li>
-                    <li><Link to='/employee/searchemp'>사원 정보 조회</Link></li>
+                    <li><Link to='/employee/searchemp'>사원 검색</Link></li>
                 </>
                 )}
 
@@ -45,10 +98,10 @@ let currentMenu = location == '' ? 'employee' : location;
                 {currentMenu === 'attendance' && (
                 <>
                    <li className="tmenu">근태관리</li>
-                   <li className="smenu"><Link to='/attendance'>전사원 근태리스트</Link></li>
+                   <li className="smenu"><Link to='/attendance'>전사원 근무현황</Link></li>
                    <li><Link to='/attendance/pcalendar'>나의근무현황캘린더</Link></li>
-                   <li><Link to='/attendance'>나의출결캘린더</Link></li>
-                   <li><Link to='/attendance'>출결리스트</Link></li>
+                   <li><Link to='/attendance/dall'>전사원출결현황</Link></li>
+                   <li><Link to='/attendance/dcalendar'>나의출결캘린더</Link></li>
                    <li><Link to='/attendance'>병가신청</Link></li>
                    <li><Link to='/attendance'>휴직신청</Link></li>
                    <li><Link to='/attendance'>개인연차내역</Link></li>
@@ -75,6 +128,12 @@ let currentMenu = location == '' ? 'employee' : location;
 
             </ul>
             <div className="templogin"><Link to='/member/Login'> 로그인</Link></div>
+            <div className="attendence" onClick={ changeAttendance }><i class="fa-solid fa-arrow-right-to-bracket"></i>
+            {
+                isAttendance == true ? (<>퇴 근</>) : (<>출 근</>)
+            }
+            </div>
+            <div className="templogin" onClick={logout}> 로그아웃 </div>
             <div className="attendence" onClick="changeState()"><i class="fa-solid fa-arrow-right-to-bracket"></i> 출 근</div>
         </aside>
 

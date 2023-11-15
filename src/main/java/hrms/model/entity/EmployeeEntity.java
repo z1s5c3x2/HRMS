@@ -3,6 +3,7 @@ package hrms.model.entity;
 
 
 import hrms.model.dto.EmployeeDto;
+import hrms.model.dto.EmployeeSearchDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -74,8 +75,33 @@ public class EmployeeEntity extends BaseTime {
                 .empSex(this.empSex)
                 .empAcn(this.empAcn)
                 .empSta(this.empSta)
-                .dtpmNo(this.dptmNo.getDptmNo())
+                .dptmNo(this.dptmNo.getDptmNo())
                 .empRk(this.empRk).build();
+    }
+
+    public EmployeeDto searchToDto()
+    {
+        return EmployeeDto.builder()
+                .empNo(this.empNo)
+                .empName(this.empName)
+                .empPhone(this.empPhone)
+                .empSta(this.empSta)
+                .dptmNo(this.dptmNo.getDptmNo())
+                .dptmName(this.dptmNo.getDptmName())
+                .empRk(this.empRk).build();
+    }
+
+    public EmployeeSearchDto searchInfoToDto()
+    {
+        return EmployeeSearchDto.builder()
+                .empName(this.empName)
+                .empNo(this.empNo)
+                .empSex(this.empSex)
+                .empAcn(this.empAcn)
+                .empSta(this.empSta)
+                .empRk(this.empRk)
+                .dptmName(this.dptmNo.getDptmName())
+                .build();
     }
 
 }

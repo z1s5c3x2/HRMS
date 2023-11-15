@@ -3,6 +3,7 @@ package hrms.controller.employee;
 import hrms.model.dto.*;
 import hrms.service.LeaveRequest.LeaveCalcService;
 import hrms.service.employee.EmployeeService;
+import hrms.service.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,8 @@ public class EmployeeController {
     EmployeeService employeeService;
     @Autowired
     LeaveCalcService leaveCalcService;
+    @Autowired
+    SecurityService securityService;
 
     @PostMapping("/postEmp") //사원 등록 결제 정보 받아오기
     public boolean registerEmp(@RequestBody ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
@@ -24,12 +27,11 @@ public class EmployeeController {
          return employeeService.registerEmp(employeeDtoApprovalRequestDto);
     }
 
-    @PutMapping("/leave")
-    public boolean leaveEmpStatus(@RequestBody ApprovalRequestDto<RetiredEmployeeDto> retiredEmployeeDtoApprovalRequestDto)
+    @PostMapping("/retired")
+    public boolean leaveEmpStatus(@RequestBody ApprovalRequestDto<RetiredEmployeeDto> approvalRequestDto)
     {
-        //System.out.println("EmployeeController.setEmpStatus");
-        //return employeeService.leaveEmpStatus(retiredEmployeeDtoApprovalRequestDto);
-        return false;
+        System.out.println("approvalRequestDto = " + approvalRequestDto);
+        return employeeService.setRetiredEmployee(approvalRequestDto);
     }
 
     @GetMapping("getaprvlist") // 결제 받을 인사팀 가져오기
@@ -79,10 +81,21 @@ public class EmployeeController {
 
 
     @GetMapping("/findoneoption")
-    public EmployeeDto findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
+    public PageDto<EmployeeDto> findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
     {
         System.out.println("employeeSearchOptionDto = " + employeeSearchOptionDto);
         return employeeService.findOneOption(employeeSearchOptionDto);
+    }
+    @GetMapping("/searchempinfo")
+    EmployeeSearchDto findEmpInfo(@RequestParam String empNo)
+    {
+        return employeeService.empSearchInfo(empNo);
+    }
+
+    // 로그인상태 응답
+    @GetMapping("/get")
+    public EmployeeDto getEmp(){
+        return securityService.getEmp();
     }
 
 }

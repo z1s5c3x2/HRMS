@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeSearchOptionDto {
-    private String searchOptionNameOrEmpNo; // 이름 또는 사번 검색
-    private String searchOptionSta;         // 사원 상태
-    private String searchOptionSearchValue; // 검색 문자열
+    private int page; // 현재 페이지
+    private String searchNameOrEmpNo; // 이름 또는 사번 검색
+    private String searchValue; // 검색 문자열
 }

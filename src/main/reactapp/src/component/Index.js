@@ -18,6 +18,8 @@ import ApprovalView from "./approval/ApprovalView";
 /* Attendance import */
 import AttendanceList from "./attendance/AttendanceList";
 import AttendancePCalendar from "./attendance/AttendancePCalendar";
+import AttendanceDailyCal from "./attendance/AttendanceDailyCal";
+import AttendanceDailyAll from "./attendance/AttendanceDailyAll";
 
 /* Employee import */
 import RegisterEmp from "./employee/RegisterEmp";
@@ -49,6 +51,10 @@ import Login from "./member/Login";
 import EmployeeUpdate from "./employee/EmployeeUpdate";
 import EmployeeDetails from "./employee/EmployeeDetails";
 import EmployeeSearch from "./employee/EmployeeSearch";
+import LeaveRequestUpdate from "./leaveRequest/LeaveRequestUpdate";
+
+/* error */
+import AccessDenied from "./error/AccessDenied";
 
 export default function Index( props ){
     return(<>
@@ -70,6 +76,8 @@ export default function Index( props ){
                             {/* Attendance*/}
                                 <Route path='/attendance' element={<AttendanceList/>} />
                                 <Route path='/attendance/pcalendar' element={<AttendancePCalendar/>} />
+                                <Route path='/attendance/dcalendar' element={<AttendanceDailyCal/>} />
+                                <Route path='/attendance/dall' element={<AttendanceDailyAll/>} />
                             {/* Employee*/}
                                 <Route path='/employee/list' element={<EmployeeList/>} />
                                 <Route path='/employee/register' element={<RegisterEmp/>} />
@@ -82,12 +90,14 @@ export default function Index( props ){
                                 <Route path='/salary/write' element={<SalaryWrite/>} />
                                 <Route path='/salary/view' element={<SalaryView/>} />
                                 <Route path='/salary/list' element={<SalaryList/>} />
-                            {/* LeaveRequest
+
+                            { /* LeaveRequest*/ }
                                 <Route path='/leaveRequest' element={<LeaveRequestMain/>} />
                                 <Route path='/leaveRequest/write' element={<LeaveRequestWrite/>} />
                                 <Route path='/leaveRequest/view' element={<LeaveRequestView/>} />
                                 <Route path='/leaveRequest/list' element={<LeaveRequestList/>} />
-                                */}
+                                <Route path='/leaveRequest/update' element={<LeaveRequestUpdate/>} />
+
                             {/* TeamProject */}
                                 <Route path='/teamproject' element={<TeamProjectMain />} />
                                 <Route path='/teamproject/listAll' element={<TeamProjectList />} />
@@ -95,8 +105,12 @@ export default function Index( props ){
                                 <Route path='/teamproject/teammember/write' element={<TeamMemberWrite />} />
                                 <Route path='/teamproject/teammember/print' element={<TeamMemberList />} />
                                 <Route path='/teamproject/teammember/update' element={<TeamMemberUpdate />} />
-                             {/* Login */}
+
+                            {/* Login */}
                                 <Route path='/member/login' element={<Login/>} />
+
+                            {/* Error */}
+                                <Route path='/accessdenied' element={<AccessDenied/>} />
                         </Routes >
                         </div>
                 </BrowserRouter >

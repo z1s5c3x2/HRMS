@@ -1,22 +1,22 @@
 package hrms.service.LeaveRequest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hrms.model.dto.ApprovalRequestDto;
 import hrms.model.dto.LeaveRequestDto;
 import hrms.model.dto.PageDto;
-import hrms.model.dto.SalaryDto;
 import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.EmployeeEntity;
 import hrms.model.entity.LeaveRequestEntity;
-import hrms.model.entity.SalaryEntity;
 import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.LeaveRequestEntityRepository;
 import hrms.service.approval.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -33,6 +33,8 @@ public class LeaveRequestService {
     private ApprovalService approvalService;
     @Autowired
     private EmployeeEntityRepository employeeEntityRepository;
+    @Autowired
+    private LeaveCalcService leaveCalcService;
 
     @Transactional
     public boolean lrqWrite( ApprovalRequestDto<LeaveRequestDto> approvalRequestDto ){
@@ -149,5 +151,48 @@ public class LeaveRequestService {
         }
         return false;
     }
+    // 하나 찾기
+    public LeaveRequestDto findOneLrq(int lrqNo)
+    {
+        System.out.println("lrqNo = " + lrqNo);
+        System.out.println("LeaveRequestController.findOneLrq");
+        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById(lrqNo);
+        if(optionalLeaveRequestEntity.isPresent())
+        {
+            LeaveRequestDto leaveRequestDto = optionalLeaveRequestEntity.get().OneToDto();
+            leaveRequestDto.setLeaveCnt(leaveCalcService.calcRestCount(leaveRequestDto.getEmpNo()));
+            return leaveRequestDto;
+        }
+        return null;
+    }
 
+    // 연차 수정
+    public boolean updateYearLrq(@RequestBody ApprovalRequestDto<LeaveRequestDto> approvalRequestDto)
+    {
+        try{
+            System.out.println("updateYearLrq = " + approvalRequestDto);
+            // DTO객체 => json 문자열
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
+            approvalRequestDto.setAprvJson(json);
+            // 날짜 맞추기
+            approvalRequestDto.getData().setLrqSt(approvalRequestDto.getData().getLrqSt().plusDays(1));
+            approvalRequestDto.getData().setLrqEnd(approvalRequestDto.getData().getLrqEnd().plusDays(1));
+            // 결재 테이블 등록 메서드
+            // => 실행 후 실행결과 반환
+            return approvalService.updateApproval(
+                    approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
+                    approvalRequestDto.getAprvCont(),   // 결재내용
+                    approvalRequestDto.getApprovers(),  // 검토자
+                    approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
+            );
+
+
+        }catch(Exception e) {
+            System.out.println("updateYearLrq" + e);
+        }
+
+        return false;
+    }
 }

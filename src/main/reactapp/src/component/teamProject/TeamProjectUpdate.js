@@ -50,8 +50,14 @@ export default function TeamProjectUpdate( props ){
         pjtSt : null,
         pjtEND : null,
         empNo : null,
-        pjtNo : Number(searchParams)
+        pjtNo : 0
      });
+
+     useEffect( () => {
+         projectInfo.pjtNo = pjtNo;
+         console.log(projectInfo);
+      }, [searchParams])
+
     // 날짜 데이터
     const [selectedSDate, setSelectedSDate] = useState(null);
     const [selectedEDate, setSelectedEDate] = useState(null);
@@ -127,16 +133,30 @@ export default function TeamProjectUpdate( props ){
                 console.log( e )
             })
     }
+    // 프로젝트팀 정보 상태변수
+    const [ data, setData ] = useState( {
+        pjtName : null,
+        pjtSt : null,
+        pjtEND : null,
+        empNo : null,
+        empName : null,
+    } );
 
     // url param으로 불러온 pjtNo로 프로젝트팀 정보 호출
     useEffect( () =>{
         axios
-            .get("/teamproject/getOne",{params: { pjtNo : Number(searchParams) } })
+            .get("/teamproject/getOne",{ params: searchParams  })
             .then( (r) => {
                 console.log(r.data);
+                projectInfo.pjtName = r.data.pjtName;
+                projectInfo.pjtSt = r.data.pjtSt;
+                projectInfo.pjtEND = r.data.pjtEND;
+                projectInfo.empNo = r.data.empNo;
+                setEmpName(r.data.empName);
+                console.log(projectInfo);
+                console.log(empName);
             })
     }, [])
-
 
 
     return(<>
@@ -150,6 +170,7 @@ export default function TeamProjectUpdate( props ){
                         type="text"
                         className=""
                         name="pjtName"
+                        value={projectInfo.pjtName}
                         onChange={updateApprovalInfo}
                      /></div>
                 </div>

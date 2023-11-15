@@ -21,7 +21,7 @@ export default function EmployeeDetails()
     //.get("/employee/findemp?empNo="+searchParams.get('empNo'))
     useEffect(() => {
         axios
-            .get("/employee/findemp?empNo=2311001")
+            .get("/employee/findemp?empNo=2311114")
             .then( (r) => {
                 r.data.empPwd = ""
                 setEmpInfo(r.data)
@@ -60,7 +60,7 @@ export default function EmployeeDetails()
                 비밀번호 변경 : <input type={"password"} value={empInfo.changePwd1} name={"changePwd1"} onChange={updateApprovalInfo} /><br/>
                 비밀번호 변경확인: <input type={"password"} value={empInfo.changePwd2} name={"changePwd2"} onChange={updateApprovalInfo} /><br/>
                 상태 : <input value={empInfo.empSta ? "재직" : "휴직"} disabled={true}/><br/>
-                부서 : <input value={rkList[empInfo.dtpmNo-1]} disabled={true}/><br/>
+                부서 : <input value={rkList[empInfo.dptmNo-1]} disabled={true}/><br/>
                 직급 : <input value={rkList[empInfo.empRk]} disabled={true}/><br/>
                 <button onClick={checkPwd}> 수정 </button>
             </div>
