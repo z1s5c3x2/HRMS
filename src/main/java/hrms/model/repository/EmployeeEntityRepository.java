@@ -13,8 +13,8 @@ import java.util.Optional;
 
 @Repository
 public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity,Integer> {
-    @Query(value = "SELECT  COUNT(emp_no) AS emp_count\n" +
-            "FROM emp\n" +
+    @Query(value = "SELECT  COUNT(aprv_no) AS emp_count\n" +
+            "FROM aprv\n" +
             "WHERE DATE_FORMAT(cdate, '%Y') = :nowYear\n"
             ,nativeQuery = true)
     int countNowEmployee(String nowYear); // 해당 해에 입사한 사원 수
