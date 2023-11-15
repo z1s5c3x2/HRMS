@@ -53,6 +53,7 @@ import EmployeeDetails from "./employee/EmployeeDetails";
 import EmployeeSearch from "./employee/EmployeeSearch";
 
 /* error */
+import AccessDenied from "./error/AccessDenied";
 
 export default function Index( props ){
     return(<>
@@ -102,8 +103,12 @@ export default function Index( props ){
                                 <Route path='/teamproject/teammember/write' element={<TeamMemberWrite />} />
                                 <Route path='/teamproject/teammember/print' element={<TeamMemberList />} />
                                 <Route path='/teamproject/teammember/update' element={<TeamMemberUpdate />} />
-                             {/* Login */}
+
+                            {/* Login */}
                                 <Route path='/member/login' element={<Login/>} />
+
+                            {/* Error */}
+                                <Route path='/accessdenied' element={<AccessDenied/>} />
                         </Routes >
                         </div>
                 </BrowserRouter >
