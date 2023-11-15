@@ -12,6 +12,7 @@ import hrms.model.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -556,5 +557,48 @@ public class ApprovalService {
 
     }
 
+    // 전사원 상신목록 조회
+    public List<ApprovalDto> getAllEmployeesApproval() throws JsonProcessingException {
+        
+        // DB의 전사원 결재목록 저장
+        List<ApprovalEntity> approvalEntities = approvalRepository.findAll();
+
+        // 반환할 LIST 선언
+        List<ApprovalDto> approvalDtos = new ArrayList<>();
+
+        approvalEntities.forEach( e-> {
+
+            // DTO로 변환하여 list 저장
+            approvalDtos.add( e.toApprovalDto() );
+            // checkApprovalState(e) : 추가된 결재 건에 대해 검토진행 현황 확인 후 저장
+                // 1:완료  2:반려  3:검토중
+            approvalDtos.get(approvalDtos.size()-1).setApState( checkApprovalState( e ) );
+            
+        });
+
+        return approvalDtos;
+    }
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
