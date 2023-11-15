@@ -47,35 +47,19 @@ public class EmployeeService {
         EmployeeDto employeeDto = employeeDtoApprovalRequestDto.getData(); // 결제정보를 포함한 dto에서 사원 데이터 추출
         System.out.println("employeeDto = " + employeeDto.toString());
         employeeDto.setEmpNo(generateEmpNumber(employeeDto.getEmpSex())); // pk생성
-        //EmployeeEntity employeeEntity = employeeDto.saveToEntity(); // 사원 dto entity로 변경
-
+        employeeDto.setEmpPwd(passwordEncoder.encode(employeeDto.getEmpPwd()));
         // 결제 등록 후 entity반환
-        ApprovalEntity approvalEntity = approvalService.postApproval(
-                employeeDtoApprovalRequestDto.getAprvType()
-                , employeeDtoApprovalRequestDto.getAprvCont()
-                ,employeeDtoApprovalRequestDto.getApprovers());
-        System.out.println(approvalEntity.toString());
-        // 입력한 부서의 fk 호출
-        Optional<DepartmentEntity> optionalDepartmentEntity =  departmentEntityRepository.findById(employeeDto.getDptmNo());
-        System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
-        // 결제 메소드 추가
-
-        // 부서 유효성 검사 및 fk 매핑
-        if(optionalDepartmentEntity.isPresent())
-        {
-            //사원 저장
-            employeeDto.setEmpPwd(passwordEncoder.encode(employeeDto.getEmpPwd() ) );
-            EmployeeEntity employeeEntity = employeeRepository.save(employeeDto.saveToEntity());
-            employeeEntity.setDptmNo(optionalDepartmentEntity.get()); // 사원 부서 fk
-            optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity); //부서 pk
-            employeeEntity.getApprovalEntities().add(approvalEntity); // 결제 pk
-
-            System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity.get().getEmployeeEntities());
-            System.out.println("employeeEntity.getApprovalEntities() = " + employeeEntity.getApprovalEntities());
-
-            return !employeeEntity.getEmpNo().isEmpty();
-
+        try{
+            ApprovalEntity approvalEntity = approvalService.postApprovalJson(
+                    employeeDtoApprovalRequestDto.getAprvType()
+                    , employeeDtoApprovalRequestDto.getAprvCont()
+                    ,employeeDtoApprovalRequestDto.getApprovers()
+                    ,new ObjectMapper().writeValueAsString(employeeDto));
+            return approvalEntity.getAprvNo() > 0;
+        }catch(Exception e) {
+            System.out.println("registerEmp" + e);
         }
+
         return false;
     }
     // 사원 pk 생성
@@ -134,6 +118,7 @@ public class EmployeeService {
     public boolean changeInfo(ApprovalRequestDto<EmployeeDto> approvalRequestDto) //사원 개인정보 수정
     {
         EmployeeDto employeeDto = approvalRequestDto.getData();
+        System.out.println("employeeDto = " + employeeDto);
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(employeeDto.getEmpNo());
         //변경한 사원의 현재 비밀번호와 일치하면 수정을 완료하고 새로운 비밀번호가 입력 됐으면
         // 새로운 비밀번호를 대입하여 수정 테이블에 삽입
@@ -142,11 +127,15 @@ public class EmployeeService {
 
             /*System.out.println(optionalEmployeeEntity.get().getEmpPwd() +"db 비번" );
             System.out.println(employeeDto.getEmpPwd() + " 입력 비번");*/
-            if(optionalEmployeeEntity.get().getEmpPwd().equals(employeeDto.getEmpPwd()))
+            if(passwordEncoder.matches(employeeDto.getEmpPwd(),optionalEmployeeEntity.get().getEmpPwd()))
             {
                 if(employeeDto.getEmpNewPwd() != null)
                 {
-                    employeeDto.setEmpPwd(employeeDto.getEmpNewPwd());
+                    System.out.println("새로운 비번");
+                    employeeDto.setEmpPwd(passwordEncoder.encode(employeeDto.getEmpNewPwd()));
+                }else{
+                    System.out.println("그냥 비번");
+                    employeeDto.setEmpPwd(optionalEmployeeEntity.get().getEmpPwd());
                 }
                 try{
                     ObjectMapper objectMapper = new ObjectMapper();
@@ -246,7 +235,7 @@ public class EmployeeService {
             String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
             approvalRequestDto.setAprvJson(json);
             // 날짜 맞추기
-            approvalRequestDto.getData().setHdtpmStart(approvalRequestDto.getData().getHdtpmStart().plusDays(1));
+            approvalRequestDto.getData().setHdptmStart(approvalRequestDto.getData().getHdptmStart().plusDays(1));
             // 결재 테이블 등록 메서드
             // => 실행 후 실행결과 반환
             return approvalService.updateApproval(

@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import ApprovalModal from "../approval/ApprovalModal";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import dayjs from "dayjs";
+
 
 export default function LeaveRequestUpdate (props){
     /*모달 호출 선언 필요*/
@@ -17,20 +19,21 @@ export default function LeaveRequestUpdate (props){
     /*모달 호출 선언 필요*/
     // url 파라미터 서치
     const [ searchParams , setSearchParams ]  = useSearchParams()
-
     const [lrqInfo, setLrqInfo] = useState({}) //휴가 정보와 남은 연차 수 가져오기
     useEffect(() => {
         axios
             .get("/leaveRequest/findone",{params:{lrqNo:searchParams.get('lrqNo')}})
             .then( (r) => {
+                r.data.lrqEnd = dayjs(r.data.lrqEnd)
+                r.data.lrqSt = dayjs(r.data.lrqSt)
                 setLrqInfo(r.data)
-
              })
             .catch( (e) =>{
                 console.log( e )
             })
     }, []);
     console.log( lrqInfo )
+
     return( <>
         <div className="contentBox">
             <div className="pageinfo"><span className="lv0">근태관리</span> > <span className="lv1">연차 수정</span></div>
@@ -55,7 +58,9 @@ export default function LeaveRequestUpdate (props){
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
                                 value={lrqInfo.lrqEnd}
-                                onChange={(date2) => setLrqInfo({...lrqInfo,lrqEnd:date2})}
+                                onChange={(date2) => {
+                                    console.log( typeof date2 )
+                                    setLrqInfo({...lrqInfo,lrqEnd:date2})}}
                                 sx={{ width: '70%'}}
                                 renderInput={(params) => <TextField {...params} label="날짜" />}
                                 format="YYYY-MM-DD"
@@ -79,15 +84,12 @@ export default function LeaveRequestUpdate (props){
                     </div>
                 </div>
             </form>
-            {isOn ? (
-                <ApprovalModal
-                    data={lrqInfo}
-                    aprvType={ 11  }
-                    targetUrl="/leaveRequest/post"
-                    successUrl="/leaveRequest/list"
-                    modalControll={modalController}
-                />
-            ) : null}
+            { isOn ? <> <ApprovalModal data={lrqInfo}
+                                       aprvType={ 11  }
+                                       targetUrl={"/leaveRequest/updateyearleave"}
+                                       successUrl={"/leaveRequest/list"}
+                                       modalControll={modalController}>
+            </ApprovalModal> </> : <> </> }
         </div>
     </>)
 

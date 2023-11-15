@@ -7,9 +7,9 @@ import java.time.LocalDate;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString @Builder
 public class DepartmentHistoryDto {
     private int htrdpNo;
-    private LocalDate hdtpmStart;
-    private LocalDate hdtpmEnd;
+    private LocalDate hdptmStart;
+    private LocalDate hdptmEnd;
     private int aprvNo;
     private String empNo;
-    private int dtpmNo;
+    private int dptmNo;
 }

@@ -49,7 +49,9 @@ public class LeaveRequestController {
     {
         System.out.println("lrqNo = " + lrqNo);
         System.out.println("LeaveRequestController.findOneLrq");
-        return leaveRequestService.findOneLrq(lrqNo);
+        LeaveRequestDto leaveRequestDto = leaveRequestService.findOneLrq(lrqNo);
+        System.out.println("leaveRequestDto = " + leaveRequestDto);
+        return leaveRequestDto;
     }
     @PostMapping("/updateyearleave")
     public boolean updateYearLrq(@RequestBody ApprovalRequestDto<LeaveRequestDto> approvalRequestDto)

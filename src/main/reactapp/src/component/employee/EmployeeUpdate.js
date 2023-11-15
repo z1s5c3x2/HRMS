@@ -34,6 +34,7 @@ export default function EmployeeUpdate(props)
                 setEmpInfo(r.data)
                 setSaveDp(r.data.dptmNo.toString())
                 setSaveRk(r.data.empRk.toString())
+                setChangeDepartment( {...changeDepartment,dptmNo : r.data.dptmNo.toString()})
              })
             .catch( (e) =>{
                 console.log( e )
@@ -41,7 +42,7 @@ export default function EmployeeUpdate(props)
     }, []);
     const changeInfo = (e) =>{
         // 부서 직급 변경의 결제타입이 다름, 한번에 하나씩 수정
-        if( (e.target.name == "empRk" && saveDp != empInfo.dptmNo) || (e.target.name == "dptmNo" && saveRk != empInfo.empRk)  )
+        if( (e.target.name == "empRk" && saveDp != changeDepartment.dptmNo) || (e.target.name == "dptmNo" && saveRk != empInfo.empRk)  )
         {
             alert("한개씩 수정 해주세요")
         }else if(e.target.name == "empRk") {
@@ -53,7 +54,6 @@ export default function EmployeeUpdate(props)
             setAprvType(4)
         }
     }
-
 
 
     return (<>
