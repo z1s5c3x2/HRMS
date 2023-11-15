@@ -76,12 +76,12 @@ const onNext = (check)=>{
 }
     return(<>
         <div class="contentBox">
-            <div class="pageinfo"><span class="lv0">근태관리</span>  > <span class="lv1">나의근무현황캘린더</span> </div>
+            <div class="pageinfo"><span class="lv0">근태관리</span>  > <span class="lv1">나의출결캘린더</span> </div>
                 {/*<!--근태 달력 -->*/}
                 <div class="attd_cal">
                     <div class="calYM">
                         <button onClick={ ()=>onNext(-1)} type="button"> &lt; </button>
-                        <span class="caldate">2023년 10월</span>
+                        <span class="caldate">2023년 11월</span>
                         <button onClick={ ()=>onNext(1) } type="button"> &gt; </button>
                     </div>
                     <div class="calBox">

@@ -25,6 +25,7 @@ public class AttendanceService {
     @Transactional
     public boolean setAttendanceLeaveWork(@RequestBody AttendanceDto attendDto) {
         // pk(empNo)와  오늘날짜의 출근정보 검색
+
         // Optional<AttendanceEntity> attendEntity = AttendanceEntityRepository.findById(attendDto.getEmpNo());
         //결과가 있으면 퇴근정보 update
         

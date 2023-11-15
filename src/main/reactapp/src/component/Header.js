@@ -43,7 +43,7 @@ export default function Header( props ){
         					<li className=""><Link to='/teamProject'>프로젝트팀관리</Link></li>
         					<li className=""><Link to='/attendance'>근태관리</Link></li>
         					<li className=""><Link to='/salary'>급여관리</Link></li>
-        					<li className=""><Link to='/leaveRequest'>연차관리</Link></li>
+        					{/*<li className=""><Link to='/leaveRequest'>연차관리</Link></li>*/}
         					<li className=""><Link to='/approval'>결재관리</Link></li>
         				</ul>
         			</div>
