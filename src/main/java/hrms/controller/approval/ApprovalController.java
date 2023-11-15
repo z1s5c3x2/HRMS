@@ -61,7 +61,7 @@ public class ApprovalController {
                 approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
         );
 
-        return false;
+        return result;
     }
 
     @PostMapping("/deleteAproval")
