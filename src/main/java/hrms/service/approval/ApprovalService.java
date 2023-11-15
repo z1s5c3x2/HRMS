@@ -83,14 +83,14 @@ public class ApprovalService {
     //post시 json 저장이 필요한 경우
     @Transactional
     public ApprovalEntity postApprovalJson(int aprvType, String aprvCont, ArrayList<String> approvers,String aprvJson) {
-        System.out.println("aprvType = " + aprvType + ", aprvCont = " + aprvCont + ", approvers = " + approvers + ", aprvJson = " + aprvJson);
+        /*System.out.println("aprvType = " + aprvType + ", aprvCont = " + aprvCont + ", approvers = " + approvers + ", aprvJson = " + aprvJson);*/
         try{
             // 상신자
             // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
             Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo("2311004");
 
             if (optionalEmployeeEntity.isPresent()) {
-                System.out.println("step1");
+                /*System.out.println("step1");*/
                 ApprovalEntity approvalEntity = ApprovalEntity
                         .builder()
                         .aprvType(aprvType)
@@ -98,22 +98,17 @@ public class ApprovalService {
                         .aprvJson(aprvJson)
                         .empNo(optionalEmployeeEntity.get())
                         .build();
-
                 // DB 저장
                 System.out.println("approvalEntity = " + approvalEntity);
                 ApprovalEntity result = approvalRepository.save(approvalEntity);
-                System.out.println("step2");
                 /* 단방향 */
                 // 검토자에 대한 사원테이블 JPA 단방향 관계 정립
                 result.setEmpNo(optionalEmployeeEntity.get());
-                System.out.println("step1");
                 /* 양방향 */
                 // 사원테이블 JPA 단방향 관계 정립
                 optionalEmployeeEntity.get().getApprovalEntities().add(result);
-                System.out.println("step4");
                 // 검토자 DB 저장을 위한 메서드 실행
                 postApprovalLog(approvers, result.getAprvNo());
-                System.out.println("result = " + result);
                 if (result.getAprvNo() >= 1) return result;
 
             }
@@ -349,11 +344,12 @@ public class ApprovalService {
 
                 // 사원 부서변경
                 case 4:
+                    System.out.println("여기까지 와주세요");
                     Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(employeeDto.getDptmNo());
                     if (!optionalDepartmentEntity.isPresent()) return false;
 
                     optionalEmployeeEntity.get().setDptmNo(optionalDepartmentEntity.get());
-                    if(commitChangeDepartment(aprvNo)) employeeRepository.save(optionalEmployeeEntity.get());
+                    if(commitChangeDepartment(aprvNo)) ;
                     break;
 
                 // 사원 직급변경
@@ -366,12 +362,6 @@ public class ApprovalService {
         }
         return false;
 
-    }
-    @Transactional
-    public boolean commitChangeEmpInfo(int aprvNo)
-    {
-
-        return true;
     }
     @Transactional
     public boolean commitChangeDepartment(int aprvNo)
@@ -406,6 +396,7 @@ public class ApprovalService {
                         .aprvNo(optionalApprovalEntity.get()).build();
 
                 /* 단방향 */
+                optionalEmployeeEntity.get().setDptmNo(departmentHistoryEntity.getDptmNo());
                 departmentHistoryEntityRepository.save(departmentHistoryEntity);
                 /* 양방향 */
                 optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);

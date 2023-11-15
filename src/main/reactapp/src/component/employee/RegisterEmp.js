@@ -54,8 +54,8 @@ export default function RegisterEmp(props) {
                 <div class="eregInputBox">
                     <div class="input_title ls3"> 근 무 상 태</div>
                     <div class="input_box">
-                            <input type="radio" name="empSta" value={true} onChange={ updateApprovalInfo } checked = {aprovalInfo.empSta}/> 재 직
-                        <input type="radio" name="empSta" value={false} onChange={ updateApprovalInfo} checked = {!aprovalInfo.empSta}/> 휴 직
+                            <input type="radio" name="empSta" value={true} onChange={ updateApprovalInfo } checked = {aprovalInfo.empSta == 'true'}/> 재 직
+                        <input type="radio" name="empSta" value={false} onChange={ updateApprovalInfo} checked = {aprovalInfo.empSta == 'false'}/> 휴 직
                     </div>
                 </div>
                 <div class="eregInputBox">
@@ -64,6 +64,7 @@ export default function RegisterEmp(props) {
                         <option value="">부서를 선택하세요</option>
                         <option value={1}>인사팀</option>
                         <option value={2}>기획팀(PM)</option>
+                        <option value={3}>개발팀</option>
                         <option value={3}>DBA팀</option>
                     </select>
                 </div>

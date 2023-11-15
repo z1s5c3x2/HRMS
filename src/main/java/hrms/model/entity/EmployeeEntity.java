@@ -78,7 +78,18 @@ public class EmployeeEntity extends BaseTime {
                 .dptmNo(this.dptmNo.getDptmNo())
                 .empRk(this.empRk).build();
     }
-
+    public EmployeeDto notPwdToDto()
+    {
+        return EmployeeDto.builder()
+                .empNo(this.empNo)
+                .empName(this.empName)
+                .empPhone(this.empPhone)
+                .empSex(this.empSex)
+                .empAcn(this.empAcn)
+                .empSta(this.empSta)
+                .dptmNo(this.dptmNo.getDptmNo())
+                .empRk(this.empRk).build();
+    }
     public EmployeeDto searchToDto()
     {
         return EmployeeDto.builder()

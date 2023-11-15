@@ -98,4 +98,10 @@ public class EmployeeController {
         return securityService.getEmp();
     }
 
+    @GetMapping("/test1")
+    public boolean test1(@RequestParam int a , @RequestParam int b){
+        employeeService.test1(a,b);
+        return true;
+    }
+
 }

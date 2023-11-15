@@ -45,9 +45,9 @@ public class EmployeeService {
     public boolean registerEmp(ApprovalRequestDto<EmployeeDto> employeeDtoApprovalRequestDto)
     {
         EmployeeDto employeeDto = employeeDtoApprovalRequestDto.getData(); // 결제정보를 포함한 dto에서 사원 데이터 추출
-        System.out.println("employeeDto = " + employeeDto.toString());
         employeeDto.setEmpNo(generateEmpNumber(employeeDto.getEmpSex())); // pk생성
         employeeDto.setEmpPwd(passwordEncoder.encode(employeeDto.getEmpPwd()));
+        System.out.println("employeeDto = " + employeeDto.toString());
         // 결제 등록 후 entity반환
         try{
             ApprovalEntity approvalEntity = approvalService.postApprovalJson(
@@ -91,6 +91,16 @@ public class EmployeeService {
                 .build();
         return pageDto;
     }
+    @Transactional
+    public boolean test1(int a ,int b)
+    {
+        try{
+            approvalService.approbate(a,b);
+        }catch(Exception e) {
+            System.out.println("getEmpList" + e);
+        }
+        return false;
+    }
     //사원 개별 조회
     @Transactional
     public EmployeeDto getOneEmp(String empNo)
@@ -98,7 +108,7 @@ public class EmployeeService {
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(empNo);
         if(optionalEmployeeEntity.isPresent())
         {
-            return optionalEmployeeEntity.get().allToDto();
+            return optionalEmployeeEntity.get().notPwdToDto();
         }
         return null;
     }
@@ -233,9 +243,11 @@ public class EmployeeService {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
             String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
-            approvalRequestDto.setAprvJson(json);
             // 날짜 맞추기
             approvalRequestDto.getData().setHdptmStart(approvalRequestDto.getData().getHdptmStart().plusDays(1));
+
+            approvalRequestDto.setAprvJson(json);
+
             // 결재 테이블 등록 메서드
             // => 실행 후 실행결과 반환
             return approvalService.updateApproval(
