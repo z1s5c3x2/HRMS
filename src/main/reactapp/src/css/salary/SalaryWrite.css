@@ -1,0 +1,34 @@
+
+.top{
+    display: flex;
+    margin : 10px;
+}
+.rank{
+    margin-left :28px;
+}
+.accountNo{
+    margin-left :28px;
+}
+.bottom{
+    display: flex;
+    margin : 10px;
+    align-items: center;
+}
+.maincontent{
+    display: flex;
+}
+.value{
+    margin-left :10px;
+}
+.inputbox{
+    margin: 0 auto;
+    width:800px;
+}
+.btn{
+    height: 120px;
+    display: flex;
+    align-items: center;
+}
+.btn1{
+    font-size:12px;
+}

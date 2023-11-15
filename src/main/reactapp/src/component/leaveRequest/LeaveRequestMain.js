@@ -103,7 +103,7 @@ export default function LeaveRequestMain(props) {
                             {pageDto.someList.map((row) => (
                               <TableRow
                                 key={row.name}
-                               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                               >
 
                                 <TableCell onClick={ ( ) => loadView( row.lrqNo ) } align="right">{row.lrqNo}</TableCell>
                                 <TableCell onClick={ ( ) => loadView( row.lrqNo ) } align="right">{row.lrqSt}</TableCell>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import styles from '../../css/SalaryWrite.css';
+import styles from '../../css/salary/SalaryWrite.css';
 // --------- mui ---------//
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -109,32 +109,61 @@ const data = {
     <>
       <div>
         {/* 급여지급 관련 입력구역 */}
-        <form className="boardForm">
+        <div className="inputbox">
+            <form className="boardForm">
+                <div className="maincontent">
+                   <div className="inputcontent">
+                    <div className="top">
+                       <div className="empNo">
+                           <TextField
+                                disabled={true}
+                                size="small"
+                                label="이름(사번)"
+                                type="text"
+                                value={empName !== '' ? empName + "(" + empNumber + ")" : ''}
+                              />
+                      </div>
 
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DesktopDatePicker className="valueBox" size="small" value={selectedDate} onChange={(date) => setSelectedDate(date)} renderInput={(params) => <TextField {...params} label="날짜" />} format="YYYY-MM-DD" />
-          </LocalizationProvider>
+                      <div className="rank">
+                            <TextField disabled={true} size="small" label="직급" type="text" value={getrankLabel(rankNumber)} />
+                      </div>
 
-          <TextField
-            className="valueBox customDisabled"
-            disabled={true}
-            size="small"
-            label="이름(사번)"
-            type="text"
-            value={empName !== '' ? empName + "(" + empNumber + ")" : ''}
-          />
-          <TextField className="valueBox customDisabled" disabled={true} size="small" label="직급" type="text" value={getrankLabel(rankNumber)} />
-          <TextField className="valueBox customDisabled" disabled={true} size="small" label="계좌번호" type="text" value={accountNumber} />
-          <TextField className="valueBox" size="small" label="금액" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
-          <TextField className="valueBox" size="small" label="지급 타입" type="number" value={paymentType} onChange={(e) => setPaymentType(e.target.value)} />
-          <Button className="btn" variant="contained" color="primary" onClick={modalController}>
-            제출
-          </Button>
-        </form>
+                      <div className="accountNo">
+                            <TextField disabled={true} size="small" label="계좌번호" type="text" value={accountNumber} />
+                      </div>
+                    </div>
+                    <div className="bottom">
+                      <div className="Day">
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DesktopDatePicker
+                                size="small"
+                                value={selectedDate}
+                                onChange={(date) => setSelectedDate(date)}
+                                renderInput={(params) => <TextField {...params} label="날짜" />}
+                                format="YYYY-MM-DD"
+                                />
+                          </LocalizationProvider>
+                      </div>
 
+                      <div className="value">
+                            <TextField size="small" label="금액" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                      </div>
+
+                      <div className="value">
+                           <TextField size="small" label="지급 타입" type="number" value={paymentType} onChange={(e) => setPaymentType(e.target.value)} />
+                       </div>
+                    </div>
+                    </div>
+                  <div className="btn">
+                       <Button className="btn1" style={ { height: '100px' , width: '40px' }} variant="contained" color="primary" onClick={modalController}>결재요청</Button>
+                  </div>
+                </div>
+            </form>
+        </div>
         {/* 사원 목록 출력구역 */}
-        <h3> 사원 목록 </h3>
-        <TableContainer component={Paper}>
+        <div className="texttitle"><h3> 사원 목록 </h3></div>
+        <TableContainer style={ {     height: '525px' ,
+                                      padding: '0px 20px 0px 20px'  } } component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -156,7 +185,7 @@ const data = {
                     setRankNumber(emp.empRk);
                   }}
                   key={emp.name}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+
                 >
                   <TableCell align="right">{emp.empNo}</TableCell>
                   <TableCell align="right">{emp.empName}</TableCell>

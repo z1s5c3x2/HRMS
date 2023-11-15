@@ -1,7 +1,6 @@
 package hrms.model.dto;
 
 
-import hrms.model.entity.LeaveRequestEntity;
 import hrms.model.entity.SalaryEntity;
 import lombok.*;
 
@@ -24,10 +23,15 @@ public class SalaryDto {
     // +
     private LocalDateTime cdate;
     private LocalDateTime udate;
+    // + 필터용
+    private int empRk; // 직급
+    private int dptmNo; // 부서번호
+    private String empName; // 이름
+
 
     //DTO -> entity
     // 1. entity 저장할때
-    public SalaryEntity saveToEntity( ){
+    public SalaryEntity saveToEntity() {
         return SalaryEntity.builder()
                 .slryDate(this.slryDate)
                 .slryPay(this.slryPay)

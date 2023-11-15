@@ -84,12 +84,13 @@ export default function Index( props ){
                                 <Route path='/salary/write' element={<SalaryWrite/>} />
                                 <Route path='/salary/view' element={<SalaryView/>} />
                                 <Route path='/salary/list' element={<SalaryList/>} />
-                            {/* LeaveRequest
+
+                            { /* LeaveRequest*/ }
                                 <Route path='/leaveRequest' element={<LeaveRequestMain/>} />
                                 <Route path='/leaveRequest/write' element={<LeaveRequestWrite/>} />
                                 <Route path='/leaveRequest/view' element={<LeaveRequestView/>} />
                                 <Route path='/leaveRequest/list' element={<LeaveRequestList/>} />
-                                */}
+
                             {/* TeamProject */}
                                 <Route path='/teamproject' element={<TeamProjectMain />} />
                                 <Route path='/teamproject/listAll' element={<TeamProjectList />} />

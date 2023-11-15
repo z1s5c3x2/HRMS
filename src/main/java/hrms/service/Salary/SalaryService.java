@@ -2,12 +2,10 @@ package hrms.service.Salary;
 
 
 import hrms.model.dto.ApprovalRequestDto;
-import hrms.model.dto.LeaveRequestDto;
 import hrms.model.dto.PageDto;
 import hrms.model.dto.SalaryDto;
 import hrms.model.entity.ApprovalEntity;
 import hrms.model.entity.EmployeeEntity;
-import hrms.model.entity.LeaveRequestEntity;
 import hrms.model.entity.SalaryEntity;
 import hrms.model.repository.EmployeeEntityRepository;
 import hrms.model.repository.SalaryEntityRepository;
@@ -17,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,51 +76,58 @@ public class SalaryService {
 
 
     @Transactional
-    public PageDto slryGetAll( int page , String key ,
-                               String keyword , int view ){
+    public PageDto slryGetAll(int page, String key,
+                              String keyword, int view
+            , int empRk, int dptmNo, int slryType
+    ) {
         // 1. 모두 출력
+        System.out.println("page = " + page + ", key = " + key + ", keyword = " + keyword + ", view = " + view + ", empRk = " + empRk + ", dptmNo = " + dptmNo + ", slryType = " + slryType);
         // 페이징처리
-        Pageable pageable = PageRequest.of( page-1 , view  );
+        Pageable pageable = PageRequest.of(page - 1, view);
         // 1. 모든 게시물 호출한다.
-        Page<SalaryEntity> salaryEntities = salaryRepository.findBySearch( key , keyword , pageable );
+        Page<SalaryEntity> salaryEntities = salaryRepository.findBySearch(key, keyword, empRk, dptmNo, slryType, pageable);
 
         List<SalaryDto> salaryDtos = new ArrayList<>();
-        salaryEntities.forEach( e ->{ salaryDtos.add( e.allToDto()); });
+        salaryEntities.forEach(e -> {
+            salaryDtos.add(e.allToDto());
+        });
 
         // 5. pageDto 구성해서 axios에게 전달
         PageDto<SalaryDto> pageDto = PageDto.<SalaryDto>builder()
                 .totalPages(salaryEntities.getTotalPages()) // 총페이지
                 .totalCount(salaryEntities.getTotalElements()) // 검색된 row개수
-                .someList( salaryEntities.stream().map(slry -> slry.allToDto()).collect(Collectors.toList()) )
+                .someList(salaryEntities.stream().map(slry -> slry.allToDto()).collect(Collectors.toList()))
                 .build();
         return pageDto;
     }
-    @Transactional
-    public SalaryDto slryGet( int slryNo ){
-        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findBySlryNo( slryNo ) ;
 
-        if(optionalSalaryEntity.isPresent()){
+    @Transactional
+    public SalaryDto slryGet(int slryNo) {
+        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findBySlryNo(slryNo);
+
+        if (optionalSalaryEntity.isPresent()) {
 
             SalaryDto salaryDto = new SalaryDto();
 
-            salaryDto.setSlryNo( slryNo );
-            salaryDto.setSlryDate( optionalSalaryEntity.get().getSlryDate());
-            salaryDto.setSlryPay( optionalSalaryEntity.get().getSlryPay());
-            salaryDto.setSlryType( optionalSalaryEntity.get().getSlryType());
-            salaryDto.setAprvNo( optionalSalaryEntity.get().getAprvNo().getAprvNo());
-            salaryDto.setEmpNo( optionalSalaryEntity.get().getEmpNo().getEmpNo() );
-            salaryDto.setCdate( optionalSalaryEntity.get().getCdate());
-            salaryDto.setUdate( optionalSalaryEntity.get().getUdate());
+            salaryDto.setSlryNo(slryNo);
+            salaryDto.setSlryDate(optionalSalaryEntity.get().getSlryDate());
+            salaryDto.setSlryPay(optionalSalaryEntity.get().getSlryPay());
+            salaryDto.setSlryType(optionalSalaryEntity.get().getSlryType());
+            salaryDto.setAprvNo(optionalSalaryEntity.get().getAprvNo().getAprvNo());
+            salaryDto.setEmpNo(optionalSalaryEntity.get().getEmpNo().getEmpNo());
+            salaryDto.setCdate(optionalSalaryEntity.get().getCdate());
+            salaryDto.setUdate(optionalSalaryEntity.get().getUdate());
             return salaryDto;
         }
         return null;
     }
-    public PageDto slryGetMeAll(int page , int view ,String empNo) {
+
+    public PageDto slryGetMeAll(int page, int view, String empNo) {
         // 페이징처리
-        Pageable pageable = PageRequest.of( page-1 , view  );
+        Pageable pageable = PageRequest.of(page - 1, view);
 
         // 1. 해당 empNo에 맞는 엔티티 호출
-        Page<SalaryEntity> salaryEntities = salaryRepository.findByEmpNo_EmpNo(empNo , pageable);
+        Page<SalaryEntity> salaryEntities = salaryRepository.findByEmpNo_EmpNo(empNo, pageable);
 
         List<SalaryDto> salaryDtos = new ArrayList<>();
         salaryEntities.forEach(e -> {
@@ -131,34 +137,35 @@ public class SalaryService {
         PageDto<SalaryDto> pageDto = PageDto.<SalaryDto>builder()
                 .totalPages(salaryEntities.getTotalPages()) // 총페이지
                 .totalCount(salaryEntities.getTotalElements()) // 검색된 row개수
-                .someList( salaryEntities.stream().map(slry -> slry.allToDto()).collect(Collectors.toList()) )
+                .someList(salaryEntities.stream().map(slry -> slry.allToDto()).collect(Collectors.toList()))
                 .build();
 
         return pageDto;
     }
+
     // 3.
-    public boolean slryUpdate( SalaryDto salaryDto ){
+    public boolean slryUpdate(SalaryDto salaryDto) {
         // 수정할 엔티티 찾기
-        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findById( salaryDto.getSlryNo() );
+        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findById(salaryDto.getSlryNo());
         // 수정할 엔티티 존재하면?
-        if(optionalSalaryEntity.isPresent()){
+        if (optionalSalaryEntity.isPresent()) {
             // 엔티티 꺼내기
             SalaryEntity salaryEntity = optionalSalaryEntity.get();
             // 객체 수정하면 테이블 내 레코드 같이 수정
-            salaryEntity.setSlryDate( salaryDto.getSlryDate());
-            salaryEntity.setSlryPay( salaryDto.getSlryPay());
-            salaryEntity.setSlryType( salaryDto.getSlryType());
+            salaryEntity.setSlryDate(salaryDto.getSlryDate());
+            salaryEntity.setSlryPay(salaryDto.getSlryPay());
+            salaryEntity.setSlryType(salaryDto.getSlryType());
             return true;
         }
         return false;
     }
     // 4
 
-    public boolean slryDelete(int slryNo){
+    public boolean slryDelete(int slryNo) {
         // 1. 엔티티 호출
-        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findById( slryNo );
+        Optional<SalaryEntity> optionalSalaryEntity = salaryRepository.findById(slryNo);
         // 2. 엔티티가 호출되었는지 확인
-        if(optionalSalaryEntity.isPresent()){
+        if (optionalSalaryEntity.isPresent()) {
             //3. 삭제
             salaryRepository.deleteById(slryNo);
             return true;
