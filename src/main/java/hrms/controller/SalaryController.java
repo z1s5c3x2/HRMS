@@ -30,10 +30,12 @@ public class SalaryController {
                               @RequestParam int view,
                               @RequestParam int empRk,
                               @RequestParam int dptmNo,
-                              @RequestParam int slryType
+                              @RequestParam int slryType,
+                              @RequestParam String DateSt,
+                              @RequestParam String DateEnd
     ) {
 
-        return salaryService.slryGetAll(page, key, keyword, view, empRk, dptmNo, slryType);
+        return salaryService.slryGetAll(page, key, keyword, view, empRk, dptmNo, slryType, DateSt, DateEnd);
     }
 
     @GetMapping("/get") // ( 인사팀 전용 ) 전체 급여지급 목록에서 선택된 급여 상세보기

@@ -78,14 +78,14 @@ public class SalaryService {
     @Transactional
     public PageDto slryGetAll(int page, String key,
                               String keyword, int view
-            , int empRk, int dptmNo, int slryType
+            , int empRk, int dptmNo, int slryType, String DateSt, String DateEnd
     ) {
         // 1. 모두 출력
-        System.out.println("page = " + page + ", key = " + key + ", keyword = " + keyword + ", view = " + view + ", empRk = " + empRk + ", dptmNo = " + dptmNo + ", slryType = " + slryType);
+        System.out.println("page = " + page + ", key = " + key + ", keyword = " + keyword + ", view = " + view + ", empRk = " + empRk + ", dptmNo = " + dptmNo + ", slryType = " + slryType + ", DateSt = " + DateSt + ", DateEnd = " + DateEnd);
         // 페이징처리
         Pageable pageable = PageRequest.of(page - 1, view);
         // 1. 모든 게시물 호출한다.
-        Page<SalaryEntity> salaryEntities = salaryRepository.findBySearch(key, keyword, empRk, dptmNo, slryType, pageable);
+        Page<SalaryEntity> salaryEntities = salaryRepository.findBySearch(key, keyword, empRk, dptmNo, slryType, DateSt, DateEnd, pageable);
 
         List<SalaryDto> salaryDtos = new ArrayList<>();
         salaryEntities.forEach(e -> {
