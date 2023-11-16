@@ -44,9 +44,9 @@ export default function ReconsiderView(props){
             </tr>
             { reconsiderList.map( r =>(
                 <tr>
-                    <td> 제 {r.apState}호 </td>
+                    <td> 제 {r.aprvNo}호 </td>
                     <td> { getTypeName( r.aprvType ) } </td>
-                    <td> {r.aprvCont} </td>
+                    <td> { r.aprvCont !== "" ? r.aprvCont : "-" } </td>
                     <td>
                         <span> { (r.cdate.split("T"))[0] } </span>
                         <span> { ((r.cdate.split("T"))[1].split("."))[0].substring(0, 5) } </span>

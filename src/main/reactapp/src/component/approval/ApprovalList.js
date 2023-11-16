@@ -4,9 +4,45 @@ import { Link } from 'react-router-dom';
 
 import { getTypeName } from './ListOutputConverter';
 
+/* MUI TABLE 관련 컴포넌트 import */
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+/* MUI 페이지네이션 */
+import Pagination from '@mui/material/Pagination';
+
+
 export default function ApprovalList(props){
 
     const [ allApprovalList, setAllApprovalList ] = useState( [] )
+
+    // 페이징처리 및 검색필터;
+    const [pageInfo, setPageInfo] = useState({
+        page : 1 ,
+        key : '' ,      // 결재번호[aprvNo], 내용[aprvCont] , 상신자명[empName]
+        keyword : '',   // key에 대한 탐색명
+        aprvType : 0,
+        apState : '',
+        cdate : ''
+    });
+
+    // 2. 페이지 번호를 클릭했을 때
+    const onPageSelect = (e, value) =>{
+
+        pageInfo.page = value;          // 클릭한 페이지번호로 변경
+        setPageInfo( {...pageInfo} )    // 새로고침 [상태변수의 주소값이 바뀌면 재랜더링]
+
+    }
+
+
+
+
+
+
 
     // 상신내역 요청
     useEffect( () => {
@@ -22,6 +58,29 @@ export default function ApprovalList(props){
     return (<>
 
         <h3> 결재 메인페이지 </h3>
+
+
+        <div class="searchBox">
+            <div>
+                <select>
+                    <option value="aprvNo">
+                    <option value="aprvCont">
+                    <option value="empName">
+                </select>
+                <input type="text" />
+            <div>
+
+            <div>
+                결재유형
+                <select>
+                    <option value="1"> test </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
 
         <table className="reconsiderTable">
 
@@ -51,6 +110,13 @@ export default function ApprovalList(props){
             ))}
 
         </table>
+
+        <div style={{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }}>
+
+            {/* count : 전체 페이지 수   onChange : 페이지번호를 클릭/변경 했을 때 이벤트 */}
+            <Pagination page={ pageInfo.page } count={ 5 } variant="outlined" onChange={ onPageSelect } />
+
+        </div>
 
     </>)
 

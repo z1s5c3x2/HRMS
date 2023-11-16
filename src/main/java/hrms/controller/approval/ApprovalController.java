@@ -90,6 +90,7 @@ public class ApprovalController {
         return result;
     }
 
+    // 결재-'삭제' 기능 결재 상신 메소드
     @PostMapping("/deleteAproval")
     public boolean deleteAproval(@RequestBody ApprovalRequestDto<Integer> approvalRequestDto) throws JsonProcessingException {
 

@@ -18,12 +18,14 @@ export default function ApprovalMain(props){
 
     // 결재 리스트 요청
     const getApprovalList = e => {
+
         axios.get( '/approval/getApprovalHistory' ).then( result => {
 
             console.log( result.data );
             setApprovalList( result.data )
 
         })
+
     }
 
     // 검토대상 내역 및 검토완료 내역 요청
@@ -59,9 +61,9 @@ export default function ApprovalMain(props){
             </tr>
             { approvalList.map( r =>(
                 <tr>
-                    <td> 제 { r.apState }호 </td>
+                    <td> 제 { r.aprvNo }호 </td>
                     <td> { getTypeName( r.aprvType ) } </td>
-                    <td> { r.aprvCont } </td>
+                    <td> { r.aprvCont !== "" ? r.aprvCont : "-" } </td>
                     <td>
                         <span> { (r.cdate.split("T"))[0] } </span>
                         <span> { ((r.cdate.split("T"))[1].split("."))[0].substring(0, 5) } </span>
@@ -79,6 +81,7 @@ export default function ApprovalMain(props){
             ))}
 
         </table>
+
 
     </>)
 
