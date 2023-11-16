@@ -26,9 +26,18 @@ public class LeaveRequestController {
     public PageDto lrqGetAll(@RequestParam int page,
                              @RequestParam String key,
                              @RequestParam String keyword,
-                             @RequestParam int view) {
+                             @RequestParam int view,
+                             @RequestParam int empRk,
+                             @RequestParam int dptmNo,
+                             @RequestParam int lrqType,
+                             @RequestParam int lrqSrtype,
+                             @RequestParam String DateSt,
+                             @RequestParam String DateEnd
 
-        return leaveRequestService.lrqGetAll(page, key, keyword, view);
+
+    ) {
+
+        return leaveRequestService.lrqGetAll(page, key, keyword, view, empRk, dptmNo, lrqType, lrqSrtype, DateSt, DateEnd);
     }
 
     @GetMapping("/get") // 메인페이지전용 세션에서 들어온 본인 사번으로 본인정보 출력
@@ -45,19 +54,19 @@ public class LeaveRequestController {
     }
 
     @GetMapping("/findone")
-    public LeaveRequestDto findOneLrq(@RequestParam int lrqNo)
-    {
+    public LeaveRequestDto findOneLrq(@RequestParam int lrqNo) {
         System.out.println("lrqNo = " + lrqNo);
         System.out.println("LeaveRequestController.findOneLrq");
         LeaveRequestDto leaveRequestDto = leaveRequestService.findOneLrq(lrqNo);
         System.out.println("leaveRequestDto = " + leaveRequestDto);
         return leaveRequestDto;
     }
+
     @PostMapping("/updateyearleave")
-    public boolean updateYearLrq(@RequestBody ApprovalRequestDto<LeaveRequestDto> approvalRequestDto)
-    {
+    public boolean updateYearLrq(@RequestBody ApprovalRequestDto<LeaveRequestDto> approvalRequestDto) {
         return leaveRequestService.updateYearLrq(approvalRequestDto);
     }
+
     // 3.
     @PutMapping("/put")
     public boolean lrqUpdate(LeaveRequestDto leaveRequestDto) {

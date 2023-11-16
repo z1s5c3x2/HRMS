@@ -18,7 +18,7 @@ export default function LeaveRequestList( props ){
 
        // 0. 스프링에게 전달할 객체
                const [ pageInfo , setPageInfo ] = useState( {
-                   page : 1 , key : 'empNo' , keyword : '' , view : 5
+                   page : 1 , key : 'empNo' , keyword : '' , view : 5 , empRk : 0 , dptmNo : 0 , lrqType: 0 , lrqSrtype : 2 , DateSt : '' , DateEnd : ''
                }); console.log( pageInfo );
 
         // 특정 레코드 클릭시 해당 레코드 상세보기
@@ -35,7 +35,7 @@ export default function LeaveRequestList( props ){
              }
 
             // 1-2 컴포넌트가 생성될 때 // + 의존성 배열 : page 변경될떄 // + 의존성 배열 : view 변경될 때
-                useEffect( () => { getlrq(); }, [ pageInfo.page , pageInfo.view ] );
+                useEffect( () => { getlrq(); }, [ pageInfo.page , pageInfo.view , pageInfo.empRk , pageInfo.dptmNo , pageInfo.lrqType ,pageInfo.lrqSrtype , pageInfo.DateSt , pageInfo.DateEnd ] );
 
                 // 2. 페이지 번호를 클릭했을 때.
                 const onPageSelect = ( e , value )=>{
@@ -83,6 +83,24 @@ function getlrqTypeLabel(lrqType) {
                   return "알 수 없는 타입";
               }
             }
+  function getrankLabel(empRk) {
+          switch (empRk) {
+            case 1:
+              return "사원";
+            case 2:
+              return "주임";
+            case 3:
+              return "대리";
+            case 4:
+              return "과장";
+            case 5:
+              return "팀장";
+            case 6:
+              return "부장";
+            default:
+              return "직급";
+          }
+        }
     function getlrqSrtypeLabel(lrqSrtype) {
                   switch (lrqSrtype) {
                     case 0:
@@ -93,12 +111,29 @@ function getlrqTypeLabel(lrqType) {
                       return "알 수 없는 타입";
                   }
                 }
-
+    function getdptmLabel(dptmNo) {
+                switch (dptmNo) {
+                  case 1:
+                    return "인사";
+                  case 2:
+                    return "기획";
+                  case 3:
+                    return "개발";
+                  case 4:
+                    return "경영지원";
+                  case 5:
+                    return "마케팅";
+                  default:
+                    return "부서";
+                }
+              }
     return(<>
-        <h3> 연차 목록 </h3>
-                <a href="/leaveRequest/write">연차신청</a>
+
+                <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">전 사원 연차조회</span></div>
+                <h3> 전 사원 연차목록 </h3>
      <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
-            <select
+     <div style={{ display:'flex' }}>
+                    <select
                         value = { pageInfo.view }
                         onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
                         >
@@ -106,6 +141,53 @@ function getlrqTypeLabel(lrqType) {
                         <option value="10"> 10 </option>
                         <option value="20"> 20 </option>
                     </select>
+                    <select
+                        value = { pageInfo.lrqType }
+                        onChange={ (e)=>{  setPageInfo( { ...pageInfo ,  lrqType : e.target.value} );  } }
+                        >
+                        <option  value="0"> 전체연차유형 </option>
+                        <option  value="1"> 휴직 </option>
+                        <option  value="2"> 연차 </option>
+                        <option  value="3"> 병가 </option>
+
+                    </select>
+                     <select
+                        value = { pageInfo.lrqSrtype }
+                        onChange={ (e)=>{  setPageInfo( { ...pageInfo ,  lrqSrtype : e.target.value} );  } }
+                        >
+                        <option  value="2"> 전체급여유형 </option>
+                        <option  value="0"> 무급 </option>
+                        <option  value="1"> 유급 </option>
+
+                    </select>
+                   <select
+                            value = { pageInfo.empRk }
+                            onChange={ (e)=>{  setPageInfo( { ...pageInfo , empRk : e.target.value} );  } }
+                            >
+                            <option  value="0"> 전체직급 </option>
+                            <option  value="1"> 사원 </option>
+                            <option  value="2"> 주임 </option>
+                            <option  value="3"> 대리 </option>
+                            <option  value="4"> 과장 </option>
+                            <option  value="5"> 팀장 </option>
+                            <option  value="6"> 부장 </option>
+                     </select>
+                     <select
+                            value = { pageInfo.dptmNo }
+                            onChange={ (e)=>{  setPageInfo( { ...pageInfo , dptmNo : e.target.value} );  } }
+                            >
+                            <option  value="0"> 전체부서 </option>
+                            <option  value="1"> 인사 </option>
+                            <option  value="2"> 기획 </option>
+                            <option  value="3"> 개발 </option>
+                            <option  value="4"> 경영지원 </option>
+                            <option  value="5"> 마케팅 </option>
+                     </select>
+                     <div style= {{ marginLeft : '15px' }}>
+                         조회기간 : <input type="date" className="periodStart" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateSt : e.target.value} ); } }/> ~
+                         <input type="date" className="periodEnd" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateEnd : e.target.value} ); } } />
+                     </div>
+     </div>
                     { /* 삼항연산자 를 이용한 조건부 랜더링 */}
                     {
                         pageInfo.keyword == '' ?
@@ -118,13 +200,15 @@ function getlrqTypeLabel(lrqType) {
                      {/* 테이블 제목 구역 */}
                        <TableHead>
                          <TableRow>
-                           <TableCell style={{ width : '10%' }} align="right">번호</TableCell>
-                           <TableCell style={{ width : '20%' }} align="right">연차신청날짜</TableCell>
-                           <TableCell style={{ width : '20%' }} align="right">연차종료날짜</TableCell>
-                           <TableCell style={{ width : '10%' }} align="right">연차유형</TableCell>
-                           <TableCell style={{ width : '10%' }} align="right">급여유형</TableCell>
-                            <TableCell style={{ width : '10%' }} align="right">결재번호</TableCell>
-                            <TableCell style={{ width : '20%' }} align="right">사원번호</TableCell>
+                           <TableCell style={{ width : '6%' }} align="right">번호</TableCell>
+                           <TableCell style={{ width : '13%' }} align="right">연차신청날짜</TableCell>
+                           <TableCell style={{ width : '13%' }} align="right">연차종료날짜</TableCell>
+                           <TableCell style={{ width : '9%' }} align="right">연차유형</TableCell>
+                           <TableCell style={{ width : '9%' }} align="right">급여유형</TableCell>
+                            <TableCell style={{ width : '6%' }} align="right">결재번호</TableCell>
+                           <TableCell style={{ width : '15%' }} align="right">이름(사원번호)</TableCell>
+                           <TableCell style={{ width : '8%' }} align="right">직급</TableCell>
+                            <TableCell style={{ width : '10%' }} align="right">부서</TableCell>
                          </TableRow>
                        </TableHead>
                        {/* 테이블 내용 구역 */}
@@ -134,13 +218,15 @@ function getlrqTypeLabel(lrqType) {
                              key={row.name}
                             >
 
-                             <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.lrqNo}</TableCell>
-                             <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.lrqSt}</TableCell>
-                             <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.lrqEnd}</TableCell>
-                             <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{getlrqTypeLabel(row.lrqType)}</TableCell>
-                             <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{getlrqSrtypeLabel(row.lrqSrtype)}</TableCell>
-                             <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
-                             <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empNo}</TableCell>
+                             <TableCell style={{ width : '6%' }} onClick={ ( ) => loadView( row.lrqNo ) } align="right">{row.lrqNo}</TableCell>
+                             <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.lrqNo ) } align="right">{row.lrqSt}</TableCell>
+                             <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.lrqNo ) } align="right">{row.lrqEnd}</TableCell>
+                             <TableCell style={{ width : '9%' }} onClick={ ( ) => loadView( row.lrqNo ) } align="right">{getlrqTypeLabel(row.lrqType)}</TableCell>
+                             <TableCell style={{ width : '9%' }} onClick={ ( ) => loadView( row.lrqNo ) } align="right">{getlrqSrtypeLabel(row.lrqSrtype)}</TableCell>
+                             <TableCell style={{ width : '6%' }} onClick={ ( ) => loadView( row.lrqNo ) } align="right">{row.aprvNo}</TableCell>
+                             <TableCell style={{ width : '15%' }} onClick={ ( ) => loadView( row.lrqNo ) } align="right">{row.empName + "(" + row.empNo + ")"}</TableCell>
+                             <TableCell style={{ width : '8%' }} onClick={ ( ) => loadView( row.lrqNo ) } align="right">{getrankLabel(row.empRk)}</TableCell>
+                             <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.lrqNo ) } align="right">{getdptmLabel(row.dptmNo)}</TableCell>
                            </TableRow>
                          ))}
                        </TableBody>
@@ -160,7 +246,7 @@ function getlrqTypeLabel(lrqType) {
                                            }
                                        >
                                        <option value="empNo"> 사번 </option>
-                                       <option value="slryType"> 급여유형 </option>
+
                                    </select>
 
                                    <input type="text"

@@ -16,7 +16,7 @@ import ApprovalModal from "../approval/ApprovalModal";
 // -----------------------//
 dayjs.locale('ko');
 
-export default function LeaveRequestWrite(props) {
+export default function LeaveOfAbsenceRequestWrite(props) {
  const [isOn, setIsOn] = useState(false);
 
   const modalController = () => {

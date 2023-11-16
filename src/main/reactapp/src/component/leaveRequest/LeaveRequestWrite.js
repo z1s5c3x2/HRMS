@@ -108,7 +108,7 @@ axios.get("/leaveRequest/getLeave" , { params : empNoData } )
         <div className="eregInputBox pmBox">
             <div class="input_title ">급여 유무</div>
             <TextField
-              label="( 0: 무급 / 1: 유급 )"
+              label="(0: 무급 / 1: 유급 )"
               type="number"
               value={paymentType}
               onChange={(e) => setPaymentType(e.target.value)}
