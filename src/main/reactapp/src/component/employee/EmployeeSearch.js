@@ -15,6 +15,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DesktopDatePicker} from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";
 import ApprovalModal from "../approval/ApprovalModal";
+import styles from '../../css/Table.css';
 
 export default function EmployeeSearch(props) {
     const rkList = ["대기", "사원", "주임", "대리", "과장", "팀장", "부장"]
@@ -89,34 +90,48 @@ export default function EmployeeSearch(props) {
     return (<>
         <div className="contentBox">
             <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">사원 정보 검색</span></div>
-            <div className="emp_regs_content">
-                {/* 필터 , 검색 구역*/}
-                <div style={{display: "flex"}}>
+            <div className="">
+
+                <div style={{display: "flex", justifyContent:"space-between" }}>
                     <div>
-                        <select value={searchOption.searchNameOrEmpNo}
-                                onChange={changeData} className={"searchNameOrEmpNo"}>
-                            <option value={"0"}> 사번</option>
-                            <option value={"1"}> 이름</option>
-                        </select>
-                        <input type={"text"} className={"searchValue"} value={searchOption.searchValue}
-                               onChange={changeData}/>
-                        <button type={"button"} onClick={searchEmp}> 검색</button>
                         {/* 필터 , 검색 구역*/}
+                        <div  class="empSearchBox">
+                            <select value={searchOption.searchNameOrEmpNo}
+                                    onChange={changeData} className={"searchNameOrEmpNo"}>
+                                <option value={"0"}> 사번</option>
+                                <option value={"1"}> 이름</option>
+                            </select>
+                            <input type={"text"} className={"searchValue"} value={searchOption.searchValue}
+                                   onChange={changeData}/>
+                            <button type={"button"} onClick={searchEmp}> 검색</button>
+                        </div>
+                         {/* 필터 , 검색 구역*/}
                         {/*리스트 출력*/}
                         <TableContainer component={Paper} sx={{
-                            width: 400,
-                            height: 600,
+                            width: 500,
+                            height: 550,
                             'td': {
-                                fontSize: 9,
-                                paddingTop: '10px',
-                                paddingBottom: '10px',
+                                fontSize: '0.8rem',
+                                paddingTop: '5px',
+                                paddingBottom: '5px',
                                 paddingLeft: '3px',
-                                paddingRight: '3px'
+                                paddingRight: '3px',
+                                border:'solid 1px var(--lgray)'
                             }
                         }}>
                             <Table aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
+                                <TableHead
+                                    sx={{
+                                        'th':{
+                                            fontSize: '0.9rem',
+                                            bgcolor: 'var(--main04)',
+                                            color: '#fff',
+                                            paddingTop: '10px' ,
+                                            paddingBottom: '10px',
+                                        }
+                                    }}
+                                >
+                                    <TableRow className="table_head th01">
                                         <TableCell align="center">사번</TableCell>
                                         <TableCell align="center">이름 </TableCell>
                                         <TableCell align="center">번호</TableCell>
@@ -127,7 +142,9 @@ export default function EmployeeSearch(props) {
                                 </TableHead>
                                 <TableBody>
                                     {empList.map((emp) => (
-                                        <TableRow onClick={(e) => {
+                                        <TableRow
+                                            className="tbody_tr"
+                                            onClick={(e) => {
                                             getInfo(emp.empNo)
                                         }} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                                             <TableCell align="center">{emp.empNo}</TableCell>
@@ -159,43 +176,87 @@ export default function EmployeeSearch(props) {
                         {/*리스트 출력*/}
                     </div>
                     <div>
-                        <h3> 사원 상세 정보</h3>
+
                         {empInfo != null && // 가져온 사원 정보가 존재한다면 사원 정보 출력
-                            <div>
-                                사번 : <input value={empInfo.empNo} disabled={true}/> <br/>
-                                이름 : <input value={empInfo.empName} disabled={true}/> <br/>
-                                성별: <input value={empInfo.empSex} disabled={true}/> <br/>
-                                계좌 : <input value={empInfo.empAcn} disabled={true}/> <br/>
-                                근무 상태 : <input value={empInfo.empSta ? '재직' : '휴직'} disabled={true}/> <br/>
-                                직급 : <input value={rkList[empInfo.empRk]} disabled={true}/> <br/>
-                                부서 : <input value={empInfo.dptmName} disabled={true}/> <br/>
-                                진행중인 결제 수 : <input value={empInfo.aprvCount} disabled={true}/> <br/>
-                                처리 필요한 결제 수 : <input value={empInfo.apLogCount} disabled={true}/> <br/>
-                                <button onClick={(e) => {
-                                    setRetiredInfo({...retiredInfo,empNo:empInfo.empNo})
-                                    setTextIsOn(!textIsOn)
-                                }}> 퇴사 정보 작성
-                                </button>
-                                {textIsOn && <button onClick={modalController}> 결제</button>}
+                            <div  class="empInfoBox">
+                                <h3> 사원 상세 정보</h3>
+                                <table class="empInfoT">
+                                    <tr>
+                                        <th>사번</th>
+                                        <td><input value={empInfo.empNo} disabled={true}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>이름</th>
+                                        <td><input value={empInfo.empName} disabled={true}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>성별</th>
+                                        <td><input value={empInfo.empSex} disabled={true}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>계좌</th>
+                                        <td><input value={empInfo.empAcn} disabled={true}/> </td>
+                                    </tr>
+                                    <tr>
+                                        <th>근무 상태</th>
+                                        <td><input value={empInfo.empSta ? '재직' : '휴직'} disabled={true}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>직급</th>
+                                        <td><input value={rkList[empInfo.empRk]} disabled={true}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>부서</th>
+                                        <td><input value={empInfo.dptmName} disabled={true}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>진행중인 결제 수</th>
+                                        <td><input value={empInfo.aprvCount} disabled={true}/></td>
+                                    </tr>
+                                    <tr>
+                                        <th>처리 필요한 결제 수</th>
+                                        <td><input value={empInfo.apLogCount} disabled={true}/></td>
+                                    </tr>
+                                    <tr>
+
+                                        <td colspan="2">
+                                            <div style={{display:'flex', justifyContent:'space-between', margin:'10px 0'}}>
+                                                <button onClick={(e) => {
+                                                    setRetiredInfo({...retiredInfo,empNo:empInfo.empNo})
+                                                    setTextIsOn(!textIsOn)
+                                                }}> 퇴사 정보 작성
+                                                </button>
+                                                 {textIsOn && <button onClick={modalController}> 결제</button>}
+                                             </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            {textIsOn && <div>
+                                                <textarea style={{width: '380px', height: '160px'}} placeholder={"퇴사 사유 작성"}
+                                                          value={retiredInfo.rtempCont}
+                                                onChange={(e)=>{
+                                                    setRetiredInfo({...retiredInfo,rtempCont:e.target.value})
+                                                }}> </textarea>
+                                                퇴사 날짜 : <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <DesktopDatePicker
+                                                    value={retiredInfo.rtempDate}
+                                                    sx={{width: '30%', height: "70px"}}
+                                                    renderInput={(params) => <TextField {...params} label="날짜"/>}
+                                                    format="YYYY-MM-DD"
+                                                    onChange={(date) => setRetiredInfo({...retiredInfo, rtempDate: date})}
+                                                />
+                                            </LocalizationProvider>
+
+                                            </div>}
+                                        </td>
+
+                                    </tr>
+                                </table>
+
                             </div>
                         }
-                        {textIsOn && <div>
-                            <textarea style={{width: '400px', height: '150px'}} placeholder={"퇴사 사유 작성"}
-                                      value={retiredInfo.rtempCont}
-                            onChange={(e)=>{
-                                setRetiredInfo({...retiredInfo,rtempCont:e.target.value})
-                            }}> </textarea>
-                            퇴사 날짜 : <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DesktopDatePicker
-                                value={retiredInfo.rtempDate}
-                                sx={{width: '30%', height: "70px"}}
-                                renderInput={(params) => <TextField {...params} label="날짜"/>}
-                                format="YYYY-MM-DD"
-                                onChange={(date) => setRetiredInfo({...retiredInfo, rtempDate: date})}
-                            />
-                        </LocalizationProvider>
 
-                        </div>}
                     </div>
                 </div>
             </div>
