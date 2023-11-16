@@ -49,6 +49,7 @@ public class SecurityService implements UserDetailsService {
         System.out.println( "시큐리티에 저장된 세션 정보 저장소에 저장된 인증 호출 : " +
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal() );
 
+
         // 인증에 성공한 정보 호출[ 세션 호출 ]
         Object o = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
