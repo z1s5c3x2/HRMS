@@ -1,3 +1,17 @@
 .reconsiderTable th, td{
     border : 1px solid black;
 }
+
+.outputTd{
+     height : 30px;
+
+}
+
+.outputTd td{
+     font-size : 13px;
+}
+
+.outputTd button{
+    height : 28px !important;
+    padding: 2px 12px !important;
+}
