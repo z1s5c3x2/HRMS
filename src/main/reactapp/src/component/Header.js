@@ -48,7 +48,7 @@ export default function Header( props ){
         				</ul>
         			</div>
 
-        			<div className="userbox"><span className="emp_name">김이젠</span>님 <br/> 좋은 하루되세요!{/*-- <img src="./images/user_photo.jpeg"/>--*/}</div>
+        			<div className="userbox"><span className="emp_name">{login.empName}</span>님 <br/> 좋은 하루되세요!{/*-- <img src="./images/user_photo.jpeg"/>--*/}</div>
 
         	</header>
     </>)
