@@ -20,10 +20,8 @@ dayjs.locale('ko');
 export default function TeamMemberUpdate( props ){
     /*모달 호출 선언 필요*/
     const [isOn, setIsOn] = useState(false)
-
-    // 결재 모달창 여는 함수
-    function onModal(e) {
-        //document.querySelector('.approv_modal').style.display = 'flex';
+    // 모달창 열기/닫기 함수
+    const modalController = (e)=> {
         setIsOn(!isOn)
     }
 
@@ -85,14 +83,15 @@ export default function TeamMemberUpdate( props ){
                         </LocalizationProvider>
                     </div>
                     <div class="eregBtnBox">
-                        <button class="btn01" type="button" onClick={onModal}>수정</button>
+                        <button class="btn01" type="button" onClick={modalController}>수정</button>
                     </div>
                 </div>
                 {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
                     { isOn ? <> <ApprovalModal data={teamMemberInfo}
                                               targetUrl={"/approval/putAproval"}
                                               aprvType={16}
-                                              successUrl={"/teamProject/listAll"}>
+                                              successUrl={"/teamProject/listAll"}
+                                              modalControll={modalController}>
                     </ApprovalModal></> : <> </> }
             </div>
 

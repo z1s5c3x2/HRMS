@@ -59,8 +59,39 @@ let currentMenu = location == '' ? 'employee' : location;
 
     }
 
+    // 로그인 상태를 저장할 상태변수 선언
+    let [login, setLogin] = useState( null );
+
+    // 회원정보 호출[로그인 여부 확인]
+       useEffect( () => {
+           axios.get('/employee/get')
+               .then(r => { console.log('login get')
+                   // 2. 만약에 로그인이 되어있으면
+                   if(r.data != ''){
+                       // 브라우저 세션/쿠키
+                           // localstorage vs sessionstorage
+                           // 모든 브라우저 탭/창 공유, 브라우저가 꺼져도 유지, 자동로그인 기능
+                           //                      vs
+                           // 탭/창 종료되면 사라짐, 로그인 여부확인
+                           // 세션/쿠키 저장 : .setItem(key,value)
+                           // 세션/쿠키 호출 : .getItem(key)
+                           // 세션/쿠키 제거 : .removeItem(key)
+                       sessionStorage.setItem('login_token', JSON.stringify(r.data));
+                       setLogin(JSON.parse(sessionStorage.getItem('login_token') ) );
+                       setLogin(r.data);
+                   }
+               })
+
+       }, [] )
 
 
+    // 메뉴 css 코드
+    const [activeMenu, setActiveMenu] = useState('menu1');
+
+    const clickMenu = (e) => {
+      const clickedMenuItem = e.currentTarget;
+      setActiveMenu(clickedMenuItem.id);
+    };
 
 
 
@@ -77,62 +108,69 @@ let currentMenu = location == '' ? 'employee' : location;
                 {currentMenu === 'employee' && (
                 <>
                     <li className="tmenu">인사관리</li>
-                    <li className="smenu"><Link to='/employee/list'>사원 조회</Link></li>
-                    <li><Link to='/employee/register'>사원등록</Link></li>
-                    <li><Link to='/employee/details'>사원 수정</Link></li>
-                    <li><Link to='/employee/searchemp'>사원 검색</Link></li>
+                    <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/employee/list'>사원 조회</Link></li>
+                    <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/employee/register'>사원등록</Link></li>
+                    <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/employee/details'>사원 수정</Link></li>
+                    <li id="menu4" onClick={clickMenu} className={activeMenu === 'menu4' ? 'smenu' : ''}><Link to='/employee/searchemp'>사원 검색</Link></li>
                 </>
                 )}
 
                 {currentMenu === 'teamProject' && (
                 <>
                    <li className="tmenu">프로젝트팀관리</li>
-                   <li className="smenu"><Link to='/teamProject'>프로젝트팀등록</Link></li>
-                   <li><Link to='/teamProject/listAll'>프로젝트팀 조회/삭제</Link></li>
-                   <li><Link to='/teamproject/teammember/write'>프로젝트팀원등록</Link></li>
+                   <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/teamProject'>프로젝트팀등록</Link></li>
+                   <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/teamProject/listAll'>프로젝트팀 조회/삭제</Link></li>
+                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/teamProject/teammember/write'>프로젝트팀원등록</Link></li>
 
                 </>)}
 
                 {currentMenu === 'attendance' && (
                 <>
                    <li className="tmenu">근태관리</li>
-                   <li className="smenu"><Link to='/attendance'>전사원 근무현황</Link></li>
-                   <li><Link to='/attendance/pcalendar'>나의근무현황캘린더</Link></li>
-                   <li><Link to='/attendance/dall'>전사원출결현황</Link></li>
-                   <li><Link to='/attendance/dcalendar'>나의출결캘린더</Link></li>
-                   <li><Link to='/attendance'>병가신청</Link></li>
-                   <li><Link to='/attendance'>휴직신청</Link></li>
-                   <li><Link to='/attendance'>개인연차내역</Link></li>
-                   <li><Link to='/attendance'>전사원연차내역 </Link></li>
-                   <li><Link to='/attendance'>개인연차신청</Link></li>
+                   <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/attendance'>전사원 근무현황</Link></li>
+                   <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/attendance/pcalendar'>나의근무현황캘린더</Link></li>
+                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/attendance/dall'>전사원출결현황</Link></li>
+                   <li id="menu4" onClick={clickMenu} className={activeMenu === 'menu4' ? 'smenu' : ''}><Link to='/attendance/dcalendar'>나의출결캘린더</Link></li>
+                   <li id="menu5" onClick={clickMenu} className={activeMenu === 'menu5' ? 'smenu' : ''}><Link to='/attendance'>병가신청</Link></li>
+                   <li id="menu6" onClick={clickMenu} className={activeMenu === 'menu6' ? 'smenu' : ''}><Link to='/attendance'>휴직신청</Link></li>
+                   <li id="menu7" onClick={clickMenu} className={activeMenu === 'menu7' ? 'smenu' : ''}><Link to='/attendance'>개인연차내역</Link></li>
+                   <li id="menu8" onClick={clickMenu} className={activeMenu === 'menu8' ? 'smenu' : ''}><Link to='/attendance'>전사원연차내역 </Link></li>
+                   <li id="menu9" onClick={clickMenu} className={activeMenu === 'menu9' ? 'smenu' : ''}><Link to='/attendance'>개인연차신청</Link></li>
                 </>)}
 
                 {currentMenu === 'salary' && (
                 <>
                    <li className="tmenu">급여관리</li>
-                   <li className="smenu"><Link to='/salary'>개인급여내역</Link></li>
-                   <li><Link to='/salary/list'>전사원급여내역</Link></li>
-                   <li><Link to='/salary/write'>급여등록</Link></li>
+                   <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/salary'>개인급여내역</Link></li>
+                   <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/salary/list'>전사원급여내역</Link></li>
+                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/salary/write'>급여등록</Link></li>
                 </>)}
 
 
                 {currentMenu === 'approval' && (
                 <>
                    <li className="tmenu">결재관리</li>
-                   <li className="smenu"><Link to='/approval'>전사원결재 조회</Link></li>
-                   <li><Link to='/reconsider'>개별 상신한 리스트 조회</Link></li>
-                   <li><Link to='/approvalview'>개별 결재한 리스트 조회</Link></li>
+                   <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/approval'>전사원결재 조회</Link></li>
+                   <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/reconsider'>개별 상신한 리스트 조회</Link></li>
+                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/approvalview'>개별 결재한 리스트 조회</Link></li>
                 </>)}
 
             </ul>
-            <div className="templogin"><Link to='/member/Login'> 로그인</Link></div>
+            {
+                login == null
+                ? (<>
+                    <div className="templogin"><Link to='/member/Login'> 로그인</Link></div>
+                </>)
+                :(<>
+                    <div className="templogin" onClick={logout}> 로그아웃 </div>
+                </>)
+            }
             <div className="attendence" onClick={ changeAttendance }><i class="fa-solid fa-arrow-right-to-bracket"></i>
             {
                 isAttendance == true ? (<>퇴 근</>) : (<>출 근</>)
             }
             </div>
-            <div className="templogin" onClick={logout}> 로그아웃 </div>
-            <div className="attendence" onClick="changeState()"><i class="fa-solid fa-arrow-right-to-bracket"></i> 출 근</div>
+            {/*<div className="attendence" onClick="changeState()"><i class="fa-solid fa-arrow-right-to-bracket"></i> 출 근</div>*/}
         </aside>
 
     </>)
