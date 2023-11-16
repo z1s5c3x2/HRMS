@@ -320,12 +320,14 @@ public class ApprovalService {
             objectMapper.registerModule(new JavaTimeModule());
             objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES,true);
             Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
+            System.out.println("step 1");
             if(optionalApprovalEntity.isPresent())
             {
                 //저장된 퇴사 정보 가져오기
                 RetiredEmployeeDto retiredEmployeeDto = objectMapper.readValue(optionalApprovalEntity.get().getAprvJson(),RetiredEmployeeDto.class);
                 //퇴사원 정보 호출
                 Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(retiredEmployeeDto.getEmpNo());
+                System.out.println("step 2");
                 if(optionalEmployeeEntity.isPresent()){
                     RetiredEmployeeEntity retiredEmployeeEntity = retiredEmployeeEntityRepository.save(retiredEmployeeDto.saveToEntity()); // 퇴사 기록 저장
                     //단방향
@@ -336,7 +338,15 @@ public class ApprovalService {
                     optionalApprovalEntity.get().getRetiredEmployees().add(retiredEmployeeEntity);
                     optionalEmployeeEntity.get().setEmpSta(false ); // 퇴사
                     //이후 처리
-                    //departmentHistoryEntityRepository.findTop1ByEmpNoAndHdptmEndIsNullOrderByHdptmEndDesc(optionalEmployeeEntity.get());
+                    Optional<DepartmentHistoryEntity> optionalDepartmentHistoryEntity = departmentHistoryEntityRepository.findTop1ByEmpNoAndHdptmEndIsNullOrderByHdptmEndDesc(optionalEmployeeEntity.get());
+                    Optional<TeamMemberEntity> optionalTeamMemberEntity = teamMemberRepository.findTop1ByEmpNoAndTmEndIsNullOrderByTmNoDesc(optionalEmployeeEntity.get());
+                    System.out.println("step 3");
+                    if(optionalDepartmentHistoryEntity.isPresent() && optionalTeamMemberEntity.isPresent())
+                    {
+                        optionalDepartmentHistoryEntity.get().setHdptmEnd(retiredEmployeeDto.getRtempDate()); //부서 마지막날 설정
+                        optionalTeamMemberEntity.get().setTmEnd(retiredEmployeeDto.getRtempDate()); // 팀 멤버 마지막 날 설정
+                    }
+
                     return true;
                 }
             }
@@ -362,6 +372,7 @@ public class ApprovalService {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         }else if(optionalApprovalEntity.get().getAprvType() == 3) //사원 퇴사
         {
+            System.out.println("타입 3 들어옴");
             return commitRetiredEmployee(aprvNo);
         }else if(optionalApprovalEntity.get().getAprvType() == 4) //부서 변경
         {
