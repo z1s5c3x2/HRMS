@@ -3,6 +3,7 @@ package hrms.model.dto;
 import hrms.model.entity.AttendanceEntity;
 import hrms.model.entity.EmployeeEntity;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +15,8 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 public class AttendanceDto {
+    @Autowired
+    private EmployeeEntity employeeEntity;
     //필드설계
     private int attdNo;              // 근태기록번호(식별)
     private String attdWrst;         // 출근시간
