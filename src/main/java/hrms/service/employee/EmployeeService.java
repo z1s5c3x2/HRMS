@@ -170,30 +170,31 @@ public class EmployeeService {
         return false;
     }
 
-    @Transactional
+    @Transactional //사원 퇴사 등록
     public boolean setRetiredEmployee(ApprovalRequestDto<RetiredEmployeeDto> approvalRequestDto)
     {
-        // 결제 등록
-        ApprovalEntity approvalEntity = approvalService.postApproval(
-                approvalRequestDto.getAprvType()
-                , approvalRequestDto.getAprvCont()
-                ,approvalRequestDto.getApprovers());
-        RetiredEmployeeEntity retiredEmployeeEntity = approvalRequestDto.getData().saveToEntity();
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(approvalRequestDto.getData().getEmpNo());
-        if(optionalEmployeeEntity.isPresent())
-        {
-            retiredEmployeeEntityRepository.save(retiredEmployeeEntity); // 엔티티 저장
-            //단방향
-            retiredEmployeeEntity.setAprvNo(approvalEntity);
-            retiredEmployeeEntity.setEmpNo(optionalEmployeeEntity.get());
-            // 양방향
-            optionalEmployeeEntity.get().getRetiredEmployeeEntities().add(retiredEmployeeEntity);
-            approvalEntity.getRetiredEmployees().add(retiredEmployeeEntity);
-            System.out.println(optionalEmployeeEntity.get().getRetiredEmployeeEntities());
-            System.out.println(approvalEntity.getRetiredEmployees());
-            System.out.println(optionalEmployeeEntity.get().getRetiredEmployeeEntities());
-            return true;
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
+            System.out.println("EmployeeService.setRetiredEmployee");
+            System.out.println("json = " + json);
+            // 날짜 맞추기
+            approvalRequestDto.getData().setRtempDate(approvalRequestDto.getData().getRtempDate().plusDays(1));
+            approvalRequestDto.setAprvJson(json);
+            // 결재 테이블 등록 메서드
+            // => 실행 후 실행결과 반환
+            return approvalService.updateApproval(
+                    approvalRequestDto.getAprvType(),   // 결재타입 [메모장 참고]
+                    approvalRequestDto.getAprvCont(),   // 결재내용
+                    approvalRequestDto.getApprovers(),  // 검토자
+                    approvalRequestDto.getAprvJson()    // 수정할 JSON 문자열
+            );
+        }catch(Exception e) {
+            System.out.println("setRetiredEmployee" + e);
         }
+
+
 
         return false;
     }
