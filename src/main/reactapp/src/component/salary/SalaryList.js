@@ -21,13 +21,23 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Pagination from "@mui/material/Pagination";
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 //----------------------------------------------------------------------//
-
+dayjs.locale('ko');
 
 
 
 export default function BoardList(props){
     // 0. 컴포넌트 상태변수 관리
+    const [selectedDate1, setSelectedDate1] = useState(null); // 초기 값 null로 설정
+    const [selectedDate2, setSelectedDate2] = useState(null); // 초기 값 null로 설정
+
     let [ pageDto , setPageDto ] = useState( {
             someList : [] , totalPages : 0 , totalCount : 0
         } );
@@ -35,7 +45,7 @@ export default function BoardList(props){
     // 0. 스프링에게 전달할 객체
         const [ pageInfo , setPageInfo ] = useState( {
             page : 1 , key : 'empNo' , keyword : '' , view : 5 , empRk : 0 , dptmNo : 0 , slryType : 0 ,
-        }); console.log( pageInfo );
+        }); console.log( pageInfo ); console.log(selectedDate1);  console.log(selectedDate2);
 
     // 1. 급여목록에서 특정 레코드 클릭시 해당 레코드 상세보기
      const loadView = ( slryNo ) => {
@@ -165,6 +175,34 @@ export default function BoardList(props){
                             <option  value="4"> 경영지원 </option>
                             <option  value="5"> 마케팅 </option>
                         </select>
+
+
+                                  <div className="eregInputBox">
+                                      <div class="input_title ">시작 범위날짜</div>
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                          <DesktopDatePicker
+                                            value={selectedDate1}
+                                            sx={{ width: '70%'}}
+                                            onChange={ (date1) => setSelectedDate1(date1)   }
+                                            renderInput={(params) => <TextField {...params} label="날짜" />}
+                                             format="YYYY-MM-DD"
+                                          />
+                                        </LocalizationProvider>
+                                  </div>
+                                  <div className="eregInputBox">
+                                        <div class="input_title ">종료 범위날짜</div>
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                  <DesktopDatePicker
+                                                    value={selectedDate2}
+                                                    onChange={ (date2) => setSelectedDate2(date2) }
+                                                    sx={{ width: '70%'}}
+                                                    renderInput={(params) => <TextField {...params} label="날짜" />}
+                                                     format="YYYY-MM-DD"
+                                                  />
+                                                </LocalizationProvider>
+                                  </div>
+
+
                 { /* 삼항연산자 를 이용한 조건부 랜더링 */}
                 {
                     pageInfo.keyword == '' ?
