@@ -67,26 +67,6 @@ export default function TeamProjectMain( props ){
         console.log(projectInfo);
     }, [selectedSDate, selectedEDate])
 
-    /* 사원 직급설정 함수 */
-    function getrankLabel(empRk) {
-        switch (empRk) {
-          case 1:
-            return "사원";
-          case 2:
-            return "주임";
-          case 3:
-            return "대리";
-          case 4:
-            return "과장";
-          case 5:
-            return "팀장";
-          case 6:
-            return "부장";
-          default:
-            return "직급";
-        }
-    }
-
     // 프로젝트팀 매니저가 변경될때마다 projectInfo 값을 바꿔줌
     useEffect( () =>{
         projectInfo.empNo = empNumber;
@@ -110,11 +90,9 @@ export default function TeamProjectMain( props ){
         axios
             .get("/employee/findAll",{params:pageInfo})
             .then( (r) => {
-                //console.log( r.data )
-                //console.log( r.data.someList )
+                console.log(r.data);
                 setEmpList( r.data.someList )
                 setPageInfo( {...pageInfo,totalCount: r.data.totalCount,totalPages:r.data.totalPages} )
-                //console.log( empList )
             })
             .catch( (e) =>{
                 console.log( e )
@@ -180,7 +158,6 @@ export default function TeamProjectMain( props ){
         </div>
         {/* 사원리스트 출력 공간 */}
          <div className="contentBox2">
-             <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">사원목록</span></div>
              <select
                  value = { pageInfo.sta }
                  onChange={ (e)=>{  setPageInfo( { ...pageInfo , sta : e.target.value,page:"1"} );  } }
@@ -227,7 +204,7 @@ export default function TeamProjectMain( props ){
                                      <TableCell align="center">{emp.empSex}</TableCell>
                                      <TableCell align="center">{emp.empSta ? '재직' : '휴직'}</TableCell>
                                      <TableCell align="center">{rkList[emp.empRk]}</TableCell>
-                                     <TableCell align="center">{dptList[emp.dtpmNo - 1]}</TableCell>
+                                     <TableCell align="center">{dptList[emp.dptmNo - 1]}</TableCell>
                              </TableRow>
                          ))}
                      </TableBody>

@@ -61,26 +61,6 @@ export default function TeamMemberWrite( props ){
     const [pjtNumber, setPjtNumber] = useState('');
     const [pjtName, setPjtName] = useState('');
 
-    /* 사원 직급설정 함수 */
-    function getrankLabel(empRk) {
-        switch (empRk) {
-          case 1:
-            return "사원";
-          case 2:
-            return "주임";
-          case 3:
-            return "대리";
-          case 4:
-            return "과장";
-          case 5:
-            return "팀장";
-          case 6:
-            return "부장";
-          default:
-            return "직급";
-        }
-    }
-
     // -------------- 프로젝트팀 데이터 ---------------
 
     // 프로젝트팀 상태변수 관리
@@ -255,7 +235,7 @@ export default function TeamMemberWrite( props ){
                                          >
                                                  <TableCell align="center">{emp.empName}</TableCell>
                                                  <TableCell align="center">{rkList[emp.empRk]}</TableCell>
-                                                 <TableCell align="center">{dptList[emp.dtpmNo - 1]}</TableCell>
+                                                 <TableCell align="center">{dptList[emp.dptmNo - 1]}</TableCell>
                                          </TableRow>
                                      ))}
                                  </TableBody>

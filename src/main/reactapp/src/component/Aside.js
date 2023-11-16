@@ -89,8 +89,6 @@ let currentMenu = location == '' ? 'employee' : location;
                    <li className="tmenu">프로젝트팀관리</li>
                    <li className="smenu"><Link to='/teamProject'>프로젝트팀등록</Link></li>
                    <li><Link to='/teamProject/listAll'>프로젝트팀 조회/삭제</Link></li>
-                   <li><Link to='/'>프로젝트팀원조회/삭제</Link></li>
-                   <li><Link to='/teamProject/'>프로젝트팀원수정</Link></li>
                    <li><Link to='/teamproject/teammember/write'>프로젝트팀원등록</Link></li>
 
                 </>)}
