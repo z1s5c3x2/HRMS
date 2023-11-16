@@ -21,9 +21,8 @@ export default function EmployeeDetails()
     //.get("/employee/findemp?empNo="+searchParams.get('empNo'))
     useEffect(() => {
         axios
-            .get("/employee/findemp?empNo=2311114")
+            .get("/employee/findemp?empNo="+searchParams.get('empNo'))
             .then( (r) => {
-                r.data.empPwd = ""
                 setEmpInfo(r.data)
             })
             .catch( (e) =>{

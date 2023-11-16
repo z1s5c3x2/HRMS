@@ -20,14 +20,14 @@ public interface SalaryEntityRepository extends JpaRepository<SalaryEntity, Inte
 
     @Query(value =
             "SELECT s.*, e.emp_rk, d.dptm_no " +
-                    "                    FROM SLRY s " +
-                    "                    INNER JOIN EMP e ON s.emp_no = e.emp_no " +
-                    "                    INNER JOIN DPTM d ON e.dptm_no = d.dptm_no " +
-                    "                    WHERE" +
-                    "   (:key = 'empNo' AND :keyword IS NOT NULL AND e.empNo LIKE CONCAT('%', :keyword, '%')) " +
-                    "   AND (:empRk > 0 AND e.empRk = :empRk) " +
-                    "   AND (:dptmNo > 0 AND d.dptmNo = :dptmNo) " +
-                    "   AND (:slryType > 0 AND s.slryType = :slryType) " +
-                    "ORDER BY s.slryDate DESC", nativeQuery = true)
+                    "FROM SLRY s " +
+                    "INNER JOIN EMP e ON s.emp_no = e.emp_no " +
+                    "INNER JOIN DPTM d ON e.dptm_no = d.dptm_no " +
+                    "WHERE" +
+                    "   (CASE WHEN ?1 = 'empNo' AND ?2 IS NOT NULL THEN e.emp_no LIKE CONCAT('%', ?2, '%') ELSE true END) " +
+                    "   AND (CASE WHEN ?3 > 0 THEN e.emp_rk = ?3 ELSE true END) " +
+                    "   AND (CASE WHEN ?4 > 0 THEN d.dptm_no = ?4 ELSE true END) " +
+                    "   AND (CASE WHEN ?5 > 0 THEN s.slry_type = ?5 ELSE true END) " +
+                    "ORDER BY s.slry_date DESC", nativeQuery = true)
     Page<SalaryEntity> findBySearch(String key, String keyword, int empRk, int dptmNo, int slryType, Pageable pageable);
 }

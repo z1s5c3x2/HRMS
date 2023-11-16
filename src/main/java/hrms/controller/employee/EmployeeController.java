@@ -27,7 +27,7 @@ public class EmployeeController {
          return employeeService.registerEmp(employeeDtoApprovalRequestDto);
     }
 
-    @PostMapping("/retired")
+    @PostMapping("/retired") //퇴사
     public boolean leaveEmpStatus(@RequestBody ApprovalRequestDto<RetiredEmployeeDto> approvalRequestDto)
     {
         System.out.println("approvalRequestDto = " + approvalRequestDto);
@@ -79,7 +79,7 @@ public class EmployeeController {
         return employeeService.getOneEmp(empNo);
     }
 
-
+    //
     @GetMapping("/findoneoption")
     public PageDto<EmployeeDto> findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
     {
@@ -96,6 +96,12 @@ public class EmployeeController {
     @GetMapping("/get")
     public EmployeeDto getEmp(){
         return securityService.getEmp();
+    }
+
+    @GetMapping("/test1")
+    public boolean test1(@RequestParam int a , @RequestParam int b){
+        employeeService.test1(a,b);
+        return true;
     }
 
 }

@@ -69,7 +69,7 @@ export default function EmployeeUpdate(props)
                 부서 : <select name="dptmNo" onChange={ changeInfo} value={changeDepartment.dptmNo}>
                     <option value={1}>인사팀</option>
                     <option value={2}>기획팀(PM)</option>
-                    <option value={3}>기획팀(PM)</option>
+                    <option value={3}>개발</option>
                     <option value={4}>DBA팀</option>
                     </select><br/>
                 직급 : <select name="empRk" onChange={changeInfo}  value={empInfo.empRk} >

@@ -3,17 +3,21 @@ package hrms.service.approval;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hrms.model.dto.*;
 import hrms.model.entity.*;
 import hrms.model.repository.*;
+import hrms.service.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +39,11 @@ public class ApprovalService {
     private LeaveRequestEntityRepository leaveRequestEntityRepository;
     @Autowired
     private DepartmentHistoryEntityRepository departmentHistoryEntityRepository;
+    @Autowired
+    private RetiredEmployeeEntityRepository retiredEmployeeEntityRepository;
 
+    @Autowired
+    private SecurityService securityService;
 
     // 최초등록 : 결재 테이블 등록 [등록 기능에 관한 테이블]
     @Transactional
@@ -83,14 +91,14 @@ public class ApprovalService {
     //post시 json 저장이 필요한 경우
     @Transactional
     public ApprovalEntity postApprovalJson(int aprvType, String aprvCont, ArrayList<String> approvers,String aprvJson) {
-        System.out.println("aprvType = " + aprvType + ", aprvCont = " + aprvCont + ", approvers = " + approvers + ", aprvJson = " + aprvJson);
+        /*System.out.println("aprvType = " + aprvType + ", aprvCont = " + aprvCont + ", approvers = " + approvers + ", aprvJson = " + aprvJson);*/
         try{
             // 상신자
             // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
             Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo("2311004");
 
             if (optionalEmployeeEntity.isPresent()) {
-                System.out.println("step1");
+                /*System.out.println("step1");*/
                 ApprovalEntity approvalEntity = ApprovalEntity
                         .builder()
                         .aprvType(aprvType)
@@ -98,22 +106,17 @@ public class ApprovalService {
                         .aprvJson(aprvJson)
                         .empNo(optionalEmployeeEntity.get())
                         .build();
-
                 // DB 저장
                 System.out.println("approvalEntity = " + approvalEntity);
                 ApprovalEntity result = approvalRepository.save(approvalEntity);
-                System.out.println("step2");
                 /* 단방향 */
                 // 검토자에 대한 사원테이블 JPA 단방향 관계 정립
                 result.setEmpNo(optionalEmployeeEntity.get());
-                System.out.println("step1");
                 /* 양방향 */
                 // 사원테이블 JPA 단방향 관계 정립
                 optionalEmployeeEntity.get().getApprovalEntities().add(result);
-                System.out.println("step4");
                 // 검토자 DB 저장을 위한 메서드 실행
                 postApprovalLog(approvers, result.getAprvNo());
-                System.out.println("result = " + result);
                 if (result.getAprvNo() >= 1) return result;
 
             }
@@ -135,13 +138,13 @@ public class ApprovalService {
             return null;
         }
         */
-        System.out.println(222);
+
         // 상신자
         // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo("2311004");
-        System.out.println(333);
+
         if (optionalEmployeeEntity.isPresent()) {
-            System.out.println(444);
+
             ApprovalEntity approvalEntity = ApprovalEntity
                     .builder()
                     .aprvType(aprvType)
@@ -149,17 +152,17 @@ public class ApprovalService {
                     .aprvJson(aprvJson)
                     .empNo(optionalEmployeeEntity.get())
                     .build();
-            System.out.println(5555);
+
             // DB 저장
             ApprovalEntity result = approvalRepository.save(approvalEntity);
             /* 단방향 */
             // 검토자에 대한 사원테이블 JPA 단방향 관계 정립
             result.setEmpNo(optionalEmployeeEntity.get());
-            System.out.println(666);
+
             /* 양방향 */
             // 사원테이블 JPA 단방향 관계 정립
             optionalEmployeeEntity.get().getApprovalEntities().add(result);
-            System.out.println(777);
+
             // 검토자 DB 저장을 위한 메서드 실행
             postApprovalLog(approvers, result.getAprvNo());
 
@@ -258,6 +261,7 @@ public class ApprovalService {
                     break;
                 // 사원정보 수정
                 case 2:
+                case 3:
                 case 4:
                 case 5:
                     return updateMemberInfoAproval(optionalApproval.get().getAprvNo());
@@ -308,7 +312,41 @@ public class ApprovalService {
         return -1;
     }
 
+    @Transactional // 결제 완료된 사원 퇴사
+    public boolean commitRetiredEmployee(int aprvNo)
+    {
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES,true);
+            Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
+            if(optionalApprovalEntity.isPresent())
+            {
+                //저장된 퇴사 정보 가져오기
+                RetiredEmployeeDto retiredEmployeeDto = objectMapper.readValue(optionalApprovalEntity.get().getAprvJson(),RetiredEmployeeDto.class);
+                //퇴사원 정보 호출
+                Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(retiredEmployeeDto.getEmpNo());
+                if(optionalEmployeeEntity.isPresent()){
+                    RetiredEmployeeEntity retiredEmployeeEntity = retiredEmployeeEntityRepository.save(retiredEmployeeDto.saveToEntity()); // 퇴사 기록 저장
+                    //단방향
+                    retiredEmployeeEntity.setAprvNo(optionalApprovalEntity.get());
+                    retiredEmployeeEntity.setEmpNo(optionalEmployeeEntity.get());
+                    //양방향
+                    optionalEmployeeEntity.get().getRetiredEmployeeEntities().add(retiredEmployeeEntity);
+                    optionalApprovalEntity.get().getRetiredEmployees().add(retiredEmployeeEntity);
+                    optionalEmployeeEntity.get().setEmpSta(false ); // 퇴사
+                    //이후 처리
+                    //departmentHistoryEntityRepository.findTop1ByEmpNoAndHdptmEndIsNullOrderByHdptmEndDesc(optionalEmployeeEntity.get());
+                    return true;
+                }
+            }
 
+        }catch(Exception e) {
+            System.out.println("commitRetiredEmployee" + e);
+        }
+
+        return false;
+    }
     // 결재 완료된 사원 '수정' 기능 메서드
     @Transactional
     public boolean updateMemberInfoAproval(int aprvNo) throws JsonProcessingException {
@@ -319,9 +357,15 @@ public class ApprovalService {
 
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
         if (!optionalApprovalEntity.isPresent()) return false;
-        if(optionalApprovalEntity.get().getAprvType() == 2)
+        if(optionalApprovalEntity.get().getAprvType() == 2) // 기본 정보 수정
         {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        }else if(optionalApprovalEntity.get().getAprvType() == 3) //사원 퇴사
+        {
+            return commitRetiredEmployee(aprvNo);
+        }else if(optionalApprovalEntity.get().getAprvType() == 4) //부서 변경
+        {
+            return commitChangeDepartment(aprvNo);
         }else{
             objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
         }
@@ -347,14 +391,7 @@ public class ApprovalService {
                     optionalEmployeeEntity.get().setEmpAcn(employeeEntity.getEmpAcn());
                     break;
 
-                // 사원 부서변경
-                case 4:
-                    Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(employeeDto.getDptmNo());
-                    if (!optionalDepartmentEntity.isPresent()) return false;
 
-                    optionalEmployeeEntity.get().setDptmNo(optionalDepartmentEntity.get());
-                    if(commitChangeDepartment(aprvNo)) employeeRepository.save(optionalEmployeeEntity.get());
-                    break;
 
                 // 사원 직급변경
                 case 5:
@@ -367,17 +404,12 @@ public class ApprovalService {
         return false;
 
     }
-    @Transactional
-    public boolean commitChangeEmpInfo(int aprvNo)
-    {
-
-        return true;
-    }
-    @Transactional
+    @Transactional //결제 완료시 부서 변경
     public boolean commitChangeDepartment(int aprvNo)
     {
         try{
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
 
             Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
@@ -406,11 +438,13 @@ public class ApprovalService {
                         .aprvNo(optionalApprovalEntity.get()).build();
 
                 /* 단방향 */
+                optionalEmployeeEntity.get().setDptmNo(departmentHistoryEntity.getDptmNo());
                 departmentHistoryEntityRepository.save(departmentHistoryEntity);
                 /* 양방향 */
                 optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
                 optionalEmployeeEntity.get().getDepartmentHistoryEntities().add(departmentHistoryEntity);
                 optionalApprovalEntity.get().getDepartmentHistoryEntities().add(departmentHistoryEntity);
+
                 return true;
             }
         }catch(Exception e) {
@@ -480,6 +514,48 @@ public class ApprovalService {
         }
 
         return false;
+    }
+
+    // 결재 완료된 사원 '등록' 기능 메서드
+    @Transactional
+    public EmployeeDto commitEmployeeRegister(int aprvNo)
+    {
+        try{
+            Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            if(optionalApprovalEntity.isPresent())
+            {
+                EmployeeDto employeeDto = objectMapper.readValue(optionalApprovalEntity.get().getAprvJson(), EmployeeDto.class);
+                // 입력한 부서의 fk 호출
+                Optional<DepartmentEntity> optionalDepartmentEntity =  departmentEntityRepository.findById(employeeDto.getDptmNo());
+                // 부서 유효성 검사 및 fk 매핑
+                if(optionalDepartmentEntity.isPresent())
+                {
+                    //사원 저장
+                    EmployeeEntity employeeEntity = employeeRepository.save(employeeDto.saveToEntity());
+                    employeeEntity.setDptmNo(optionalDepartmentEntity.get()); // 사원 부서 fk
+
+                    DepartmentHistoryEntity departmentHistoryEntity = DepartmentHistoryEntity.builder()
+                            .hdptmStart(LocalDate.now())
+                            .htrdpRk(employeeEntity.getEmpRk())
+                            .aprvNo(optionalApprovalEntity.get())
+                            .dptmNo(employeeEntity.getDptmNo())
+                            .empNo(employeeEntity).build();
+                    optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity); //부서 pk
+                    optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
+                    employeeEntity.getDepartmentHistoryEntities().add(departmentHistoryEntity);
+                    System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity.get().getEmployeeEntities());
+                    System.out.println("employeeEntity.getApprovalEntities() = " + employeeEntity.getApprovalEntities());
+
+                }
+            }
+            return null;
+        }catch(Exception e) {
+            System.out.println("commitEmployeeRegister" + e);
+        }
+
+        return null;
     }
 
     // 결재 완료된 팀 멤버 '수정' 기능 메서드
@@ -588,8 +664,7 @@ public class ApprovalService {
     public List<ApprovalDto> getApprovalHistory() {
 
         // 결재자
-// 추후 "2311004" => userDetails 기입 예정
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo("ccc");
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
 
         // 개별 결재내역 전체 조회
         List<ApprovalLogEntity> approvalLogList
@@ -617,15 +692,13 @@ public class ApprovalService {
             for (int i = 0; i < e.getAprvNo().getApprovalLogEntities().size(); i++) {
                 // 탐색 중 본인에 해당되는 인덱스 식별
                 // - 본인이 첫 번째 검토자일 경우
-// 추후 "2311004" => userDetails 기입 예정
-                if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals("ccc")
+                if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals(securityService.getEmp().getEmpNo())
                         && i == 0) {
                     approvalDto.setApState(3);  // 결재완료 여부 저장 후 반환
                     return approvalDto;
                 }
                 // - 이전 검토자가 결재를 '완료' 하였을 경우
-// 추후 "2311004" => userDetails 기입 예정
-                if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals("ccc")
+                if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals(securityService.getEmp().getEmpNo())
                         && e.getAprvNo().getApprovalLogEntities().get(i - 1).getAplogSta() == 1) {
                     approvalDto.setApState(3);  // 결재완료 여부 저장 후 반환
                     return approvalDto;
@@ -639,51 +712,11 @@ public class ApprovalService {
         .collect(Collectors.toList());
 
     }
-    //사원 등록 결제 완료
-    @Transactional
-    public EmployeeDto commitEmployeeRegister(int aprvNo)
-    {
-        try{
-            Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            if(optionalApprovalEntity.isPresent())
-            {
-                EmployeeDto employeeDto = objectMapper.readValue(optionalApprovalEntity.get().getAprvJson(), EmployeeDto.class);
-                // 입력한 부서의 fk 호출
-                Optional<DepartmentEntity> optionalDepartmentEntity =  departmentEntityRepository.findById(employeeDto.getDptmNo());
-                // 부서 유효성 검사 및 fk 매핑
-                if(optionalDepartmentEntity.isPresent())
-                {
-                    //사원 저장
-                    EmployeeEntity employeeEntity = employeeRepository.save(employeeDto.saveToEntity());
-                    employeeEntity.setDptmNo(optionalDepartmentEntity.get()); // 사원 부서 fk
 
-                    DepartmentHistoryEntity departmentHistoryEntity = DepartmentHistoryEntity.builder()
-                            .hdptmStart(LocalDate.now())
-                            .htrdpRk(employeeEntity.getEmpRk())
-                            .aprvNo(optionalApprovalEntity.get())
-                            .dptmNo(employeeEntity.getDptmNo())
-                            .empNo(employeeEntity).build();
-                    optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity); //부서 pk
-                    optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
-                    employeeEntity.getDepartmentHistoryEntities().add(departmentHistoryEntity);
-                    System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity.get().getEmployeeEntities());
-                    System.out.println("employeeEntity.getApprovalEntities() = " + employeeEntity.getApprovalEntities());
-
-                }
-            }
-            return null;
-        }catch(Exception e) {
-            System.out.println("commitEmployeeRegister" + e);
-        }
-
-        return null;
-    }
 
     // 전사원 상신목록 조회
     public List<ApprovalDto> getAllEmployeesApproval() throws JsonProcessingException {
-        
+
         // DB의 전사원 결재목록 저장
         List<ApprovalEntity> approvalEntities = approvalRepository.findAll();
 
@@ -697,7 +730,7 @@ public class ApprovalService {
             // checkApprovalState(e) : 추가된 결재 건에 대해 검토진행 현황 확인 후 저장
                 // 1:완료  2:반려  3:검토중
             approvalDtos.get(approvalDtos.size()-1).setApState( checkApprovalState( e ) );
-            
+
         });
 
         return approvalDtos;

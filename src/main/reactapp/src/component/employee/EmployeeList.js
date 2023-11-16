@@ -16,9 +16,6 @@ import CellOrInput from "../publiccomponent/CellOrInput";
 export default function EmployeeList() {
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
     const dptList = ['인사팀','기획팀(PM)','개발팀','DBA팀']
-    function createData(name, calories, fat, carbs, protein) {
-        return { name, calories, fat, carbs, protein };
-    }
     const [empList, setEmpList] = useState([]) // 사원 리스트 저장
     const [pageInfo, setPageInfo] = useState({ page:1, dptmNo:0,sta:'0',totalCount:0,totalPages:0 })  // 페이지 정보 저장
     
@@ -40,9 +37,21 @@ export default function EmployeeList() {
                 console.log( e )
             })
     }
-
+    function wwwwwwwww(e){
+        axios
+            .get("/employee/test1?a="+document.querySelector(".a").value+"&b="+document.querySelector(".b").value)
+            .then( (r) => {
+                console.log( r.data )
+             })
+            .catch( (e) =>{
+                console.log( e )
+            })
+    }
     return (<>
         <div className="contentBox">
+            <input type={"text"} className={"a"} />
+            <input type={"text"} className={"b"} />
+            <button type={"button"} onClick={wwwwwwwww}></button>
             <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">사원목록</span></div>
             <div className="emp_regs_content"></div>
             {/* 필터 구역*/}

@@ -13,9 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity,Integer> {
-    @Query(value = "SELECT  COUNT(emp_no) AS emp_count\n" +
-            "FROM emp\n" +
-            "WHERE DATE_FORMAT(cdate, '%Y') = :nowYear\n"
+    @Query(value = "select count(aprv_no) as emp_count from aprv where DATE_FORMAT(cdate,'%Y') = :nowYear and aprv_type = 1"
             ,nativeQuery = true)
     int countNowEmployee(String nowYear); // 해당 해에 입사한 사원 수
     List<EmployeeEntity> findAllByEmpStaIsFalse(); // 근무 상태가 false사원 모두 찾기
