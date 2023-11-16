@@ -11,7 +11,6 @@ import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import RegisterEmp from "./RegisterEmp";
 import {Link} from "react-router-dom";
-import CellOrInput from "../publiccomponent/CellOrInput";
 
 export default function EmployeeList() {
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]

@@ -3,13 +3,21 @@ import axios from 'axios';
 import {useState, useEffect} from 'react'
 
 export default function AttendanceList(props){
+    const [searchOption, setsearchOption] = useState({})
+    const optionChange = (e) =>{ setsearchOption( {...searchOption,[e.target.className]: e.target.value} )}
+    let date = new Date();
+    useEffect(() => {
+        setsearchOption( {...searchOption,periodStart: new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0] ,
+            periodEnd:new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split('T')[0]})
+    }, []);
     return (<>
 
         <div class="contentBox">
             <div class="pageinfo"><span class="lv0">근태관리</span>  > <span class="lv1">전사원근무현황</span> </div>
             <div class="searchBox">
                 <div>
-                조회기간 : <input type="date" className="periodStart" /> ~  <input type="date" className="periodEnd" />
+                조회기간 : <input type="date" className="periodStart" value={searchOption.periodStart} onChange={optionChange} /> ~
+                    <input type="date" value={searchOption.periodEnd} onChange={optionChange} className="periodEnd" />
                 </div>
                 <div>
                 부서
