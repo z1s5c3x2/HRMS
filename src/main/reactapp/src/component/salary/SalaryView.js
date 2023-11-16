@@ -1,6 +1,7 @@
 import { useSearchParams , Link } from 'react-router-dom'
 import axios from 'axios'
 import { useState , useEffect } from 'react'
+import styles from '../../css/Table.css';
 
 export default function SalaryView( props ){
     // 1. HTTP 경로상의 쿼리스트링 매개변수 호출
@@ -41,19 +42,23 @@ export default function SalaryView( props ){
         }
 
     return(<>
-        <div>
+        <div className="contentBox">
+            <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">급여지급 상세보기</span></div>
 
-            <h3> 급여지급 상세보기 </h3>
-            <div> 급여식별번호 : { slryNo }</div>
-            <div> 급여 지급 날짜 : { board.slryDate }</div>
-            <div> 급여 지급 금액 : { board.slryPay }</div>
-            <div> 급여 지급 타입: {getSlryTypeLabel(board.slryType)}</div>
-            <div> 결재 번호 : { board.aprvNo }</div>
-            <div> 사원 번호 : { board.empNo }</div>
+            <div>
 
-            {/* 삭제 와 수정 은 본인(본인확인) 만 가능 */}
-            {/*    삼항연산자         조건 ? (<>참일때</>) : (<>거짓일때</>)           */}
 
+                <div> 급여식별번호 : { slryNo }</div>
+                <div> 급여 지급 날짜 : { board.slryDate }</div>
+                <div> 급여 지급 금액 : { board.slryPay }</div>
+                <div> 급여 지급 타입: {getSlryTypeLabel(board.slryType)}</div>
+                <div> 결재 번호 : { board.aprvNo }</div>
+                <div> 사원 번호 : { board.empNo }</div>
+
+                {/* 삭제 와 수정 은 본인(본인확인) 만 가능 */}
+                {/*    삼항연산자         조건 ? (<>참일때</>) : (<>거짓일때</>)           */}
+
+            </div>
         </div>
     </>)
 }

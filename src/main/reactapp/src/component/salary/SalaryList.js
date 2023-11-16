@@ -12,6 +12,7 @@
 */
 import axios from 'axios';
 import { useState , useEffect } from 'react';
+import styles from '../../css/Table.css';
 // ------------------- mui table 관련 컴포넌트 import------------ //
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -128,7 +129,8 @@ export default function BoardList(props){
           }
 
     return(<>
-        <h3> 전체 사원 급여지급 목록 </h3>
+     <div className="contentBox">
+        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">전체 사원 급여지급 목록</span></div>
         <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
         <select
                     value = { pageInfo.view }
@@ -271,6 +273,6 @@ export default function BoardList(props){
                            </div>
 
                        </div>
-
-            </>)
+        </div>
+    </>)
 }

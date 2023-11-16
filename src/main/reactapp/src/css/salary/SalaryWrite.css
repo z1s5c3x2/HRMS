@@ -14,8 +14,10 @@
     margin : 10px;
     align-items: center;
 }
+
 .maincontent{
     display: flex;
+    justify-content: space-between;
 }
 .value{
     margin-left :10px;
