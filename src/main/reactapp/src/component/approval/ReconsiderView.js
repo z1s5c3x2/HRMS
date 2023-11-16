@@ -7,6 +7,12 @@ import { getTypeName } from './ListOutputConverter';
 
 export default function ReconsiderView(props){
 
+    // 미 로그인 시 접근 불가
+    if( sessionStorage.getItem('login_token') == null ){
+        alert('개별 상신 목록은 로그인 후 사용가능합니다');
+        window.location.href = '/approval'
+    }
+
     const [ reconsiderList, setReconsiderList ] = useState( [] )
 
     // 상신내역 요청

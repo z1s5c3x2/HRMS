@@ -12,7 +12,7 @@ import java.util.List;
 public interface ApprovalEntityRepository extends JpaRepository<ApprovalEntity,Integer> {
 
     @Query( value = "select * from APRV where emp_no=:empNo" , nativeQuery = true )
-    List<ApprovalEntity> findByAllempNo(String empNo );
+    List<ApprovalEntity> findByAllempNo( String empNo );
 
 
 }

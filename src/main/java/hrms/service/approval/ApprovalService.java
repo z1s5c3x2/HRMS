@@ -41,7 +41,6 @@ public class ApprovalService {
     private DepartmentHistoryEntityRepository departmentHistoryEntityRepository;
     @Autowired
     private RetiredEmployeeEntityRepository retiredEmployeeEntityRepository;
-
     @Autowired
     private SecurityService securityService;
 
@@ -58,8 +57,7 @@ public class ApprovalService {
         */
 
         // 상신자
-        // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo("2311004");
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
 
         if (optionalEmployeeEntity.isPresent()) {
 
@@ -94,8 +92,7 @@ public class ApprovalService {
         /*System.out.println("aprvType = " + aprvType + ", aprvCont = " + aprvCont + ", approvers = " + approvers + ", aprvJson = " + aprvJson);*/
         try{
             // 상신자
-            // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
-            Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo("2311004");
+            Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
 
             if (optionalEmployeeEntity.isPresent()) {
                 /*System.out.println("step1");*/
@@ -140,8 +137,7 @@ public class ApprovalService {
         */
 
         // 상신자
-        // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo("2311004");
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
 
         if (optionalEmployeeEntity.isPresent()) {
 
@@ -227,9 +223,8 @@ public class ApprovalService {
     @Transactional
     public boolean approbate(int aprvNo, int aplogSta) throws JsonProcessingException {
 
-        // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
         // 검토자
-        Optional<EmployeeEntity> optionalEmployee = employeeRepository.findByEmpNo("2311004");
+        Optional<EmployeeEntity> optionalEmployee = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
         Optional<ApprovalEntity> optionalApproval = approvalRepository.findById(aprvNo);
 
 
@@ -633,16 +628,13 @@ public class ApprovalService {
     public List<ApprovalDto> getReconsiderHistory() {
 
         // 상신자
-        // 추후 세션 호출 또는 userDetails 호출에 대한 구문기입 예정
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo("2311004");
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
 
         // 개별 상신(결재)내역 전체 조회
         List<ApprovalEntity> approvalList
                 = approvalRepository.findByAllempNo(optionalEmployeeEntity.get().getEmpNo());
+        System.out.println( "111 approvalList : "+approvalList );
 
-        // 유효성 검사
-        // 값이 비어있으면 true / null이면 false
-        if (approvalList.isEmpty()) return null;
 
         // 변환할 DTO 리스트
         List<ApprovalDto> approvalDtos = new ArrayList<>();
@@ -654,6 +646,8 @@ public class ApprovalService {
             // 마지막 추가된 DTO
             // => 현재 결재 진행상태를 확인하여 저장
             approvalDtos.get(approvalDtos.size() - 1).setApState(checkApprovalState(e));
+            // 상신자명 저장
+            approvalDtos.get(approvalDtos.size()-1).setEmpName( e.getEmpNo().getEmpName() );
 
         });
 
@@ -692,13 +686,13 @@ public class ApprovalService {
             for (int i = 0; i < e.getAprvNo().getApprovalLogEntities().size(); i++) {
                 // 탐색 중 본인에 해당되는 인덱스 식별
                 // - 본인이 첫 번째 검토자일 경우
-                if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals(securityService.getEmp().getEmpNo())
+                if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals( securityService.getEmp().getEmpNo() )
                         && i == 0) {
                     approvalDto.setApState(3);  // 결재완료 여부 저장 후 반환
                     return approvalDto;
                 }
                 // - 이전 검토자가 결재를 '완료' 하였을 경우
-                if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals(securityService.getEmp().getEmpNo())
+                if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals( securityService.getEmp().getEmpNo() )
                         && e.getAprvNo().getApprovalLogEntities().get(i - 1).getAplogSta() == 1) {
                     approvalDto.setApState(3);  // 결재완료 여부 저장 후 반환
                     return approvalDto;
@@ -730,6 +724,8 @@ public class ApprovalService {
             // checkApprovalState(e) : 추가된 결재 건에 대해 검토진행 현황 확인 후 저장
                 // 1:완료  2:반려  3:검토중
             approvalDtos.get(approvalDtos.size()-1).setApState( checkApprovalState( e ) );
+            // 상신자명 저장
+            approvalDtos.get(approvalDtos.size()-1).setEmpName( e.getEmpNo().getEmpName() );
 
         });
 

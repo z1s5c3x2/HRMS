@@ -30,17 +30,19 @@ export default function ApprovalList(props){
                 <th> 상신유형 </th>
                 <th> 내용 </th>
                 <th> 상신일시 </th>
+                <th> 상신자 </th>
                 <th> 진행상태 </th>
             </tr>
             { allApprovalList.map( r =>(
                 <tr>
-                    <td> 제 {r.apState}호 </td>
+                    <td> 제 { r.apState }호 </td>
                     <td> { getTypeName( r.aprvType ) } </td>
-                    <td> {r.aprvCont} </td>
+                    <td> { r.aprvCont } </td>
                     <td>
                         <span> { (r.cdate.split("T"))[0] } </span>
                         <span> { ((r.cdate.split("T"))[1].split("."))[0].substring(0, 5) } </span>
                     </td>
+                    <td> { r.empName } </td>
                     <td> {
                         r.apState == 1 ? <> 결재완료 </> :  r.apState == 2 ? <> 반려 </> : <> 검토중 </>
                     }
