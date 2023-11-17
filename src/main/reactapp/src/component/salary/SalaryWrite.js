@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import styles from '../../css/salary/SalaryWrite.css';
+//import styles from '../../css/salary/SalaryWrite.css';
+import styles from '../../css/Table.css';
 // --------- mui ---------//
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -107,17 +108,20 @@ const data = {
 
   return (
     <>
+    <div className="contentBox">
+            <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">나의 급여내역</span></div>
       <div>
         {/* 급여지급 관련 입력구역 */}
         <div className="inputbox">
             <form className="boardForm">
                 <div className="maincontent">
                    <div className="inputcontent">
-                    <div className="top">
+                    <div className="top"  style={{display:'flex', justifyContent:'space-between'}}>
                        <div className="empNo">
                            <TextField
-                                disabled={true}
+                                sx={{ width: '110px' }}
                                 size="small"
+                                disabled={true}
                                 label="이름(사번)"
                                 type="text"
                                 value={empName !== '' ? empName + "(" + empNumber + ")" : ''}
@@ -125,17 +129,24 @@ const data = {
                       </div>
 
                       <div className="rank">
-                            <TextField disabled={true} size="small" label="직급" type="text" value={getrankLabel(rankNumber)} />
+                            <TextField
+                            sx={{ width: '100px' }}
+                            disabled={true} size="small" label="직급" type="text" value={getrankLabel(rankNumber)} />
                       </div>
 
                       <div className="accountNo">
-                            <TextField disabled={true} size="small" label="계좌번호" type="text" value={accountNumber} />
+                            <TextField
+                            sx={{ width: '130px' }}
+                            disabled={true} size="small" label="계좌번호" type="text" value={accountNumber} />
                       </div>
-                    </div>
-                    <div className="bottom">
+
+
                       <div className="Day">
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <LocalizationProvider
+
+                            dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
+                                sx={{ width: '200px' }}
                                 size="small"
                                 value={selectedDate}
                                 onChange={(date) => setSelectedDate(date)}
@@ -146,26 +157,61 @@ const data = {
                       </div>
 
                       <div className="value">
-                            <TextField size="small" label="금액" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                            <TextField
+                                sx={{ width: '130px' }}
+                                size="small" label="금액" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
                       </div>
 
                       <div className="value">
-                           <TextField size="small" label="지급 타입" type="number" value={paymentType} onChange={(e) => setPaymentType(e.target.value)} />
+                           <TextField
+                                sx={{ width: '90px' }}
+                                size="small" label="지급 타입" type="number" value={paymentType} onChange={(e) => setPaymentType(e.target.value)} />
                        </div>
+                      <div className="btn">
+                        <Button className="btn1"
+                            style={ { height: '50px' , width: '100px' }}
+                            sx={{}}
+                            variant="contained" color="primary" onClick={modalController}>결재요청</Button>
+                      </div>
+
                     </div>
-                    </div>
-                  <div className="btn">
-                       <Button className="btn1" style={ { height: '100px' , width: '40px' }} variant="contained" color="primary" onClick={modalController}>결재요청</Button>
-                  </div>
+                   </div>
                 </div>
             </form>
         </div>
+        <hr class="hr01"/>
         {/* 사원 목록 출력구역 */}
-        <div className="texttitle"><h3> 사원 목록 </h3></div>
-        <TableContainer style={ {     height: '525px' ,
-                                      padding: '0px 20px 0px 20px'  } } component={Paper}>
+        <div className="pageinfo"><span className="lv0">사원 목록 </span> > </div>
+
+        <TableContainer
+            sx={{
+                width: 900,
+                height: 420,
+                'td': {
+                    textAlign: 'center',
+                    fontSize: '0.8rem',
+                    paddingTop: '5px',
+                    paddingBottom: '5px',
+                    paddingLeft: '3px',
+                    paddingRight: '3px',
+                    border:'solid 1px var(--lgray)'
+                }
+            }}
+
+         component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
+            <TableHead
+                sx={{
+                    'th':{
+                        textAlign: 'center',
+                        fontSize: '0.9rem',
+                        bgcolor: 'var(--main04)',
+                        color: '#fff',
+                        paddingTop: '10px' ,
+                        paddingBottom: '10px',
+                    }
+                }}
+            >
               <TableRow>
                 <TableCell align="right">사원번호</TableCell>
                 <TableCell align="right">이름</TableCell>
@@ -231,6 +277,7 @@ const data = {
           />
         ) : null}
       </div>
+    </div>
     </>
   );
 }

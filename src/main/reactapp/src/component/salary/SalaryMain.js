@@ -66,6 +66,8 @@ export default function SalaryMain(props) {
     }
 
     return (<>
+    <div className="contentBox">
+        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">나의 급여내역</span></div>
             <h3>{ /*row.empNo*/ } 이효재(2311006)님 급여 내역보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
             <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
                          <select
@@ -107,5 +109,6 @@ export default function SalaryMain(props) {
              { /* page : 현재페이지    count : 전체페이지수   onChange : 페이지번호를 클릭/변경 했을떄 이벤트 */}
               <Pagination page = { pageInfo.page }  count={ pageDto.totalPages } onChange={ onPageSelect } />
              </div>
+        </div>
         </>)
 }

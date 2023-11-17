@@ -1,14 +1,18 @@
 import styles from '../../css/Table.css';
 import axios from 'axios';
 import {useState, useEffect} from 'react'
+import Pagination from "@mui/material/Pagination";
+import * as React from "react";
 
 export default function AttendanceList(props){
-    const [searchOption, setsearchOption] = useState({page:1})
+    const [searchOption, setsearchOption] = useState({page:1,dptmNo:0,empRk:0})
     const optionChange = (e) =>{ setsearchOption( {...searchOption,[e.target.className]: e.target.value} )}
-    let date = new Date();
+    const [pageDto, setPageDto] = useState({someList:[]})
     useEffect(() => {
-        setsearchOption( {...searchOption,periodStart: new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0] ,
-            periodEnd:new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split('T')[0]})
+        let date = new Date();
+        setsearchOption( {...searchOption,
+            periodStart: new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0] ,
+            periodEnd:new Date(date.getFullYear(), date.getMonth() , date.getDate()).toISOString().split('T')[0]})
     }, []);
     const getsearch = (e) =>{
         axios
@@ -20,6 +24,10 @@ export default function AttendanceList(props){
                 console.log( e )
             })
     }
+    useEffect(() => {
+        console.log( searchOption )
+        getsearch()
+    }, [searchOption.periodStart,searchOption.periodEnd,searchOption.dptmNo,searchOption.empRk]);
     return (<>
 
         <div class="contentBox">
@@ -31,8 +39,8 @@ export default function AttendanceList(props){
                 </div>
                 <div>
                 부서
-                    <select className="dptmNo">
-                        <option value="0">선택</option>
+                    <select className="dptmNo" onChange={optionChange} value={searchOption.dptmNo}>
+                        <option value="0">전체</option>
                         <option value="1">인사</option>
                         <option value="2">개발</option>
                         <option value="3">영업</option>
@@ -41,8 +49,8 @@ export default function AttendanceList(props){
                 </div>
                 <div>
                     직급
-                    <select className="empRk">
-                        <option value="0">선택</option>
+                    <select className="empRk" onChange={optionChange} value={searchOption.dptmNo}>
+                        <option value="0">전체</option>
                         <option value="1">사원</option>
                         <option value="2">주임</option>
                         <option value="3">대리</option>
@@ -87,102 +95,31 @@ export default function AttendanceList(props){
                             <td className="th_w15">근무</td>
 
                         </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>휴직</td>
-                            <td>출근</td>
-                        </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>병가</td>
-                            <td>출근</td>
-                        </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>병가</td>
-                            <td>출근</td>
-                        </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>병가</td>
-                            <td>출근</td>
-                        </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>병가</td>
-                            <td>출근</td>
-                        </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>휴직</td>
-                            <td>출근</td>
-                        </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>병가</td>
-                            <td>출근</td>
-                        </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>병가</td>
-                            <td>출근</td>
-                        </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>병가</td>
-                            <td>출근</td>
-                        </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>병가</td>
-                            <td>출근</td>
-                        </tr>
-                        <tr>
-                            <td>2023-11-07</td>
-                            <td>개발팀</td>
-                            <td>김개발</td>
-                            <td>대리</td>
-                            <td>병가</td>
-                            <td>출근</td>
-                        </tr>
+                        {pageDto.someList.map( (attd) =>(
+                            <tr>
+                                <td className="th_w25">2023-11-07</td>
+                                <td className="th_w15">개발팀</td>
+                                <td className="th_w15">김개발</td>
+                                <td className="th_w15">대리</td>
+                                <td className="th_w15">재직</td>
+                                <td className="th_w15">근무</td>
 
+                            </tr>
+                        ))}
 
                     </table>
 
                 </td>
                 </tr>
             </table>
-
+            {/* 페이지 버튼 */}
+            <div style = {{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }} >
+                <Pagination page = { searchOption.page }  count={ pageDto.totalPages }  onChange = { (e,value) => {
+                    setsearchOption( { ...searchOption , page : value })
+                }
+                } />
+            </div>
+            {/*페이지 버튼*/}
 
         </div>
     </>)
