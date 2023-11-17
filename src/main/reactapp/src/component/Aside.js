@@ -40,7 +40,7 @@ let currentMenu = location == '' ? 'employee' : location;
                  console.log(isAttendance);
             }
             axios.put('/attendance/', {
-                empNo: '2023110005'
+                empNo: '2311005'
             })
             .then((r)=>{ console.log(r.data);})
 
@@ -49,7 +49,7 @@ let currentMenu = location == '' ? 'employee' : location;
             setAttendance(!isAttendance);
             console.log(isAttendance);
             axios.post('/attendance/', {
-                        empNo: '2023110005',
+                        empNo: '2311005',
                         attdWrst : new Date().toLocaleString()
                     })
                 .then( r=>{ console.log(r.data); })

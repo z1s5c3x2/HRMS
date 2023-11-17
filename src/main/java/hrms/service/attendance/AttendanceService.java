@@ -2,7 +2,9 @@ package hrms.service.attendance;
 
 import hrms.model.dto.AttendanceDto;
 import hrms.model.entity.AttendanceEntity;
+import hrms.model.entity.EmployeeEntity;
 import hrms.model.repository.AttendanceEntityRepository;
+import hrms.model.repository.EmployeeEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,12 +15,14 @@ import java.util.Optional;
 @Service
 public class AttendanceService {
 
-    @Autowired
-    private AttendanceEntityRepository attendanceRepository;
-
+    @Autowired private AttendanceEntityRepository attendanceRepository;
+    @Autowired private EmployeeEntityRepository employeeEntityRepository;
     @Transactional
     public boolean setAttendanceGoWork(AttendanceDto attendDto) {
+        Optional<EmployeeEntity> employeeEntity = employeeEntityRepository.findByEmpNo(attendDto.getEmpNo());
         AttendanceEntity attendanceEntity = attendanceRepository.save(attendDto.toEntity());
+        attendanceEntity.setEmpNo(employeeEntity.get());
+        employeeEntity.get().getAttendanceEntities().add(attendanceEntity);
         if(attendanceEntity.getAttdNo() > 0) {return true;}
         return false;
     }
