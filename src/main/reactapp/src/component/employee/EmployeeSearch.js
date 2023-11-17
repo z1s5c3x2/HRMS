@@ -233,7 +233,7 @@ export default function EmployeeSearch(props) {
                                     <tr>
                                         <td colspan="2">
                                             {textIsOn && <div>
-                                                <textarea style={{width: '380px', height: '160px'}} placeholder={"퇴사 사유 작성"}
+                                                <textarea style={{width: '380px', height: '180px'}} placeholder={"퇴사 사유 작성"}
                                                           value={retiredInfo.rtempCont}
                                                 onChange={(e)=>{
                                                     setRetiredInfo({...retiredInfo,rtempCont:e.target.value})
@@ -241,7 +241,7 @@ export default function EmployeeSearch(props) {
                                                 퇴사 날짜 : <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DesktopDatePicker
                                                     value={retiredInfo.rtempDate}
-                                                    sx={{width: '30%', height: "70px"}}
+                                                    sx={{width: '200px', height: "50px"}}
                                                     renderInput={(params) => <TextField {...params} label="날짜"/>}
                                                     format="YYYY-MM-DD"
                                                     onChange={(date) => setRetiredInfo({...retiredInfo, rtempDate: date})}
