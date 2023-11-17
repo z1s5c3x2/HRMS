@@ -93,6 +93,9 @@ let currentMenu = location == '' ? 'employee' : location;
       setActiveMenu(clickedMenuItem.id);
     };
 
+    useEffect( () => {
+        setActiveMenu('menu1');
+    }, [currentMenu])
 
 
 
