@@ -130,8 +130,9 @@ export default function BoardList(props){
           }
 
     return(<>
-        <div class="pageinfo"><span class="lv0">연차관리</span> > <span class="lv1">전 사원 급여내역</span></div>
-        <h3> 전체 사원 급여지급 목록 </h3>
+    <div className="contentBox">
+        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">전체 사원 급여지급 목록</span></div>
+
         <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
     <div style={{ display:'flex' }}>
         <select
@@ -255,6 +256,6 @@ export default function BoardList(props){
                            </div>
 
                        </div>
-
-            </>)
+    </div>
+    </>)
 }
