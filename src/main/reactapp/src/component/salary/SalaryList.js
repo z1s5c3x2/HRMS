@@ -131,7 +131,7 @@ export default function BoardList(props){
 
     return(<>
     <div className="contentBox">
-        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">전체 사원 급여지급 목록</span></div>
+        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">전체 급여내역</span></div>
 
         <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
     <div style={{ display:'flex' }}>
@@ -155,7 +155,7 @@ export default function BoardList(props){
                     <option  value="5"> 명절휴가비 </option>
                     <option  value="6"> 퇴직금 </option>
                     <option  value="7"> 경조사비 </option>
-                    <option  value="8"> 연가비 </option>
+                    <option  value="8"> 연가보상비 </option>
                 </select>
         <select
                             value = { pageInfo.empRk }

@@ -73,7 +73,7 @@ export default function LeaveRequestMain(props) {
     }
 
     return (<>
-            <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">개인 연차내역</span></div>
+            <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">개인 연차/병가/휴직 내역</span></div>
             <h3>{ /*row.empNo*/ } 이효재(2311006)님 연차보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
              <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
              <select
