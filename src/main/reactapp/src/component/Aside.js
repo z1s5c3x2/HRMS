@@ -97,7 +97,6 @@ let currentMenu = location == '' ? 'employee' : location;
 
 
 
-
     return(<>
         <aside className="maside">
         	<div className="logobox"><Link to='/'><img src="../../logo_is.png"/></Link></div>

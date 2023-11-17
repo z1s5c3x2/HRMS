@@ -113,6 +113,20 @@ export default function TeamMemberWrite( props ){
                 console.log( e )
             })
     }
+    useEffect( ()=>{
+        getEmps();
+    }, [] )
+
+    const getEmps = (event)=>{ // 페이지 정보를 이용하여 사원 리스트 요청
+            axios
+                .get("/employee/getteammebers")
+                .then( (r) => {
+                    console.log(r.data);
+                })
+                .catch( (e) =>{
+                    console.log( e )
+                })
+        }
 
 
     return(<>
