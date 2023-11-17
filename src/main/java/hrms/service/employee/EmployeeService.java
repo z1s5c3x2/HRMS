@@ -311,6 +311,7 @@ public class EmployeeService {
         List<EmployeeDto> employeeDtos = new ArrayList<>();
 
         for(EmployeeEntity employeeEntity : employeeEntities){
+            System.out.println(employeeEntity);
 
             if(employeeEntity.getProjectEntities() != null){
                 continue;
@@ -324,7 +325,7 @@ public class EmployeeService {
 
         }
 
-        return null;
+        return employeeDtos;
     }
 
 
