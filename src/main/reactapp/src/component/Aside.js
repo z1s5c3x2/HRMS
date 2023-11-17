@@ -154,8 +154,8 @@ let currentMenu = location == '' ? 'employee' : location;
                 <>
                    <li className="tmenu">결재관리</li>
                    <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/approval'>전사원결재 조회</Link></li>
-                   <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/reconsider'>개별 상신한 리스트 조회</Link></li>
-                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/approvalview'>개별 결재한 리스트 조회</Link></li>
+                   <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/approval/reconsiderview'>개별 상신한 리스트 조회</Link></li>
+                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/approval/approvalview'>개별 결재한 리스트 조회</Link></li>
                 </>)}
 
             </ul>

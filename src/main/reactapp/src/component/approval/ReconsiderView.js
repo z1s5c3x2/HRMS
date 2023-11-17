@@ -97,11 +97,11 @@ export default function ReconsiderView(props){
             <table className="tableTypeA">
 
                 <tr>
-                    <th> 결재번호 </th>
-                    <th> 상신유형 </th>
-                    <th> 내용 </th>
-                    <th> 상신일시 </th>
-                    <th> 진행상태 </th>
+                    <th width="12%"> 결재번호 </th>
+                    <th width="20%"> 상신유형 </th>
+                    <th width="39%"> 내용 </th>
+                    <th width="17%"> 상신일시 </th>
+                    <th width="12%"> 진행상태 </th>
                 </tr>
                 { reconsiderList.map( r =>(
                     <tr className="outputTd">
