@@ -84,6 +84,7 @@ export default function Index( props ){
                                 <Route path='/employee/update' element={<EmployeeUpdate/>} />
                                 <Route path='/employee/details' element={<EmployeeDetails/>} />
                                 <Route path='/employee/searchemp' element={<EmployeeSearch/>} />
+                                <Route path='/employee/retemplist' element={<EmployeeSearch/>} />
 
                             {/* Salary*/}
                                 <Route path='/salary' element={<SalaryMain/>} />

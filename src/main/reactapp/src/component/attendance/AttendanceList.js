@@ -3,13 +3,23 @@ import axios from 'axios';
 import {useState, useEffect} from 'react'
 
 export default function AttendanceList(props){
-    const [searchOption, setsearchOption] = useState({})
+    const [searchOption, setsearchOption] = useState({page:1})
     const optionChange = (e) =>{ setsearchOption( {...searchOption,[e.target.className]: e.target.value} )}
     let date = new Date();
     useEffect(() => {
         setsearchOption( {...searchOption,periodStart: new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0] ,
             periodEnd:new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split('T')[0]})
     }, []);
+    const getsearch = (e) =>{
+        axios
+            .get("/attendance/allempAttdList",{params:searchOption})
+            .then( (r) => {
+                console.log( r.data )
+             })
+            .catch( (e) =>{
+                console.log( e )
+            })
+    }
     return (<>
 
         <div class="contentBox">
@@ -21,23 +31,24 @@ export default function AttendanceList(props){
                 </div>
                 <div>
                 부서
-                    <select className="">
-                        <option value="">선택</option>
-                        <option value="">인사</option>
-                        <option value="">개발</option>
-                        <option value="">영업</option>
-                        <option value="">기타</option>
+                    <select className="dptmNo">
+                        <option value="0">선택</option>
+                        <option value="1">인사</option>
+                        <option value="2">개발</option>
+                        <option value="3">영업</option>
+                        <option value="4">dba</option>
                     </select>
                 </div>
                 <div>
                     직급
-                    <select className="">
-                        <option value="">선택</option>
-                        <option value="">사원</option>
-                        <option value="">대리</option>
-                        <option value="">과장</option>
-                        <option value="">차장</option>
-                        <option value="">부장</option>
+                    <select className="empRk">
+                        <option value="0">선택</option>
+                        <option value="1">사원</option>
+                        <option value="2">주임</option>
+                        <option value="3">대리</option>
+                        <option value="4">과장</option>
+                        <option value="5">팀장</option>
+                        <option value="6">부장</option>
                     </select>
                 </div>
                 <div>
@@ -47,7 +58,7 @@ export default function AttendanceList(props){
                     <option value="">사번</option>
                 </select>
                 <input type="text" className="keyword" placeholder="검색어"/>
-                <button type="button" className=""> 검색 </button>
+                <button type="button" className="" onClick={getsearch}> 검색 </button>
                 </div>
 
             </div>

@@ -4,11 +4,12 @@ import hrms.model.dto.AttendanceDto;
 import hrms.model.entity.AttendanceEntity;
 import hrms.model.repository.AttendanceEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.time.LocalDate;
 
 @Service
 public class AttendanceService {
@@ -28,7 +29,7 @@ public class AttendanceService {
 
         // Optional<AttendanceEntity> attendEntity = AttendanceEntityRepository.findById(attendDto.getEmpNo());
         //결과가 있으면 퇴근정보 update
-        
+
         
         //결과 없으면  false반환
         
@@ -37,6 +38,11 @@ public class AttendanceService {
         
     }
 
-
+    @Transactional
+    public Page<AttendanceDto> allEmpAttdList(LocalDate start,LocalDate end,int page,int dptmNo, int empRk)
+    {
+        System.out.println("start = " + start + ", end = " + end + ", page = " + page + ", dptmNo = " + dptmNo + ", empRk = " + empRk);
+        return null;
+    }
 
 }

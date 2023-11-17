@@ -81,6 +81,7 @@ let currentMenu = location == '' ? 'employee' : location;
                     <li><Link to='/employee/register'>사원등록</Link></li>
                     <li><Link to='/employee/details'>사원 수정</Link></li>
                     <li><Link to='/employee/searchemp'>사원 검색</Link></li>
+                    <li><Link to='/employee/retemplist'>퇴사 사원 조회</Link></li>
                 </>
                 )}
 

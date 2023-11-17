@@ -17,7 +17,7 @@ public class AttendanceDto {
     private String attdWrst;         // 출근시간
     private String attdWrend;        // 퇴근 시간
     private String empNo;        // 5. 사원번호 ( FK )
-
+    private String attdRes; // 출근 결석 등등...
 
 
     private LocalDateTime cdate;
