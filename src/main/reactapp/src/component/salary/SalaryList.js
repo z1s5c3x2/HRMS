@@ -28,7 +28,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+
 //----------------------------------------------------------------------//
 dayjs.locale('ko');
 
@@ -38,15 +38,17 @@ export default function BoardList(props){
     // 0. 컴포넌트 상태변수 관리
     const [selectedDate1, setSelectedDate1] = useState(null); // 초기 값 null로 설정
     const [selectedDate2, setSelectedDate2] = useState(null); // 초기 값 null로 설정
-
+    let DateSt = document.querySelector('.periodStart')
+    let DateEnd = document.querySelector('.periodEnd')
+     console.log(DateEnd); console.log(DateSt);
     let [ pageDto , setPageDto ] = useState( {
             someList : [] , totalPages : 0 , totalCount : 0
         } );
 
     // 0. 스프링에게 전달할 객체
         const [ pageInfo , setPageInfo ] = useState( {
-            page : 1 , key : 'empNo' , keyword : '' , view : 5 , empRk : 0 , dptmNo : 0 , slryType : 0 ,
-        }); console.log( pageInfo ); console.log(selectedDate1);  console.log(selectedDate2);
+            page : 1 , key : 'empNo' , keyword : '' , view : 5 , empRk : 0 , dptmNo : 0 , slryType : 0 , DateSt : '' , DateEnd : ''
+        }); console.log( pageInfo );
 
     // 1. 급여목록에서 특정 레코드 클릭시 해당 레코드 상세보기
      const loadView = ( slryNo ) => {
@@ -61,7 +63,7 @@ export default function BoardList(props){
                 });
     }
     // 1-2. 컴포넌트가 생성 될떄 // + 의존성배열 : page (주소값) 변경될때 //+의존성배열 : view (주소값) 변경될때
-    useEffect( ()=>{   getSalary();  } , [ pageInfo.page  , pageInfo.view , pageInfo.empRk , pageInfo.dptmNo , pageInfo.slryType ] );
+    useEffect( ()=>{   getSalary();  } , [ pageInfo.page  , pageInfo.view , pageInfo.empRk , pageInfo.dptmNo , pageInfo.slryType , pageInfo.DateSt , pageInfo.DateEnd ] );
 
     // 2. 페이지 번호를 클릭했을떄.
     const onPageSelect = ( e , value )=>{  console.log( value );
@@ -129,9 +131,11 @@ export default function BoardList(props){
           }
 
     return(<>
-     <div className="contentBox">
+    <div className="contentBox">
         <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">전체 사원 급여지급 목록</span></div>
+
         <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
+    <div style={{ display:'flex' }}>
         <select
                     value = { pageInfo.view }
                     onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
@@ -177,32 +181,12 @@ export default function BoardList(props){
                             <option  value="4"> 경영지원 </option>
                             <option  value="5"> 마케팅 </option>
                         </select>
+                        <div style= {{ marginLeft : '15px' }}>
+                        조회기간 : <input type="date" className="periodStart" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateSt : e.target.value} ); } }/> ~
+                        <input type="date" className="periodEnd" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateEnd : e.target.value} ); } } />
+                         </div>
+    </div>
 
-
-                                  <div className="eregInputBox">
-                                      <div class="input_title ">시작 범위날짜</div>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                          <DesktopDatePicker
-                                            value={selectedDate1}
-                                            sx={{ width: '70%'}}
-                                            onChange={ (date1) => setSelectedDate1(date1)   }
-                                            renderInput={(params) => <TextField {...params} label="날짜" />}
-                                             format="YYYY-MM-DD"
-                                          />
-                                        </LocalizationProvider>
-                                  </div>
-                                  <div className="eregInputBox">
-                                        <div class="input_title ">종료 범위날짜</div>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                  <DesktopDatePicker
-                                                    value={selectedDate2}
-                                                    onChange={ (date2) => setSelectedDate2(date2) }
-                                                    sx={{ width: '70%'}}
-                                                    renderInput={(params) => <TextField {...params} label="날짜" />}
-                                                     format="YYYY-MM-DD"
-                                                  />
-                                                </LocalizationProvider>
-                                  </div>
 
 
                 { /* 삼항연산자 를 이용한 조건부 랜더링 */}
@@ -212,18 +196,44 @@ export default function BoardList(props){
                     :
                     (<> <button  type="button" onClick = { (e)=> { window.location.href="/salary/list"; }  } > 검색제거 </button>  </>)
                 }
-        <TableContainer component={Paper}>
+        <TableContainer
+            sx={{
+                width: 900,
+                height: 500,
+                'td': {
+                    textAlign: 'center',
+                    fontSize: '0.8rem',
+                    paddingTop: '9px',
+                    paddingBottom: '9px',
+                    paddingLeft: '3px',
+                    paddingRight: '3px',
+                    border:'solid 1px var(--lgray)'
+                }
+            }}
+            component={Paper}>
                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
                  {/* 테이블 제목 구역 */}
-                   <TableHead>
+                   <TableHead
+                     sx={{
+                         'th':{
+                             textAlign: 'center',
+                             fontSize: '0.9rem',
+                             bgcolor: 'var(--main04)',
+                             color: '#fff',
+                             paddingTop: '10px' ,
+                             paddingBottom: '10px',
+                         }
+                     }}
+
+                   >
                      <TableRow>
-                       <TableCell style={{ width : '5%' }} align="right">번호</TableCell>
-                       <TableCell style={{ width : '13%' }} align="right">지급날짜</TableCell>
-                       <TableCell style={{ width : '13%' }} align="right">지급금액</TableCell>
-                       <TableCell style={{ width : '10%' }} align="right">지급유형</TableCell>
-                        <TableCell style={{ width : '5%' }} align="right">결재번호</TableCell>
-                        <TableCell style={{ width : '15%' }} align="right">이름(사원번호)</TableCell>
-                        <TableCell style={{ width : '8%' }} align="right">직급</TableCell>
+                       <TableCell style={{ width : '10%' }} align="right">번호</TableCell>
+                       <TableCell style={{ width : '14%' }} align="right">지급날짜</TableCell>
+                       <TableCell style={{ width : '14%' }} align="right">지급금액</TableCell>
+                       <TableCell style={{ width : '15%' }} align="right">지급유형</TableCell>
+                        <TableCell style={{ width : '8%' }} align="right">결재<br/>번호</TableCell>
+                        <TableCell style={{ width : '19%' }} align="right">이름(사원번호)</TableCell>
+                        <TableCell style={{ width : '10%' }} align="right">직급</TableCell>
                         <TableCell style={{ width : '10%' }} align="right">부서</TableCell>
                      </TableRow>
                    </TableHead>
@@ -234,13 +244,13 @@ export default function BoardList(props){
                          key={row.name}
                         >
 
-                         <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
-                         <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
-                         <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
-                         <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
-                         <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
-                         <TableCell style={{ width : '15%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empName + "(" + row.empNo + ")"}</TableCell>
-                        <TableCell style={{ width : '8%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getrankLabel(row.empRk)}</TableCell>
+                         <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
+                         <TableCell style={{ width : '14%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
+                         <TableCell style={{ width : '14%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
+                         <TableCell style={{ width : '15%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
+                         <TableCell style={{ width : '8%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
+                         <TableCell style={{ width : '19%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empName + "(" + row.empNo + ")"}</TableCell>
+                        <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getrankLabel(row.empRk)}</TableCell>
                         <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getdptmLabel(row.dptmNo)}</TableCell>
                        </TableRow>
                      ))}
@@ -273,6 +283,6 @@ export default function BoardList(props){
                            </div>
 
                        </div>
-        </div>
+    </div>
     </>)
 }

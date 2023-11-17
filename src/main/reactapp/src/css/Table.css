@@ -142,3 +142,9 @@ input[name="cb"]{
     padding:5px;
     width:100%;
 }
+
+/*mui 컴포넌트 css상제 변환*/
+.css-1uvydh2{
+    height: 0.45rem !important;
+    min-height:17px !important;;
+}

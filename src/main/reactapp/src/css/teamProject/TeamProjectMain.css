@@ -1,3 +1,12 @@
+/* 스크롤 없애기 */
+body{
+ -ms-overflow-style: none;
+ }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 
 .selectEmployee{
     color: #9DB2BF;

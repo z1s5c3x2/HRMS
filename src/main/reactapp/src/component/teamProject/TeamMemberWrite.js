@@ -31,10 +31,8 @@ dayjs.locale('ko');
 export default function TeamMemberWrite( props ){
     /*모달 호출 선언 필요*/
     const [isOn, setIsOn] = useState(false)
-
-    // 결재 모달창 여는 함수
-    function onModal(e) {
-        //document.querySelector('.approv_modal').style.display = 'flex';
+    // 모달창 열기/닫기 함수
+    const modalController = (e)=> {
         setIsOn(!isOn)
     }
 
@@ -60,26 +58,6 @@ export default function TeamMemberWrite( props ){
     // 프로젝트팀 데이터
     const [pjtNumber, setPjtNumber] = useState('');
     const [pjtName, setPjtName] = useState('');
-
-    /* 사원 직급설정 함수 */
-    function getrankLabel(empRk) {
-        switch (empRk) {
-          case 1:
-            return "사원";
-          case 2:
-            return "주임";
-          case 3:
-            return "대리";
-          case 4:
-            return "과장";
-          case 5:
-            return "팀장";
-          case 6:
-            return "부장";
-          default:
-            return "직급";
-        }
-    }
 
     // -------------- 프로젝트팀 데이터 ---------------
 
@@ -135,6 +113,20 @@ export default function TeamMemberWrite( props ){
                 console.log( e )
             })
     }
+    useEffect( ()=>{
+        getEmps();
+    }, [] )
+
+    const getEmps = (event)=>{ // 페이지 정보를 이용하여 사원 리스트 요청
+            axios
+                .get("/employee/getteammebers")
+                .then( (r) => {
+                    console.log(r.data);
+                })
+                .catch( (e) =>{
+                    console.log( e )
+                })
+        }
 
 
     return(<>
@@ -168,14 +160,15 @@ export default function TeamMemberWrite( props ){
                         </LocalizationProvider>
                     </div>
                     <div class="eregBtnBox">
-                        <button class="btn01" type="button" onClick={onModal}>팀원등록</button>
+                        <button class="btn01" type="button" onClick={modalController}>팀원등록</button>
                     </div>
                 </div>
                 {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
                     { isOn ? <> <ApprovalModal data={teamMemberInfo}
                                               targetUrl={"/teammember/post"}
                                               aprvType={15}
-                                              successUrl={"/teamproject/teammember/write"}>
+                                              successUrl={"/teamproject/teammember/write"}
+                                              modalControll={modalController}>
                     </ApprovalModal></> : <> </> }
             </div>
             <div className="selectBox">   {/* 프로젝트팀 출력 공간 */}
@@ -255,7 +248,7 @@ export default function TeamMemberWrite( props ){
                                          >
                                                  <TableCell align="center">{emp.empName}</TableCell>
                                                  <TableCell align="center">{rkList[emp.empRk]}</TableCell>
-                                                 <TableCell align="center">{dptList[emp.dtpmNo - 1]}</TableCell>
+                                                 <TableCell align="center">{dptList[emp.dptmNo - 1]}</TableCell>
                                          </TableRow>
                                      ))}
                                  </TableBody>

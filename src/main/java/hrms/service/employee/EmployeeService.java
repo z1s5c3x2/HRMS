@@ -303,7 +303,30 @@ public class EmployeeService {
         return null;
     }
 
+    // pm과 개발팀 db팀을 제외한 사원들을 출력
+    @Transactional
+    public List<EmployeeDto> getTeamsMebers(){
 
+        List<EmployeeEntity> employeeEntities = employeeRepository.findAll();
+        List<EmployeeDto> employeeDtos = new ArrayList<>();
+
+        for(EmployeeEntity employeeEntity : employeeEntities){
+            System.out.println(employeeEntity);
+
+            if(employeeEntity.getProjectEntities() != null){
+                continue;
+            }
+
+            if(employeeEntity.getDptmNo().getDptmNo() == 0 || employeeEntity.getDptmNo().getDptmNo() == 1){
+                continue;
+            }
+
+            employeeDtos.add(employeeEntity.allToDto());
+
+        }
+
+        return employeeDtos;
+    }
 
 
 

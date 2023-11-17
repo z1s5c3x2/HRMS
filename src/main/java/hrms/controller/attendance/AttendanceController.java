@@ -1,6 +1,7 @@
 package hrms.controller.attendance;
 
 import hrms.model.dto.AttendanceDto;
+import hrms.model.dto.PageDto;
 import hrms.service.attendance.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +44,15 @@ public class AttendanceController {
         return false;
     }
     
-
+    //전사원 근무 현황
+    @GetMapping("/allempAttdList")
+    public PageDto<AttendanceDto> allEmpAttdList(@RequestParam String periodStart,
+                                                 @RequestParam String periodEnd,
+                                                 @RequestParam int page,
+                                                 @RequestParam int dptmNo,
+                                                 @RequestParam int empRk)
+    {
+        System.out.println("start = " + periodStart + ", end = " + periodEnd + ", page = " + page + ", dptmNo = " + dptmNo + ", empRk = " + empRk);
+        return attendanceService.allEmpAttdList(periodStart,periodEnd,page,dptmNo,empRk);
+    }
 }

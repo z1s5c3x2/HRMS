@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-
+//import styles from '../../css/salary/SalaryWrite.css';
 import styles from '../../css/Table.css';
 // --------- mui ---------//
 import dayjs from 'dayjs';
@@ -106,150 +106,178 @@ const data = {
       });
   };
 
-    return (<>
+  return (
+    <>
     <div className="contentBox">
-        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">급여지급 상세보기</span></div>
+            <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">나의 급여내역</span></div>
+      <div>
+        {/* 급여지급 관련 입력구역 */}
+        <div className="inputbox">
+            <form className="boardForm">
+                <div className="maincontent">
+                   <div className="inputcontent">
+                    <div className="top"  style={{display:'flex', justifyContent:'space-between'}}>
+                       <div className="empNo">
+                           <TextField
+                                sx={{ width: '110px' }}
+                                size="small"
+                                disabled={true}
+                                label="이름(사번)"
+                                type="text"
+                                value={empName !== '' ? empName + "(" + empNumber + ")" : ''}
+                              />
+                      </div>
+
+                      <div className="rank">
+                            <TextField
+                            sx={{ width: '100px' }}
+                            disabled={true} size="small" label="직급" type="text" value={getrankLabel(rankNumber)} />
+                      </div>
+
+                      <div className="accountNo">
+                            <TextField
+                            sx={{ width: '130px' }}
+                            disabled={true} size="small" label="계좌번호" type="text" value={accountNumber} />
+                      </div>
 
 
-          <div>
-            {/* 급여지급 관련 입력구역 */}
-            <div className="inputbox">
-                <form className="boardForm">
-                    <div className="maincontent">
-                       <div className="inputcontent">
-                        <div className="top" style={{display: 'flex' , justifyContent:'space-between'}}>
-                           <div className="empNo">
-                               <TextField
-                                    sx={{ width: '200px', padding: '7px',}}
-                                    disabled={true}
-                                    size="small"
-                                    label="이름(사번)"
-                                    type="text"
-                                    value={empName !== '' ? empName + "(" + empNumber + ")" : ''}
-                                  />
-                          </div>
+                      <div className="Day">
+                          <LocalizationProvider
 
-                          <div className="rank">
-                                <TextField
-                                     sx={{ width: '200px', padding: '7px',}}
-                                    disabled={true} size="small" label="직급" type="text" value={getrankLabel(rankNumber)} />
-                          </div>
+                            dateAdapter={AdapterDayjs}>
+                            <DesktopDatePicker
+                                sx={{ width: '200px' }}
+                                size="small"
+                                value={selectedDate}
+                                onChange={(date) => setSelectedDate(date)}
+                                renderInput={(params) => <TextField {...params} label="날짜" />}
+                                format="YYYY-MM-DD"
+                                />
+                          </LocalizationProvider>
+                      </div>
 
-                          <div className="accountNo">
-                                <TextField
-                                     sx={{ width: '300px', padding: '7px',}}
-                                    disabled={true} size="small" label="계좌번호" type="text" value={accountNumber} />
-                          </div>
-                        </div>
-                        <div className="bottom" style={{display: 'flex', justifyContent:'space-between'}}>
-                          <div className="Day">
-                              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DesktopDatePicker
-                                    sx={{ width: '300px', padding: '7px',}}
+                      <div className="value">
+                            <TextField
+                                sx={{ width: '130px' }}
+                                size="small" label="금액" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                      </div>
 
-                                    value={selectedDate}
-                                    onChange={(date) => setSelectedDate(date)}
-                                    renderInput={(params) => <TextField {...params} label="날짜" />}
-                                    format="YYYY-MM-DD"
-                                    />
-                              </LocalizationProvider>
-                          </div>
-
-                          <div className="value">
-                                <TextField
-                                     sx={{ width: '200px', padding: '7px',}}
-                                    size="small" label="금액" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
-                          </div>
-
-                          <div className="value">
-                               <TextField
-                                    sx={{ width: '200px', padding: '7px',}}
-                                    size="small" label="지급 타입" type="number" value={paymentType} onChange={(e) => setPaymentType(e.target.value)} />
-                           </div>
-                          <div className="btn">
-                            <Button
-                                 sx={{ width: '200px', padding: '7px',}}
-                                className="btn1"  variant="contained" color="primary" onClick={modalController}>결재요청</Button>
-                           </div>
-                        </div>
-
-                        </div>
+                      <div className="value">
+                           <TextField
+                                sx={{ width: '90px' }}
+                                size="small" label="지급 타입" type="number" value={paymentType} onChange={(e) => setPaymentType(e.target.value)} />
+                       </div>
+                      <div className="btn">
+                        <Button
+                            style={ { height: '40px' , width: '100px' }}
+                            sx={{ backgroundColor: 'var(--main04)'}}
+                            variant="contained" color="primary" onClick={modalController}>결재요청</Button>
+                      </div>
 
                     </div>
-                </form>
-            </div>
-            {/* 사원 목록 출력구역 */}
-            <div className="texttitle"><h3> 사원 목록 </h3></div>
-            <TableContainer style={ {     height: '525px' ,
-                                          padding: '0px 20px 0px 20px'  } } component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="right">사원번호</TableCell>
-                    <TableCell align="right">이름</TableCell>
-                    <TableCell align="right">전화번호</TableCell>
-                    <TableCell align="right">사원성별</TableCell>
-                    <TableCell align="right">계좌번호</TableCell>
-                    <TableCell align="right">직급</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {empList.map((emp) => (
-                    <TableRow
-                      onClick={() => {
-                        setEmpName(emp.empName);
-                        setAccountNumber(emp.empAcn);
-                        setEmpNumber(emp.empNo);
-                        setRankNumber(emp.empRk);
-                      }}
-                      key={emp.name}
-
-                    >
-                      <TableCell align="right">{emp.empNo}</TableCell>
-                      <TableCell align="right">{emp.empName}</TableCell>
-                      <TableCell align="right">{emp.empPhone}</TableCell>
-                      <TableCell align="right">{emp.empSex}</TableCell>
-                      <TableCell align="right">{emp.empAcn}</TableCell>
-                      <TableCell align="right">{getrankLabel(emp.empRk)}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px' }}>
-              <Pagination page={pageInfo.page} count={pageInfo.totalPages} onChange={(e, value) => {
-                setPageInfo({ ...pageInfo, page: value });
-              }} />
-            </div>
-            {isOn ? (
-              <ApprovalModal
-                data={data}
-                aprvType={
-                  data.slryType === 1
-                    ? 18
-                    : data.slryType === 2
-                    ? 19
-                    : data.slryType === 3
-                    ? 20
-                    : data.slryType === 4
-                    ? 21
-                    : data.slryType === 5
-                    ? 22
-                    : data.slryType === 6
-                    ? 23
-                    : data.slryType === 7
-                    ? 24
-                    : data.slryType === 8
-                    ? 25
-                    : null
-                }
-                targetUrl="/salary/post"
-                successUrl="/salary/write"
-                modalControll={modalController}
-              />
-            ) : null}
-          </div>
+                   </div>
+                </div>
+            </form>
         </div>
+        <hr class="hr01"/>
+        {/* 사원 목록 출력구역 */}
+        <div className="pageinfo"><span className="lv0">사원 목록 </span> > </div>
+
+        <TableContainer
+            sx={{
+                width: 900,
+                height: 430,
+                'td': {
+                    textAlign: 'center',
+                    fontSize: '0.8rem',
+                    paddingTop: '9px',
+                    paddingBottom: '9px',
+                    paddingLeft: '3px',
+                    paddingRight: '3px',
+                    border:'solid 1px var(--lgray)'
+                }
+            }}
+
+         component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead
+                sx={{
+                    'th':{
+                        textAlign: 'center',
+                        fontSize: '0.9rem',
+                        bgcolor: 'var(--main04)',
+                        color: '#fff',
+                        paddingTop: '10px' ,
+                        paddingBottom: '10px',
+                    }
+                }}
+            >
+              <TableRow>
+                <TableCell align="right">사원번호</TableCell>
+                <TableCell align="right">이름</TableCell>
+                <TableCell align="right">전화번호</TableCell>
+                <TableCell align="right">사원성별</TableCell>
+                <TableCell align="right">계좌번호</TableCell>
+                <TableCell align="right">직급</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {empList.map((emp) => (
+                <TableRow
+                  onClick={() => {
+                    setEmpName(emp.empName);
+                    setAccountNumber(emp.empAcn);
+                    setEmpNumber(emp.empNo);
+                    setRankNumber(emp.empRk);
+                  }}
+                  key={emp.name}
+
+                >
+                  <TableCell align="right">{emp.empNo}</TableCell>
+                  <TableCell align="right">{emp.empName}</TableCell>
+                  <TableCell align="right">{emp.empPhone}</TableCell>
+                  <TableCell align="right">{emp.empSex}</TableCell>
+                  <TableCell align="right">{emp.empAcn}</TableCell>
+                  <TableCell align="right">{getrankLabel(emp.empRk)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px' }}>
+          <Pagination page={pageInfo.page} count={pageInfo.totalPages} onChange={(e, value) => {
+            setPageInfo({ ...pageInfo, page: value });
+          }} />
+        </div>
+        {isOn ? (
+          <ApprovalModal
+            data={data}
+            aprvType={
+              data.slryType === 1
+                ? 18
+                : data.slryType === 2
+                ? 19
+                : data.slryType === 3
+                ? 20
+                : data.slryType === 4
+                ? 21
+                : data.slryType === 5
+                ? 22
+                : data.slryType === 6
+                ? 23
+                : data.slryType === 7
+                ? 24
+                : data.slryType === 8
+                ? 25
+                : null
+            }
+            targetUrl="/salary/post"
+            successUrl="/salary/write"
+            modalControll={modalController}
+          />
+        ) : null}
+      </div>
+    </div>
     </>
   );
 }

@@ -112,8 +112,7 @@ public class TeamProjectService {
     public PageDto getPermitAllTeamProject(int approval, int page) {
         // 페이징처리 라이브러리
         // 한페이지에 보여질 팀프로젝트 수
-        int pagesize = 5;
-        Pageable pageable = PageRequest.of(page-1, pagesize);
+        Pageable pageable = PageRequest.of(page-1, 5);
 
         // 총 페이지수
         int totalPages = 0;
@@ -122,14 +121,17 @@ public class TeamProjectService {
 
         Page<ProjectEntity> projectEntities = projectRepository.findAll(pageable);
         List<ProjectDto> projectDtos = new ArrayList<>();
+        System.out.println(projectEntities);
 
         for (ProjectEntity projectEntity : projectEntities) {
             List<ApprovalLogEntity> approvalLogEntities = projectEntity.getAprvNo().getApprovalLogEntities();
             boolean allStaThree = true;     // 검토중 판단
             boolean hasRejection = false;   // 반려상태 판단
+            System.out.println(approvalLogEntities);
 
             for (ApprovalLogEntity approvalLogEntity : approvalLogEntities) {
                 int aplogSta = approvalLogEntity.getAplogSta();
+                System.out.println(aplogSta);
 
                 if (aplogSta == 2) {
                     hasRejection = true;
@@ -147,13 +149,17 @@ public class TeamProjectService {
                 // 2(반려) 상태가 하나라도 있을 때 반려
                 projectDtos.add(projectEntity.allToDto());
                 totalCount++;
-            } else if(approval == 3){
+            } else if(approval == 3 && !allStaThree){
                 // 나머지 경우의 수, 3(검토중) 상태가 있을 때 검토중
                 projectDtos.add(projectEntity.allToDto());
                 totalCount++;
             }
+            System.out.println(totalCount);
         }
-        totalPages = ( ( (int)(totalCount-1) ) / pagesize ) + 1;
+        totalPages = ( ( (int)(totalCount-1) ) / 5 ) + 1;
+        if(totalCount % 5 == 0 && totalCount != 0){
+            totalPages++;
+        }
 
 
         // PageDto구성

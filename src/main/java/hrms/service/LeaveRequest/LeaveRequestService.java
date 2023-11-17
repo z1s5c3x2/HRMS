@@ -37,7 +37,7 @@ public class LeaveRequestService {
     private LeaveCalcService leaveCalcService;
 
     @Transactional
-    public boolean lrqWrite( ApprovalRequestDto<LeaveRequestDto> approvalRequestDto ){
+    public boolean lrqWrite(ApprovalRequestDto<LeaveRequestDto> approvalRequestDto) {
         // 결재 테이블 등록 메서드
         // => 실행 후 aprv엔티티 객체 반환
         ApprovalEntity approvalEntity = approvalService.postApproval(
@@ -64,10 +64,10 @@ public class LeaveRequestService {
                     .empNo(employeeEntity)
                     .build();
 
-                     leaveRequestRepository.save(leaveRequestEntity);
+            leaveRequestRepository.save(leaveRequestEntity);
 
-                     // 양방향
-                    approvalEntity.getLeaveRequestEntities().add(leaveRequestEntity);
+            // 양방향
+            approvalEntity.getLeaveRequestEntities().add(leaveRequestEntity);
 
             if (leaveRequestEntity.getLrqNo() >= 1) {
                 return true;
@@ -78,33 +78,12 @@ public class LeaveRequestService {
 
     // 2. 모두 출력
     @Transactional
-    public PageDto lrqGetAll( int page , String key ,
-                                            String keyword , int view)  {
+    public PageDto lrqGetAll(int page, String key, String keyword, int view, int empRk, int dptmNo, int lrqType, int lrqSrtype, String DateSt, String DateEnd) {
         // 1. 모두 출력
         // 페이징처리
-        Pageable pageable = PageRequest.of( page-1 , view  );
+        Pageable pageable = PageRequest.of(page - 1, view);
         // 1. 모든 게시물 호출한다.
-        Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findBySearch( key , keyword , pageable );
-
-        List<LeaveRequestDto> leaveRequestDtos = new ArrayList<>();
-        leaveRequestEntities.forEach( e ->{ leaveRequestDtos.add( e.allToDto()); });
-
-        // 5. pageDto 구성해서 axios에게 전달
-        PageDto<LeaveRequestDto> pageDto = PageDto.<LeaveRequestDto>builder()
-                .totalPages(leaveRequestEntities.getTotalPages()) // 총페이지
-                .totalCount(leaveRequestEntities.getTotalElements()) // 검색된 row개수
-                .someList( leaveRequestEntities.stream().map(lrq -> lrq.allToDto()).collect(Collectors.toList()) )
-                .build();
-
-        return pageDto;
-    }
-    // 개별 출력 ( 기본적으로 Main에서 내정보 보기 , 인사팀이 사원정보로 입력시 정보 호출 )
-    public PageDto lrqGet(int page , int view ,String empNo) {
-        // 페이징처리
-        Pageable pageable = PageRequest.of( page-1 , view  );
-
-        // 1. 해당 empNo에 맞는 엔티티 호출
-        Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findByEmpNo_EmpNo(empNo , pageable);
+        Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findBySearch(key, keyword, empRk, dptmNo, lrqType, lrqSrtype, DateSt, DateEnd, pageable);
 
         List<LeaveRequestDto> leaveRequestDtos = new ArrayList<>();
         leaveRequestEntities.forEach(e -> {
@@ -115,50 +94,74 @@ public class LeaveRequestService {
         PageDto<LeaveRequestDto> pageDto = PageDto.<LeaveRequestDto>builder()
                 .totalPages(leaveRequestEntities.getTotalPages()) // 총페이지
                 .totalCount(leaveRequestEntities.getTotalElements()) // 검색된 row개수
-                .someList( leaveRequestEntities.stream().map(lrq -> lrq.allToDto()).collect(Collectors.toList()) )
+                .someList(leaveRequestEntities.stream().map(lrq -> lrq.allToDto()).collect(Collectors.toList()))
                 .build();
 
         return pageDto;
     }
+
+    // 개별 출력 ( 기본적으로 Main에서 내정보 보기 , 인사팀이 사원정보로 입력시 정보 호출 )
+    public PageDto lrqGet(int page, int view, String empNo) {
+        // 페이징처리
+        Pageable pageable = PageRequest.of(page - 1, view);
+
+        // 1. 해당 empNo에 맞는 엔티티 호출
+        Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findByEmpNo_EmpNo(empNo, pageable);
+
+        List<LeaveRequestDto> leaveRequestDtos = new ArrayList<>();
+        leaveRequestEntities.forEach(e -> {
+            leaveRequestDtos.add(e.allToDto());
+        });
+
+        // 5. pageDto 구성해서 axios에게 전달
+        PageDto<LeaveRequestDto> pageDto = PageDto.<LeaveRequestDto>builder()
+                .totalPages(leaveRequestEntities.getTotalPages()) // 총페이지
+                .totalCount(leaveRequestEntities.getTotalElements()) // 검색된 row개수
+                .someList(leaveRequestEntities.stream().map(lrq -> lrq.allToDto()).collect(Collectors.toList()))
+                .build();
+
+        return pageDto;
+    }
+
     //3. 수정
     @Transactional
-    public boolean lrqUpdate( LeaveRequestDto leaveRequestDto ){
+    public boolean lrqUpdate(LeaveRequestDto leaveRequestDto) {
         // 수정할 엔티티 찾기
-        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById( leaveRequestDto.getLrqNo() );
+        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById(leaveRequestDto.getLrqNo());
         // 수정할 엔티티 존재하면?
-        if(optionalLeaveRequestEntity.isPresent()){
+        if (optionalLeaveRequestEntity.isPresent()) {
             // 엔티티 꺼내기
             LeaveRequestEntity leaveRequestEntity = optionalLeaveRequestEntity.get();
             // 객체 수정하면 테이블 내 레코드 같이 수정
-            leaveRequestEntity.setLrqSt( leaveRequestDto.getLrqSt());
-            leaveRequestEntity.setLrqEnd( leaveRequestDto.getLrqEnd());
-            leaveRequestEntity.setLrqSrtype( leaveRequestDto.getLrqSrtype());
-            leaveRequestEntity.setLrqType( leaveRequestDto.getLrqType());
+            leaveRequestEntity.setLrqSt(leaveRequestDto.getLrqSt());
+            leaveRequestEntity.setLrqEnd(leaveRequestDto.getLrqEnd());
+            leaveRequestEntity.setLrqSrtype(leaveRequestDto.getLrqSrtype());
+            leaveRequestEntity.setLrqType(leaveRequestDto.getLrqType());
             return true;
         }
         return false;
     }
+
     // 4 삭제
     @Transactional
-    public boolean lrqDelete(int lrqNo){
-       // 1. 엔티티 호출
-        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById( lrqNo );
+    public boolean lrqDelete(int lrqNo) {
+        // 1. 엔티티 호출
+        Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById(lrqNo);
         // 2. 엔티티가 호출되었는지 확인
-        if(optionalLeaveRequestEntity.isPresent()){
+        if (optionalLeaveRequestEntity.isPresent()) {
             //3. 삭제
             leaveRequestRepository.deleteById(lrqNo);
             return true;
         }
         return false;
     }
+
     // 하나 찾기
-    public LeaveRequestDto findOneLrq(int lrqNo)
-    {
+    public LeaveRequestDto findOneLrq(int lrqNo) {
         System.out.println("lrqNo = " + lrqNo);
         System.out.println("LeaveRequestController.findOneLrq");
         Optional<LeaveRequestEntity> optionalLeaveRequestEntity = leaveRequestRepository.findById(lrqNo);
-        if(optionalLeaveRequestEntity.isPresent())
-        {
+        if (optionalLeaveRequestEntity.isPresent()) {
             LeaveRequestDto leaveRequestDto = optionalLeaveRequestEntity.get().OneToDto();
             leaveRequestDto.setLeaveCnt(leaveCalcService.calcRestCount(leaveRequestDto.getEmpNo()));
             return leaveRequestDto;
@@ -167,9 +170,8 @@ public class LeaveRequestService {
     }
 
     // 연차 수정
-    public boolean updateYearLrq(@RequestBody ApprovalRequestDto<LeaveRequestDto> approvalRequestDto)
-    {
-        try{
+    public boolean updateYearLrq(@RequestBody ApprovalRequestDto<LeaveRequestDto> approvalRequestDto) {
+        try {
             System.out.println("updateYearLrq = " + approvalRequestDto);
             // DTO객체 => json 문자열
             ObjectMapper objectMapper = new ObjectMapper();
@@ -189,7 +191,7 @@ public class LeaveRequestService {
             );
 
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("updateYearLrq" + e);
         }
 

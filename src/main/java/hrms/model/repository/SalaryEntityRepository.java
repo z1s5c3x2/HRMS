@@ -28,6 +28,10 @@ public interface SalaryEntityRepository extends JpaRepository<SalaryEntity, Inte
                     "   AND (CASE WHEN ?3 > 0 THEN e.emp_rk = ?3 ELSE true END) " +
                     "   AND (CASE WHEN ?4 > 0 THEN d.dptm_no = ?4 ELSE true END) " +
                     "   AND (CASE WHEN ?5 > 0 THEN s.slry_type = ?5 ELSE true END) " +
+                    "   AND (CASE WHEN ?6 IS NOT NULL AND ?7 IS NOT NULL THEN s.slry_date BETWEEN CAST(?6 AS DATE) AND CAST(?7 AS DATE) END OR " +
+                    "        (CASE WHEN ?6 IS NOT NULL AND ?7 = '' THEN s.slry_date >= CAST(?6 AS DATE) END) OR " +
+                    "        (CASE WHEN ?6 ='' AND ?7 IS NOT NULL THEN s.slry_date <= CAST(?7 AS DATE) END) OR " +
+                    "        (CASE WHEN ?6 = '' AND ?7 = '' THEN true END)) " +
                     "ORDER BY s.slry_date DESC", nativeQuery = true)
-    Page<SalaryEntity> findBySearch(String key, String keyword, int empRk, int dptmNo, int slryType, Pageable pageable);
+    Page<SalaryEntity> findBySearch(String key, String keyword, int empRk, int dptmNo, int slryType, String DateSt, String DateEnd, Pageable pageable);
 }

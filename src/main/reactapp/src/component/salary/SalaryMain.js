@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import styles from '../../css/Table.css';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,7 +13,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Pagination from "@mui/material/Pagination";
 
-import styles from '../../css/Table.css';
 export default function SalaryMain(props) {
      // 0. 컴포넌트 상태변수 관리
        let [ pageDto , setPageDto ] = useState( {
@@ -67,51 +67,75 @@ export default function SalaryMain(props) {
     }
 
     return (<>
-        <div className="contentBox">
-            <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">개인급여내역</span></div>
+    <div className="contentBox">
+        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">나의 급여내역</span></div>
+            <h3>{ /*row.empNo*/ } 이효재(2311006)님 급여 내역보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
+            <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
+                         <select
+                                  value = { pageInfo.view }
+                                  onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
+                                  >
+                                    <option value="5"> 5 </option>
+                                    <option value="10"> 10 </option>
+                                   <option value="20"> 20 </option>
+                         </select>
 
-                <h3>{ /*row.empNo*/ } 이효재(2311006)님 급여 내역보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
-                <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
-                             <select
-                                      value = { pageInfo.view }
-                                      onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
-                                      >
-                                        <option value="5"> 5 </option>
-                                        <option value="10"> 10 </option>
-                                       <option value="20"> 20 </option>
-                             </select>
+            <TableContainer
+                sx={{
+                    width: 900,
+                    height: 500,
+                    'td': {
+                        textAlign: 'center',
+                        fontSize: '0.8rem',
+                        paddingTop: '9px',
+                        paddingBottom: '9px',
+                        paddingLeft: '3px',
+                        paddingRight: '3px',
+                        border:'solid 1px var(--lgray)'
+                    }
+                }}
 
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="right">번호</TableCell>
-                                <TableCell align="right">지급날짜</TableCell>
-                                <TableCell align="right">지급금액</TableCell>
-                                <TableCell align="right">지급유형</TableCell>
-                                <TableCell align="right">결재번호</TableCell>
+                component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead
+                        sx={{
+                            'th':{
+                                textAlign: 'center',
+                                fontSize: '0.9rem',
+                                bgcolor: 'var(--main04)',
+                                color: '#fff',
+                                paddingTop: '10px' ,
+                                paddingBottom: '10px',
+                            }
+                        }}
+                    >
+                        <TableRow>
+                            <TableCell align="right">번호</TableCell>
+                            <TableCell align="right">지급날짜</TableCell>
+                            <TableCell align="right">지급금액</TableCell>
+                            <TableCell align="right">지급유형</TableCell>
+                            <TableCell align="right">결재번호</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {pageDto.someList.map((row) => (
+                            <TableRow
+                                key={row.name}
+                                >
+                                <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
+                                <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
+                                <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
+                                <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
+                                <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {pageDto.someList.map((row) => (
-                                <TableRow
-                                    key={row.name}
-                                    >
-                                    <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
-                                    <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
-                                    <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
-                                    <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
-                                    <TableCell onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <div style = {{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }} >
-                 { /* page : 현재페이지    count : 전체페이지수   onChange : 페이지번호를 클릭/변경 했을떄 이벤트 */}
-                 <Pagination page = { pageInfo.page }  count={ pageDto.totalPages } onChange={ onPageSelect } />
-                </div>
-
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <div style = {{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }} >
+             { /* page : 현재페이지    count : 전체페이지수   onChange : 페이지번호를 클릭/변경 했을떄 이벤트 */}
+              <Pagination page = { pageInfo.page }  count={ pageDto.totalPages } onChange={ onPageSelect } />
+             </div>
         </div>
         </>)
 }
