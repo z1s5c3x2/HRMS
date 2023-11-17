@@ -10,7 +10,10 @@ export default function Header( props ){
    // console.log("header :: "+menuType)
 
    // 로그인 상태를 저장할 상태변수 선언
-   let [login, setLogin] = useState( null );
+   let [login, setLogin] = useState( {
+        empName : null,
+        empNo : null
+   } );
 
    // 회원정보 호출[로그인 여부 확인]
    useEffect( () => {
@@ -28,7 +31,9 @@ export default function Header( props ){
                            // 세션/쿠키 제거 : .removeItem(key)
                        sessionStorage.setItem('login_token', JSON.stringify(r.data));
                        setLogin(JSON.parse(sessionStorage.getItem('login_token') ) );
-                       setLogin(r.data);   // setLogin(r.data);
+                       login.empName = r.data.empName;
+                       login.empNo = r.data.empNo;
+                       console.log(login);
                    }
                })
 
@@ -48,7 +53,7 @@ export default function Header( props ){
         				</ul>
         			</div>
 
-        			<div className="userbox"><span className="emp_name">김이젠</span>님 <br/> 좋은 하루되세요!{/*-- <img src="./images/user_photo.jpeg"/>--*/}</div>
+        			<div className="userbox"><span className="emp_name">{login == null ? '김이젠' : login.empName}</span>님 <br/> 좋은 하루되세요!{/*-- <img src="./images/user_photo.jpeg"/>--*/}</div>
 
         	</header>
     </>)

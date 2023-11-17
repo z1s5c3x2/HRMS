@@ -104,4 +104,9 @@ public class EmployeeController {
         return true;
     }
 
+    @GetMapping("getteammebers")
+    public List<EmployeeDto> getTeamsMebers(){
+        return employeeService.getTeamsMebers();
+    }
+
 }

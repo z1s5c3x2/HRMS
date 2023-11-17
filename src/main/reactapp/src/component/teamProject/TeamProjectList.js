@@ -155,7 +155,7 @@ export default function TeamProjectList(props){
                       <TableCell align="center">{row.empName}</TableCell>
                       <TableCell align="center">{row.pjtSt}</TableCell>
                       <TableCell align="center">{row.pjtEND}</TableCell>
-                      <TableCell align="center">{row.pjtSta == 1 ? '진행중' : '완료'}</TableCell>
+                      <TableCell align="center">{row.pjtSta == 1 ? '완료' : '진행중'}</TableCell>
                       <TableCell align="center">
                         <button type="button" >
                             <Link to={'/teamproject/update?pjtNo=' + row.pjtNo}>
