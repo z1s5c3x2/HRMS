@@ -95,6 +95,50 @@ input[name="cb"]{
 
 }
 .tableTypeB td{
+
     padding:10px;
     text-align:center;
+}
+.empSearchBox {
+    margin-bottom : 10px;
+}
+.empSearchBox select, input {
+    margin :0 5px;
+    padding:5px;
+}
+
+.empSearchBox button {
+    padding: 8px 13px;
+    border-radius: 5px;
+    margin-left:5px;
+}
+.empInfoBox {
+    width:380px
+}
+.empInfoT {
+     width:380px;
+}
+.empInfoT tr {
+    padding: 7px 0 ;
+
+}
+.empInfoT th {
+    font-family: Roboto, Helvetica, Arial, sans-serif !important;
+    font-weight: normal;
+    background-color:var(--main04);
+    width:160px;
+    color: #fff;
+    font-size:0.8rem !important;
+    padding:5px 0;
+
+}
+.empInfoT td {
+    width:220px;
+    border:none;
+
+}
+.empInfoT input {
+    background-color:#fff;
+    padding:5px;
+    width:100%;
 }
