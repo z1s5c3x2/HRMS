@@ -1,7 +1,6 @@
 package hrms.model.entity;
 
 
-
 import hrms.model.dto.LeaveRequestDto;
 import lombok.*;
 
@@ -9,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 
 @AllArgsConstructor
@@ -22,7 +20,7 @@ import java.time.LocalDateTime;
 @Table(name = "LRQ")
 public class LeaveRequestEntity extends BaseTime { // 휴직/연차/병가 테이블
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int lrqNo;                           // 연차번호
 
     @Max(3)
@@ -42,18 +40,18 @@ public class LeaveRequestEntity extends BaseTime { // 휴직/연차/병가 테�
     private int lrqSrtype;                   // 5. ( 0: 무급 / 1: 유급 )
 
     @ToString.Exclude
-    @JoinColumn(name="empNo")
+    @JoinColumn(name = "empNo")
     @ManyToOne
     private EmployeeEntity empNo;                    // 5. 사원번호 ( FK )
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name="aprvNo")
+    @JoinColumn(name = "aprvNo")
     private ApprovalEntity aprvNo;
 
     // 1. 전체 출력
-    public LeaveRequestDto allToDto(){
-        return  LeaveRequestDto.builder()
+    public LeaveRequestDto allToDto() {
+        return LeaveRequestDto.builder()
                 .lrqNo(this.lrqNo)
                 .lrqType(this.lrqType)
                 .lrqSt(this.lrqSt)
@@ -62,12 +60,15 @@ public class LeaveRequestEntity extends BaseTime { // 휴직/연차/병가 테�
                 .empNo(this.empNo.getEmpNo())
                 .aprvNo(this.aprvNo.getAprvNo())
                 .cdate(this.getCdate()).udate(this.getUdate())
-                .empName(this.getEmpNo().getEmpName())
+                .empRk(this.empNo.getEmpRk())
+                .dptmNo(this.empNo.getDptmNo().getDptmNo())
+                .empName(this.empNo.getEmpName())
                 .build();
     }
+
     // 1. 개별출력
-    public LeaveRequestDto OneToDto(){
-        return  LeaveRequestDto.builder()
+    public LeaveRequestDto OneToDto() {
+        return LeaveRequestDto.builder()
                 .lrqNo(this.lrqNo)
                 .lrqType(this.lrqType)
                 .lrqSt(this.lrqSt)
@@ -76,7 +77,9 @@ public class LeaveRequestEntity extends BaseTime { // 휴직/연차/병가 테�
                 .empNo(this.empNo.getEmpNo())
                 .aprvNo(this.aprvNo.getAprvNo())
                 .cdate(this.getCdate()).udate(this.getUdate())
-                .empName(this.getEmpNo().getEmpName())
+                .empRk(this.empNo.getEmpRk())
+                .dptmNo(this.empNo.getDptmNo().getDptmNo())
+                .empName(this.empNo.getEmpName())
                 .build();
     }
 

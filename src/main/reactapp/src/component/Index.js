@@ -36,6 +36,8 @@ import LeaveRequestMain from "./leaveRequest/LeaveRequestMain";
 import LeaveRequestWrite from "./leaveRequest/LeaveRequestWrite";
 import LeaveRequestView from "./leaveRequest/LeaveRequestView";
 import LeaveRequestList from "./leaveRequest/LeaveRequestList";
+import SickLeaveRequestWrite from "./leaveRequest/SickLeaveRequestWrite";
+import LeaveOfAbsenceRequestWrite from "./leaveRequest/LeaveOfAbsenceRequestWrite";
 
 /* Teamproject import */
 import TeamProjectList from "./teamProject/TeamProjectList";
@@ -98,6 +100,8 @@ export default function Index( props ){
                                 <Route path='/leaveRequest/view' element={<LeaveRequestView/>} />
                                 <Route path='/leaveRequest/list' element={<LeaveRequestList/>} />
                                 <Route path='/leaveRequest/update' element={<LeaveRequestUpdate/>} />
+                                <Route path='/sickleaveRequest/write' element={<SickLeaveRequestWrite/>} />
+                                <Route path='/leaveofabsenceRequest/write' element={<LeaveOfAbsenceRequestWrite/>} />
 
                             {/* TeamProject */}
                                 <Route path='/teamproject' element={<TeamProjectMain />} />

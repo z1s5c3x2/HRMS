@@ -82,6 +82,9 @@ let currentMenu = location == '' ? 'employee' : location;
                     <li><Link to='/employee/details'>사원 수정</Link></li>
                     <li><Link to='/employee/searchemp'>사원 검색</Link></li>
                     <li><Link to='/employee/retemplist'>퇴사 사원 조회</Link></li>
+                    <li><Link to='/leaveofabsenceRequest/write'>휴직 사원 조회</Link></li>
+                    <li><Link to='/leaveofabsenceRequest/write'>사원 휴직기간 등록</Link></li>
+                    <li><Link to='/leaveofabsenceRequest/write'>사원 휴직기간 수정</Link></li>
                 </>
                 )}
 
@@ -103,11 +106,10 @@ let currentMenu = location == '' ? 'employee' : location;
                    <li><Link to='/attendance/pcalendar'>나의근무현황캘린더</Link></li>
                    <li><Link to='/attendance/dall'>전사원출결현황</Link></li>
                    <li><Link to='/attendance/dcalendar'>나의출결캘린더</Link></li>
-                   <li><Link to='/attendance'>병가신청</Link></li>
-                   <li><Link to='/attendance'>휴직신청</Link></li>
-                   <li><Link to='/attendance'>개인연차내역</Link></li>
-                   <li><Link to='/attendance'>전사원연차내역 </Link></li>
-                   <li><Link to='/attendance'>개인연차신청</Link></li>
+                   <li><Link to='/sickleaveRequest/write'>병가신청</Link></li>
+                   <li><Link to='/leaveRequest'>개인연차내역</Link></li>
+                   <li><Link to='/leaveRequest/list'>전사원연차내역 </Link></li>
+                   <li><Link to='/leaveRequest/write'>개인연차신청</Link></li>
                 </>)}
 
                 {currentMenu === 'salary' && (
