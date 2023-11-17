@@ -21,6 +21,7 @@ public class ApprovalDto {
     private String empNo;             // 상신자
     private LocalDateTime cdate;   // 상신일
     private int apState;           // 결재완료 여부( 1:완료 / 2:반려 / 3:검토중 )
+    private String empName;         // 상신자명
 
     public void setAprvNo(int aprvNo) {
         this.aprvNo = aprvNo;
