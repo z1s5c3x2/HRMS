@@ -1,7 +1,7 @@
 import { useSearchParams , Link } from 'react-router-dom'
 import axios from 'axios'
 import { useState , useEffect } from 'react'
-
+import styles from '../../css/Table.css';
 export default function SalaryView( props ){
     // 1. HTTP 경로상의 쿼리스트링 매개변수 호출
     const [ searchParams, setSearchParams ] = useSearchParams(); console.log( searchParams );

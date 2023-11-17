@@ -12,6 +12,7 @@
 */
 import axios from 'axios';
 import { useState , useEffect } from 'react';
+import styles from '../../css/Table.css';
 // ------------------- mui table 관련 컴포넌트 import------------ //
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -195,18 +196,44 @@ export default function BoardList(props){
                     :
                     (<> <button  type="button" onClick = { (e)=> { window.location.href="/salary/list"; }  } > 검색제거 </button>  </>)
                 }
-        <TableContainer component={Paper}>
+        <TableContainer
+            sx={{
+                width: 900,
+                height: 500,
+                'td': {
+                    textAlign: 'center',
+                    fontSize: '0.8rem',
+                    paddingTop: '9px',
+                    paddingBottom: '9px',
+                    paddingLeft: '3px',
+                    paddingRight: '3px',
+                    border:'solid 1px var(--lgray)'
+                }
+            }}
+            component={Paper}>
                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
                  {/* 테이블 제목 구역 */}
-                   <TableHead>
+                   <TableHead
+                     sx={{
+                         'th':{
+                             textAlign: 'center',
+                             fontSize: '0.9rem',
+                             bgcolor: 'var(--main04)',
+                             color: '#fff',
+                             paddingTop: '10px' ,
+                             paddingBottom: '10px',
+                         }
+                     }}
+
+                   >
                      <TableRow>
-                       <TableCell style={{ width : '5%' }} align="right">번호</TableCell>
-                       <TableCell style={{ width : '13%' }} align="right">지급날짜</TableCell>
-                       <TableCell style={{ width : '13%' }} align="right">지급금액</TableCell>
-                       <TableCell style={{ width : '10%' }} align="right">지급유형</TableCell>
-                        <TableCell style={{ width : '5%' }} align="right">결재번호</TableCell>
-                        <TableCell style={{ width : '15%' }} align="right">이름(사원번호)</TableCell>
-                        <TableCell style={{ width : '8%' }} align="right">직급</TableCell>
+                       <TableCell style={{ width : '10%' }} align="right">번호</TableCell>
+                       <TableCell style={{ width : '14%' }} align="right">지급날짜</TableCell>
+                       <TableCell style={{ width : '14%' }} align="right">지급금액</TableCell>
+                       <TableCell style={{ width : '15%' }} align="right">지급유형</TableCell>
+                        <TableCell style={{ width : '8%' }} align="right">결재<br/>번호</TableCell>
+                        <TableCell style={{ width : '19%' }} align="right">이름(사원번호)</TableCell>
+                        <TableCell style={{ width : '10%' }} align="right">직급</TableCell>
                         <TableCell style={{ width : '10%' }} align="right">부서</TableCell>
                      </TableRow>
                    </TableHead>
@@ -217,13 +244,13 @@ export default function BoardList(props){
                          key={row.name}
                         >
 
-                         <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
-                         <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
-                         <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
-                         <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
-                         <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
-                         <TableCell style={{ width : '15%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empName + "(" + row.empNo + ")"}</TableCell>
-                        <TableCell style={{ width : '8%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getrankLabel(row.empRk)}</TableCell>
+                         <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
+                         <TableCell style={{ width : '14%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
+                         <TableCell style={{ width : '14%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
+                         <TableCell style={{ width : '15%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
+                         <TableCell style={{ width : '8%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
+                         <TableCell style={{ width : '19%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empName + "(" + row.empNo + ")"}</TableCell>
+                        <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getrankLabel(row.empRk)}</TableCell>
                         <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getdptmLabel(row.dptmNo)}</TableCell>
                        </TableRow>
                      ))}

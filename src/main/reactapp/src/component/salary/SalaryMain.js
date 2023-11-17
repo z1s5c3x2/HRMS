@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import styles from '../../css/Table.css';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -79,9 +80,35 @@ export default function SalaryMain(props) {
                                    <option value="20"> 20 </option>
                          </select>
 
-            <TableContainer component={Paper}>
+            <TableContainer
+                sx={{
+                    width: 900,
+                    height: 500,
+                    'td': {
+                        textAlign: 'center',
+                        fontSize: '0.8rem',
+                        paddingTop: '9px',
+                        paddingBottom: '9px',
+                        paddingLeft: '3px',
+                        paddingRight: '3px',
+                        border:'solid 1px var(--lgray)'
+                    }
+                }}
+
+                component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
+                    <TableHead
+                        sx={{
+                            'th':{
+                                textAlign: 'center',
+                                fontSize: '0.9rem',
+                                bgcolor: 'var(--main04)',
+                                color: '#fff',
+                                paddingTop: '10px' ,
+                                paddingBottom: '10px',
+                            }
+                        }}
+                    >
                         <TableRow>
                             <TableCell align="right">번호</TableCell>
                             <TableCell align="right">지급날짜</TableCell>
