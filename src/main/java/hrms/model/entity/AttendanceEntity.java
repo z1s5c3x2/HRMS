@@ -3,11 +3,8 @@ package hrms.model.entity;
 import hrms.model.dto.AttendanceDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 
 @DynamicInsert
@@ -45,5 +42,16 @@ public class AttendanceEntity extends BaseTime{
                 .build();
     }
 
+    public AttendanceDto allEmpListDto(){
+        return AttendanceDto.builder()
+                .attdNo(this.attdNo)
+                .attdWrend(this.attdWrend)
+                .attdWrst(this.attdWrst)
+                .empRK(this.empNo.getEmpRk())
+                .empName(this.empNo.getEmpName())
+                .empSta(this.empNo.isEmpSta())
+                .dptmName(this.empNo.getDptmNo().getDptmName())
+                .build();
+    }
 
 }
