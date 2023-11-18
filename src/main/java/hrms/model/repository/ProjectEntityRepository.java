@@ -31,11 +31,20 @@ public interface ProjectEntityRepository extends JpaRepository<ProjectEntity,Int
     Page<ProjectEntity> findProjectsByApprovalLogAplogSta2(Pageable pageable);
 
     @Query(value =
-            "SELECT * FROM pjt_mng p " +
-                    "WHERE NOT EXISTS " +
-                    "(SELECT 1 FROM aplog a WHERE a.aprv_no = p.aprv_no AND a.aplog_sta = 2) " +
-                    "AND EXISTS " +
-                    "(SELECT 1 FROM aplog a WHERE a.aprv_no = p.aprv_no AND a.aplog_sta = 3) " +
-                    "LIMIT ?1, ?2", nativeQuery = true)
+            "SELECT * FROM PJT_MNG p " +
+                    "WHERE NOT EXISTS (" +
+                    "    SELECT 1 FROM APLOG a " +
+                    "    WHERE a.aprv_no = p.aprv_no AND a.aplog_sta = 2) " +
+                    "AND EXISTS (" +
+                    "    SELECT 1 FROM APLOG a " +
+                    "    WHERE a.aprv_no = p.aprv_no AND a.aplog_sta = 3) ",
+            countQuery = "SELECT COUNT(*) FROM PJT_MNG p " +
+                    "WHERE NOT EXISTS (" +
+                    "    SELECT 1 FROM APLOG a " +
+                    "    WHERE a.aprv_no = p.aprv_no AND a.aplog_sta = 2) " +
+                    "AND EXISTS (" +
+                    "    SELECT 1 FROM APLOG a " +
+                    "    WHERE a.aprv_no = p.aprv_no AND a.aplog_sta = 3)",
+            nativeQuery = true)
     Page<ProjectEntity> findProjectsByApprovalLog(Pageable pageable);
 }
