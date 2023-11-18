@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -25,8 +26,13 @@ public interface ApprovalEntityRepository extends JpaRepository<ApprovalEntity,I
                     // 검색 key( 결재번호 / 내용 / 상신자 )가 없을 경우 전체 출력
             "       WHEN :key = '' THEN TRUE " +
                     // key에 따른 조건 출력
-            "       ELSE aprv.:key LIKE '%:keyword%' " +
-            "       END" +
+            "       ELSE "+
+            "           CASE "+
+            "               WHEN :key = 'aprv_cont' THEN aprv.aprv_cont LIKE CONCAT('%', :keyword, '%') "+
+            "               WHEN :key = 'aprv_no' THEN aprv.aprv_no LIKE CONCAT('%', :keyword, '%') "+
+            "               WHEN :key = 'emp_name' THEN emp.emp_name LIKE CONCAT('%', :keyword, '%') "+
+            "               END " +
+            "       END " +
             "   ) " +
             "AND " +
                 // 필터 : 일자 검색
@@ -48,7 +54,7 @@ public interface ApprovalEntityRepository extends JpaRepository<ApprovalEntity,I
                     // 결재 진행건
             "       WHEN :apState = 3 THEN (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no AND aplog.aplog_sta = 3) = (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no) " +
             "       end " +
-            "   ) GROUP BY aplog.aprv_no ORDER BY cdate DESC"
+            "   ) GROUP BY aprv.aprv_no, aplog.aprv_no ORDER BY cdate DESC"
             , nativeQuery = true )
     Page< ApprovalEntity > findBySearch( String key, String keyword, int apState, String strDate, String endDate, Pageable pageable );
 

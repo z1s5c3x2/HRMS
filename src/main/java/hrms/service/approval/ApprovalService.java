@@ -9,6 +9,7 @@ import hrms.model.entity.*;
 import hrms.model.repository.*;
 import hrms.service.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -735,13 +736,14 @@ public class ApprovalService {
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) throws JsonProcessingException {
 
-        System.out.println("page = " + page + ", key = " + key + ", keyword = " + keyword + ", apState = " + apState + ", strDate = " + strDate + ", endDate = " + endDate);
 
         // 페이지별 출력 결재 건수는 15건 고정
         Pageable pageable = PageRequest.of( page-1, 15 );
 
+        System.out.println("page = " + page + ", key = " + key + ", keyword = " + keyword + ", apState = " + apState + ", strDate = " + strDate + ", endDate = " + endDate);
         // DB의 전사원 결재목록 저장
-        List<ApprovalEntity> approvalEntities = approvalRepository.findAll();
+        Page<ApprovalEntity> approvalEntities = approvalRepository.findBySearch( key, keyword, apState, strDate, endDate, pageable );
+        //List<ApprovalEntity> approvalEntities = approvalRepository.findAll();
 
         // 반환할 LIST 선언
         List<ApprovalDto> approvalDtos = new ArrayList<>();

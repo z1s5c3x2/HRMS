@@ -28,8 +28,6 @@ export default function ApprovalMain(props){
 
 
 
-
-
     // 출력할 결재 리스트 상태변수
     const [ approvalList, setApprovalList ] = useState( [] )
     const [ approbateResult, setApprobateResult ] = useState( false )
