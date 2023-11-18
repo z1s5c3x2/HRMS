@@ -34,8 +34,7 @@ export default function ReconsiderView(props){
         page : 1 ,
         key : '' ,      // 결재번호[aprvNo], 내용[aprvCont] , 상신자명[empName]
         keyword : '',   // key에 대한 탐색명
-        aprvType : 0,   // 결재의 유형
-        apState : '',   // 결재 진행현황 [1:완료  2:반려  3:검토중]
+        apState : 0,   // 결재 진행현황 [1:완료  2:반려  3:검토중]
         cdate : ''      // 상신일자
     });
 

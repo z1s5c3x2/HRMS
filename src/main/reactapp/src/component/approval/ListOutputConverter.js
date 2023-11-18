@@ -33,5 +33,26 @@ export const getTypeName = (aprvType) => {
         case 25: return (<>급여 연가보상비 지급</>)
 
     }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

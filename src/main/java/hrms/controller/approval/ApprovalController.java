@@ -116,27 +116,35 @@ public class ApprovalController {
         return approvalService.approbate( approvalDto.getAprvNo(), approvalDto.getApState() );
     }
 
+    // 전사원 상신목록 조회
+    @GetMapping("/getAllEmployeesApproval")
+    public List<ApprovalDto> getAllEmployeesApproval(
+            @RequestParam int page, @RequestParam String key, @RequestParam String keyword,
+            @RequestParam int apState, @RequestParam String strDate, @RequestParam String endDate ) throws JsonProcessingException {
+
+        return approvalService.getAllEmployeesApproval( page, key, keyword, apState, strDate, endDate );
+    }
+
     // 개별 상신목록 조회
     @GetMapping("/getReconsiderHistory")
-    public List<ApprovalDto> getReconsiderHistory() throws JsonProcessingException {
+    public List<ApprovalDto> getReconsiderHistory(
+            @RequestParam int page, @RequestParam String key, @RequestParam String keyword,
+            @RequestParam int apState, @RequestParam String strDate, @RequestParam String endDate) throws JsonProcessingException {
 
-        return approvalService.getReconsiderHistory();
+        return approvalService.getReconsiderHistory( page, key, keyword, apState, strDate, endDate );
     }
     
     // 개별 결재목록 조회
         // 해당 검토자의 검토대상 결재건 / 완료 혹은 반려 결재건
     @GetMapping("/getApprovalHistory")
-    public List<ApprovalDto> getApprovalHistory() throws JsonProcessingException {
+    public List<ApprovalDto> getApprovalHistory(
+            @RequestParam int page, @RequestParam String key, @RequestParam String keyword,
+            @RequestParam int apState, @RequestParam String strDate, @RequestParam String endDate ) throws JsonProcessingException {
 
-        return approvalService.getApprovalHistory();
+        return approvalService.getApprovalHistory( page, key, keyword, apState, strDate, endDate );
     }
 
-    // 전사원 상신목록 조회
-    @GetMapping("/getAllEmployeesApproval")
-    public List<ApprovalDto> getAllEmployeesApproval() throws JsonProcessingException {
 
-        return approvalService.getAllEmployeesApproval();
-    }
 
 
 
