@@ -109,17 +109,18 @@ export default function EmployeeSearch(props) {
                         {/*리스트 출력*/}
                         <TableContainer component={Paper} sx={{
                             width: 500,
-                            height: 550,
+                            height: 520,
                             'td': {
                                 fontSize: '0.8rem',
-                                paddingTop: '5px',
-                                paddingBottom: '5px',
+                                paddingTop: '10px',
+                                paddingBottom: '10px',
                                 paddingLeft: '3px',
                                 paddingRight: '3px',
                                 border:'solid 1px var(--lgray)'
                             }
                         }}>
                             <Table aria-label="simple table">
+
                                 <TableHead
                                     sx={{
                                         'th':{
@@ -158,55 +159,56 @@ export default function EmployeeSearch(props) {
                                     ))}
                                 </TableBody>
                             </Table>
-                            {/* 페이지네이션 */}
-                            <div style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                margin: '10px'
-                            }}>
-                                <Pagination page={searchOption.page} count={pageInfo.totalPages}
-                                            onChange={(e, value) => {
-                                                setSearchOption({...searchOption, page: value})
-                                            }
-                                            }/>
-                            </div>
+
                         </TableContainer>
                         {/* 페이지네이션 */}
+                        {/* 페이지네이션 */}
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            margin: '10px'
+                        }}>
+                            <Pagination page={searchOption.page} count={pageInfo.totalPages}
+                                        onChange={(e, value) => {
+                                            setSearchOption({...searchOption, page: value})
+                                        }
+                                        }/>
+                        </div>
                         {/*리스트 출력*/}
                     </div>
                     <div>
 
                         {empInfo != null && // 가져온 사원 정보가 존재한다면 사원 정보 출력
                             <div  class="empInfoBox">
-                                <h3> 사원 상세 정보</h3>
+                                <h3 class="mb10"> 사원 상세 정보</h3>
                                 <table class="empInfoT">
                                     <tr>
-                                        <th>사번</th>
+                                        <th> 사 원 번 호 </th>
                                         <td><input value={empInfo.empNo} disabled={true}/></td>
                                     </tr>
                                     <tr>
-                                        <th>이름</th>
+                                        <th> 사 원 이 름 </th>
                                         <td><input value={empInfo.empName} disabled={true}/></td>
                                     </tr>
                                     <tr>
-                                        <th>성별</th>
+                                        <th> 사 원 성 별 </th>
                                         <td><input value={empInfo.empSex} disabled={true}/></td>
                                     </tr>
                                     <tr>
-                                        <th>계좌</th>
+                                        <th> 사 원 계 좌 </th>
                                         <td><input value={empInfo.empAcn} disabled={true}/> </td>
                                     </tr>
                                     <tr>
-                                        <th>근무 상태</th>
+                                        <th> 사원근무상태</th>
                                         <td><input value={empInfo.empSta ? '재직' : '휴직'} disabled={true}/></td>
                                     </tr>
                                     <tr>
-                                        <th>직급</th>
+                                        <th> 사 원 직 급 </th>
                                         <td><input value={rkList[empInfo.empRk]} disabled={true}/></td>
                                     </tr>
                                     <tr>
-                                        <th>부서</th>
+                                        <th> 사 원 부 서</th>
                                         <td><input value={empInfo.dptmName} disabled={true}/></td>
                                     </tr>
                                     <tr>
@@ -233,11 +235,12 @@ export default function EmployeeSearch(props) {
                                     <tr>
                                         <td colspan="2">
                                             {textIsOn && <div>
-                                                <textarea style={{width: '380px', height: '180px'}} placeholder={"퇴사 사유 작성"}
+                                                <textarea style={{width: '380px', height: '170px'}} placeholder={"퇴사 사유 작성"}
                                                           value={retiredInfo.rtempCont}
                                                 onChange={(e)=>{
                                                     setRetiredInfo({...retiredInfo,rtempCont:e.target.value})
                                                 }}> </textarea>
+                                                <div style={{marginTop:'10px', textAlign:'right'}}>
                                                 퇴사 날짜 : <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                 <DesktopDatePicker
                                                     value={retiredInfo.rtempDate}
@@ -247,6 +250,7 @@ export default function EmployeeSearch(props) {
                                                     onChange={(date) => setRetiredInfo({...retiredInfo, rtempDate: date})}
                                                 />
                                             </LocalizationProvider>
+                                            </div>
 
                                             </div>}
                                         </td>

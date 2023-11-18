@@ -43,15 +43,33 @@ export default function SalaryView( props ){
     return(<>
     <div className="contentBox">
         <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">나의 급여내역</span> > <span className="lv1">급여지급 상세보기</span></div>
-            <div>
-
-                <h3> 급여지급 상세보기 </h3>
-                <div> 급여식별번호 : { slryNo }</div>
-                <div> 급여 지급 날짜 : { board.slryDate }</div>
-                <div> 급여 지급 금액 : { board.slryPay }</div>
-                <div> 급여 지급 타입: {getSlryTypeLabel(board.slryType)}</div>
-                <div> 결재 번호 : { board.aprvNo }</div>
-                <div> 사원 번호 : { board.empNo }</div>
+            <div className="emp_regs_content">
+                <div style={{textAlign:'center'}}><img class="logoA" src="../../../logo_no.png"/></div>
+                <hr class="hr00"/>
+                <div class="eregInputBox pdt10_0">
+                    <div class="w40 ls5"> 급여식별번호</div>
+                    <div class="">{ slryNo }</div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="w40 ls5"> 급여지급날짜</div>
+                    <div class="">{ board.slryDate }</div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="w40 ls5"> 급여지급금액</div>
+                    <div class="">{ board.slryPay }</div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="w40 ls5"> 급여지급타입</div>
+                    <div class=""> {getSlryTypeLabel(board.slryType)}</div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="w40 ls18"> 결재번호</div>
+                    <div class=""> { board.aprvNo }</div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="w40 ls18"> 사원번호</div>
+                    <div class="">{ board.empNo }</div>
+                </div>
 
                 {/* 삭제 와 수정 은 본인(본인확인) 만 가능 */}
                 {/*    삼항연산자         조건 ? (<>참일때</>) : (<>거짓일때</>)           */}

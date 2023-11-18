@@ -53,26 +53,24 @@ export default function ApprovalList(props){
     }, [])
 
     return (<>
-
-        <h3> 결재 메인페이지 </h3>
         <div class="contentBox">
+            <div class="pageinfo"><span class="lv0">결제관리</span> > <span class="lv1">전사원결재 조회</span></div>
             <div class="searchBox">
 
-                <span>
-                    상신일자
-                    조회기간 : <input type="date" className="periodStart" /> ~  <input type="date" className="periodEnd" />
-                </span>
+                <div class="w45">
+                    상신일조회 : <input type="date" className="periodStart" /> ~  <input type="date" className="periodEnd" />
+                </div>
 
-                <span>
+                <div class="w16">
                     결재상태
                     <select>
                         <option value="1"> 완료 </option>
                         <option value="2"> 반려 </option>
                         <option value="3"> 검토중 </option>
                     </select>
-                </span>
+                </div>
 
-                <span>
+                <div class="w38">
                     <select>
                         <option value="aprvNo"> 결재번호 </option>
                         <option value="aprvCont"> 내용 </option>
@@ -80,7 +78,7 @@ export default function ApprovalList(props){
                     </select>
                     <input type="text" />
                     <button type="button" className=""> 검색 </button>
-                </span>
+                </div>
 
             </div>
 
@@ -126,6 +124,7 @@ export default function ApprovalList(props){
             </div>
 
         </div>
+
 
     </>)
 

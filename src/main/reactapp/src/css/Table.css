@@ -31,30 +31,64 @@ input[name="cb"]{
     background-color: var(--main01);
 }
 
-/* */
+/* 검색 필터 영역 */
 .searchBox {
     width:100%;
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
-.searchBox input, select {
+div[class |='searchBox'] input, select {
     margin-left:5px;
     padding:5px;
     border:none;
 	outline:none;
 	box-shadow: 0 0 3px var(--main02);
 }
+div[className |='searchBox'] button {
+    border: none;
+    border-radius: 5px;
+    padding: 7px 20px;
+}
+button[class |='searchbtn'] {
+    border: none;
+    border-radius: 5px;
+    padding: 7px 20px;
+}
+
 .searchBox .keyword{
     margin-right:5px;
     width:100px;
 }
+
+searchBoxB {
+    width:70%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+searchBox30 {
+    width:30%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.hr02{
+    border:solid 1px var(--white);
+    margin:17px 0 5px;
+
+}
 .hr01{
-    border:solid .5px var(--main01);
+    border:solid 1px var(--main01);
     margin:10px 0 20px;
+}
+.hr00{
+    border:solid 1px var(--white);
+    margin:3px 0 5px;
 
 }
 .tableTypeA{
+    border-radius:5px;
     border-collapse: collapse;
     border:none;
     width:100%;
@@ -63,6 +97,11 @@ input[name="cb"]{
 
 }
 .tableTypeA th {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.01071em;
     background-color:var(--main04);
     color:var(--white);
     padding:10px 20px;
@@ -74,7 +113,11 @@ input[name="cb"]{
 .tableTypeA .th_w10{ width:10%}
 
 .tableTypeA td {
-
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.5rem;
+    letter-spacing: 0.01071em;
     text-align:center;
     border:solid 1px var(--lgray);
 }
@@ -116,7 +159,8 @@ input[name="cb"]{
     width:380px
 }
 .empInfoT {
-     width:380px;
+    border-radius:5px;
+    width:380px;
 }
 .empInfoT tr {
     padding: 7px 0 ;
@@ -129,7 +173,7 @@ input[name="cb"]{
     width:160px;
     color: #fff;
     font-size:0.8rem !important;
-    padding:5px 0;
+    padding:7px 0;
 
 }
 .empInfoT td {
@@ -139,12 +183,19 @@ input[name="cb"]{
 }
 .empInfoT input {
     background-color:#fff;
-    padding:5px;
+    padding:8px;
     width:100%;
 }
-
+/**/
 /*mui 컴포넌트 css상제 변환*/
 .css-1uvydh2{
     height: 0.45rem !important;
     min-height:17px !important;;
+}
+.css-1hw9j7s{
+    background-color: var(--main02) !important;
+}
+
+.css-1hw9j7s:hover{
+    background-color: var(--main04) !important;
 }

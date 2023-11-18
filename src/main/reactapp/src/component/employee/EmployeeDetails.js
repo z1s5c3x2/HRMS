@@ -50,18 +50,53 @@ export default function EmployeeDetails()
         <div className="contentBox">
             <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">사원 수정</span></div>
             <div className="emp_regs_content">
-                사번 : <input type={"text"} value={empInfo.empNo} name={"empNo"} onChange={updateApprovalInfo} disabled={true}/>  <br/>
-                이름 : <input type={"text"} value={empInfo.empName} name={"empName"} onChange={updateApprovalInfo}  /><br/>
-                번호 : <input type={"text"} value={empInfo.empPhone} name={"empPhone"} onChange={updateApprovalInfo} /><br/>
-                성별 : <input type={"text"} value={empInfo.empSex} name={"empSex"} onChange={updateApprovalInfo} /><br/>
-                계좌번호 : <input type={"text"} value={empInfo.empAcn} name={"empAcn"} onChange={updateApprovalInfo} /><br/>
-                비밀번호 : <input type={"password"} value={empInfo.empPwd} name={"empPwd"} onChange={updateApprovalInfo} /><br/>
-                비밀번호 변경 : <input type={"password"} value={empInfo.changePwd1} name={"changePwd1"} onChange={updateApprovalInfo} /><br/>
-                비밀번호 변경확인: <input type={"password"} value={empInfo.changePwd2} name={"changePwd2"} onChange={updateApprovalInfo} /><br/>
-                상태 : <input value={empInfo.empSta ? "재직" : "휴직"} disabled={true}/><br/>
-                부서 : <input value={rkList[empInfo.dptmNo-1]} disabled={true}/><br/>
-                직급 : <input value={rkList[empInfo.empRk]} disabled={true}/><br/>
-                <button onClick={checkPwd}> 수정 </button>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 사원번호</div>
+                    <div class="input_box"><input type={"text"} value={empInfo.empNo} name={"empNo"} onChange={updateApprovalInfo} disabled={true}/></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 사원이름</div>
+                    <div class="input_box"><input type={"text"} value={empInfo.empName} name={"empName"} onChange={updateApprovalInfo}  /></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 전화번호</div>
+                    <div class="input_box"><input type={"text"} value={empInfo.empPhone} name={"empPhone"} onChange={updateApprovalInfo} /></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 사원성별</div>
+                    <div class="input_box"><input type={"text"} value={empInfo.empSex} name={"empSex"} onChange={updateApprovalInfo} /></div>
+                </div>
+                <div class="eregInputBox">
+                   <div class="input_title ls19"> 계좌번호</div>
+                   <div class="input_box"><input type={"text"} value={empInfo.empAcn} name={"empAcn"} onChange={updateApprovalInfo} /></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 비밀번호</div>
+                    <div class="input_box"><input type={"password"} value={empInfo.empPwd} name={"empPwd"} onChange={updateApprovalInfo} /></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls6"> 비밀번호변경</div>
+                    <div class="input_box"><input type={"password"} value={empInfo.changePwd1} name={"changePwd1"} onChange={updateApprovalInfo} /></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title "> 비밀번호 변경확인</div>
+                    <div class="input_box"><input type={"password"} value={empInfo.changePwd2} name={"changePwd2"} onChange={updateApprovalInfo} /></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls12"> 현근무상태</div>
+                    <div class="input_box"><input value={empInfo.empSta ? "재직" : "휴직"} disabled={true}/></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 근무부서</div>
+                    <div class="input_box"> <input value={rkList[empInfo.dptmNo-1]} disabled={true}/></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 사원직급</div>
+                    <div class="input_box"><input value={rkList[empInfo.empRk]} disabled={true}/></div>
+                </div>
+                 <div class="eregBtnBox">
+                     <button onClick={checkPwd} class="btn01" type="button">사 원 정 보 수 정</button>
+                 </div>
             </div>
 
             { isOn ? <> <ApprovalModal data={empInfo}

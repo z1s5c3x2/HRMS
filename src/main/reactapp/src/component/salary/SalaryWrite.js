@@ -167,7 +167,7 @@ const data = {
                                 sx={{ width: '90px' }}
                                 size="small" label="지급 타입" type="number" value={paymentType} onChange={(e) => setPaymentType(e.target.value)} />
                        </div>
-                      <div className="btn">
+                      <div>
                         <Button
                             style={ { height: '40px' , width: '100px' }}
                             sx={{ backgroundColor: 'var(--main04)'}}

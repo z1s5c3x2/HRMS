@@ -69,9 +69,10 @@ export default function SalaryMain(props) {
     return (<>
     <div className="contentBox">
         <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">나의 급여내역</span></div>
-            <h3>{ /*row.empNo*/ } 이효재(2311006)님 급여 내역보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
-            <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
-                         <select
+            {/*<h3> row.empNo 이효재(2311006)님 급여 내역보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>*/}
+            <div class="searchBox"> {/*page : { pageInfo.page  }*/}
+            총 지급건수 : { pageDto.totalCount  } /
+                         페이지 게시물 수 선택 <select
                                   value = { pageInfo.view }
                                   onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
                                   >
@@ -79,7 +80,7 @@ export default function SalaryMain(props) {
                                     <option value="10"> 10 </option>
                                    <option value="20"> 20 </option>
                          </select>
-
+            </div>
             <TableContainer
                 sx={{
                     width: 900,
