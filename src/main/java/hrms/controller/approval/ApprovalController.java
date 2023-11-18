@@ -3,10 +3,7 @@ package hrms.controller.approval;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import hrms.model.dto.ApprovalDto;
-import hrms.model.dto.ApprovalRequestDto;
-import hrms.model.dto.EmployeeDto;
-import hrms.model.dto.TeamMemberDto;
+import hrms.model.dto.*;
 import hrms.model.entity.ApprovalEntity;
 import hrms.service.approval.ApprovalService;
 import hrms.service.employee.EmployeeService;
@@ -118,7 +115,7 @@ public class ApprovalController {
 
     // 전사원 상신목록 조회
     @GetMapping("/getAllEmployeesApproval")
-    public List<ApprovalDto> getAllEmployeesApproval(
+    public PageDto<ApprovalDto> getAllEmployeesApproval(
             @RequestParam int page, @RequestParam String key, @RequestParam String keyword,
             @RequestParam int apState, @RequestParam String strDate, @RequestParam String endDate ) throws JsonProcessingException {
 

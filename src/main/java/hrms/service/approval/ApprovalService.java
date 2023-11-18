@@ -732,7 +732,7 @@ public class ApprovalService {
 
 
     // 전사원 상신목록 조회
-    public List<ApprovalDto> getAllEmployeesApproval(
+    public PageDto<ApprovalDto> getAllEmployeesApproval(
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) throws JsonProcessingException {
 
@@ -744,6 +744,9 @@ public class ApprovalService {
         // DB의 전사원 결재목록 저장
         Page<ApprovalEntity> approvalEntities = approvalRepository.findBySearch( key, keyword, apState, strDate, endDate, pageable );
         //List<ApprovalEntity> approvalEntities = approvalRepository.findAll();
+
+        // 총 페이지 수
+        int totalPages = approvalEntities.getTotalPages();
 
         // 반환할 LIST 선언
         List<ApprovalDto> approvalDtos = new ArrayList<>();
@@ -760,7 +763,10 @@ public class ApprovalService {
 
         });
 
-        return approvalDtos;
+        return PageDto.<ApprovalDto>builder()
+                .someList(approvalDtos)
+                .totalPages(totalPages)
+                .build();
     }
 
 

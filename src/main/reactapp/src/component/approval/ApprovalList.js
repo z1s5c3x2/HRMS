@@ -20,9 +20,10 @@ import Pagination from '@mui/material/Pagination';
 
 export default function ApprovalList(props){
 
-    const [ allApprovalList, setAllApprovalList ] = useState( [] )
-
-
+    const [ allApprovalList, setAllApprovalList ] = useState( {
+        someList : [],
+        totalPages : 0
+    })
 
     // 페이징처리 및 검색필터;
     const [pageInfo, setPageInfo] = useState({
@@ -63,7 +64,7 @@ export default function ApprovalList(props){
 
         getList()
 
-    }, [])
+    }, [pageInfo.page])
 
     return (<>
 
@@ -129,7 +130,7 @@ export default function ApprovalList(props){
                 </tr>
 
 
-                { allApprovalList.map( r =>(
+                { allApprovalList.someList && allApprovalList.someList.map( r =>(
                     <tr className="outputTd">
                         <td> 제 { r.aprvNo }호 </td>
                         <td> { getTypeName( r.aprvType ) } </td>
