@@ -51,9 +51,9 @@ export default function EmployeeDetails()
             <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">사원 수정</span></div>
             <div className="emp_regs_content">
                 사번 : <input type={"text"} value={empInfo.empNo} name={"empNo"} onChange={updateApprovalInfo} disabled={true}/>  <br/>
-                이름 : <input type={"text"} value={empInfo.empName} name={"empName"} onChange={updateApprovalInfo}  /><br/>
+                이름 : <input type={"text"} value={empInfo.empName} name={"empName"} onChange={updateApprovalInfo}   disabled={true} /><br/>
                 번호 : <input type={"text"} value={empInfo.empPhone} name={"empPhone"} onChange={updateApprovalInfo} /><br/>
-                성별 : <input type={"text"} value={empInfo.empSex} name={"empSex"} onChange={updateApprovalInfo} /><br/>
+                성별 : <input type={"text"} value={empInfo.empSex} name={"empSex"} onChange={updateApprovalInfo}   disabled={true} /><br/>
                 계좌번호 : <input type={"text"} value={empInfo.empAcn} name={"empAcn"} onChange={updateApprovalInfo} /><br/>
                 비밀번호 : <input type={"password"} value={empInfo.empPwd} name={"empPwd"} onChange={updateApprovalInfo} /><br/>
                 비밀번호 변경 : <input type={"password"} value={empInfo.changePwd1} name={"changePwd1"} onChange={updateApprovalInfo} /><br/>

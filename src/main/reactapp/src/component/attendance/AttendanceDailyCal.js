@@ -7,6 +7,7 @@ const now = new Date();
 const [calOption, setCalOption] = useState({
      month: now.getMonth()+1,  // 현재 월[0~11] +1
      year: now.getFullYear() //현재연도
+
 })
 console.log("month :: "+calOption.month)
 console.log("year :: "+calOption.year)
@@ -14,9 +15,10 @@ const date = now.getDate();// 현재 날
 const day = now.getDay();// 현재 날
 console.log(calOption.year, calOption.month, date, day)
 
-useEffect( ()=>{ calPrint() },[calOption.month, calOption.year])
+useEffect( ()=>{ getDataList() },[calOption.month, calOption.year])
 //달력 출력
 const calPrint =(e)=>{
+
 	//1. 현재 연도와 월을 출력
 	document.querySelector('.caldate').innerHTML = `${calOption.year}년 ${calOption.month}월`;
 	console.log('현재 날짜의 getDate()  :  '+new Date().getDate());
@@ -72,8 +74,22 @@ const onNext = (check)=>{
     	if(calOption.month+1>12){setCalOption( { month:1, year: calOption.year++ })}
 		else{ setCalOption({ month : calOption.month+1,year:calOption.year }) }
 	}
-	calPrint();
+
+	calPrint()
+
 }
+	function getDataList(){
+		axios
+			.get("/attendance/getMonthChart",{params: {...calOption,empNo:'2311001'}})
+			.then( (r) => {
+				console.log( r.data )
+				calPrint()
+			})
+			.catch( (e) =>{
+				console.log( e )
+			})
+	}
+
     return(<>
         <div class="contentBox">
             <div class="pageinfo"><span class="lv0">근태관리</span>  > <span class="lv1">나의출결캘린더</span> </div>

@@ -335,7 +335,6 @@ public class ApprovalService {
                     //이후 처리
                     Optional<DepartmentHistoryEntity> optionalDepartmentHistoryEntity = departmentHistoryEntityRepository.findTop1ByEmpNoAndHdptmEndIsNullOrderByHdptmEndDesc(optionalEmployeeEntity.get());
                     Optional<TeamMemberEntity> optionalTeamMemberEntity = teamMemberRepository.findTop1ByEmpNoAndTmEndIsNullOrderByTmNoDesc(optionalEmployeeEntity.get());
-                    System.out.println("step 3");
                     if(optionalDepartmentHistoryEntity.isPresent() && optionalTeamMemberEntity.isPresent())
                     {
                         optionalDepartmentHistoryEntity.get().setHdptmEnd(retiredEmployeeDto.getRtempDate()); //부서 마지막날 설정

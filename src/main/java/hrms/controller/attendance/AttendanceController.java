@@ -6,6 +6,8 @@ import hrms.service.attendance.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/attendance")
 public class AttendanceController {
@@ -50,9 +52,19 @@ public class AttendanceController {
                                                  @RequestParam String periodEnd,
                                                  @RequestParam int page,
                                                  @RequestParam int dptmNo,
-                                                 @RequestParam int empRk)
+                                                 @RequestParam int empRk,
+                                                 @RequestParam int keywordType,
+                                                 @RequestParam String keyword)
     {
-        System.out.println("start = " + periodStart + ", end = " + periodEnd + ", page = " + page + ", dptmNo = " + dptmNo + ", empRk = " + empRk);
-        return attendanceService.allEmpAttdList(periodStart,periodEnd,page,dptmNo,empRk);
+        System.out.println("periodStart = " + periodStart + ", periodEnd = " + periodEnd + ", page = " + page + ", dptmNo = " + dptmNo + ", empRk = " + empRk + ", keywordType = " + keywordType + ", keyword = " + keyword);
+        return attendanceService.allEmpAttdList(periodStart,periodEnd,page,dptmNo,empRk,keywordType,keyword);
+    }
+
+    @GetMapping("/getMonthChart")
+    public List<AttendanceDto> getMonthChart(@RequestParam String empNo, @RequestParam int year, @RequestParam int month)
+    {
+
+        System.out.println("empNo = " + empNo + ", year = " + year + ", month = " + month);
+        return attendanceService.getMonthChart(empNo, year, month);
     }
 }

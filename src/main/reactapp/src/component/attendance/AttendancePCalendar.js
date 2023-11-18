@@ -14,7 +14,7 @@ const date = now.getDate();// 현재 날
 const day = now.getDay();// 현재 날
 console.log(calOption.year, calOption.month, date, day)
 
-useEffect( ()=>{ calPrint() },[calOption.month, calOption.year])
+useEffect( ()=>{ getDataList() },[calOption.month, calOption.year])
 //달력 출력
 const calPrint =(e)=>{
 	//1. 현재 연도와 월을 출력
@@ -46,11 +46,13 @@ const calPrint =(e)=>{
 
 		for(let i = 1 ; i <=eDay ;  i++){
 			console.log('eDay :: '+ day);
+			let checkDef = checkDateNow(i)
 			if(date == i) {
+
 					html +=
-					`<div class="today"> ${i} </div>`
+					`<div class="today"> ${i} <span> ${checkDef}</span> </div>`
 			} else{
-					html += `<div> ${i} </div>`;
+					html += `<div> ${i} <span> ${checkDef}</span> </div>`;
 			}
 			//
 		}
@@ -60,7 +62,38 @@ const calPrint =(e)=>{
 		}//
 	calendar.innerHTML = html;
 }
+	const [monthDate, setMonthDate] = useState([])
+function getDataList(){
+	axios
+	    .get("/attendance/getMonthChart",{params: {...calOption,empNo:'2311001'}})
+	    .then( (r) => {
+	        setMonthDate(r.data)
+	     })
+	    .catch( (e) =>{
+	        console.log( e )
+	    })
+}
 
+	useEffect(() => {
+		calPrint()
+	}, [monthDate]);
+console.log( monthDate )
+	function checkDateNow( _idx)
+	{
+		let idx = _idx < 10 ? '0'+_idx : _idx.toString()
+		console.log( idx +"이거 왜이래")
+		console.log( monthDate.length )
+		console.log( monthDate )
+		for(let i=0;i<monthDate.length;i++){
+			console.log( monthDate[i].attdWrst.split(' ')[0].split('-')[2] + "이거랑 " + idx )
+			if(monthDate[i].attdWrst.split(' ')[0].split('-')[2] == idx){
+				return monthDate[i].attdRes
+			}
+
+		}
+		return ''
+
+	}
 const onNext = (check)=>{
 	console.log("check ::: " + check);
 	if(check == - 1){
