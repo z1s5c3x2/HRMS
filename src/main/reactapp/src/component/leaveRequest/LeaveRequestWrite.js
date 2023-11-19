@@ -27,13 +27,13 @@ export default function LeaveRequestWrite(props) {
   const [leaveNumber, setLeaveNumber] = useState('');
   const [paymentType, setPaymentType] = useState("");
 const data = {
-      lrqSt: selectedDate1,
-      lrqEnd: selectedDate2,
-      lrqType: 2,
-      lrqSrtype: Number(paymentType),
-      empNo: '2311006' // 추후에 세션 구현하면 접속한 본인 사번 대입
-    };
-    console.log(data);
+    lrqSt: selectedDate1,
+    lrqEnd: selectedDate2,
+    lrqType: 2,
+    lrqSrtype: Number(paymentType),
+    empNo: '2311006' // 추후에 세션 구현하면 접속한 본인 사번 대입
+};
+console.log(data);
 
 const empNoData ={
     empNo : '2311006'
@@ -41,95 +41,94 @@ const empNoData ={
 console.log(empNoData);
 
 axios.get("/leaveRequest/getLeave" , { params : empNoData } )
-        .then((r) => {
-            setLeaveNumber( r.data )
-            console.log(r.data)
-        })
+    .then((r) => {
+        setLeaveNumber( r.data )
+        console.log(r.data)
+})
 
-  const handleSubmit = () => {
+const handleSubmit = () => {
     // 서버로 보낼 데이터 준비
-
-    console.log(selectedDate1);  console.log(selectedDate2);
+    console.log(selectedDate1);
+    console.log(selectedDate2);
 
 
     // Axios를 사용하여 서버로 데이터 전송
     axios.post("/leaveRequest/post", data)
-      .then((response) => {
+        .then((response) => {
         console.log("데이터가 성공적으로 전송되었습니다.", response);
         // 성공 시 어떤 작업을 수행하거나 리다이렉트할 수 있습니다.
-      })
-      .catch((error) => {
+        })
+        .catch((error) => {
         console.error("데이터 전송 중 오류가 발생했습니다.", error);
         // 오류 처리 로직을 추가할 수 있습니다.
-      });
-
-
-
-
-
-  };
+    });
+};
     const rkList = ["대기", "사원", "주임", "대리", "과장", "팀장", "부장"];
-     const dptList = ['인사팀', '기획팀(PM)', '개발팀', 'DBA팀'];
-      function createData(name, calories, fat, carbs, protein) {
+    const dptList = ['인사팀', '기획팀(PM)', '개발팀', 'DBA팀'];
+
+    function createData(name, calories, fat, carbs, protein) {
          return { name, calories, fat, carbs, protein };
-       }
-  return (<>
+    }
+
+    return (<>
     <div className="contentBox">
     <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">연차 등록</span></div>
-      <h3>이효재(231106)님 사용 가능한 연차 : {leaveNumber}일</h3>
+        <h3>이효재(231106)님 사용 가능한 연차 : {leaveNumber}일</h3>
 
-      <form className="boardForm">
-      <div className="emp_regs_content">
-          <div className="eregInputBox">
-              <div class="input_title ">연차 시작 날짜</div>
+        <form className="boardForm">
+        <div className="emp_regs_content">
+            <div className="eregInputBox">
+                <div class="input_title ">연차 시작 날짜</div>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DesktopDatePicker
+                    <DesktopDatePicker
                     value={selectedDate1}
-                    sx={{ width: '70%'}}
+                    sx={{ width:'300px' }}
                     onChange={(date1) => setSelectedDate1(date1)}
                     renderInput={(params) => <TextField {...params} label="날짜" />}
                      format="YYYY-MM-DD"
                   />
                 </LocalizationProvider>
-          </div>
-          <div className="eregInputBox">
-                <div class="input_title ">연차 종료 날짜</div>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DesktopDatePicker
-                            value={selectedDate2}
-                            onChange={(date2) => setSelectedDate2(date2)}
-                            sx={{ width: '70%'}}
-                            renderInput={(params) => <TextField {...params} label="날짜" />}
-                             format="YYYY-MM-DD"
-                          />
-                        </LocalizationProvider>
-          </div>
-
+        </div>
+        <div className="eregInputBox">
+            <div class="input_title ">연차 종료 날짜</div>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DesktopDatePicker
+                    value={selectedDate2}
+                    onChange={(date2) => setSelectedDate2(date2)}
+                    sx={{ width:'300px' }}
+                    renderInput={(params) => <TextField {...params} label="날짜" />}
+                     format="YYYY-MM-DD"
+                  />
+            </LocalizationProvider>
+        </div>
         <div className="eregInputBox pmBox">
             <div class="input_title ">급여 유무</div>
             <TextField
-              label="(0: 무급 / 1: 유급 )"
-              type="number"
-              value={paymentType}
-              onChange={(e) => setPaymentType(e.target.value)}
+                sx={{ width:'300px' }}
+                label="(0: 무급 / 1: 유급 )"
+                type="number"
+                value={paymentType}
+                onChange={(e) => setPaymentType(e.target.value)}
             />
         </div>
         <div className="eregBtnBox">
-            <Button className="btn01" variant="contained" color="primary" onClick={modalController}>
+            <Button
+                sx={{ backgroundColor: 'var(--main04)'}}
+                className="btn01" variant="contained"  onClick={modalController}>
               결재요청
             </Button>
         </div>
-      </div>
-      </form>
-      {isOn ? (
-                <ApprovalModal
-                  data={data}
-                  aprvType={ 10 }
-                  targetUrl="/leaveRequest/post"
-                  successUrl="/leaveRequest/write"
-                  modalControll={modalController}
-                />
-              ) : null}
+    </div>
+    </form>
+    {isOn ? (
+        <ApprovalModal
+          data={data}
+          aprvType={ 10 }
+          targetUrl="/leaveRequest/post"
+          successUrl="/leaveRequest/write"
+          modalControll={modalController}
+        />
+      ) : null}
     </div>
   </>);
 }

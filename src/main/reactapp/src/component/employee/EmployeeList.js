@@ -11,6 +11,7 @@ import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import RegisterEmp from "./RegisterEmp";
 import {Link} from "react-router-dom";
+import styles from '../../css/Table.css';
 
 export default function EmployeeList() {
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
@@ -48,36 +49,66 @@ export default function EmployeeList() {
     }
     return (<>
         <div className="contentBox">
-            <input type={"text"} className={"a"} />
-            <input type={"text"} className={"b"} />
-            <button type={"button"} onClick={wwwwwwwww}></button>
-            <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">사원목록</span></div>
-            <div className="emp_regs_content"></div>
-            {/* 필터 구역*/}
-            <select
-                value = { pageInfo.sta }
-                onChange={ (e)=>{  setPageInfo( { ...pageInfo , sta : e.target.value,page:"1"} );  } }
-            >
-                <option value="0"> 상태 전체 </option>
-                <option value="1"> 재직 </option>
-                <option value="2"> 휴직 </option>
-            </select>
-            <select
-                value = { pageInfo.dptmNo }
-                onChange={ (e)=>{  setPageInfo( { ...pageInfo , dptmNo : e.target.value,page:'1'} );  } }
-            >
-                <option value="0"> 부서 전체 </option>
-                <option value="1"> 인사팀 </option>
-                <option value="2"> 기획팀(PM) </option>
-                <option value="3"> 개발팀 </option>
-                <option value="4"> DBA팀 </option>
 
-            </select>
-            {/* 필터 구역*/}
+            <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">사원목록</span></div>
+            <div className="searchBoxB">
+                {/* 필터 구역*/}
+                <select
+                    value = { pageInfo.sta }
+                    onChange={ (e)=>{  setPageInfo( { ...pageInfo , sta : e.target.value,page:"1"} );  } }
+                >
+                    <option value="0"> 상태 전체 </option>
+                    <option value="1"> 재직 </option>
+                    <option value="2"> 휴직 </option>
+                </select>
+                <select
+                    value = { pageInfo.dptmNo }
+                    onChange={ (e)=>{  setPageInfo( { ...pageInfo , dptmNo : e.target.value,page:'1'} );  } }
+                >
+                    <option value="0"> 부서 전체 </option>
+                    <option value="1"> 인사팀 </option>
+                    <option value="2"> 기획팀(PM) </option>
+                    <option value="3"> 개발팀 </option>
+                    <option value="4"> DBA팀 </option>
+
+                </select>
+                {/* 필터 구역*/}
+                {/* 검색 필드 */}
+                 <input type={"text"} className={"a"} />
+                 <input type={"text"} className={"b"} />
+                 <button className="searchbtn" type={"button"} onClick={wwwwwwwww}>검색</button>
+             </div>
+             <hr className="hr00"/>
             {/* 리스트 출력*/}
-            <TableContainer component={Paper}>
+            <TableContainer
+                sx={{
+                    width: 900,
+                    height: 500,
+                    'td': {
+                        textAlign: 'center',
+                        fontSize: '0.8rem',
+                        paddingTop: '9px',
+                        paddingBottom: '9px',
+                        paddingLeft: '3px',
+                        paddingRight: '3px',
+                        border:'solid 1px var(--lgray)'
+                    }
+                }}
+                component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
+                    <TableHead
+                         sx={{
+                             'th':{
+                                 textAlign: 'center',
+                                 fontSize: '0.9rem',
+                                 bgcolor: 'var(--main04)',
+                                 color: '#fff',
+                                 paddingTop: '10px' ,
+                                 paddingBottom: '10px',
+                             }
+                         }}
+
+                   >
                         <TableRow>
                             <TableCell align="center">이름</TableCell>
                             <TableCell align="center">전화번호 </TableCell>
@@ -86,8 +117,8 @@ export default function EmployeeList() {
                             <TableCell align="center">직급</TableCell>
                             <TableCell align="center">부서</TableCell>
                         </TableRow>
-                    </TableHead>
-                    <TableBody>
+                   </TableHead>
+                   <TableBody>
                         {empList.map((emp) => (
                             <TableRow component={Link} to={"/employee/update?empNo="+emp.empNo} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                                     <TableCell align="center">{emp.empName}</TableCell>

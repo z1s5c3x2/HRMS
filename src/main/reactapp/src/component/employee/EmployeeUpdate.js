@@ -59,30 +59,53 @@ export default function EmployeeUpdate(props)
     return (<>
         <div className="contentBox">
             <div className="pageinfo"><span className="lv0">인사관리</span> > <span className="lv1">부서 및 직급 변경 </span></div>
-            <div className="emp_regs_content"></div>
-            <div>
-                사번 : <input value={empInfo.empNo} disabled={true}/> <br/>
-                이름 : <input value={empInfo.empName} disabled={true}/><br/>
-                번호 : <input value={empInfo.empPhone} disabled={true}/><br/>
-                성별 : <input value={empInfo.empSex} disabled={true}/><br/>
-                이름 : <input value={empInfo.empSta ? "재직" : "휴직"} disabled={true}/><br/>
-                부서 : <select name="dptmNo" onChange={ changeInfo} value={changeDepartment.dptmNo}>
-                    <option value={1}>인사팀</option>
-                    <option value={2}>기획팀(PM)</option>
-                    <option value={3}>개발</option>
-                    <option value={4}>DBA팀</option>
-                    </select><br/>
-                직급 : <select name="empRk" onChange={changeInfo}  value={empInfo.empRk} >
-                        <option value={6}>부장 </option>
-                        <option value={5}>팀장 </option>
-                        <option value={4}>과장</option>
-                        <option value={3}>대리 </option>
-                        <option value={2}>주임 </option>
-                        <option value={1}>사원 </option>
-                        <option value={0}>인턴  </option>
-                    </select>
-                <br/>
-            </div>
+            <div className="emp_regs_content">
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 사원번호</div>
+                    <div class="input_box"><input type="text" value={empInfo.empNo} disabled={true}/></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 사원이름</div>
+                    <div class="input_box"><input type="text" value={empInfo.empName} disabled={true}/></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 전화번호</div>
+                    <div class="input_box"><input type="text" value={empInfo.empPhone} disabled={true}/></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 사원성별</div>
+                    <div class="input_box"><input type="text" value={empInfo.empSex} disabled={true}/></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 사원상태</div>
+                    <div class="input_box"><input type="text" value={empInfo.empSta ? "재직" : "휴직"} disabled={true}/></div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 사원부서</div>
+                    <div class="input_box">
+                        <select name="dptmNo" onChange={ changeInfo} value={changeDepartment.dptmNo} class="w100">
+                            <option value={1}>인사팀</option>
+                            <option value={2}>기획팀(PM)</option>
+                            <option value={3}>개발</option>
+                            <option value={4}>DBA팀</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="eregInputBox">
+                    <div class="input_title ls19"> 사원직급</div>
+                    <div class="input_box">
+                        <select name="empRk" onChange={changeInfo}  value={empInfo.empRk}  class="w100">
+                            <option value={6}>부장 </option>
+                            <option value={5}>팀장 </option>
+                            <option value={4}>과장</option>
+                            <option value={3}>대리 </option>
+                            <option value={2}>주임 </option>
+                            <option value={1}>사원 </option>
+                            <option value={0}>인턴  </option>
+                        </select>
+                    </div>
+                </div>
+
             {
                 aprvType == 4 ? <>
                     변경 날짜 : <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -96,9 +119,11 @@ export default function EmployeeUpdate(props)
                 </LocalizationProvider>
                 </> : <></>
             }
-            <button onClick={e => window.location.reload()}> 새로고침 </button>
-            <button onClick={modalController}> 결제</button>
-
+                <div class="eregBtnBox" style={{display:'flex', justifyContent:"space-between"}}>
+                    <button type="button" class="btn w49" onClick={e => window.location.reload()}> 새로고침 </button>
+                    <button type="button" class="btn w49" onClick={modalController}> 결제</button>
+                </div>
+            </div>
         </div>
         { isOn ? <> <ApprovalModal data={aprvType == 5 ? empInfo : changeDepartment }
                                    aprvType={aprvType}

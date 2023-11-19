@@ -50,12 +50,19 @@ button{
 	border:none;
 	border-radius: 10px;
 }
+/*hr*/
+hr{border: solid 1px var(--main01);}
 /* btn정의 */
 .btn01{
 	width:100%;
 	background-color: var(--main02);
 	color:var(--white);
 }
+.btn{
+	background-color: var(--main02);
+	color:var(--white);
+}
+
 button:hover{
 	background-color: var(--main03);
 	color:var(--yellow);
@@ -199,7 +206,15 @@ header .topmenu{
 .contentBox .emp_regs_content{
 	height:90%;
 	width:60%;
-	padding: 0px 30px 20px;
+	padding: 20px 25px ;
+	margin: 0 auto;
+	background-color: var(--lsand);
+	border-radius: 10px;
+}
+.contentBox .list_content{
+	height:90%;
+	width:100%;
+	padding: 30px;
 	margin: 0 auto;
 }
 .contentBox .list_content{
@@ -213,14 +228,16 @@ header .topmenu{
 	padding:13px;
 
 }
-.ls3{  /*자간*/ 	letter-spacing: 3px;}
-.ls5{  /*자간*/ 	letter-spacing: 5px;}
-.ls7{  /*자간*/ 	letter-spacing: 7px;}
-.ls9{  /*자간*/ 	letter-spacing: 9px;}
-.ls15{  /*자간*/ letter-spacing: 23px;}
-.ls23{  /*자간*/ letter-spacing: 23px;}
-.ws55{  /*자간*/ word-spacing: 55px;}
+.eregInputBox{
+    display: flex;
+    padding:9px;
+}
 
+/*divflex*/
+.divflex{
+    display:flex;
+    justify-content: space-between;
+}
 /*----------------(모달영역)-------------------*/
 
 .approv_modal{
@@ -333,3 +350,51 @@ header .topmenu{
     color: var(--white);
     etter-spacing: 0.6em;
 }
+
+.logoA{
+    border-radius: 10px;
+    width:150px;
+}
+/*마진*/
+.mb10{margin-bottom:10px;}
+
+/*width*/
+.w10{width: 10% !important;}
+.w12{width: 12% !important;}
+.w15{width: 15% !important;}
+.w16{width: 16% !important;}
+.w20{width: 20% !important;}
+.w25{width: 25% !important;}
+.w30{width: 30% !important;}
+.w35{width: 35% !important;}
+.w38{width: 38% !important;}
+.w40{width: 40% !important;}
+.w45{width: 45% !important;}
+.w49{width: 49% !important;}
+.w50{width: 50% !important;}
+.w60{width: 60% !important;}
+.w65{width: 65% !important;}
+.w100{width: 100% !important;}
+
+.ls0{  /*자간*/ 	letter-spacing: 0px;}
+.ls2{  /*자간*/ 	letter-spacing: 2px;}
+.ls3{  /*자간*/ 	letter-spacing: 3px;}
+.ls5{  /*자간*/ 	letter-spacing: 5px;}
+.ls6{  /*자간*/ 	letter-spacing: 6px;}
+.ls7{  /*자간*/ 	letter-spacing: 7px;}
+.ls9{  /*자간*/ 	letter-spacing: 9px;}
+.ls12{  /*자간*/ letter-spacing: 12px;}
+.ls15{  /*자간*/ letter-spacing: 15px;}
+.ls19{  /*자간*/ letter-spacing: 19px;}
+.ls23{  /*자간*/ letter-spacing: 23px;}
+.ws55{  /*자간*/ word-spacing: 55px;}
+.lh18{ line-height:1.8}
+
+.pd5_0{padding:5px 0;}
+.pd10_0{padding:10px 0;}
+.pd15_0{padding:15px 0;}
+.pdt10_0{padding-top:10px 0;}
+.ma{margin:auto;}
+.mb18{margin-bottom:18px;}
+.mt5{margin-top:5px;}
+

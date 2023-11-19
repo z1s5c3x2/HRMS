@@ -167,10 +167,10 @@ const data = {
                                 sx={{ width: '90px' }}
                                 size="small" label="지급 타입" type="number" value={paymentType} onChange={(e) => setPaymentType(e.target.value)} />
                        </div>
-                      <div className="btn">
-                        <Button className="btn1"
-                            style={ { height: '50px' , width: '100px' }}
-                            sx={{}}
+                      <div>
+                        <Button
+                            style={ { height: '40px' , width: '100px' }}
+                            sx={{ backgroundColor: 'var(--main04)'}}
                             variant="contained" color="primary" onClick={modalController}>결재요청</Button>
                       </div>
 
@@ -186,12 +186,12 @@ const data = {
         <TableContainer
             sx={{
                 width: 900,
-                height: 420,
+                height: 430,
                 'td': {
                     textAlign: 'center',
                     fontSize: '0.8rem',
-                    paddingTop: '5px',
-                    paddingBottom: '5px',
+                    paddingTop: '9px',
+                    paddingBottom: '9px',
                     paddingLeft: '3px',
                     paddingRight: '3px',
                     border:'solid 1px var(--lgray)'
