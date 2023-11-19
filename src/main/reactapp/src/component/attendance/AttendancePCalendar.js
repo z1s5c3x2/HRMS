@@ -65,7 +65,7 @@ const calPrint =(e)=>{
 	const [monthDate, setMonthDate] = useState([])
 function getDataList(){
 	axios
-	    .get("/attendance/getmylrqChat",{params: {...calOption,empNo:'2311001'}})
+	    .get("/attendance/getmylrqChart",{params: {...calOption}})
 	    .then( (r) => {
 	        setMonthDate(r.data)
 

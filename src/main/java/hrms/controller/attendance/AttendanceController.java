@@ -18,11 +18,13 @@ public class AttendanceController {
     //출근처리
     @PostMapping("/")
     public boolean setAttendanceGoWork(@RequestBody AttendanceDto attendDto) {
+        System.out.println("AttendanceController.setAttendanceGoWork");
         return attendanceService.setAttendanceGoWork(attendDto);
     }
     //퇴근처리
     @PutMapping("/")
     public boolean setAttendanceLeaveWork( AttendanceDto attendDto) {
+        System.out.println("AttendanceController.setAttendanceLeaveWork");
         return attendanceService.setAttendanceLeaveWork(attendDto);
     }
 
@@ -61,18 +63,16 @@ public class AttendanceController {
     }
 
     @GetMapping("/getMonthChart") // 나의 출결 현황
-    public List<AttendanceDto> getMonthChart(@RequestParam String empNo, @RequestParam int year, @RequestParam int month)
+    public List<AttendanceDto> getMonthChart(@RequestParam int year, @RequestParam int month)
     {
 
-        System.out.println("empNo = " + empNo + ", year = " + year + ", month = " + month);
-        return attendanceService.getMonthChart(empNo, year, month);
+        return attendanceService.getMonthChart( year, month);
     }
 
-    @GetMapping("/getmylrqChat")
-    public List<AttendanceDto> getlrqChart(@RequestParam String empNo, @RequestParam int year, @RequestParam int month){
-        System.out.println("empNo = " + empNo + ", year = " + year + ", month = " + month);
+    @GetMapping("/getmylrqChart")
+    public List<AttendanceDto> getlrqChart(@RequestParam int year, @RequestParam int month){
         System.out.println("AttendanceController.getlrqChart");
-        return attendanceService.getlrqChart(empNo, year, month);
+        return attendanceService.getlrqChart( year, month);
 
     }
 }

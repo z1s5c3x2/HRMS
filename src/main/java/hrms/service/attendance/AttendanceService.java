@@ -33,8 +33,10 @@ public class AttendanceService {
     @Autowired private SecurityService securityService;
     @Transactional
     public boolean setAttendanceGoWork(AttendanceDto attendDto) {
-        Optional<EmployeeEntity> employeeEntity = employeeEntityRepository.findByEmpNo(attendDto.getEmpNo());
-        AttendanceEntity attendanceEntity = attendanceRepository.save(attendDto.toEntity());
+        Optional<EmployeeEntity> employeeEntity = employeeEntityRepository.findByEmpNo(securityService.getEmp().getEmpNo());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        AttendanceEntity attendanceEntity = AttendanceEntity.builder().empNo(employeeEntity.get()).attdWrst(LocalDateTime.now().format(formatter)).build();
+         attendanceRepository.save(attendanceEntity);
         attendanceEntity.setEmpNo(employeeEntity.get());
         employeeEntity.get().getAttendanceEntities().add(attendanceEntity);
         if(attendanceEntity.getAttdNo() > 0) {return true;}
@@ -44,8 +46,9 @@ public class AttendanceService {
     public boolean setAttendanceLeaveWork(@RequestBody AttendanceDto attendDto) {
         // pk(empNo)와  오늘날짜의 출근정보 검색
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeEntityRepository.findByEmpNo(securityService.getEmp().getEmpNo());
-
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        attendDto.setAttdWrst(LocalDateTime.now().format(formatter));
+        optionalEmployeeEntity.get().getAttendanceEntities().get(optionalEmployeeEntity.get().getAttendanceEntities().size()-1).setAttdWrend(LocalDateTime.now().format(formatter));
         return false;
         
     }
@@ -83,16 +86,15 @@ public class AttendanceService {
 
     //달력 근무현황,출결현황 작업
     @Transactional
-    public List<AttendanceDto> getMonthChart(String empNo, int year,int month) {
+    public List<AttendanceDto> getMonthChart( int year,int month) {
 
-        System.out.println("empNo = " + empNo + ", year = " + year + ", month = " + month);
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDateTime startDateTime = yearMonth.atDay(1).atStartOfDay();
         LocalDateTime endDateTime = yearMonth.atEndOfMonth().atTime(23, 59, 59);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         System.out.println(startDateTime.format(formatter));
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeEntityRepository.findByEmpNo(empNo);
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeEntityRepository.findByEmpNo(securityService.getEmp().getEmpNo());
         List<LeaveRequestEntity> leaveRequestEntities = optionalEmployeeEntity.get().getLeaveRequestEntities();
         if (optionalEmployeeEntity.isPresent()) {
             List<AttendanceEntity> attendanceEntities = attendanceRepository.findAllByEmpNoAndAttdWrstBetween(optionalEmployeeEntity.get(), startDateTime.format(formatter), endDateTime.format(formatter));
@@ -109,13 +111,13 @@ public class AttendanceService {
 
     }
     @Transactional
-    public List<AttendanceDto> getlrqChart(String empNo, int year,int month) {
-        System.out.println("empNo = " + empNo + ", year = " + year + ", month = " + month);
+    public List<AttendanceDto> getlrqChart(int year,int month) {
+
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDateTime startDateTime = yearMonth.atDay(1).atStartOfDay();
         LocalDateTime endDateTime = yearMonth.atEndOfMonth().atTime(23, 59, 59);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeEntityRepository.findByEmpNo(empNo);
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeEntityRepository.findByEmpNo(securityService.getEmp().getEmpNo());
         System.out.println("endDateTime = " + endDateTime);
 
         if (optionalEmployeeEntity.isPresent()) {

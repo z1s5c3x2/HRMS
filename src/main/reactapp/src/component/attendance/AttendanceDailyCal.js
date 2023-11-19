@@ -67,7 +67,7 @@ const calPrint =(e)=>{
 	function getDataList(){
 		console.log( calOption )
 		axios
-			.get("/attendance/getMonthChart",{params: {...calOption,empNo:'2311001'}})
+			.get("/attendance/getMonthChart",{params: {...calOption}})
 			.then( (r) => {
 				console.log( "나ㅏㅏㅏㅏㅏㅏㅏㅏㅏ" )
 				console.log( r.data )
