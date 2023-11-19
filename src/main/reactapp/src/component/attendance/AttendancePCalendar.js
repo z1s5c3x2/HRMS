@@ -65,9 +65,10 @@ const calPrint =(e)=>{
 	const [monthDate, setMonthDate] = useState([])
 function getDataList(){
 	axios
-	    .get("/attendance/getMonthChart",{params: {...calOption,empNo:'2311001'}})
+	    .get("/attendance/getmylrqChat",{params: {...calOption,empNo:'2311001'}})
 	    .then( (r) => {
 	        setMonthDate(r.data)
+
 	     })
 	    .catch( (e) =>{
 	        console.log( e )
@@ -105,7 +106,7 @@ const onNext = (check)=>{
     	if(calOption.month+1>12){setCalOption( { month:1, year: calOption.year++ })}
 		else{ setCalOption({ month : calOption.month+1,year:calOption.year }) }
 	}
-	calPrint();
+	getDataList()
 }
     return(<>
         <div class="contentBox">

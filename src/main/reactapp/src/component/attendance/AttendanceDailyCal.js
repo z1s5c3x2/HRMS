@@ -48,11 +48,12 @@ const calPrint =(e)=>{
 
 		for(let i = 1 ; i <=eDay ;  i++){
 			console.log('eDay :: '+ day);
+			let checkDef = checkDateNow(i)
 			if(date == i) {
 					html +=
-					`<div class="today"> ${i} </div>`
+					`<div class="today"> ${i} <span> ${checkDef}</span> </div>`
 			} else{
-					html += `<div> ${i} </div>`;
+					html += `<div> ${i}  <span> ${checkDef}</span> </div>`;
 			}
 			//
 		}
@@ -62,7 +63,37 @@ const calPrint =(e)=>{
 		}//
 	calendar.innerHTML = html;
 }
+	const [monthDate, setMonthDate] = useState([])
+	function getDataList(){
+		console.log( calOption )
+		axios
+			.get("/attendance/getMonthChart",{params: {...calOption,empNo:'2311001'}})
+			.then( (r) => {
+				console.log( "나ㅏㅏㅏㅏㅏㅏㅏㅏㅏ" )
+				console.log( r.data )
+				setMonthDate(r.data)
+			})
+			.catch( (e) =>{
+				console.log( e )
+			})
+	}
 
+	useEffect(() => {
+		calPrint()
+	}, [monthDate]);
+
+	function checkDateNow( _idx)
+	{
+		let idx = _idx < 10 ? '0'+_idx : _idx.toString()
+		for(let i=0;i<monthDate.length;i++){
+			if(monthDate[i].attdWrst.split(' ')[0].split('-')[2] == idx){
+				return monthDate[i].attdRes
+			}
+
+		}
+		return ''
+
+	}
 const onNext = (check)=>{
 	console.log("check ::: " + check);
 	if(check == - 1){
@@ -75,20 +106,7 @@ const onNext = (check)=>{
 		else{ setCalOption({ month : calOption.month+1,year:calOption.year }) }
 	}
 
-	calPrint()
-
 }
-	function getDataList(){
-		axios
-			.get("/attendance/getMonthChart",{params: {...calOption,empNo:'2311001'}})
-			.then( (r) => {
-				console.log( r.data )
-				calPrint()
-			})
-			.catch( (e) =>{
-				console.log( e )
-			})
-	}
 
     return(<>
         <div class="contentBox">

@@ -60,11 +60,19 @@ public class AttendanceController {
         return attendanceService.allEmpAttdList(periodStart,periodEnd,page,dptmNo,empRk,keywordType,keyword);
     }
 
-    @GetMapping("/getMonthChart")
+    @GetMapping("/getMonthChart") // 나의 출결 현황
     public List<AttendanceDto> getMonthChart(@RequestParam String empNo, @RequestParam int year, @RequestParam int month)
     {
 
         System.out.println("empNo = " + empNo + ", year = " + year + ", month = " + month);
         return attendanceService.getMonthChart(empNo, year, month);
+    }
+
+    @GetMapping("/getmylrqChat")
+    public List<AttendanceDto> getlrqChart(@RequestParam String empNo, @RequestParam int year, @RequestParam int month){
+        System.out.println("empNo = " + empNo + ", year = " + year + ", month = " + month);
+        System.out.println("AttendanceController.getlrqChart");
+        return attendanceService.getlrqChart(empNo, year, month);
+
     }
 }
