@@ -35,11 +35,6 @@ export default function ApprovalList(props){
         endDate : ''        // 상신일자 [조회종료일자]
     });
 
-    useEffect(() => {
-        console.log( 'check' )
-        console.log(pageInfo);
-    }, [pageInfo]);
-
     // 페이지 번호를 클릭했을 때
     const onPageSelect = (e, value) =>{
 

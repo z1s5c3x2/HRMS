@@ -124,7 +124,7 @@ public class ApprovalController {
 
     // 개별 상신목록 조회
     @GetMapping("/getReconsiderHistory")
-    public List<ApprovalDto> getReconsiderHistory(
+    public PageDto<ApprovalDto> getReconsiderHistory(
             @RequestParam int page, @RequestParam String key, @RequestParam String keyword,
             @RequestParam int apState, @RequestParam String strDate, @RequestParam String endDate) throws JsonProcessingException {
 
