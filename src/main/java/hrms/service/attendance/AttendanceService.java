@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +36,9 @@ public class AttendanceService {
     public boolean setAttendanceGoWork(AttendanceDto attendDto) {
         Optional<EmployeeEntity> employeeEntity = employeeEntityRepository.findByEmpNo(securityService.getEmp().getEmpNo());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        AttendanceEntity attendanceEntity = AttendanceEntity.builder().empNo(employeeEntity.get()).attdWrst(LocalDateTime.now().format(formatter)).build();
+        String workNow = LocalDateTime.now().format(formatter);
+        AttendanceEntity attendanceEntity = AttendanceEntity.builder().empNo(employeeEntity.get()).attdWrst(workNow)
+                .attdWrend(workNow).build();
          attendanceRepository.save(attendanceEntity);
         attendanceEntity.setEmpNo(employeeEntity.get());
         employeeEntity.get().getAttendanceEntities().add(attendanceEntity);
@@ -59,7 +62,7 @@ public class AttendanceService {
         System.out.println("start = " + start + ", end = " + end + ", page = " + page + ", dptmNo = " + dptmNo + ", empRk = " + empRk + ", keywordType = " + keywordType + ", keyword = " + keyword);
         try{
 
-            Pageable pageable = PageRequest.of(page-1,10); //현재 페이지와 한 페이지에 보여줄 데이터 수 설정
+            Pageable pageable = PageRequest.of(page-1,10, Sort.by(Sort.Order.desc("attdWrst"))); //현재 페이지와 한 페이지에 보여줄 데이터 수 설정
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             Page<AttendanceEntity> _page = attendanceRepository.findAllByAttdWrstBetween(start,end,pageable);
             PageDto<AttendanceDto> result = PageDto.<AttendanceDto>builder()
@@ -133,6 +136,11 @@ public class AttendanceService {
 
         return null;
     }
+    /*
+    *  출퇴 시간 null이 있으면 임의 시간으로 전처리,
+    *  날짜 기준으로 역정렬 
+    *  개인 근무 현황 캘린더 삭제
+    * */
     private final static String[] ATTD_RES_STRING = new String[]{"X","휴직","연차","병가"};
     @Transactional
     public String convertAttdToRes(String start,String end,DateTimeFormatter ft,List<LeaveRequestEntity> leaveRequestEntities)
@@ -152,7 +160,10 @@ public class AttendanceService {
                 return ATTD_RES_STRING[leaveRequestEntities.get(i).getLrqType()];
             }
         }
-        if(_empAttdStart.isAfter(_nowStart))
+        if(start.equals(end)){
+            return "출근중";
+        }
+        else if(_empAttdStart.isAfter(_nowStart))
         {
             return "지각";
         } else if (_empAttdEnd.isBefore(_nowEnd)) {
