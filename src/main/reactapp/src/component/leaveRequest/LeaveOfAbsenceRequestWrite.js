@@ -31,7 +31,7 @@ const data = {
       lrqEnd: selectedDate2,
       lrqType: 1,
       lrqSrtype: Number(paymentType),
-      empNo: '2311006' // 추후에 세션 구현하면 접속한 본인 사번 대입
+      empNo: login.empNo // 추후에 세션 구현하면 접속한 본인 사번 대입
     };
     console.log(data);
 

@@ -37,7 +37,7 @@ export default function LeaveRequestUpdate (props){
     return( <>
         <div className="contentBox">
             <div className="pageinfo"><span className="lv0">근태관리</span> > <span className="lv1">연차 수정</span></div>
-            <h3>이효재(231106)님 사용 가능한 연차 : {lrqInfo.leaveCnt}일</h3>
+            <h3>{login.empName}({login.empNo})님 사용 가능한 연차 : {lrqInfo.leaveCnt}일</h3>
 
             <form className="boardForm">
                 <div className="emp_regs_content">

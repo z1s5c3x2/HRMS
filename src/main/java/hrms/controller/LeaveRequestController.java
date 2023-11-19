@@ -41,9 +41,16 @@ public class LeaveRequestController {
     }
 
     @GetMapping("/get") // 메인페이지전용 세션에서 들어온 본인 사번으로 본인정보 출력
-    public PageDto lrqGet(@RequestParam int page, @RequestParam int view, @RequestParam String empNo) {
+    public PageDto lrqGet(@RequestParam int page,
+                          @RequestParam int view,
+                          @RequestParam String empNo,
+                          @RequestParam int lrqType,
+                          @RequestParam int lrqSrtype,
+                          @RequestParam String DateSt,
+                          @RequestParam String DateEnd
+    ) {
 
-        return leaveRequestService.lrqGet(page, view, empNo);
+        return leaveRequestService.lrqGet(page, view, empNo , lrqType ,lrqSrtype , DateSt, DateEnd);
     }
 
     // 3. 보유 연차 출력

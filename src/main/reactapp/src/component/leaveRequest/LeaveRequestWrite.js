@@ -36,14 +36,11 @@ const data = {
       lrqEnd: selectedDate2,
       lrqType: 2,
       lrqSrtype: lrqSrtype,
-      empNo: '2311006' // 추후에 세션 구현하면 접속한 본인 사번 대입
+      empNo: login.empNo // 추후에 세션 구현하면 접속한 본인 사번 대입
     };
     console.log(data);
 
-const empNoData ={
-    empNo : '2311006'
-}
-console.log(empNoData);
+
 
     const handleRadioChange = (value) => {
         setLrqSrtype(value);
@@ -85,7 +82,7 @@ axios.get("/leaveRequest/getLeave" , { params : empNoData } )
   return (<>
     <div className="contentBox">
     <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">연차 등록</span></div>
-      <h3>이효재(231106)님 사용 가능한 연차 : {leaveNumber}일</h3>
+      <h3>{login.empName}({login.empNo})님 사용 가능한 연차 : {leaveNumber}일</h3>
 
       <form className="boardForm">
       <div className="emp_regs_content">

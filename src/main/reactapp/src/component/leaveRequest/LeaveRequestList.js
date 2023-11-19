@@ -130,7 +130,6 @@ function getlrqTypeLabel(lrqType) {
     return(<>
 
                 <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">전 사원 연차조회</span></div>
-                <h3> 전 사원 연차목록 </h3>
      <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
      <div style={{ display:'flex' }}>
                     <select
