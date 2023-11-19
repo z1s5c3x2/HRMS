@@ -122,12 +122,12 @@ public class SalaryService {
         return null;
     }
 
-    public PageDto slryGetMeAll(int page, int view, String empNo) {
+    public PageDto slryGetMeAll(int page, int view, String empNo, int slryType, String DateSt, String DateEnd) {
         // 페이징처리
         Pageable pageable = PageRequest.of(page - 1, view);
 
         // 1. 해당 empNo에 맞는 엔티티 호출
-        Page<SalaryEntity> salaryEntities = salaryRepository.findByEmpNo_EmpNo(empNo, pageable);
+        Page<SalaryEntity> salaryEntities = salaryRepository.findByEmpNo_EmpNo(empNo, slryType, DateSt, DateEnd, pageable);
 
         List<SalaryDto> salaryDtos = new ArrayList<>();
         salaryEntities.forEach(e -> {

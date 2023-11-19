@@ -25,12 +25,17 @@ export default function LeaveRequestWrite(props) {
   const [selectedDate1, setSelectedDate1] = useState(null); // 초기 값 null로 설정
   const [selectedDate2, setSelectedDate2] = useState(null); // 초기 값 null로 설정
   const [leaveNumber, setLeaveNumber] = useState('');
-  const [paymentType, setPaymentType] = useState("");
+  const [lrqSrtype, setLrqSrtype] = useState("0"); // 초기 값 0으로 설정
+
+
+
+
+
 const data = {
       lrqSt: selectedDate1,
       lrqEnd: selectedDate2,
       lrqType: 2,
-      lrqSrtype: Number(paymentType),
+      lrqSrtype: lrqSrtype,
       empNo: '2311006' // 추후에 세션 구현하면 접속한 본인 사번 대입
     };
     console.log(data);
@@ -39,6 +44,10 @@ const empNoData ={
     empNo : '2311006'
 }
 console.log(empNoData);
+
+    const handleRadioChange = (value) => {
+        setLrqSrtype(value);
+      };
 
 axios.get("/leaveRequest/getLeave" , { params : empNoData } )
         .then((r) => {
@@ -106,13 +115,23 @@ axios.get("/leaveRequest/getLeave" , { params : empNoData } )
           </div>
 
         <div className="eregInputBox pmBox">
-            <div class="input_title ">급여 유무</div>
-            <TextField
-              label="(0: 무급 / 1: 유급 )"
-              type="number"
-              value={paymentType}
-              onChange={(e) => setPaymentType(e.target.value)}
-            />
+                <div className="input_title ">급여 유무</div>
+                무급
+                <input
+                  type="radio"
+                  onChange={() => handleRadioChange("0")}
+                  name="lrqSrtype"
+                  value="0"
+                  checked={lrqSrtype === "0"}
+                />
+                유급
+                <input
+                  type="radio"
+                  onChange={() => handleRadioChange("1")}
+                  name="lrqSrtype"
+                  value="1"
+                  checked={lrqSrtype === "1"}
+                />
         </div>
         <div className="eregBtnBox">
             <Button className="btn01" variant="contained" color="primary" onClick={modalController}>

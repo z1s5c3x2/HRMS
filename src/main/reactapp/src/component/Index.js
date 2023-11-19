@@ -73,8 +73,8 @@ export default function Index( props ){
                             <Route path='/' element = { <Main />} />
                             {/* Approval*/}
                                 <Route path='/approval' element = { <ApprovalList/> } />
-                                <Route path='/reconsider' element = { <ReconsiderView/> } />
-                                <Route path='/approvalview' element = { <ApprovalView/> } />
+                                <Route path='/approval/reconsiderview' element = { <ReconsiderView/> } />
+                                <Route path='/approval/approvalview' element = { <ApprovalView/> } />
                             {/* Attendance*/}
                                 <Route path='/attendance' element={<AttendanceList/>} />
                                 <Route path='/attendance/pcalendar' element={<AttendancePCalendar/>} />
@@ -94,14 +94,17 @@ export default function Index( props ){
                                 <Route path='/salary/view' element={<SalaryView/>} />
                                 <Route path='/salary/list' element={<SalaryList/>} />
 
-                            { /* LeaveRequest*/ }
-                                <Route path='/leaveRequest' element={<LeaveRequestMain/>} />
-                                <Route path='/leaveRequest/write' element={<LeaveRequestWrite/>} />
-                                <Route path='/leaveRequest/view' element={<LeaveRequestView/>} />
-                                <Route path='/leaveRequest/list' element={<LeaveRequestList/>} />
-                                <Route path='/leaveRequest/update' element={<LeaveRequestUpdate/>} />
-                                <Route path='/sickleaveRequest/write' element={<SickLeaveRequestWrite/>} />
-                                <Route path='/leaveofabsenceRequest/write' element={<LeaveOfAbsenceRequestWrite/>} />
+                            { /* LeaveRequest 근태안에 종속 */ }
+                                <Route path='attendance/leaveRequestMe' element={<LeaveRequestMain/>} />
+                                <Route path='/attendance/leaveRequestwrite' element={<LeaveRequestWrite/>} />
+                                <Route path='/attendance/leaveRequestview' element={<LeaveRequestView/>} />
+                                <Route path='/attendance/leaveRequestlist' element={<LeaveRequestList/>} />
+                                {/* 연차 수정 */}
+                                <Route path='/attendance/leaveRequestupdate' element={<LeaveRequestUpdate/>} />
+                                {/* 병가신청 */}
+                                <Route path='/attendance/sickleaveRequestwrite' element={<SickLeaveRequestWrite/>} />
+                                {/* 휴직신청 */}
+                                <Route path='/employee/leaveofabsenceRequestwrite' element={<LeaveOfAbsenceRequestWrite/>} />
 
                             {/* TeamProject */}
                                 <Route path='/teamproject' element={<TeamProjectMain />} />

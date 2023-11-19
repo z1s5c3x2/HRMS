@@ -34,8 +34,7 @@ export default function ReconsiderView(props){
         page : 1 ,
         key : '' ,      // 결재번호[aprvNo], 내용[aprvCont] , 상신자명[empName]
         keyword : '',   // key에 대한 탐색명
-        aprvType : 0,   // 결재의 유형
-        apState : '',   // 결재 진행현황 [1:완료  2:반려  3:검토중]
+        apState : 0,   // 결재 진행현황 [1:완료  2:반려  3:검토중]
         cdate : ''      // 상신일자
     });
 
@@ -97,11 +96,11 @@ export default function ReconsiderView(props){
             <table className="tableTypeA">
 
                 <tr>
-                    <th> 결재번호 </th>
-                    <th> 상신유형 </th>
-                    <th> 내용 </th>
-                    <th> 상신일시 </th>
-                    <th> 진행상태 </th>
+                    <th width="12%"> 결재번호 </th>
+                    <th width="20%"> 상신유형 </th>
+                    <th width="39%"> 내용 </th>
+                    <th width="17%"> 상신일시 </th>
+                    <th width="12%"> 진행상태 </th>
                 </tr>
                 { reconsiderList.map( r =>(
                     <tr className="outputTd">

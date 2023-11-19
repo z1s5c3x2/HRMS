@@ -61,7 +61,7 @@ public class SecurityService implements UserDetailsService {
         Optional<EmployeeEntity> employeeEntityOptional = employeeEntityRepository.findByEmpNo(userDetails.getUsername());
         EmployeeEntity employeeEntity = employeeEntityOptional.get();
 
-        return EmployeeDto.builder().empNo( userDetails.getUsername() ).empName(employeeEntity.getEmpName()).build();
+        return EmployeeDto.builder().empNo( userDetails.getUsername() ).empName(employeeEntity.getEmpName()).dptmNo(employeeEntity.getDptmNo().getDptmNo()).build();
     }
 
 

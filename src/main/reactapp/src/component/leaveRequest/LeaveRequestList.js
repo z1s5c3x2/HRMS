@@ -195,10 +195,36 @@ function getlrqTypeLabel(lrqType) {
                         :
                         (<> <button  type="button" onClick = { (e)=> { window.location.href="/salary/list"; }  } > 검색제거 </button>  </>)
                     }
-            <TableContainer component={Paper}>
+            <TableContainer
+                sx={{
+                    width: 900,
+                    height: 500,
+                    'td': {
+                        textAlign: 'center',
+                        fontSize: '0.8rem',
+                        paddingTop: '9px',
+                        paddingBottom: '9px',
+                        paddingLeft: '3px',
+                        paddingRight: '3px',
+                        border:'solid 1px var(--lgray)'
+                    }
+                }}
+                component={Paper}>
                      <Table sx={{ minWidth: 650 }} aria-label="simple table">
                      {/* 테이블 제목 구역 */}
-                       <TableHead>
+                       <TableHead
+                        sx={{
+                            'th':{
+                                textAlign: 'center',
+                                fontSize: '0.9rem',
+                                bgcolor: 'var(--main04)',
+                                color: '#fff',
+                                paddingTop: '10px' ,
+                                paddingBottom: '10px',
+                            }
+                        }}
+
+                      >
                          <TableRow>
                            <TableCell style={{ width : '6%' }} align="right">번호</TableCell>
                            <TableCell style={{ width : '13%' }} align="right">연차신청날짜</TableCell>

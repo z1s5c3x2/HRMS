@@ -65,9 +65,10 @@ public class LeaveRequestService {
                     .build();
 
             leaveRequestRepository.save(leaveRequestEntity);
-
+            employeeEntity.setEmpSta(false);
             // 양방향
             approvalEntity.getLeaveRequestEntities().add(leaveRequestEntity);
+
 
             if (leaveRequestEntity.getLrqNo() >= 1) {
                 return true;
