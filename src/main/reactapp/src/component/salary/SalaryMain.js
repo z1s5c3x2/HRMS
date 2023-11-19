@@ -68,39 +68,71 @@ export default function SalaryMain(props) {
     return (<>
     <div className="contentBox">
         <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">개인 급여내역</span></div>
-            <h3>{ /*row.empNo*/ } 이효재(2311006)님 급여 내역보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
-            <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
-                    <div style={{ display : 'flex'}}>
-                         <select
-                                  value = { pageInfo.view }
-                                  onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
-                                  >
-                                    <option value="5"> 5 </option>
-                                    <option value="10"> 10 </option>
-                                   <option value="20"> 20 </option>
-                         </select>
-                          <select
+            {/*h3>*/}{/*row.empNo*/ }{/* 이효재(2311006)님 급여 내역보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
+            <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>*/}
+
+                    <div class="searchBoxB divflex pd10_0">
+                        <div class="divflex w54">
+                            <div>
+                                  조회기간 : <input type="date" className="periodStart" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateSt : e.target.value} ); } }/> ~
+                                  <input type="date" className="periodEnd" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateEnd : e.target.value} ); } } />
+                            </div>
+
+                            <select
                               value = { pageInfo.slryType }
                               onChange={ (e)=>{  setPageInfo( { ...pageInfo ,  slryType : e.target.value} );  } }
-                              >
-                              <option  value="0"> 전체유형 </option>
-                              <option  value="1"> 기본급 </option>
-                              <option  value="2"> 정기상여 </option>
-                              <option  value="3"> 특별상여 </option>
-                              <option  value="4"> 성과금 </option>
-                              <option  value="5"> 명절휴가비 </option>
-                              <option  value="6"> 퇴직금 </option>
-                              <option  value="7"> 경조사비 </option>
-                              <option  value="8"> 연가보상비 </option>
-                          </select>
-                          <div style= {{ marginLeft : '15px' }}>
-                              조회기간 : <input type="date" className="periodStart" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateSt : e.target.value} ); } }/> ~
-                              <input type="date" className="periodEnd" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateEnd : e.target.value} ); } } />
-                          </div>
+                            >
+                                <option  value="0"> 전체유형 </option>
+                                <option  value="1"> 기본급 </option>
+                                <option  value="2"> 정기상여 </option>
+                                <option  value="3"> 특별상여 </option>
+                                <option  value="4"> 성과금 </option>
+                                <option  value="5"> 명절휴가비 </option>
+                                <option  value="6"> 퇴직금 </option>
+                                <option  value="7"> 경조사비 </option>
+                                <option  value="8"> 연가보상비 </option>
+                            </select>
+                        </div>
+                        <div>
+                            <select
+                              value = { pageInfo.view }
+                              onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
+                            >
+                                <option value="5"> 5 </option>
+                                <option value="10"> 10 </option>
+                                <option value="20"> 20 </option>
+                            </select>
+                        </div>
                     </div>
-            <TableContainer component={Paper}>
+                <TableContainer
+                 sx={{
+                     width: 900,
+                     height: 500,
+                     'td': {
+                         textAlign: 'center',
+                         fontSize: '0.8rem',
+                         paddingTop: '9px',
+                         paddingBottom: '9px',
+                         paddingLeft: '3px',
+                         paddingRight: '3px',
+                         border:'solid 1px var(--lgray)'
+                     }
+                 }}
+                 component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
+                    <TableHead
+                        sx={{
+                            'th':{
+                                textAlign: 'center',
+                                fontSize: '0.9rem',
+                                bgcolor: 'var(--main04)',
+                                color: '#fff',
+                                paddingTop: '10px' ,
+                                paddingBottom: '10px',
+                            }
+                        }}
+
+                    >
                         <TableRow>
                             <TableCell align="right">번호</TableCell>
                             <TableCell align="right">지급날짜</TableCell>
