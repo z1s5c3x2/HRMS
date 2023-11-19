@@ -29,6 +29,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/info").hasRole("인사")   // 인증된 권한중에 인사팀이면 HTTP 허용
                 .antMatchers("/teamproject/teammember/print").hasRole("인사")
                 .antMatchers("/teamproject/teammember/write").hasRole("인사")
+                .antMatchers("/teamproject/teammember/update").hasRole("인사")
+                .antMatchers("/teamproject").hasRole("인사")
+                .antMatchers("/teamproject/listAll").hasRole("인사")
+                .antMatchers("/teamproject/update").hasRole("인사")
+                .antMatchers("/attendance").hasRole("인사")
+                .antMatchers("/attendance/dall").hasRole("인사")
+                .antMatchers("/attendance/leaveRequestlist").hasRole("인사")
+                .antMatchers("/employee/list").hasRole("인사")
+                .antMatchers("/employee/register").hasRole("인사")
+                .antMatchers("/employee/update").hasRole("인사")
+                .antMatchers("/employee/searchemp").hasRole("인사")
+                .antMatchers("/salary/list").hasRole("인사")
+                .antMatchers("/salary/write").hasRole("인사")
+                .antMatchers("/salary/view").hasRole("인사")
                 .antMatchers("/**").permitAll()     // 모든 페이지는 권한 모두 허용
                 //.anyRequest().authenticated()     // 모든 페이지는 인증 필요
                 .and()
