@@ -22,9 +22,9 @@ public interface ApprovalEntityRepository extends JpaRepository<ApprovalEntity,I
     @Query( value = "SELECT aprv.* FROM aprv JOIN aplog ON aprv.aprv_no = aplog.aprv_no JOIN emp ON aprv.emp_no = emp.emp_no " +
             "WHERE " +
                 // 필터 : key 검색
-            "   ( CASE" +
+            "   ( CASE " +
                     // 검색 key( 결재번호 / 내용 / 상신자 )가 없을 경우 전체 출력
-            "       WHEN :key = '' THEN TRUE " +
+            "       WHEN :keyword = '' THEN TRUE " +
                     // key에 따른 조건 출력
             "       ELSE "+
             "           CASE "+
@@ -48,7 +48,7 @@ public interface ApprovalEntityRepository extends JpaRepository<ApprovalEntity,I
             "   (case " +
             "       WHEN :apState = 0 THEN true " +
                     // 완료된 결재건
-            "       WHEN :apState = 1 THEN (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no AND aplog.aplog_sta = 1) = (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no) " +
+            "       WHEN :apState = 1 THEN (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no AND aplog.aplog_sta = 1) = (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no AND aplog.aplog_sta = 1) " +
                     // 결재 반려건
             "       WHEN :apState = 2 THEN (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no AND aplog.aplog_sta = 2) > 0 " +
                     // 결재 진행건
@@ -68,7 +68,7 @@ public interface ApprovalEntityRepository extends JpaRepository<ApprovalEntity,I
             "                       inner_aplog_3.aprv_no = aprv.aprv_no " +
             "                   AND inner_aplog_3.aplog_sta = 3 ) " +
             "       end " +
-            "   ) GROUP BY aprv.aprv_no, aplog.aprv_no ORDER BY cdate DESC"
+            "   ) GROUP BY aplog.aprv_no ORDER BY cdate DESC"
             , nativeQuery = true )
     Page< ApprovalEntity > findBySearch( String key, String keyword, int apState, String strDate, String endDate, Pageable pageable );
 

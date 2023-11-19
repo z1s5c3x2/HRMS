@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+/* 컴포넌트 import */
 import { getTypeName } from './ListOutputConverter';
 
 /* MUI TABLE 관련 컴포넌트 import */
@@ -26,6 +27,8 @@ export default function ApprovalMain(props){
         window.location.href = '/approval'
     }
 
+
+    /* 리스트 출력 ================================================================== */
 
     // 출력할 결재 리스트 상태변수
     const [ approvalList, setApprovalList ] = useState( [] )
@@ -86,6 +89,7 @@ export default function ApprovalMain(props){
     return (<>
 
         <h3> 결재관리 </h3>
+
         <div class="contentBox">
             <div class="searchBox">
 
@@ -148,7 +152,7 @@ export default function ApprovalMain(props){
 
 
                 { approvalView.someList && approvalView.someList.map( r =>(
-                    <tr className="outputTd">
+                    <tr className="outputTd" >
                         <td> 제 { r.aprvNo }호 </td>
                         <td> { getTypeName( r.aprvType ) } </td>
                         <td> { r.aprvCont !== "" ? r.aprvCont : "-" } </td>
@@ -174,10 +178,9 @@ export default function ApprovalMain(props){
             <div style={{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }}>
 
                 {/* count : 전체 페이지 수   onChange : 페이지번호를 클릭/변경 했을 때 이벤트 */}
-                <Pagination page={ pageInfo.page } count={ 5 } variant="outlined" onChange={ onPageSelect } />
+                <Pagination page={ pageInfo.page } count={ approvalView.totalPages } variant="outlined" onChange={ onPageSelect } />
 
             </div>
-
 
         </div>
 

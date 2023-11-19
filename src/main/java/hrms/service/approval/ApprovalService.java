@@ -371,7 +371,7 @@ public class ApprovalService {
 
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
         if (!optionalApprovalEntity.isPresent()) return false;
-        if(optionalApprovalEntity.get().getAprvType() == 2) // 기본 정보 수정
+        if(optionalApprovalEntity.get().getAprvType() == 2 || optionalApprovalEntity.get().getAprvType() == 5) // 기본 정보 수정
         {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         }else if(optionalApprovalEntity.get().getAprvType() == 3) //사원 퇴사
@@ -645,6 +645,7 @@ public class ApprovalService {
 
 
     // 개별 상신목록 조회
+    @Transactional
     public PageDto<ApprovalDto> getReconsiderHistory(
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) {
@@ -685,6 +686,7 @@ public class ApprovalService {
 
     
     // 개별 결재목록 조회
+    @Transactional
     public PageDto<ApprovalDto> getApprovalHistory(
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) {
@@ -723,10 +725,12 @@ public class ApprovalService {
 
 
     // 전사원 상신목록 조회
+    @Transactional
     public PageDto<ApprovalDto> getAllEmployeesApproval(
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) throws JsonProcessingException {
 
+        System.out.println("page = " + page + ", key = " + key + ", keyword = " + keyword + ", apState = " + apState + ", strDate = " + strDate + ", endDate = " + endDate);
 
         // 페이지별 출력 결재 건수는 15건 고정
         Pageable pageable = PageRequest.of( page-1, 15 );
@@ -735,11 +739,15 @@ public class ApprovalService {
         Page<ApprovalEntity> approvalEntities = approvalRepository.findBySearch( key, keyword, apState, strDate, endDate, pageable );
         //List<ApprovalEntity> approvalEntities = approvalRepository.findAll();
 
+
         // 총 페이지 수
         int totalPages = approvalEntities.getTotalPages();
 
+
         // 반환할 LIST 선언
         List<ApprovalDto> approvalDtos = new ArrayList<>();
+
+
 
         approvalEntities.forEach( e-> {
 
@@ -753,10 +761,12 @@ public class ApprovalService {
 
         });
 
+
         return PageDto.<ApprovalDto>builder()
                 .someList(approvalDtos)
                 .totalPages(totalPages)
                 .build();
+
     }
 
 

@@ -153,7 +153,7 @@ export default function ReconsiderView(props){
             <div style={{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }}>
 
                 {/* count : 전체 페이지 수   onChange : 페이지번호를 클릭/변경 했을 때 이벤트 */}
-                <Pagination page={ pageInfo.page } count={ 5 } variant="outlined" onChange={ onPageSelect } />
+                <Pagination page={ pageInfo.page } count={ reconsiderView.totalPages } variant="outlined" onChange={ onPageSelect } />
 
             </div>
 
