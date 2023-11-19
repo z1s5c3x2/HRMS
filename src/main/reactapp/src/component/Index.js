@@ -72,14 +72,8 @@ export default function Index( props ){
                             {/* MAIN*/}
                             <Route path='/' element = { <Main />} />
                             {/* Approval*/}
-                            {/*
                                 <Route path='/approval' element = { <ApprovalList/> } />
-                                <Route path='/reconsider' element = { <ReconsiderView/> } />
-                                <Route path='/approvalview' element = { <ApprovalView/> } />
-                            */}
-
-                                <Route path='/approval' element = { <ApprovalList/> } />
-                                <Route path='/approval/reconsider' element = { <ReconsiderView/> } />
+                                <Route path='/approval/reconsiderview' element = { <ReconsiderView/> } />
                                 <Route path='/approval/approvalview' element = { <ApprovalView/> } />
                             {/* Attendance*/}
                                 <Route path='/attendance' element={<AttendanceList/>} />

@@ -26,18 +26,25 @@ export default function ApprovalMain(props){
         window.location.href = '/approval'
     }
 
+
+
     // 출력할 결재 리스트 상태변수
     const [ approvalList, setApprovalList ] = useState( [] )
     const [ approbateResult, setApprobateResult ] = useState( false )
 
+    const [ approvalView, setApprovalView ] = useState( {
+        someList : [],
+        totalPages : 0
+    })
+
     // 페이징처리 및 검색필터;
     const [pageInfo, setPageInfo] = useState({
         page : 1 ,
-        key : '' ,      // 결재번호[aprvNo], 내용[aprvCont] , 상신자명[empName]
-        keyword : '',   // key에 대한 탐색명
-        aprvType : 0,   // 결재의 유형
-        apState : '',   // 결재 진행현황 [1:완료  2:반려  3:검토중]
-        cdate : ''      // 상신일자
+        key : 'aprv_no' ,   // 결재번호[aprvNo], 내용[aprvCont], 상신자명[empName]
+        keyword : '',       // key에 대한 탐색명
+        apState : 0,        // 결재 진행현황 [1:완료  2:반려  3:검토중]
+        strDate : '',       // 상신일자 [조회시작일자]
+        endDate : ''        // 상신일자 [조회종료일자]
     });
 
     // 페이지 번호를 클릭했을 때
@@ -51,10 +58,10 @@ export default function ApprovalMain(props){
     // 결재 리스트 요청
     const getApprovalList = e => {
 
-        axios.get( '/approval/getApprovalHistory' ).then( result => {
+        axios.get( '/approval/getApprovalHistory', {params : pageInfo} ).then( result => {
 
             console.log( result.data );
-            setApprovalList( result.data )
+            setApprovalView( result.data )
 
         })
 
@@ -63,7 +70,7 @@ export default function ApprovalMain(props){
     // 검토대상 내역 및 검토완료 내역 요청
     useEffect( () => {
         getApprovalList();
-    }, [approbateResult])
+    }, [approbateResult, pageInfo.page])
 
 
     // 검토완료
@@ -75,7 +82,6 @@ export default function ApprovalMain(props){
             if( result ) setApprobateResult( !approbateResult );
 
         })
-
     }
 
     return (<>
@@ -86,26 +92,45 @@ export default function ApprovalMain(props){
 
                 <span>
                     상신일자
-                    조회기간 : <input type="date" className="periodStart" /> ~  <input type="date" className="periodEnd" />
+                    조회기간 : <input type="date" className="periodStart"
+                        onChange = { e =>{
+                        setPageInfo( { ...pageInfo, strDate : e.target.value } )
+                    }} />
+                     ~
+                    <input type="date" className="periodEnd"
+                        onChange = { e =>{
+                        setPageInfo( { ...pageInfo, endDate : e.target.value } )
+                    }} />
                 </span>
 
                 <span>
                     결재상태
-                    <select>
-                        <option value="1"> 완료 </option>
-                        <option value="2"> 반려 </option>
-                        <option value="3"> 검토중 </option>
+                    <select onChange = { e => {
+                        setPageInfo( { ...pageInfo, apState : e.target.value } )
+                    }} >
+                        <option value={0}> 전체 </option>
+                        <option value={1}> 완료 </option>
+                        <option value={2}> 반려 </option>
+                        <option value={3}> 검토중 </option>
                     </select>
                 </span>
 
                 <span>
-                    <select>
-                        <option value="aprvNo"> 결재번호 </option>
-                        <option value="aprvCont"> 내용 </option>
-                        <option value="empName"> 상신자 </option>
+                    <select onChange = { e => {
+                        setPageInfo( { ...pageInfo, key : e.target.value } )
+                    }} >
+                        <option value="aprv_no"> 결재번호 </option>
+                        <option value="aprv_cont"> 내용 </option>
+                        <option value="emp_name"> 상신자 </option>
                     </select>
-                    <input type="text" />
-                    <button type="button" className=""> 검색 </button>
+                    <input type="text"
+                        onChange = { e =>{
+                        setPageInfo( { ...pageInfo, keyword : e.target.value } )
+                    }}  />
+                    <button type="button" className=""
+                    onClick ={ e => {
+                        getApprovalList()
+                    }} > 검색 </button>
                 </span>
 
             </div>
@@ -123,7 +148,7 @@ export default function ApprovalMain(props){
                 </tr>
 
 
-                { approvalList.map( r =>(
+                { approvalView.someList && approvalView.someList.map( r =>(
                     <tr className="outputTd">
                         <td> 제 { r.aprvNo }호 </td>
                         <td> { getTypeName( r.aprvType ) } </td>

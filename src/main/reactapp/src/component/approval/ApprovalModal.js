@@ -38,6 +38,8 @@ export default function ApprovalModal(props)
     console.log( props.data )*/
     //결제 요청 버튼
     const submitApproval = (e)=>{
+
+
         // 결제받을 사원 리스트 id만 추출
         approvalRequest.approvers = selectList.map( s =>{
             return s.empNo
