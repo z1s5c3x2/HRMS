@@ -28,11 +28,11 @@ export default function ApprovalList(props){
     // 페이징처리 및 검색필터;
     const [pageInfo, setPageInfo] = useState({
         page : 1 ,
-        key : 'aprv_no' ,      // 결재번호[aprvNo], 내용[aprvCont], 상신자명[empName]
-        keyword : '',   // key에 대한 탐색명
-        apState : 0,    // 결재 진행현황 [1:완료  2:반려  3:검토중]
-        strDate : '',      // 상신일자 [조회시작일자]
-        endDate : ''      // 상신일자 [조회종료일자]
+        key : 'aprv_no' ,   // 결재번호[aprvNo], 내용[aprvCont], 상신자명[empName]
+        keyword : '',       // key에 대한 탐색명
+        apState : 0,        // 결재 진행현황 [1:완료  2:반려  3:검토중]
+        strDate : '',       // 상신일자 [조회시작일자]
+        endDate : ''        // 상신일자 [조회종료일자]
     });
 
     useEffect(() => {

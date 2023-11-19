@@ -134,7 +134,7 @@ public class ApprovalController {
     // 개별 결재목록 조회
         // 해당 검토자의 검토대상 결재건 / 완료 혹은 반려 결재건
     @GetMapping("/getApprovalHistory")
-    public List<ApprovalDto> getApprovalHistory(
+    public PageDto<ApprovalDto> getApprovalHistory(
             @RequestParam int page, @RequestParam String key, @RequestParam String keyword,
             @RequestParam int apState, @RequestParam String strDate, @RequestParam String endDate ) throws JsonProcessingException {
 

@@ -654,8 +654,6 @@ public class ApprovalService {
         // 개별 상신(결재)내역 전체 조회
         List<ApprovalEntity> approvalList
                 = approvalRepository.findByAllempNo(optionalEmployeeEntity.get().getEmpNo());
-        System.out.println( "111 approvalList : "+approvalList );
-
 
         // 변환할 DTO 리스트
         List<ApprovalDto> approvalDtos = new ArrayList<>();
@@ -676,9 +674,43 @@ public class ApprovalService {
     }
 
     // 개별 결재목록 조회
-    public List<ApprovalDto> getApprovalHistory(
+    public PageDto<ApprovalDto> getApprovalHistory(
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) {
+
+
+
+        // 페이지별 출력 결재 건수는 15건 고정
+        Pageable pageable = PageRequest.of( page-1, 15 );
+
+        // DB의 전사원 결재목록 저장
+        Page<ApprovalEntity> approvalEntities = approvalRepository.approvalViewSearch( key, keyword, apState, strDate, endDate, securityService.getEmp().getEmpNo(), pageable );
+
+
+        // 총 페이지 수
+        int totalPages = approvalEntities.getTotalPages();
+
+        // 반환할 LIST 선언
+        List<ApprovalDto> approvalDtos = new ArrayList<>();
+
+        approvalEntities.forEach( e-> {
+
+            // DTO로 변환하여 list 저장
+            approvalDtos.add( e.toApprovalDto() );
+            // checkApprovalState(e) : 추가된 결재 건에 대해 검토진행 현황 확인 후 저장
+            // 1:완료  2:반려  3:검토중
+            approvalDtos.get(approvalDtos.size()-1).setApState( checkApprovalState( e ) );
+            // 상신자명 저장
+            approvalDtos.get(approvalDtos.size()-1).setEmpName( e.getEmpNo().getEmpName() );
+
+        });
+
+        return PageDto.<ApprovalDto>builder()
+                .someList(approvalDtos)
+                .totalPages(totalPages)
+                .build();
+    }
+        /*
 
         // 결재자
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
@@ -727,8 +759,11 @@ public class ApprovalService {
         })
         .filter(Objects::nonNull) // null을 제외하고 필터링
         .collect(Collectors.toList());
+*/
 
-    }
+
+
+
 
 
     // 전사원 상신목록 조회
@@ -740,7 +775,6 @@ public class ApprovalService {
         // 페이지별 출력 결재 건수는 15건 고정
         Pageable pageable = PageRequest.of( page-1, 15 );
 
-        System.out.println("page = " + page + ", key = " + key + ", keyword = " + keyword + ", apState = " + apState + ", strDate = " + strDate + ", endDate = " + endDate);
         // DB의 전사원 결재목록 저장
         Page<ApprovalEntity> approvalEntities = approvalRepository.findBySearch( key, keyword, apState, strDate, endDate, pageable );
         //List<ApprovalEntity> approvalEntities = approvalRepository.findAll();

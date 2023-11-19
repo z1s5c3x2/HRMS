@@ -32,14 +32,19 @@ export default function ApprovalMain(props){
     const [ approvalList, setApprovalList ] = useState( [] )
     const [ approbateResult, setApprobateResult ] = useState( false )
 
+    const [ approvalView, setApprovalView ] = useState( {
+        someList : [],
+        totalPages : 0
+    })
+
     // 페이징처리 및 검색필터;
     const [pageInfo, setPageInfo] = useState({
         page : 1 ,
-        key : '' ,      // 결재번호[aprvNo], 내용[aprvCont], 상신자명[empName]
-        keyword : '',   // key에 대한 탐색명
-        apState : 0,    // 결재 진행현황 [1:완료  2:반려  3:검토중]
-        strDate : '',      // 상신일자 [조회시작일자]
-        endDate : ''      // 상신일자 [조회종료일자]
+        key : 'aprv_no' ,   // 결재번호[aprvNo], 내용[aprvCont], 상신자명[empName]
+        keyword : '',       // key에 대한 탐색명
+        apState : 0,        // 결재 진행현황 [1:완료  2:반려  3:검토중]
+        strDate : '',       // 상신일자 [조회시작일자]
+        endDate : ''        // 상신일자 [조회종료일자]
     });
 
     // 페이지 번호를 클릭했을 때
@@ -56,7 +61,7 @@ export default function ApprovalMain(props){
         axios.get( '/approval/getApprovalHistory', {params : pageInfo} ).then( result => {
 
             console.log( result.data );
-            setApprovalList( result.data )
+            setApprovalView( result.data )
 
         })
 
@@ -65,7 +70,7 @@ export default function ApprovalMain(props){
     // 검토대상 내역 및 검토완료 내역 요청
     useEffect( () => {
         getApprovalList();
-    }, [approbateResult])
+    }, [approbateResult, pageInfo.page])
 
 
     // 검토완료
@@ -143,7 +148,7 @@ export default function ApprovalMain(props){
                 </tr>
 
 
-                { approvalList.map( r =>(
+                { approvalView.someList && approvalView.someList.map( r =>(
                     <tr className="outputTd">
                         <td> 제 { r.aprvNo }호 </td>
                         <td> { getTypeName( r.aprvType ) } </td>
