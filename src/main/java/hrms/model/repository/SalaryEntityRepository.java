@@ -16,7 +16,20 @@ public interface SalaryEntityRepository extends JpaRepository<SalaryEntity, Inte
     Optional<SalaryEntity> findBySlryNo(int slryNo);
 
     // 새로운 메서드 추가
-    Page<SalaryEntity> findByEmpNo_EmpNo(String empNo, Pageable pageable);
+
+
+    @Query(value =
+            "SELECT * " +
+                    "FROM SLRY " +
+                    "WHERE" +
+                    " emp_no = ?1 " +
+                    "   AND (CASE WHEN ?2 > 0 THEN slry_type = ?2 ELSE true END) " +
+                    "   AND (CASE WHEN ?3 IS NOT NULL AND ?4 IS NOT NULL THEN slry_date BETWEEN CAST(?3 AS DATE) AND CAST(?4 AS DATE) END OR " +
+                    "        (CASE WHEN ?3 IS NOT NULL AND ?4 = '' THEN slry_date >= CAST(?3 AS DATE) END) OR " +
+                    "        (CASE WHEN ?3 ='' AND ?4 IS NOT NULL THEN slry_date <= CAST(?4 AS DATE) END) OR " +
+                    "        (CASE WHEN ?3 = '' AND ?4 = '' THEN true END)) " +
+                    "ORDER BY slry_date DESC", nativeQuery = true)
+    Page<SalaryEntity> findByEmpNo_EmpNo(String empNo, int slryType, String DateSt, String DateEnd, Pageable pageable);
 
     @Query(value =
             "SELECT s.*, e.emp_rk, d.dptm_no " +

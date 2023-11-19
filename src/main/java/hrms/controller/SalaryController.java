@@ -45,9 +45,16 @@ public class SalaryController {
     }
 
     @GetMapping("/getMe") // SalaryMain 페이지에서 세션을 통한 본인 사번으로 본인정보 출력
-    public PageDto slryGetMeAll(@RequestParam int page, @RequestParam int view, @RequestParam String empNo) {
+    public PageDto slryGetMeAll(@RequestParam int page,
+                                @RequestParam int view,
+                                @RequestParam String empNo,
+                                @RequestParam int slryType,
+                                @RequestParam String DateSt,
+                                @RequestParam String DateEnd
 
-        return salaryService.slryGetMeAll(page, view, empNo);
+    ) {
+
+        return salaryService.slryGetMeAll(page, view, empNo, slryType, DateSt, DateEnd);
     }
 
     // 3.

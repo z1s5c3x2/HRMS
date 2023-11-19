@@ -38,11 +38,15 @@ export default function SalaryWrite(props) {
   const [empNumber, setEmpNumber] = useState('');
   const [empName, setEmpName] = useState('');
   const [rankNumber, setRankNumber] = useState('');
+  const [empList, setEmpList] = useState([]);
+  const [pageInfo, setPageInfo] = useState({ page: 1, dptmNo: 0, sta: '0', totalCount: 0, totalPages: 0 });
+  const [slryType, setSlryType] = useState("1"); // 초기 값 1으로 설정
+
 const data = {
       empNo: empNumber,
       slryDate: selectedDate,
       slryPay: Number(amount),
-      slryType: Number(paymentType),
+      slryType: slryType,
     };
     console.log(data);
   const handleSubmit = () => {
@@ -87,8 +91,6 @@ const data = {
     return { name, calories, fat, carbs, protein };
   }
 
-  const [empList, setEmpList] = useState([]);
-  const [pageInfo, setPageInfo] = useState({ page: 1, dptmNo: 0, sta: '0', totalCount: 0, totalPages: 0 });
 
   useEffect(() => {
     getList();
@@ -105,11 +107,13 @@ const data = {
         console.log(e);
       });
   };
-
+    const handleRadioChange = (value) => {
+            setSlryType(value);
+          };
   return (
     <>
     <div className="contentBox">
-            <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">나의 급여내역</span></div>
+            <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">급여 등록</span></div>
       <div>
         {/* 급여지급 관련 입력구역 */}
         <div className="inputbox">
@@ -162,15 +166,78 @@ const data = {
                                 size="small" label="금액" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
                       </div>
 
-                      <div className="value">
-                           <TextField
-                                sx={{ width: '90px' }}
-                                size="small" label="지급 타입" type="number" value={paymentType} onChange={(e) => setPaymentType(e.target.value)} />
-                       </div>
-                      <div>
-                        <Button
-                            style={ { height: '40px' , width: '100px' }}
-                            sx={{ backgroundColor: 'var(--main04)'}}
+                      <div className="eregInputBox pmBox">
+                                      <div className="input_title ">급여 유무</div>
+                                      기본급
+                                      <input
+                                        type="radio"
+                                        onChange={() => handleRadioChange("1")}
+                                        name="slryType"
+                                        value="1"
+                                        checked="checked"
+                                        checked={slryType === "1"}
+                                      />
+                                      정기상여
+                                      <input
+                                        type="radio"
+                                        onChange={() => handleRadioChange("2")}
+                                        name="slryType"
+                                        value="2"
+                                        checked={slryType === "2"}
+                                      />
+                                      특별상여
+                                       <input
+                                          type="radio"
+                                          onChange={() => handleRadioChange("3")}
+                                          name="slryType"
+                                          value="3"
+                                          checked={slryType === "3"}
+                                       />
+                                        성과금
+                                      <input
+                                         type="radio"
+                                         onChange={() => handleRadioChange("4")}
+                                         name="slryType"
+                                         value="4"
+                                         checked={slryType === "4"}
+                                      />
+                                       명절휴가비
+                                     <input
+                                        type="radio"
+                                        onChange={() => handleRadioChange("5")}
+                                        name="slryType"
+                                        value="5"
+                                        checked={slryType === "5"}
+                                     />
+                                       퇴직금
+                                      <input
+                                         type="radio"
+                                         onChange={() => handleRadioChange("6")}
+                                         name="slryType"
+                                         value="6"
+                                         checked={slryType === "6"}
+                                      />
+                                        경조사비
+                                       <input
+                                          type="radio"
+                                          onChange={() => handleRadioChange("7")}
+                                          name="slryType"
+                                          value="7"
+                                          checked={slryType === "7"}
+                                       />
+                                         연가보상비
+                                    <input
+                                       type="radio"
+                                       onChange={() => handleRadioChange("8")}
+                                       name="slryType"
+                                       value="8"
+                                       checked={slryType === "8"}
+                                    />
+                              </div>
+                      <div className="btn">
+                        <Button className="btn1"
+                            style={ { height: '50px' , width: '100px' }}
+                            sx={{}}
                             variant="contained" color="primary" onClick={modalController}>결재요청</Button>
                       </div>
 
@@ -186,12 +253,12 @@ const data = {
         <TableContainer
             sx={{
                 width: 900,
-                height: 430,
+                height: 420,
                 'td': {
                     textAlign: 'center',
                     fontSize: '0.8rem',
-                    paddingTop: '9px',
-                    paddingBottom: '9px',
+                    paddingTop: '5px',
+                    paddingBottom: '5px',
                     paddingLeft: '3px',
                     paddingRight: '3px',
                     border:'solid 1px var(--lgray)'

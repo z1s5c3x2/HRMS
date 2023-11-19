@@ -12,7 +12,6 @@
 */
 import axios from 'axios';
 import { useState , useEffect } from 'react';
-import styles from '../../css/Table.css';
 // ------------------- mui table 관련 컴포넌트 import------------ //
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -132,127 +131,82 @@ export default function BoardList(props){
 
     return(<>
     <div className="contentBox">
-        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">전체 사원 급여지급 목록</span></div>
-        <div class="searchBox pd10_0">
-        <div style= {{ marginLeft : '15px' }}>
-            <input type="date" className="periodStart" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateSt : e.target.value} ); } }/> ~
-            <input type="date" className="periodEnd" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateEnd : e.target.value} ); } } />
-        </div>
+        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">전체 급여내역</span></div>
 
+        <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
+    <div style={{ display:'flex' }}>
         <select
-            value = { pageInfo.slryType }
-            onChange={ (e)=>{  setPageInfo( { ...pageInfo ,  slryType : e.target.value} );  } }
-            >
-            <option  value="0"> 전체유형 </option>
-            <option  value="1"> 기본급 </option>
-            <option  value="2"> 정기상여 </option>
-            <option  value="3"> 특별상여 </option>
-            <option  value="4"> 성과금 </option>
-            <option  value="5"> 명절휴가비 </option>
-            <option  value="6"> 퇴직금 </option>
-            <option  value="7"> 경조사비 </option>
-            <option  value="8"> 연가비 </option>
-        </select>
+                    value = { pageInfo.view }
+                    onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
+                    >
+                    <option value="5"> 5 </option>
+                    <option value="10"> 10 </option>
+                    <option value="20"> 20 </option>
+                </select>
         <select
-            value = { pageInfo.empRk }
-            onChange={ (e)=>{  setPageInfo( { ...pageInfo , empRk : e.target.value} );  } }
-            >
-            <option  value="0"> 전체직급 </option>
-            <option  value="1"> 사원 </option>
-            <option  value="2"> 주임 </option>
-            <option  value="3"> 대리 </option>
-            <option  value="4"> 과장 </option>
-            <option  value="5"> 팀장 </option>
-            <option  value="6"> 부장 </option>
-        </select>
+                    value = { pageInfo.slryType }
+                    onChange={ (e)=>{  setPageInfo( { ...pageInfo ,  slryType : e.target.value} );  } }
+                    >
+                    <option  value="0"> 전체유형 </option>
+                    <option  value="1"> 기본급 </option>
+                    <option  value="2"> 정기상여 </option>
+                    <option  value="3"> 특별상여 </option>
+                    <option  value="4"> 성과금 </option>
+                    <option  value="5"> 명절휴가비 </option>
+                    <option  value="6"> 퇴직금 </option>
+                    <option  value="7"> 경조사비 </option>
+                    <option  value="8"> 연가보상비 </option>
+                </select>
         <select
-            value = { pageInfo.dptmNo }
-            onChange={ (e)=>{  setPageInfo( { ...pageInfo , dptmNo : e.target.value} );  } }
-            >
-            <option  value="0"> 전체부서 </option>
-            <option  value="1"> 인사 </option>
-            <option  value="2"> 기획 </option>
-            <option  value="3"> 개발 </option>
-            <option  value="4"> 경영지원 </option>
-            <option  value="5"> 마케팅 </option>
-        </select>
-        {/*
-        <p> page : { pageInfo.page  }총입금건수 : { pageDto.totalCount  }
-        페이지당 게시물수 :
+                            value = { pageInfo.empRk }
+                            onChange={ (e)=>{  setPageInfo( { ...pageInfo , empRk : e.target.value} );  } }
+                            >
+                            <option  value="0"> 전체직급 </option>
+                            <option  value="1"> 사원 </option>
+                            <option  value="2"> 주임 </option>
+                            <option  value="3"> 대리 </option>
+                            <option  value="4"> 과장 </option>
+                            <option  value="5"> 팀장 </option>
+                            <option  value="6"> 부장 </option>
+                        </select>
         <select
-            value = { pageInfo.view }
-            onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
-            >
-            <option value="5"> 5 </option>
-            <option value="10"> 10 </option>
-            <option value="20"> 20 </option>
-        </select> </p>*/}
-        { /* 검색 */}
+                            value = { pageInfo.dptmNo }
+                            onChange={ (e)=>{  setPageInfo( { ...pageInfo , dptmNo : e.target.value} );  } }
+                            >
+                            <option  value="0"> 전체부서 </option>
+                            <option  value="1"> 인사 </option>
+                            <option  value="2"> 기획 </option>
+                            <option  value="3"> 개발 </option>
+                            <option  value="4"> 경영지원 </option>
+                            <option  value="5"> 마케팅 </option>
+                        </select>
+                        <div style= {{ marginLeft : '15px' }}>
+                        조회기간 : <input type="date" className="periodStart" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateSt : e.target.value} ); } }/> ~
+                        <input type="date" className="periodEnd" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateEnd : e.target.value} ); } } />
+                         </div>
+    </div>
 
-           <select
-               value={ pageInfo.key}
-               onChange = {
-                   (e)=>{ setPageInfo( { ...pageInfo , key : e.target.value } )  }
-                   }
-               >
-               <option value="empNo"> 사번 </option>
-           </select>
 
-            <input type="text"
-                style={{width:'100px'}}
-                value={ pageInfo.keyword }
-                onChange = {
-                   (e)=>{ setPageInfo( { ...pageInfo , keyword : e.target.value } )  }
-               }
-           />
-           <button class="searchbtn" type="button" onClick={ onSearch }>검색 </button>
 
-        </div>
-        { /* 삼항연산자 를 이용한 조건부 랜더링 */}
-        {
-            pageInfo.keyword == '' ?
-            (<> </>)
-            :
-            (<> <button  type="button" onClick = { (e)=> { window.location.href="/salary/list"; }  } > 검색제거 </button>  </>)
-        }
-        <TableContainer
-            sx={{
-                width: 900,
-                height: 500,
-                'td': {
-                    textAlign: 'center',
-                    fontSize: '0.8rem',
-                    paddingTop: '9px',
-                    paddingBottom: '9px',
-                    paddingLeft: '3px',
-                    paddingRight: '3px',
-                    border:'solid 1px var(--lgray)'
+                { /* 삼항연산자 를 이용한 조건부 랜더링 */}
+                {
+                    pageInfo.keyword == '' ?
+                    (<> </>)
+                    :
+                    (<> <button  type="button" onClick = { (e)=> { window.location.href="/salary/list"; }  } > 검색제거 </button>  </>)
                 }
-            }}
-            component={Paper}>
+        <TableContainer component={Paper}>
                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
                  {/* 테이블 제목 구역 */}
-                   <TableHead
-                     sx={{
-                         'th':{
-                             textAlign: 'center',
-                             fontSize: '0.9rem',
-                             bgcolor: 'var(--main04)',
-                             color: '#fff',
-                             paddingTop: '10px' ,
-                             paddingBottom: '10px',
-                         }
-                     }}
-
-                   >
+                   <TableHead>
                      <TableRow>
-                       <TableCell style={{ width : '7%' }} align="right">No.</TableCell>
-                       <TableCell style={{ width : '14%' }} align="right">지급날짜</TableCell>
-                       <TableCell style={{ width : '14%' }} align="right">지급금액</TableCell>
-                       <TableCell style={{ width : '15%' }} align="right">지급유형</TableCell>
-                        <TableCell style={{ width : '11%' }} align="right">결재No.</TableCell>
-                        <TableCell style={{ width : '19%' }} align="right">이름(사원번호)</TableCell>
-                        <TableCell style={{ width : '10%' }} align="right">직급</TableCell>
+                       <TableCell style={{ width : '5%' }} align="right">번호</TableCell>
+                       <TableCell style={{ width : '13%' }} align="right">지급날짜</TableCell>
+                       <TableCell style={{ width : '13%' }} align="right">지급금액</TableCell>
+                       <TableCell style={{ width : '10%' }} align="right">지급유형</TableCell>
+                        <TableCell style={{ width : '5%' }} align="right">결재번호</TableCell>
+                        <TableCell style={{ width : '15%' }} align="right">이름(사원번호)</TableCell>
+                        <TableCell style={{ width : '8%' }} align="right">직급</TableCell>
                         <TableCell style={{ width : '10%' }} align="right">부서</TableCell>
                      </TableRow>
                    </TableHead>
@@ -263,24 +217,45 @@ export default function BoardList(props){
                          key={row.name}
                         >
 
-                         <TableCell style={{ width : '7%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
-                         <TableCell style={{ width : '14%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
-                         <TableCell style={{ width : '14%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
-                         <TableCell style={{ width : '15%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
-                         <TableCell style={{ width : '11%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
-                         <TableCell style={{ width : '19%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empName + "(" + row.empNo + ")"}</TableCell>
-                        <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getrankLabel(row.empRk)}</TableCell>
+                         <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
+                         <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
+                         <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
+                         <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
+                         <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
+                         <TableCell style={{ width : '15%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empName + "(" + row.empNo + ")"}</TableCell>
+                        <TableCell style={{ width : '8%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getrankLabel(row.empRk)}</TableCell>
                         <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getdptmLabel(row.dptmNo)}</TableCell>
                        </TableRow>
                      ))}
                    </TableBody>
                  </Table>
                </TableContainer>
-                <div style = {{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }} >
+                 <div style = {{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }} >
 
-                   { /* page : 현재페이지    count : 전체페이지수   onChange : 페이지번호를 클릭/변경 했을떄 이벤트 */}
-                   <div><Pagination page = { pageInfo.page }  count={ pageDto.totalPages } onChange={ onPageSelect } /></div>
-                </div>
-        </div>
+                           { /* page : 현재페이지    count : 전체페이지수   onChange : 페이지번호를 클릭/변경 했을떄 이벤트 */}
+                           <Pagination page = { pageInfo.page }  count={ pageDto.totalPages } onChange={ onPageSelect } />
+
+                           { /* 검색 */}
+                           <div style ={{  margin : '20px' }}>
+                               <select
+                                   value={ pageInfo.key}
+                                   onChange = {
+                                       (e)=>{ setPageInfo( { ...pageInfo , key : e.target.value } )  }
+                                       }
+                                   >
+                                   <option value="empNo"> 사번 </option>
+                               </select>
+
+                               <input type="text"
+                                   value={ pageInfo.keyword }
+                                   onChange = {
+                                       (e)=>{ setPageInfo( { ...pageInfo , keyword : e.target.value } )  }
+                                   }
+                               />
+                               <button type="button" onClick={ onSearch }>검색 </button>
+                           </div>
+
+                       </div>
+    </div>
     </>)
 }
