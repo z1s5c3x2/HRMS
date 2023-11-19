@@ -15,13 +15,11 @@ export default function EmployeeDetails()
     // int to String
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
     const dptList = ['인사팀','기획팀(PM)','개발팀','DBA팀']
-    
-    const [ searchParams , setSearchParams ]  = useSearchParams()
     const [empInfo, setEmpInfo] = useState({})
     //.get("/employee/findemp?empNo="+searchParams.get('empNo'))
     useEffect(() => {
         axios
-            .get("/employee/findemp?empNo="+searchParams.get('empNo'))
+            .get("/employee/myinfo")
             .then( (r) => {
                 setEmpInfo(r.data)
             })

@@ -53,7 +53,7 @@ export default function Header( props ){
         				</ul>
         			</div>
 
-        			<div className="userbox"><span className="emp_name">{login == null ? '김이젠' : login.empName}</span>님 <br/> 좋은 하루되세요!{/*-- <img src="./images/user_photo.jpeg"/>--*/}</div>
+            <div className="userbox"><span className="emp_name"> <Link to={'/employee/details'}> {login == null ? '김이젠' : login.empName} </Link></span>님 <br/> 좋은 하루되세요!{/*-- <img src="./images/user_photo.jpeg"/>--*/}</div>
 
         	</header>
     </>)

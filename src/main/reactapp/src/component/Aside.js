@@ -109,7 +109,6 @@ let currentMenu = location == '' ? 'employee' : location;
                     <li className="tmenu">인사관리</li>
                     <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/employee/list'>사원 조회</Link></li>
                     <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/employee/register'>사원등록</Link></li>
-                    <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/employee/details'>사원 수정</Link></li>
                     <li id="menu4" onClick={clickMenu} className={activeMenu === 'menu4' ? 'smenu' : ''}><Link to='/employee/searchemp'>사원 검색</Link></li>
                     <li><Link to='/employee/retemplist'>퇴사 사원 조회</Link></li>
                     <li><Link to='/leaveofabsenceRequest/write'>휴직 사원 조회</Link></li>

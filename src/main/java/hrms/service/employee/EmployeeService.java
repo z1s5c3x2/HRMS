@@ -6,6 +6,7 @@ import hrms.model.dto.*;
 import hrms.model.entity.*;
 import hrms.model.repository.*;
 import hrms.service.approval.ApprovalService;
+import hrms.service.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +38,8 @@ public class EmployeeService {
     ApprovalService approvalService;
     @Autowired
     ApprovalLogEntityRepository approvalLogEntityRepository;
+    @Autowired
+    private SecurityService securityService;
     private final int LEAVE_COUNT = 5;
     // 비밀번호 인코딩
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -92,14 +95,14 @@ public class EmployeeService {
         return pageDto;
     }
     @Transactional
-    public boolean test1(int a ,int b)
+    public EmployeeDto getMyInfo()
     {
-        try{
-            approvalService.approbate(a,b);
-        }catch(Exception e) {
-            System.out.println("getEmpList" + e);
+        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(securityService.getEmp().getEmpNo());
+        if(optionalEmployeeEntity.isPresent())
+        {
+            return optionalEmployeeEntity.get().notPwdToDto();
         }
-        return false;
+        return null;
     }
     //사원 개별 조회
     @Transactional
