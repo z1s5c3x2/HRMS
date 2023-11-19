@@ -89,77 +89,57 @@ export default function TeamMemberWrite( props ){
 
     const rkList = ["대기","사원","주임","대리","과장","팀장","부장"]
     const dptList = ['인사팀','기획팀(PM)','개발팀','DBA팀']
-    function createData(name, calories, fat, carbs, protein) {
-        return { name, calories, fat, carbs, protein };
-    }
-    const [empList, setEmpList] = useState([]) // 사원 리스트 저장
-    const [pageInfo, setPageInfo] = useState({ page:1, dptmNo:0,sta:'0',totalCount:0,totalPages:0 })  // 페이지 정보 저장
 
-    useEffect(() => {
-        console.log( pageInfo )
-        getList()
-    }, [pageInfo.page,pageInfo.sta,pageInfo.dptmNo]); //페이지가 바뀌거나 카테고리가 바뀌면 호출
-    const getList = (event)=>{ // 페이지 정보를 이용하여 사원 리스트 요청
+    const [empList, setEmpList] = useState([]) // 사원 리스트 저장
+    useEffect( ()=>{
+        getEmps();
+    }, [] )
+
+    const getEmps = (event)=>{
         axios
-            .get("/employee/findAll",{params:pageInfo})
+            .get("/employee/getteammebers")
             .then( (r) => {
-                //console.log( r.data )
-                //console.log( r.data.someList )
-                setEmpList( r.data.someList )
-                setPageInfo( {...pageInfo,totalCount: r.data.totalCount,totalPages:r.data.totalPages} )
-                //console.log( empList )
+                console.log(r.data);
+                setEmpList(r.data)
             })
             .catch( (e) =>{
                 console.log( e )
             })
     }
-    useEffect( ()=>{
-        getEmps();
-    }, [] )
-
-    const getEmps = (event)=>{ // 페이지 정보를 이용하여 사원 리스트 요청
-            axios
-                .get("/employee/getteammebers")
-                .then( (r) => {
-                    console.log(r.data);
-                })
-                .catch( (e) =>{
-                    console.log( e )
-                })
-        }
 
 
     return(<>
         <div className="teamMemberWrap">
             <div class="contentBox">
                 <div class="pageinfo"><span class="lv0">프로젝트팀관리</span> > <span class="lv1">프로젝트팀 팀원등록</span></div>
-                <div class="emp_regs_content divflex w100">
-                    <div class="eregInputBox w30">
-                        <div class="w30 ma ls5">팀 명 </div>
-                        <div class="">
-                            <input type="text" value={pjtName} class="pjtNo" name="pjtNo"/>
-                        </div>
-                    </div>
-                    <div class="eregInputBox w23">
-                        <div class="w25 ma ls2" >팀원명 </div>
-                        <div class="w75">
+                <div class="emp_regs_content">
+
+                    <div class="eregInputBox pmBox">
+                        <div class="input_title " className="inputPm">프로젝트팀원</div>
+                        <div class="input_box">
                             <input type="text" value={empName} class="empNo" name="empNo"/>
                         </div>
                     </div>
-                    <div class="eregInputBox w35">
-                        <div class="w30 ma">투입일자 </div>
+                    <div class="eregInputBox pmBox">
+                        <div class="input_title " className="inputPm">프로젝트팀</div>
+                        <div class="input_box">
+                            <input type="text" value={pjtName} class="pjtNo" name="pjtNo"/>
+                        </div>
+                    </div>
+                    <div class="eregInputBox">
+                        <div class="input_title ">팀원투입날짜</div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DesktopDatePicker
                             value={selectedSDate}
-                            sx={{ width: '200px'}}
+                            sx={{ width: '70%'}}
                             renderInput={(params) => <TextField {...params} label="날짜" />}
                             format="YYYY-MM-DD"
                             onChange={(date)=> setSelectedSDate(date)}
                           />
                         </LocalizationProvider>
                     </div>
-                    <div class="w12">
-                        <button class="btn01 pd10_0 mt5" type="button" onClick={modalController}>팀원등록</button>
+                    <div class="eregBtnBox">
+                        <button class="btn01" type="button" onClick={modalController}>팀원등록</button>
                     </div>
                 </div>
                 {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
@@ -171,39 +151,12 @@ export default function TeamMemberWrite( props ){
                     </ApprovalModal></> : <> </> }
             </div>
             <div className="selectBox">   {/* 프로젝트팀 출력 공간 */}
-                <div style={{padding:'10px 10px 10px 30px', height:'500px' }}>
-                    <div className="searchBox pd5_0"><hr class="hr02"/> </div>
+                <div className="contentBox2">
                     <div className="cont">
-                        <TableContainer
-                            sx={{
-                                width: 430,
-                                height: 420,
-                                'td': {
-                                    textAlign: 'center',
-                                    fontSize: '0.8rem',
-                                    paddingTop: '9px',
-                                    paddingBottom: '9px',
-                                    paddingLeft: '3px',
-                                    paddingRight: '3px',
-                                    border:'solid 1px var(--lgray)'
-                                }
-                            }}
-
-                         component={Paper}>
+                        <TableContainer component={Paper}>
                           <Table sx={{ minWidth: 200 }} aria-label="simple table">
-                             <TableHead
-                                    sx={{
-                                        'th':{
-                                            textAlign: 'center',
-                                            fontSize: '0.9rem',
-                                            bgcolor: 'var(--main04)',
-                                            color: '#fff',
-                                            paddingTop: '10px' ,
-                                            paddingBottom: '10px',
-                                        }
-                                    }}
-                                >
-                              <TableRow className="table_head">
+                            <TableHead>
+                              <TableRow className="table_head th01">
                                 <TableCell  align="center" className="th_cell">번호</TableCell>
                                 <TableCell className="th_cell" align="center">프로젝트명</TableCell>
                                 <TableCell className="th_cell" align="center">PM</TableCell>
@@ -214,7 +167,7 @@ export default function TeamMemberWrite( props ){
                             <TableBody>
                               {projectTeam.map((row) => (
                                 <TableRow
-
+                                  className="tbody_tr"
                                   onClick={() => {
                                     setPjtName(row.pjtName);
                                     setPjtNumber(row.pjtNo);
@@ -231,89 +184,34 @@ export default function TeamMemberWrite( props ){
                         </TableContainer>
                     </div>
                 </div>
-                <div>
-                    {/* 사원리스트 출력 공간 */}
-                     <div style={{padding:'10px 30px 10px 10px', height:'500px' }}>
-                         <div className="searchBox w20 pd5_0">
-                             <select
-                                 value = { pageInfo.sta }
-                                 onChange={ (e)=>{  setPageInfo( { ...pageInfo , sta : e.target.value,page:"1"} );  } }
-                             >
-                                 <option value="0"> 상태 전체 </option>
-                                 <option value="1"> 재직 </option>
-                                 <option value="2"> 휴직 </option>
-                             </select>
-                             <select
-                                 value = { pageInfo.dptmNo }
-                                 onChange={ (e)=>{  setPageInfo( { ...pageInfo , dptmNo : e.target.value,page:'1'} );  } }
-                             >
-                                 <option value="0"> 부서 전체 </option>
-                                 <option value="1"> 인사팀 </option>
-                                 <option value="2"> 기획팀(PM) </option>
-                                 <option value="3"> 개발팀 </option>
-                                 <option value="4"> DBA팀 </option>
-
-                             </select>
-
-                        </div>
-                         <TableContainer
-                             sx={{
-                                 width: 450,
-                                 height: 420,
-                                 'td': {
-                                     textAlign: 'center',
-                                     fontSize: '0.8rem',
-                                     paddingTop: '9px',
-                                     paddingBottom: '9px',
-                                     paddingLeft: '3px',
-                                     paddingRight: '3px',
-                                     border:'solid 1px var(--lgray)'
-                                 }
-                             }}
-
-                          component={Paper}>
-                             <Table sx={{ minWidth: 400 }} aria-label="simple table">
-                                  <TableHead
-                                         sx={{
-                                             'th':{
-                                                 textAlign: 'center',
-                                                 fontSize: '0.9rem',
-                                                 bgcolor: 'var(--main04)',
-                                                 color: '#fff',
-                                                 paddingTop: '10px' ,
-                                                 paddingBottom: '10px',
-                                             }
-                                         }}
-                                     >
-                                     <TableRow>
-                                         <TableCell align="center">이름</TableCell>
-                                         <TableCell align="center">직급</TableCell>
-                                         <TableCell align="center">부서</TableCell>
-                                     </TableRow>
-                                 </TableHead>
-                                 <TableBody>
-                                     {empList.map((emp) => (
-                                         <TableRow
-                                            onClick={() => {
-                                                setEmpName(emp.empName);
-                                                setEmpNumber(emp.empNo);
-                                              }}
-                                         >
-                                                 <TableCell align="center">{emp.empName}</TableCell>
-                                                 <TableCell align="center">{rkList[emp.empRk]}</TableCell>
-                                                 <TableCell align="center">{dptList[emp.dptmNo - 1]}</TableCell>
-                                         </TableRow>
-                                     ))}
-                                 </TableBody>
-                             </Table>
-                         </TableContainer>
-                         <div style = {{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '5px' }} >
-                             <Pagination page = { pageInfo.page }  count={ pageInfo.totalPages }  onChange = { (e,value) => {
-                                 setPageInfo( { ...pageInfo , page : value })
-                             }
-                             } />
-                         </div>
-                     </div>
+                <div className="contentBox2">
+                    <div className="cont">
+                        <TableContainer component={Paper}>
+                          <Table sx={{ minWidth: 200 }} aria-label="simple table">
+                            <TableHead>
+                              <TableRow className="table_head th01">
+                                <TableCell  align="center" className="th_cell">이름</TableCell>
+                                <TableCell className="th_cell" align="center">직급</TableCell>
+                                <TableCell className="th_cell" align="center">부서</TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {empList.map((emp) => (
+                                   <TableRow
+                                      onClick={() => {
+                                          setEmpName(emp.empName);
+                                          setEmpNumber(emp.empNo);
+                                        }}
+                                   >
+                                       <TableCell align="center">{emp.empName}</TableCell>
+                                       <TableCell align="center">{rkList[emp.empRk]}</TableCell>
+                                       <TableCell align="center">{dptList[emp.dptmNo - 1]}</TableCell>
+                                   </TableRow>
+                               ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                    </div>
                 </div>
             </div>
         </div>

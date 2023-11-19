@@ -303,7 +303,7 @@ public class EmployeeService {
         return null;
     }
 
-    // pm과 개발팀 db팀을 제외한 사원들을 출력
+    // pm을 제외한 개발팀 기획팀의 사원들을 출력
     @Transactional
     public List<EmployeeDto> getTeamsMebers(){
 
@@ -313,15 +313,26 @@ public class EmployeeService {
         for(EmployeeEntity employeeEntity : employeeEntities){
             System.out.println(employeeEntity);
 
-            if(employeeEntity.getProjectEntities() != null){
+            // 휴직상태인 사원들을 제외
+            if(!employeeEntity.isEmpSta()){
                 continue;
             }
 
-            if(employeeEntity.getDptmNo().getDptmNo() == 0 || employeeEntity.getDptmNo().getDptmNo() == 1){
+            // 이미 프로젝트 매니저로 등록된 사원은 제외
+            if(!employeeEntity.getProjectEntities().isEmpty()){
+                System.out.println("이미등록된 프로젝트 매니저");
                 continue;
             }
 
-            employeeDtos.add(employeeEntity.allToDto());
+            // 이미 프로젝트 팀원으로 등록된 사원은 제외
+            if(!employeeEntity.getTeamMemberEntities().isEmpty()){
+                continue;
+            }
+
+            // 개발 or 기획팀이면 리스트에 추가
+            if(employeeEntity.getDptmNo().getDptmNo() == 3 || employeeEntity.getDptmNo().getDptmNo() == 2){
+                employeeDtos.add(employeeEntity.allToDto());
+            }
 
         }
 

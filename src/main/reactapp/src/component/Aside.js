@@ -102,6 +102,9 @@ console.log(currentMenu)
       setActiveMenu(clickedMenuItem.id);
     };
 
+    useEffect( () => {
+        setActiveMenu('menu1');
+    }, [currentMenu])
 
 
 
