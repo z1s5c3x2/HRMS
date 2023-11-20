@@ -769,6 +769,19 @@ public class ApprovalService {
 
     }
 
+    // 결재 상세내역 조회
+    @Transactional
+    public ApprovalEntity getDetailedApproval( int aprvNo ){
+
+        Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById( aprvNo );
+
+        if( optionalApprovalEntity.isPresent() ){
+            return optionalApprovalEntity.get();
+        }
+
+        return null;
+    }
+
 
 }
 
