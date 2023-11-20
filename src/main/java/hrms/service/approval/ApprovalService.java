@@ -65,7 +65,6 @@ public class ApprovalService {
 
         if (optionalEmployeeEntity.isPresent()) {
 
-
             ApprovalEntity approvalEntity = ApprovalEntity
                     .builder()
                     .aprvType(aprvType)

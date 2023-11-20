@@ -17,6 +17,7 @@ public interface ApprovalEntityRepository extends JpaRepository<ApprovalEntity,I
     @Query( value = "select * from APRV where emp_no=:empNo" , nativeQuery = true )
     List<ApprovalEntity> findByAllempNo( String empNo );
 
+
     // 전 사원결재 조회 출력 필터 검색
     @Query( value = "SELECT aprv.* FROM aprv JOIN aplog ON aprv.aprv_no = aplog.aprv_no JOIN emp ON aprv.emp_no = emp.emp_no " +
             "WHERE " +
@@ -70,7 +71,6 @@ public interface ApprovalEntityRepository extends JpaRepository<ApprovalEntity,I
             "   ) GROUP BY aplog.aprv_no ORDER BY cdate DESC"
             , nativeQuery = true )
     Page< ApprovalEntity > findBySearch( String key, String keyword, int apState, String strDate, String endDate, Pageable pageable );
-
 
     // 피결재목록 출력 필터 검색
     @Query( value = "SELECT aprv.* FROM aprv JOIN aplog ON aprv.aprv_no = aplog.aprv_no JOIN emp ON aprv.emp_no = emp.emp_no " +

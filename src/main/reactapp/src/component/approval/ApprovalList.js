@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+/* 다른 컴포넌트 import */
+import Modal from './ApprovalDetailed';
 import { getTypeName } from './ListOutputConverter';
 
 /* MUI TABLE 관련 컴포넌트 import */
@@ -20,6 +22,22 @@ import Pagination from '@mui/material/Pagination';
 
 export default function ApprovalList(props){
 
+    /* MODAL =============================================== */
+
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [aprvNo, setAprvNo] = useState(0);
+
+    const openModal = ( aprvNo ) => {
+        setIsModalOpen(true);
+        setAprvNo(aprvNo);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    /* APPROVAL =============================================== */
     const [ allApprovalList, setAllApprovalList ] = useState( {
         someList : [],
         totalPages : 0
@@ -62,6 +80,7 @@ export default function ApprovalList(props){
     }, [pageInfo.page])
 
     return (<>
+        <Modal isOpen={isModalOpen} closeModal={closeModal} aprvNo={aprvNo} />
 
         <h3> 결재 메인페이지 </h3>
         <div class="contentBox">
@@ -129,7 +148,7 @@ export default function ApprovalList(props){
                     <tr className="outputTd">
                         <td> 제 { r.aprvNo }호 </td>
                         <td> { getTypeName( r.aprvType ) } </td>
-                        <td> { r.aprvCont } </td>
+                        <td onClick={() => openModal(r.aprvNo)} > { r.aprvCont } </td>
                         <td>
                             <span> { (r.cdate.split("T"))[0] } </span>
                             <span> { ((r.cdate.split("T"))[1].split("."))[0].substring(0, 5) } </span>
