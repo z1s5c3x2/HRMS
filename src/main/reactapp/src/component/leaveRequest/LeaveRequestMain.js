@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,16 +20,15 @@ export default function LeaveRequestMain(props) {
     } );
    // 0. 스프링에게 전달할 객체
           const [ pageInfo , setPageInfo ] = useState( {
-              page : 1 ,  view : 5 , empNo : login.empNo , lrqType : 0 , lrqSrtype: 2 , DateSt : '' , DateEnd : ''
+              page : 1 ,  view : 5 , empNo : login_empNo , lrqType : 0 , lrqSrtype: 2 , DateSt : '' , DateEnd : ''
 
               // 추후 세션으로 가져와 변경
           }); console.log( pageInfo );
 
-    /*
     // 3. 현재 로그인된 회원의 번호
-    const login = JSON.parse(sessionStorage.getItem('login_token'));
-    const empNo = login != null ? login.empNo : null;
-    */
+           const login = JSON.parse(sessionStorage.getItem('login_token'));
+           const login_empNo = login != null ? login.empNo : null;
+           const login_empName = login != null ? login.empName : null;
 
     // 특정 레코드 클릭시 해당 레코드 상세보기
     const loadView = ( lrqNo ) => {
@@ -76,7 +76,7 @@ export default function LeaveRequestMain(props) {
 
     return (<>
             <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">개인 연차/병가/휴직 내역</span></div>
-            <h3>{ /*row.empNo*/ } {login.empName}({login.empNo})님 연차보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
+            <h3>{ /*row.empNo*/ } {login_empName}({login_empNo})님 연차보기</h3>
              <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
        <div style={{ display:'flex' }}>
              <select
