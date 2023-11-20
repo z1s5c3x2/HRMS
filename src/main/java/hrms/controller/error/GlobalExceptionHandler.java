@@ -1,3 +1,4 @@
+/*
 package hrms.controller.error;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -27,4 +28,4 @@ public class GlobalExceptionHandler implements ErrorController {
 
         return "error/accessdenied";
     }
-}
+}*/

@@ -133,23 +133,23 @@ let currentMenu = location == '' ? 'employee' : location;
                 {currentMenu === 'teamProject' && (
                 <>
                    <li className="tmenu">프로젝트팀관리</li>
-                   <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/teamProject'>프로젝트팀 등록</Link></li>
-                   <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/teamProject/listAll'>프로젝트팀 조회/삭제</Link></li>
-                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/teamProject/teammember/write'>프로젝트 팀원 등록</Link></li>
+                   <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><a href='/teamProject'>프로젝트팀 등록</a></li>
+                   <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><a href='/teamProject/listAll'>프로젝트팀 조회/삭제</a></li>
+                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><a href='/teamProject/teammember/write'>프로젝트 팀원 등록</a></li>
 
                 </>)}
 
                 {currentMenu === 'attendance' && (
                 <>
                    <li className="tmenu">근태관리</li>
-                   <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/attendance'>전체 근무현황</Link></li>
+                   <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><a href='/attendance'>전체 근무현황</a></li>
                    <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/attendance/pcalendar'>개인 근무현황 캘린더</Link></li>
-                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/attendance/dall'>전체 출결현황</Link></li>
+                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><a href='/attendance/dall'>전체 출결현황</a></li>
                    <li id="menu4" onClick={clickMenu} className={activeMenu === 'menu4' ? 'smenu' : ''}><Link to='/attendance/dcalendar'>개인 출결 캘린더</Link></li>
                    <li id="menu5" onClick={clickMenu} className={activeMenu === 'menu5' ? 'smenu' : ''}><Link to='/attendance/sickleaveRequestwrite'>병가신청</Link></li>
                     <li id="menu9" onClick={clickMenu} className={activeMenu === 'menu9' ? 'smenu' : ''}><Link to='/attendance/leaveRequestwrite'>개인 연차신청</Link></li>
                    <li id="menu7" onClick={clickMenu} className={activeMenu === 'menu7' ? 'smenu' : ''}><Link to='/attendance/leaveRequestMe'>개인 연차/병가/휴직 내역</Link></li>
-                   <li id="menu8" onClick={clickMenu} className={activeMenu === 'menu8' ? 'smenu' : ''}><Link to='/attendance/leaveRequestlist'>전체 연차/병가/휴직 내역 </Link></li>
+                   <li id="menu8" onClick={clickMenu} className={activeMenu === 'menu8' ? 'smenu' : ''}><a href='/attendance/leaveRequestlist'>전체 연차/병가/휴직 내역 </a></li>
 
                 </>)}
 
@@ -157,8 +157,8 @@ let currentMenu = location == '' ? 'employee' : location;
                 <>
                    <li className="tmenu">급여관리</li>
                    <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/salary'>개인 급여내역</Link></li>
-                   <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/salary/list'>전체 급여내역</Link></li>
-                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><Link to='/salary/write'>급여 등록</Link></li>
+                   <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><a href='/salary/list'>전체 급여내역</a></li>
+                   <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><a href='/salary/write'>급여 등록</a></li>
                 </>)}
 
 
@@ -178,13 +178,13 @@ let currentMenu = location == '' ? 'employee' : location;
                 </>)
                 :(<>
                     <div className="templogin" onClick={logout}> 로그아웃 </div>
+                    <div className="attendence" onClick={ changeAttendance }><i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    {
+                        isAttendance == true ? (<>퇴 근</>) : (<>출 근</>)
+                    }
+                    </div>
                 </>)
             }
-            <div className="attendence" onClick={ changeAttendance }><i class="fa-solid fa-arrow-right-to-bracket"></i>
-            {
-                isAttendance == true ? (<>퇴 근</>) : (<>출 근</>)
-            }
-            </div>
             {/*<div className="attendence" onClick="changeState()"><i class="fa-solid fa-arrow-right-to-bracket"></i> 출 근</div>*/}
         </aside>
 
