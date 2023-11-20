@@ -432,7 +432,9 @@ public class ApprovalService {
             //부서, 사원 id로 가져오기
             Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(departmentHistoryDto.getEmpNo());
             Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(departmentHistoryDto.getDptmNo());
-
+            System.out.println("오나?");
+            System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
+            System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
             // 부서,사원을 성공적으로 가져오면 실행
             if(optionalEmployeeEntity.isPresent() && optionalDepartmentEntity.isPresent())
             {
@@ -449,7 +451,9 @@ public class ApprovalService {
                         .aprvNo(optionalApprovalEntity.get()).build();
 
                 /* 단방향 */
+                System.out.println("여기");
                 optionalEmployeeEntity.get().setDptmNo(departmentHistoryEntity.getDptmNo());
+                System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
                 departmentHistoryEntityRepository.save(departmentHistoryEntity);
                 /* 양방향 */
                 optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
