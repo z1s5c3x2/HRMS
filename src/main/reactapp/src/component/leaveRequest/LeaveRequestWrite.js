@@ -53,7 +53,7 @@ const data = {
         setLrqSrtype(value);
       };
 
-axios.get("/leaveRequest/getLeave" , { params : login_empNo } )
+axios.get("/leaveRequest/getLeave?empNo="+login_empNo)
         .then((r) => {
             setLeaveNumber( r.data )
             console.log(r.data)

@@ -100,7 +100,7 @@ export default function EmployeeDetails()
             { isOn ? <> <ApprovalModal data={empInfo}
                                        aprvType={2}
                                        targetUrl={"/employee/changeinfo"}
-                                       successUrl={"/employee/list"}
+                                       successUrl={"/approval/reconsiderview"}
                                        modalControll={modalController}>
             </ApprovalModal></> : <> </> }
         </div>

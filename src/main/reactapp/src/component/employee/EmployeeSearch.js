@@ -212,11 +212,11 @@ export default function EmployeeSearch(props) {
                                         <td><input value={empInfo.dptmName} disabled={true}/></td>
                                     </tr>
                                     <tr>
-                                        <th>진행중인 결제 수</th>
+                                        <th>진행중인 결재 수</th>
                                         <td><input value={empInfo.aprvCount} disabled={true}/></td>
                                     </tr>
                                     <tr>
-                                        <th>처리 필요한 결제 수</th>
+                                        <th>처리 필요한 결재 수</th>
                                         <td><input value={empInfo.apLogCount} disabled={true}/></td>
                                     </tr>
                                     <tr>
@@ -228,7 +228,7 @@ export default function EmployeeSearch(props) {
                                                     setTextIsOn(!textIsOn)
                                                 }}> 퇴사 정보 작성
                                                 </button>
-                                                 {textIsOn && <button onClick={modalController}> 결제</button>}
+                                                 {textIsOn && <button onClick={modalController}> 결재</button>}
                                              </div>
                                         </td>
                                     </tr>
@@ -265,11 +265,11 @@ export default function EmployeeSearch(props) {
                 </div>
             </div>
         </div>
-        {/*결제 모달 구역*/}
+        {/*결재 모달 구역*/}
         { isOn ? <> <ApprovalModal data={retiredInfo}
                                    aprvType={3}
                                    targetUrl={'/employee/retired'}
-                                   successUrl={"/employee/list"}
+                                   successUrl={"/approval/reconsiderview"}
                                    modalControll={modalController}>
         </ApprovalModal></> : <> </> }
     </>)
