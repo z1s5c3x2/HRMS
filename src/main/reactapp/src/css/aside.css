@@ -133,6 +133,9 @@ aside{
 	color:var(--white);
 	background-color: var(--main02);
 }
+.nav li[id ^='menu']:hover{
+    cursor:pointer;
+}
 .nav .tmenu{
 	background-color: var(--main03);
 	font-size:1.3rem;
@@ -237,6 +240,7 @@ header .topmenu{
 .divflex{
     display:flex;
     justify-content: space-between;
+    align-items: center;
 }
 /*----------------(모달영역)-------------------*/
 
@@ -355,6 +359,13 @@ header .topmenu{
     border-radius: 10px;
     width:150px;
 }
+/**/
+.po_abtr0 {
+    position:absolute;
+    bottom:-8px;
+    right:32;
+}
+
 /*마진*/
 .mb10{margin-bottom:10px;}
 
@@ -366,12 +377,14 @@ header .topmenu{
 .w20{width: 20% !important;}
 .w25{width: 25% !important;}
 .w30{width: 30% !important;}
+.w33{width: 33% !important;}
 .w35{width: 35% !important;}
 .w38{width: 38% !important;}
 .w40{width: 40% !important;}
 .w45{width: 45% !important;}
 .w49{width: 49% !important;}
 .w50{width: 50% !important;}
+.w54{width: 54% !important;}
 .w60{width: 60% !important;}
 .w65{width: 65% !important;}
 .w100{width: 100% !important;}

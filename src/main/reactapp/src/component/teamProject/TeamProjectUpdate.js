@@ -140,50 +140,54 @@ export default function TeamProjectUpdate( props ){
     return(<>
         <div class="contentBox">
             <div class="pageinfo"><span class="lv0">프로젝트팀관리</span> > <span class="lv1">프로젝트팀조회</span> > <span class="lv1">프로젝트팀수정</span></div>
-            <div class="emp_regs_content">
-
-                <div class="eregInputBox">
-                    <div class="input_title ls23" className="inputPname"> 프로젝트명</div>
-                    <div class="input_box"><input
-                        type="text"
-                        className=""
-                        name="pjtName"
-                        value={projectInfo.pjtName}
-                        onChange={updateApprovalInfo}
-                     /></div>
-                </div>
-                <div class="eregInputBox pmBox">
-                    <div class="input_title " className="inputPm">프로젝트매니저</div>
-                    <div class="input_box">
-                        <input value={empName} type="text" class="pmNo" name="empNo"/>
+            <div class="emp_regs_content w100 divflex">
+                <div class="w35">
+                    <div class="divflex pd5_0">
+                        <div class="w40 ls7 ma"> 프로젝트명</div>
+                        <div class="w60 ls2"><input
+                            type="text"
+                            className=""
+                            style={{width:'100%'}}
+                            name="pjtName"
+                            value={projectInfo.pjtName}
+                            onChange={updateApprovalInfo}
+                         /></div>
+                    </div>
+                    <div class="divflex pd5_0">
+                        <div class="w40 ma ">프로젝트매니저</div>
+                        <div class="w60">
+                            <input value={empName} type="text" class="pmNo" name="empNo"/>
+                        </div>
                     </div>
                 </div>
-                <div class="eregInputBox">
-                    <div class="input_title ">프로젝트시작날짜</div>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DesktopDatePicker
-                        value={selectedSDate}
-                        sx={{ width: '70%'}}
-                        renderInput={(params) => <TextField {...params} label="날짜" />}
-                        format="YYYY-MM-DD"
-                        onChange={(date)=> setSelectedSDate(date)}
-                      />
-                    </LocalizationProvider>
+                <div class="w40 ">
+                    <div class="divflex pd5_0">
+                        <div class="w40 ma ">프로젝트시작날짜</div>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DesktopDatePicker
+                            value={selectedSDate}
+                            sx={{ width: '70%'}}
+                            renderInput={(params) => <TextField {...params} label="날짜" />}
+                            format="YYYY-MM-DD"
+                            onChange={(date)=> setSelectedSDate(date)}
+                          />
+                        </LocalizationProvider>
+                    </div>
+                    <div class="divflex pd5_0">
+                        <div class="w40 ma ">프로젝트완료날짜</div>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DesktopDatePicker
+                            value={selectedEDate}
+                            sx={{ width: '70%'}}
+                            renderInput={(params) => <TextField {...params} label="날짜" />}
+                            format="YYYY-MM-DD"
+                            onChange={(date)=> setSelectedEDate(date)}
+                          />
+                        </LocalizationProvider>
+                    </div>
                 </div>
-                <div class="eregInputBox">
-                    <div class="input_title ">프로젝트완료날짜</div>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DesktopDatePicker
-                        value={selectedEDate}
-                        sx={{ width: '70%'}}
-                        renderInput={(params) => <TextField {...params} label="날짜" />}
-                        format="YYYY-MM-DD"
-                        onChange={(date)=> setSelectedEDate(date)}
-                      />
-                    </LocalizationProvider>
-                </div>
-                <div class="eregBtnBox">
-                    <button class="btn01" type="button" onClick={modalController}>프로젝트팀수정</button>
+                <div class="w15">
+                    <button class="btn01 ma lh18" type="button" onClick={modalController}>프로젝트팀<br/>수정</button>
                 </div>
             </div>
             {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
@@ -197,9 +201,33 @@ export default function TeamProjectUpdate( props ){
         {/* 사원리스트 출력 공간 */}
          <div className="contentBox2">
              <div className="cont">
-                 <TableContainer component={Paper}>
+                 <TableContainer
+                     sx={{
+                         width: 900,
+                         height: 400,
+                         'td': {
+                             textAlign: 'center',
+                             fontSize: '0.8rem',
+                             paddingTop: '9px',
+                             paddingBottom: '9px',
+                             paddingLeft: '3px',
+                             paddingRight: '3px',
+                             border:'solid 1px var(--lgray)'
+                         }
+                     }} component={Paper}>
                    <Table sx={{ minWidth: 200 }} aria-label="simple table">
-                     <TableHead>
+                     <TableHead
+                          sx={{
+                              'th':{
+                                  textAlign: 'center',
+                                  fontSize: '0.9rem',
+                                  bgcolor: 'var(--main04)',
+                                  color: '#fff',
+                                  paddingTop: '10px' ,
+                                  paddingBottom: '10px',
+                              }
+                          }}
+                     >
                        <TableRow className="table_head th01">
                          <TableCell  align="center" className="th_cell">이름</TableCell>
                          <TableCell className="th_cell" align="center">직급</TableCell>

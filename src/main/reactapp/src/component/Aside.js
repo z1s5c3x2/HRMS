@@ -121,7 +121,7 @@ let currentMenu = location == '' ? 'employee' : location;
 
     return(<>
         <aside className="maside">
-        	<div className="logobox"><Link to='/'><img src="../../logo_is.png"/></Link></div>
+        	<div className="logobox"><Link to='/attendance/pcalendar'><img src="../../logo_is.png"/></Link></div>
         		{/*-- 사이드 메뉴 --*/}
 
                 <ul className="nav">

@@ -133,17 +133,37 @@ export default function BoardList(props){
     <div className="contentBox">
         <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">전체 급여내역</span></div>
 
-        <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
-    <div style={{ display:'flex' }}>
-        <select
-                    value = { pageInfo.view }
-                    onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
+        {/*<p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>*/}
+        <div class="searchBoxB divflex pd10_0">
+            <div class="divflex w90">
+                <div>
+                    <input type="date" className="periodStart" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateSt : e.target.value} ); } } style={{width:'120px'}}/> ~
+                    <input type="date" className="periodEnd" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateEnd : e.target.value} ); } } style={{width:'120px'}}/>
+                </div>
+                <select
+                    value = { pageInfo.dptmNo }
+                    onChange={ (e)=>{  setPageInfo( { ...pageInfo , dptmNo : e.target.value} );  } }
                     >
-                    <option value="5"> 5 </option>
-                    <option value="10"> 10 </option>
-                    <option value="20"> 20 </option>
+                    <option  value="0"> 전체부서 </option>
+                    <option  value="1"> 인사 </option>
+                    <option  value="2"> 기획 </option>
+                    <option  value="3"> 개발 </option>
+                    <option  value="4"> 경영지원 </option>
+                    <option  value="5"> 마케팅 </option>
                 </select>
-        <select
+                <select
+                    value = { pageInfo.empRk }
+                    onChange={ (e)=>{  setPageInfo( { ...pageInfo , empRk : e.target.value} );  } }
+                    >
+                    <option  value="0"> 전체직급 </option>
+                    <option  value="1"> 사원 </option>
+                    <option  value="2"> 주임 </option>
+                    <option  value="3"> 대리 </option>
+                    <option  value="4"> 과장 </option>
+                    <option  value="5"> 팀장 </option>
+                    <option  value="6"> 부장 </option>
+                </select>
+                <select
                     value = { pageInfo.slryType }
                     onChange={ (e)=>{  setPageInfo( { ...pageInfo ,  slryType : e.target.value} );  } }
                     >
@@ -157,103 +177,116 @@ export default function BoardList(props){
                     <option  value="7"> 경조사비 </option>
                     <option  value="8"> 연가보상비 </option>
                 </select>
-        <select
-                            value = { pageInfo.empRk }
-                            onChange={ (e)=>{  setPageInfo( { ...pageInfo , empRk : e.target.value} );  } }
-                            >
-                            <option  value="0"> 전체직급 </option>
-                            <option  value="1"> 사원 </option>
-                            <option  value="2"> 주임 </option>
-                            <option  value="3"> 대리 </option>
-                            <option  value="4"> 과장 </option>
-                            <option  value="5"> 팀장 </option>
-                            <option  value="6"> 부장 </option>
-                        </select>
-        <select
-                            value = { pageInfo.dptmNo }
-                            onChange={ (e)=>{  setPageInfo( { ...pageInfo , dptmNo : e.target.value} );  } }
-                            >
-                            <option  value="0"> 전체부서 </option>
-                            <option  value="1"> 인사 </option>
-                            <option  value="2"> 기획 </option>
-                            <option  value="3"> 개발 </option>
-                            <option  value="4"> 경영지원 </option>
-                            <option  value="5"> 마케팅 </option>
-                        </select>
-                        <div style= {{ marginLeft : '15px' }}>
-                        조회기간 : <input type="date" className="periodStart" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateSt : e.target.value} ); } }/> ~
-                        <input type="date" className="periodEnd" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateEnd : e.target.value} ); } } />
-                         </div>
-    </div>
+                { /* 검색 */}
+                <select
+                   value={ pageInfo.key}
+                   onChange = {
+                       (e)=>{ setPageInfo( { ...pageInfo , key : e.target.value } )  }
+                       }
+                   >
+                   <option value="empNo"> 사번 </option>
+                </select>
+
+                <input type="text"
+                   style={{width:'80px'}}
+                   placeholder="사번을 입력하세요"
+                   value={ pageInfo.keyword }
+                   onChange = {
+                       (e)=>{ setPageInfo( { ...pageInfo , keyword : e.target.value } )  }
+                   }
+                />
+               <button type="button" class="searchbtn" onClick={ onSearch }>검색 </button>
+            </div>
+            { /* 삼항연산자 를 이용한 조건부 랜더링 */}
+            {
+                pageInfo.keyword == '' ?
+                (<> </>)
+                :
+                (<> <button class="searchbtn po_abtr0" type="button" onClick = { (e)=> { window.location.href="/salary/list"; }  } > 검색제거 </button>  </>)
+            }
+            <div>
+                <select
+                    value = { pageInfo.view }
+                    onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
+                    >
+                    <option value="5"> 5 </option>
+                    <option value="10"> 10 </option>
+                    <option value="20"> 20 </option>
+                </select>
+            </div>
+
+        </div>
 
 
+        <hr class="hr00"/>
 
-                { /* 삼항연산자 를 이용한 조건부 랜더링 */}
-                {
-                    pageInfo.keyword == '' ?
-                    (<> </>)
-                    :
-                    (<> <button  type="button" onClick = { (e)=> { window.location.href="/salary/list"; }  } > 검색제거 </button>  </>)
-                }
-        <TableContainer component={Paper}>
-                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                 {/* 테이블 제목 구역 */}
-                   <TableHead>
-                     <TableRow>
-                       <TableCell style={{ width : '5%' }} align="right">번호</TableCell>
-                       <TableCell style={{ width : '13%' }} align="right">지급날짜</TableCell>
-                       <TableCell style={{ width : '13%' }} align="right">지급금액</TableCell>
-                       <TableCell style={{ width : '10%' }} align="right">지급유형</TableCell>
-                        <TableCell style={{ width : '5%' }} align="right">결재번호</TableCell>
-                        <TableCell style={{ width : '15%' }} align="right">이름(사원번호)</TableCell>
-                        <TableCell style={{ width : '8%' }} align="right">직급</TableCell>
-                        <TableCell style={{ width : '10%' }} align="right">부서</TableCell>
-                     </TableRow>
-                   </TableHead>
-                   {/* 테이블 내용 구역 */}
-                   <TableBody>
-                     {pageDto.someList.map((row) => (
-                       <TableRow
-                         key={row.name}
-                        >
+        <TableContainer
+             sx={{
+                 width: 900,
+                 height: 500,
+                 'td': {
+                     textAlign: 'center',
+                     fontSize: '0.8rem',
+                     paddingTop: '9px',
+                     paddingBottom: '9px',
+                     paddingLeft: '3px',
+                     paddingRight: '3px',
+                     border:'solid 1px var(--lgray)'
+                 }
+             }}
+             component={Paper}>
+             <Table sx={{ minWidth: 650 }} aria-label="simple table">
+             {/* 테이블 제목 구역 */}
+               <TableHead
+                   sx={{
+                       'th':{
+                           textAlign: 'center',
+                           fontSize: '0.9rem',
+                           bgcolor: 'var(--main04)',
+                           color: '#fff',
+                           paddingTop: '10px' ,
+                           paddingBottom: '10px',
+                       }
+                   }}
 
-                         <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
-                         <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
-                         <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
-                         <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
-                         <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
-                         <TableCell style={{ width : '15%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empName + "(" + row.empNo + ")"}</TableCell>
-                        <TableCell style={{ width : '8%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getrankLabel(row.empRk)}</TableCell>
-                        <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getdptmLabel(row.dptmNo)}</TableCell>
-                       </TableRow>
-                     ))}
-                   </TableBody>
-                 </Table>
-               </TableContainer>
+               >
+                 <TableRow>
+                   <TableCell style={{ width : '8%' }} align="right">번호</TableCell>
+                   <TableCell style={{ width : '15%' }} align="right">지급날짜</TableCell>
+                   <TableCell style={{ width : '15%' }} align="right">지급금액</TableCell>
+                   <TableCell style={{ width : '9%' }} align="right">지급유형</TableCell>
+                    <TableCell style={{ width : '10%' }} align="right">결재번호</TableCell>
+                    <TableCell style={{ width : '10%' }} align="right">이름<br/>(사원번호)</TableCell>
+                    <TableCell style={{ width : '8%' }} align="right">직급</TableCell>
+                    <TableCell style={{ width : '8%' }} align="right">부서</TableCell>
+                 </TableRow>
+               </TableHead>
+               {/* 테이블 내용 구역 */}
+               <TableBody>
+                 {pageDto.someList.map((row) => (
+                   <TableRow
+                     key={row.name}
+                    >
+
+                     <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryNo}</TableCell>
+                     <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryDate}</TableCell>
+                     <TableCell style={{ width : '13%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.slryPay}</TableCell>
+                     <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getSlryTypeLabel(row.slryType)}</TableCell>
+                     <TableCell style={{ width : '5%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.aprvNo}</TableCell>
+                     <TableCell style={{ width : '15%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{row.empName + "(" + row.empNo + ")"}</TableCell>
+                    <TableCell style={{ width : '8%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getrankLabel(row.empRk)}</TableCell>
+                    <TableCell style={{ width : '10%' }} onClick={ ( ) => loadView( row.slryNo ) } align="right">{getdptmLabel(row.dptmNo)}</TableCell>
+                   </TableRow>
+                 ))}
+               </TableBody>
+             </Table>
+           </TableContainer>
                  <div style = {{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }} >
 
                            { /* page : 현재페이지    count : 전체페이지수   onChange : 페이지번호를 클릭/변경 했을떄 이벤트 */}
                            <Pagination page = { pageInfo.page }  count={ pageDto.totalPages } onChange={ onPageSelect } />
 
-                           { /* 검색 */}
-                           <div style ={{  margin : '20px' }}>
-                               <select
-                                   value={ pageInfo.key}
-                                   onChange = {
-                                       (e)=>{ setPageInfo( { ...pageInfo , key : e.target.value } )  }
-                                       }
-                                   >
-                                   <option value="empNo"> 사번 </option>
-                               </select>
 
-                               <input type="text"
-                                   value={ pageInfo.keyword }
-                                   onChange = {
-                                       (e)=>{ setPageInfo( { ...pageInfo , keyword : e.target.value } )  }
-                                   }
-                               />
-                               <button type="button" onClick={ onSearch }>검색 </button>
-                           </div>
 
                        </div>
     </div>

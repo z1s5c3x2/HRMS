@@ -107,12 +107,12 @@ export default function Index( props ){
                                 <Route path='/employee/leaveofabsenceRequestwrite' element={<LeaveOfAbsenceRequestWrite/>} />
 
                             {/* TeamProject */}
-                                <Route path='/teamproject' element={<TeamProjectMain />} />
-                                <Route path='/teamproject/listAll' element={<TeamProjectList />} />
-                                <Route path='/teamproject/update' element={<TeamProjectUpdate />} />
-                                <Route path='/teamproject/teammember/write' element={<TeamMemberWrite />} />
-                                <Route path='/teamproject/teammember/print' element={<TeamMemberList />} />
-                                <Route path='/teamproject/teammember/update' element={<TeamMemberUpdate />} />
+                                <Route path='/teamProject' element={<TeamProjectMain />} />
+                                <Route path='/teamProject/listAll' element={<TeamProjectList />} />
+                                <Route path='/teamProject/update' element={<TeamProjectUpdate />} />
+                                <Route path='/teamProject/teammember/write' element={<TeamMemberWrite />} />
+                                <Route path='/teamProject/teammember/print' element={<TeamMemberList />} />
+                                <Route path='/teamProject/teammember/update' element={<TeamMemberUpdate />} />
 
                             {/* Login */}
                                 <Route path='/member/login' element={<Login/>} />
