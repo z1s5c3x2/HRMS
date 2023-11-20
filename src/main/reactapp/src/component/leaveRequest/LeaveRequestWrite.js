@@ -89,7 +89,7 @@ axios.get("/leaveRequest/getLeave?empNo="+login_empNo)
   return (<>
     <div className="contentBox">
     <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">연차 등록</span></div>
-     {/*} <h3>{login_empName}({login_empNo})님 사용 가능한 연차 : {leaveNumber}일</h3>*/}
+     <h3>{login_empName}({login_empNo})님 사용 가능한 연차 : {leaveNumber}일</h3>
 
       <form className="boardForm">
       <div className="emp_regs_content">
@@ -143,6 +143,7 @@ axios.get("/leaveRequest/getLeave?empNo="+login_empNo)
             <Button className="btn01" variant="contained" color="primary" onClick={modalController}>
               결재요청
             </Button>
+
         </div>
       </div>
       </form>
@@ -151,7 +152,7 @@ axios.get("/leaveRequest/getLeave?empNo="+login_empNo)
                   data={data}
                   aprvType={ 10 }
                   targetUrl="/leaveRequest/post"
-                  successUrl="/leaveRequest/write"
+                  successUrl="/attendance/leaveRequest/write"
                   modalControll={modalController}
                 />
               ) : null}

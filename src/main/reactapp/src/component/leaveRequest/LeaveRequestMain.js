@@ -18,6 +18,10 @@ export default function LeaveRequestMain(props) {
    let [ pageDto , setPageDto ] = useState( {
                   someList : [] , totalPages : 0 , totalCount : 0
     } );
+    // 3. 현재 로그인된 회원의 번호
+    const login = JSON.parse(sessionStorage.getItem('login_token'));
+    const login_empNo = login != null ? login.empNo : null;
+    const login_empName = login != null ? login.empName : null;
    // 0. 스프링에게 전달할 객체
           const [ pageInfo , setPageInfo ] = useState( {
               page : 1 ,  view : 5 , empNo : login_empNo , lrqType : 0 , lrqSrtype: 2 , DateSt : '' , DateEnd : ''
@@ -25,10 +29,7 @@ export default function LeaveRequestMain(props) {
               // 추후 세션으로 가져와 변경
           }); console.log( pageInfo );
 
-    // 3. 현재 로그인된 회원의 번호
-           const login = JSON.parse(sessionStorage.getItem('login_token'));
-           const login_empNo = login != null ? login.empNo : null;
-           const login_empName = login != null ? login.empName : null;
+
 
     // 특정 레코드 클릭시 해당 레코드 상세보기
     const loadView = ( lrqNo ) => {

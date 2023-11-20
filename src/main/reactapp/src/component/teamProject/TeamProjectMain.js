@@ -151,7 +151,7 @@ export default function TeamProjectMain( props ){
             </div>
             {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
                 { isOn ? <> <ApprovalModal data={projectInfo}
-                                          targetUrl={"/teamProject/post"}
+                                          targetUrl={"/teamproject/post"}
                                           aprvType={12}
                                           successUrl={"/teamProject"}
                                           modalControll={modalController}>
