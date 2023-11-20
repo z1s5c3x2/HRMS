@@ -68,7 +68,7 @@ public class LeaveRequestService {
             employeeEntity.setEmpSta(false);
             // 양방향
             approvalEntity.getLeaveRequestEntities().add(leaveRequestEntity);
-
+            employeeEntity.getLeaveRequestEntities().add(leaveRequestEntity);
 
             if (leaveRequestEntity.getLrqNo() >= 1) {
                 return true;

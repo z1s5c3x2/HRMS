@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hrms.model.dto.*;
 import hrms.model.entity.ApprovalEntity;
+import hrms.model.repository.ApprovalEntityRepository;
 import hrms.service.approval.ApprovalService;
 import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/approval")
@@ -150,7 +149,21 @@ public class ApprovalController {
         return approvalService.getDetailedApproval( aprvNo );
     }
 
+    @Autowired
+    private ApprovalEntityRepository approvalRepository;
 
+    @DeleteMapping("/deleteAapproval")
+    public boolean deleteApproval( int aprvNo ){
+
+        try {
+            approvalRepository.deleteById( aprvNo );
+
+            return true;
+        } catch ( Exception e ){
+            return false;
+        }
+
+    }
 
 
 

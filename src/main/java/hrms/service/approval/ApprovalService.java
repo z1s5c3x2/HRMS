@@ -14,15 +14,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ApprovalService {
@@ -653,7 +650,7 @@ public class ApprovalService {
             int apState, String strDate, String endDate ) {
 
         // 페이지별 출력 결재 건수는 15건 고정
-        Pageable pageable = PageRequest.of( page-1, 15 );
+        Pageable pageable = PageRequest.of( page-1, 30 );
         
         // 상신자
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
@@ -695,7 +692,7 @@ public class ApprovalService {
 
         
         // 페이지별 출력 결재 건수는 15건 고정
-        Pageable pageable = PageRequest.of( page-1, 15 );
+        Pageable pageable = PageRequest.of( page-1, 30 );
 
         // DB의 결재목록 저장
         Page<ApprovalEntity> approvalEntities = approvalRepository.approvalViewSearch( key, keyword, apState, strDate, endDate, securityService.getEmp().getEmpNo(), pageable );
@@ -735,7 +732,7 @@ public class ApprovalService {
         System.out.println("page = " + page + ", key = " + key + ", keyword = " + keyword + ", apState = " + apState + ", strDate = " + strDate + ", endDate = " + endDate);
 
         // 페이지별 출력 결재 건수는 15건 고정
-        Pageable pageable = PageRequest.of( page-1, 15 );
+        Pageable pageable = PageRequest.of( page-1, 30 );
 
         // DB의 전사원 결재목록 저장
         Page<ApprovalEntity> approvalEntities = approvalRepository.findBySearch( key, keyword, apState, strDate, endDate, pageable );

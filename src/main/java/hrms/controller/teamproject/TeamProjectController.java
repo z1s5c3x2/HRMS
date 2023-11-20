@@ -24,6 +24,7 @@ public class TeamProjectController {
     // 1. 팀프로젝트 생성
     @PostMapping("/post")
     public boolean postTeamProject(@RequestBody ApprovalRequestDto<ProjectDto> approvalRequestDto){
+        System.out.println("approvalRequestDto = " + approvalRequestDto);
         boolean result = teamProjectService.postTeamProject(approvalRequestDto);
 
         return result;
