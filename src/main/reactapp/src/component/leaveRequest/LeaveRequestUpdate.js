@@ -1,3 +1,6 @@
+import React, { useState , useEffect  } from 'react';
+
+
 import {useSearchParams} from "react-router-dom";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
@@ -5,12 +8,20 @@ import {DesktopDatePicker} from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import ApprovalModal from "../approval/ApprovalModal";
-import React, {useEffect, useState} from "react";
+
 import axios from "axios";
 import dayjs from "dayjs";
 
 
 export default function LeaveRequestUpdate (props){
+
+    // 3. 현재 로그인된 회원의 번호
+           const login = JSON.parse(sessionStorage.getItem('login_token'));
+           const login_empNo = login != null ? login.empNo : null;
+           const login_empName = login != null ? login.empName : null;
+
+
+
     /*모달 호출 선언 필요*/
     const [isOn, setIsOn] = useState(false)
     const modalController = (e)=> {
@@ -37,7 +48,7 @@ export default function LeaveRequestUpdate (props){
     return( <>
         <div className="contentBox">
             <div className="pageinfo"><span className="lv0">근태관리</span> > <span className="lv1">연차 수정</span></div>
-            <h3>이효재(231106)님 사용 가능한 연차 : {lrqInfo.leaveCnt}일</h3>
+            <h3>{login_empName}({login_empNo})님 사용 가능한 연차 : {lrqInfo.leaveCnt}일</h3>
 
             <form className="boardForm">
                 <div className="emp_regs_content">

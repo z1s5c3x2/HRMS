@@ -2,6 +2,7 @@ import { useSearchParams , Link } from 'react-router-dom'
 import axios from 'axios'
 import { useState , useEffect } from 'react'
 import styles from '../../css/Table.css';
+
 export default function SalaryView( props ){
     // 1. HTTP 경로상의 쿼리스트링 매개변수 호출
     const [ searchParams, setSearchParams ] = useSearchParams(); console.log( searchParams );
@@ -42,7 +43,7 @@ export default function SalaryView( props ){
 
     return(<>
     <div className="contentBox">
-        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">나의 급여내역</span> > <span className="lv1">급여지급 상세보기</span></div>
+        <div className="pageinfo"><span className="lv0">급여관리</span> >  <span className="lv1">급여지급 상세보기</span></div>
             <div className="emp_regs_content">
                 <div style={{textAlign:'center'}}><img class="logoA" src="../../../logo_no.png"/></div>
                 <hr class="hr00"/>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState , useEffect  } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -19,13 +19,15 @@ export default function SalaryMain(props) {
         } );
      // 0. 스프링에게 전달할 객체
                const [ pageInfo , setPageInfo ] = useState( {
-                   page : 1 ,  view : 5 , empNo : "2311006" ,  slryType : 0 , DateSt : '' , DateEnd : ''
+                   page : 1 ,  view : 5 , empNo : login_empNo ,  slryType : 0 , DateSt : '' , DateEnd : ''
     }); console.log( pageInfo );
-    /*
-    // 3. 현재 로그인된 회원의 번호
-    const login = JSON.parse(sessionStorage.getItem('login_token'));
-    const empNo = login != null ? login.empNo : null;
-    */
+
+   // 3. 현재 로그인된 회원의 번호
+          const login = JSON.parse(sessionStorage.getItem('login_token'));
+          const login_empNo = login != null ? login.empNo : null;
+          const login_empName = login != null ? login.empName : null;
+
+
     // 특정 레코드 클릭시 해당 레코드 상세보기
         const loadView = ( slryNo ) => {
                         window.location.href = '/salary/view?slryNo='+slryNo
@@ -68,10 +70,9 @@ export default function SalaryMain(props) {
     return (<>
     <div className="contentBox">
         <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">개인 급여내역</span></div>
-            {/*h3>*/}{/*row.empNo*/ }{/* 이효재(2311006)님 급여 내역보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
-            <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>*/}
-
-                    <div class="searchBoxB divflex pd10_0">
+            <h3>{ /*row.empNo*/ } {login_empName}({login_empNo})님 급여 내역보기</h3>
+        {/*<p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>*/}
+               <div class="searchBoxB divflex pd10_0">
                         <div class="divflex w54">
                             <div>
                                   조회기간 : <input type="date" className="periodStart" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateSt : e.target.value} ); } }/> ~
@@ -81,29 +82,29 @@ export default function SalaryMain(props) {
                             <select
                               value = { pageInfo.slryType }
                               onChange={ (e)=>{  setPageInfo( { ...pageInfo ,  slryType : e.target.value} );  } }
-                            >
-                                <option  value="0"> 전체유형 </option>
-                                <option  value="1"> 기본급 </option>
-                                <option  value="2"> 정기상여 </option>
-                                <option  value="3"> 특별상여 </option>
-                                <option  value="4"> 성과금 </option>
-                                <option  value="5"> 명절휴가비 </option>
-                                <option  value="6"> 퇴직금 </option>
-                                <option  value="7"> 경조사비 </option>
-                                <option  value="8"> 연가보상비 </option>
-                            </select>
-                        </div>
-                        <div>
-                            <select
-                              value = { pageInfo.view }
-                              onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
-                            >
-                                <option value="5"> 5 </option>
-                                <option value="10"> 10 </option>
-                                <option value="20"> 20 </option>
-                            </select>
-                        </div>
+                              >
+                              <option  value="0"> 전체유형 </option>
+                              <option  value="1"> 기본급 </option>
+                              <option  value="2"> 정기상여 </option>
+                              <option  value="3"> 특별상여 </option>
+                              <option  value="4"> 성과금 </option>
+                              <option  value="5"> 명절휴가비 </option>
+                              <option  value="6"> 퇴직금 </option>
+                              <option  value="7"> 경조사비 </option>
+                              <option  value="8"> 연가보상비 </option>
+                          </select>
                     </div>
+                    <div>
+                        <select
+                            value = { pageInfo.view }
+                            onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
+                        >
+                            <option value="5"> 5 </option>
+                            <option value="10"> 10 </option>
+                            <option value="20"> 20 </option>
+                        </select>
+                    </div>
+                </div>
                 <TableContainer
                  sx={{
                      width: 900,

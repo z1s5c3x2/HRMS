@@ -17,7 +17,21 @@ public interface LeaveRequestEntityRepository extends JpaRepository<LeaveRequest
             "     ,(SELECT  sum(DATEDIFF(lrq_end,lrq_st)) AS rcount FROM lrq WHERE emp_no = :empNo and DATE_FORMAT(cdate, '%Y') = :nowYear) as cnt", nativeQuery = true)
     Map<Object, Integer> getRestCountByEmpNo(String empNo, String nowYear);
 
-    Page<LeaveRequestEntity> findByEmpNo_EmpNo(String empNo, Pageable pageable);
+
+
+    @Query(value =
+            "SELECT * " +
+                    "FROM lrq " +
+                    "WHERE" +
+                    " emp_no = ?1 " +
+                    "   AND (CASE WHEN ?2 > 0 THEN lrq_type = ?2 ELSE true END) " +
+                    "   AND (CASE WHEN ?3 < 2 THEN lrq_srtype = ?3 ELSE true END) " +
+                    "   AND (CASE WHEN ?4 IS NOT NULL AND ?5 IS NOT NULL THEN lrq_st >= CAST(?4 AS DATE) AND lrq_end <= CAST(?5 AS DATE) END OR " +
+                    "        (CASE WHEN ?4 IS NOT NULL AND ?5 = '' THEN lrq_st >= CAST(?4 AS DATE) END) OR " +
+                    "        (CASE WHEN ?4 = '' AND ?5 IS NOT NULL THEN lrq_end <= CAST(?5 AS DATE) END) OR " +
+                    "        (CASE WHEN ?4 = '' AND ?5 = '' THEN true END)) " +
+                    "ORDER BY l.lrq_st DESC", nativeQuery = true)
+    Page<LeaveRequestEntity> findByEmpNo_EmpNo(String empNo , int lrqType, int lrqSrtype, String DateSt, String DateEnd , Pageable pageable);
 
     @Query(value = "SELECT l.*, e.emp_rk, d.dptm_no FROM lrq l " +
             "INNER JOIN EMP e ON l.emp_no = e.emp_no " +
