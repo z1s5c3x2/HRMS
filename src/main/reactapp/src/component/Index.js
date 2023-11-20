@@ -14,7 +14,6 @@ import ApprovalList from "./approval/ApprovalList";
 import ReconsiderView from "./approval/ReconsiderView";
 import ApprovalView from "./approval/ApprovalView";
 
-
 /* Attendance import */
 import AttendanceList from "./attendance/AttendanceList";
 import AttendancePCalendar from "./attendance/AttendancePCalendar";
@@ -75,6 +74,7 @@ export default function Index( props ){
                                 <Route path='/approval' element = { <ApprovalList/> } />
                                 <Route path='/approval/reconsiderview' element = { <ReconsiderView/> } />
                                 <Route path='/approval/approvalview' element = { <ApprovalView/> } />
+
                             {/* Attendance*/}
                                 <Route path='/attendance' element={<AttendanceList/>} />
                                 <Route path='/attendance/pcalendar' element={<AttendancePCalendar/>} />

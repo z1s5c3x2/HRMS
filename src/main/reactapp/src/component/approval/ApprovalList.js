@@ -35,11 +35,6 @@ export default function ApprovalList(props){
         endDate : ''        // 상신일자 [조회종료일자]
     });
 
-    useEffect(() => {
-        console.log( 'check' )
-        console.log(pageInfo);
-    }, [pageInfo]);
-
     // 페이지 번호를 클릭했을 때
     const onPageSelect = (e, value) =>{
 
@@ -155,7 +150,7 @@ export default function ApprovalList(props){
             <div style={{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }}>
 
                 {/* count : 전체 페이지 수   onChange : 페이지번호를 클릭/변경 했을 때 이벤트 */}
-                <Pagination page={ pageInfo.page } count={ 5 } variant="outlined" onChange={ onPageSelect } />
+                <Pagination page={ pageInfo.page } count={ allApprovalList.totalPages } variant="outlined" onChange={ onPageSelect } />
 
             </div>
 

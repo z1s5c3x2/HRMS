@@ -27,15 +27,19 @@ export default function ReconsiderView(props){
         window.location.href = '/approval'
     }
 
-    const [ reconsiderList, setReconsiderList ] = useState( [] )
+    const [ reconsiderView, setReconsiderView ] = useState( {
+        someList : [],
+        totalPages : 0
+    })
 
     // 페이징처리 및 검색필터;
     const [pageInfo, setPageInfo] = useState({
         page : 1 ,
-        key : '' ,      // 결재번호[aprvNo], 내용[aprvCont] , 상신자명[empName]
-        keyword : '',   // key에 대한 탐색명
-        apState : 0,   // 결재 진행현황 [1:완료  2:반려  3:검토중]
-        cdate : ''      // 상신일자
+        key : 'aprv_no' ,   // 결재번호[aprvNo], 내용[aprvCont], 상신자명[empName]
+        keyword : '',       // key에 대한 탐색명
+        apState : 0,        // 결재 진행현황 [1:완료  2:반려  3:검토중]
+        strDate : '',       // 상신일자 [조회시작일자]
+        endDate : ''        // 상신일자 [조회종료일자]
     });
 
     // 페이지 번호를 클릭했을 때
@@ -47,15 +51,22 @@ export default function ReconsiderView(props){
     }
 
     // 상신내역 요청
-    useEffect( () => {
+    const getList = () => {
 
-        axios.get( '/approval/getReconsiderHistory' )
+        axios.get( '/approval/getReconsiderHistory', {params : pageInfo} )
             .then( result => {
                 console.log( result.data );
-                setReconsiderList( result.data );
+                setReconsiderView( result.data );
         })
 
-    }, [])
+    }
+
+    // 상신내역 요청
+    useEffect( () => {
+
+        getList()
+
+    }, [pageInfo.page])
 
 
     return (<>
@@ -64,28 +75,45 @@ export default function ReconsiderView(props){
             <div class="searchBox">
 
                 <span>
-                    상신일자
-                    조회기간 : <input type="date" className="periodStart" /> ~  <input type="date" className="periodEnd" />
+                    상신일자: <input type="date" className="periodStart"
+                        onChange = { e =>{
+                        setPageInfo( { ...pageInfo, strDate : e.target.value } )
+                    }} />
+                    ~
+                    <input type="date" className="periodEnd"
+                        onChange = { e =>{
+                        setPageInfo( { ...pageInfo, endDate : e.target.value } )
+                    }} />
                 </span>
 
                 <span>
                     결재상태
-                    <select>
-                        <option value="1"> 완료 </option>
-                        <option value="2"> 반려 </option>
-                        <option value="3"> 검토중 </option>
+                    <select onChange = { e => {
+                        setPageInfo( { ...pageInfo, apState : e.target.value } )
+                    }} >
+                        <option value={0}> 전체 </option>
+                        <option value={1}> 완료 </option>
+                        <option value={2}> 반려 </option>
+                        <option value={3}> 검토중 </option>
                     </select>
                 </span>
 
                 <span>
-                    <select>
-                        <option value="aprvNo"> 결재번호 </option>
-                        <option value="aprvCont"> 내용 </option>
+                    <select onChange = { e => {
+                        setPageInfo( { ...pageInfo, key : e.target.value } )
+                    }} >
+                        <option value="aprv_no"> 결재번호 </option>
+                        <option value="aprv_cont"> 내용 </option>
                     </select>
-                    <input type="text" />
-                    <button type="button" className="searchbtn"> 검색 </button>
+                    <input type="text"
+                        onChange = { e =>{
+                        setPageInfo( { ...pageInfo, keyword : e.target.value } )
+                    }}  />
+                    <button type="button" className="searchbtn"
+                    onClick ={ e => {
+                        getList()
+                    }} > 검색 </button>
                 </span>
-
             </div>
 
             <hr class="hr01"/>
@@ -99,7 +127,8 @@ export default function ReconsiderView(props){
                     <th width="17%"> 상신일시 </th>
                     <th width="12%"> 진행상태 </th>
                 </tr>
-                { reconsiderList.map( r =>(
+
+                { reconsiderView.someList && reconsiderView.someList.map( r =>(
                     <tr className="outputTd">
                         <td> 제 { r.aprvNo }호 </td>
                         <td> { getTypeName( r.aprvType ) } </td>
@@ -120,7 +149,7 @@ export default function ReconsiderView(props){
             <div style={{ display : 'flex' , flexDirection : 'column' , alignItems : 'center' , margin : '10px' }}>
 
                 {/* count : 전체 페이지 수   onChange : 페이지번호를 클릭/변경 했을 때 이벤트 */}
-                <Pagination page={ pageInfo.page } count={ 5 } variant="outlined" onChange={ onPageSelect } />
+                <Pagination page={ pageInfo.page } count={ reconsiderView.totalPages } variant="outlined" onChange={ onPageSelect } />
 
             </div>
 

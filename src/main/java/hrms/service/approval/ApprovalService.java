@@ -303,15 +303,16 @@ public class ApprovalService {
             // 1명의 검토자 비교
             switch (approvalEntity.getApprovalLogEntities().get(i).getAplogSta()) {
 
-                case 2:
-                    return 2;   // 결재상태 : 반려
-                case 1:
-                    return 1;   // 결재상태 : 완료
-                case 3:
-                    return 3;   // 결재상태 : 검토중
+                case 2: return 2;   // 결재상태 : 반려
+
+                case 3: return 3;   // 결재상태 : 검토중
+
+                case 1:             // 결재상태 : 완료
+                    if( i == approvalEntity.getApprovalLogEntities().size()-1 )  return 1;
 
             }
         }
+
         return -1;
     }
 
@@ -369,7 +370,7 @@ public class ApprovalService {
 
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
         if (!optionalApprovalEntity.isPresent()) return false;
-        if(optionalApprovalEntity.get().getAprvType() == 2) // 기본 정보 수정
+        if(optionalApprovalEntity.get().getAprvType() == 2 || optionalApprovalEntity.get().getAprvType() == 5) // 기본 정보 수정
         {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         }else if(optionalApprovalEntity.get().getAprvType() == 3) //사원 퇴사
@@ -644,48 +645,58 @@ public class ApprovalService {
 
 
     // 개별 상신목록 조회
-    public List<ApprovalDto> getReconsiderHistory(
+    @Transactional
+    public PageDto<ApprovalDto> getReconsiderHistory(
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) {
 
+        // 페이지별 출력 결재 건수는 15건 고정
+        Pageable pageable = PageRequest.of( page-1, 15 );
+        
         // 상신자
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
 
-        // 개별 상신(결재)내역 전체 조회
-        List<ApprovalEntity> approvalList
-                = approvalRepository.findByAllempNo(optionalEmployeeEntity.get().getEmpNo());
+        // DB의 개별 상신목록 저장
+        Page<ApprovalEntity> approvalEntities = approvalRepository.reconsiderViewSearch( key, keyword, apState, strDate, endDate, securityService.getEmp().getEmpNo(), pageable );
+
+        // 총 페이지 수
+        int totalPages = approvalEntities.getTotalPages();
 
         // 변환할 DTO 리스트
         List<ApprovalDto> approvalDtos = new ArrayList<>();
 
-        approvalList.forEach(e -> {
+        approvalEntities.forEach(e -> {
 
             // 변환된 DTO 리스트 삽입
             approvalDtos.add(e.toApprovalDto());
             // 마지막 추가된 DTO
             // => 현재 결재 진행상태를 확인하여 저장
-            approvalDtos.get(approvalDtos.size() - 1).setApState(checkApprovalState(e));
+            approvalDtos.get(approvalDtos.size() - 1).setApState( checkApprovalState(e) );
+         // approvalDtos.get(approvalDtos.size() - 1).setApState( checkApprovalState(e) );
             // 상신자명 저장
             approvalDtos.get(approvalDtos.size()-1).setEmpName( e.getEmpNo().getEmpName() );
 
         });
 
-        return approvalDtos;
+        return PageDto.<ApprovalDto>builder()
+                .someList(approvalDtos)
+                .totalPages(totalPages)
+                .build();
     }
 
+    
     // 개별 결재목록 조회
+    @Transactional
     public PageDto<ApprovalDto> getApprovalHistory(
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) {
 
-
-
+        
         // 페이지별 출력 결재 건수는 15건 고정
         Pageable pageable = PageRequest.of( page-1, 15 );
 
-        // DB의 전사원 결재목록 저장
+        // DB의 결재목록 저장
         Page<ApprovalEntity> approvalEntities = approvalRepository.approvalViewSearch( key, keyword, apState, strDate, endDate, securityService.getEmp().getEmpNo(), pageable );
-
 
         // 총 페이지 수
         int totalPages = approvalEntities.getTotalPages();
@@ -710,67 +721,16 @@ public class ApprovalService {
                 .totalPages(totalPages)
                 .build();
     }
-        /*
-
-        // 결재자
-        Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
-
-        // 개별 결재내역 전체 조회
-        List<ApprovalLogEntity> approvalLogList
-                = approvalLogRepository.findByEmpNo(optionalEmployeeEntity.get());
-
-        // 검토자에 해당 되는 결재건 탐색
-        return approvalLogList.stream().map(e -> {
-            
-            // 반환할 DTO
-            ApprovalDto approvalDto = e.getAprvNo().toApprovalDto();
-
-            // 해당 검토자가 검토를 완료했을 경우
-            // AplogSta(결재상태)   = 1:완료  2:반려
-            if(e.getAplogSta() == 1) {
-                approvalDto.setApState(1);  // 결재완료 여부 저장 후 반환
-                return approvalDto;
-            }
-            if(e.getAplogSta() == 2){
-                approvalDto.setApState(2);  // 결재완료 여부 저장 후 반환
-                return approvalDto;
-            }
-            
-            // 해당 결재 건에 대한 다수의 검토자 결재여부 탐색 실시
-            // ※ '반려' 혹은 '검토 중'일 시 탐색대상에서 제외
-            for (int i = 0; i < e.getAprvNo().getApprovalLogEntities().size(); i++) {
-                // 탐색 중 본인에 해당되는 인덱스 식별
-                // - 본인이 첫 번째 검토자일 경우
-                if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals( securityService.getEmp().getEmpNo() )
-                        && i == 0) {
-                    approvalDto.setApState(3);  // 결재완료 여부 저장 후 반환
-                    return approvalDto;
-                }
-                // - 이전 검토자가 결재를 '완료' 하였을 경우
-                if (e.getAprvNo().getApprovalLogEntities().get(i).getEmpNo().getEmpNo().equals( securityService.getEmp().getEmpNo() )
-                        && e.getAprvNo().getApprovalLogEntities().get(i - 1).getAplogSta() == 1) {
-                    approvalDto.setApState(3);  // 결재완료 여부 저장 후 반환
-                    return approvalDto;
-                }
-            }
-
-            return null;
-
-        })
-        .filter(Objects::nonNull) // null을 제외하고 필터링
-        .collect(Collectors.toList());
-*/
-
-
-
-
+       
 
 
     // 전사원 상신목록 조회
+    @Transactional
     public PageDto<ApprovalDto> getAllEmployeesApproval(
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) throws JsonProcessingException {
 
+        System.out.println("page = " + page + ", key = " + key + ", keyword = " + keyword + ", apState = " + apState + ", strDate = " + strDate + ", endDate = " + endDate);
 
         // 페이지별 출력 결재 건수는 15건 고정
         Pageable pageable = PageRequest.of( page-1, 15 );
@@ -779,11 +739,15 @@ public class ApprovalService {
         Page<ApprovalEntity> approvalEntities = approvalRepository.findBySearch( key, keyword, apState, strDate, endDate, pageable );
         //List<ApprovalEntity> approvalEntities = approvalRepository.findAll();
 
+
         // 총 페이지 수
         int totalPages = approvalEntities.getTotalPages();
 
+
         // 반환할 LIST 선언
         List<ApprovalDto> approvalDtos = new ArrayList<>();
+
+
 
         approvalEntities.forEach( e-> {
 
@@ -797,10 +761,25 @@ public class ApprovalService {
 
         });
 
+
         return PageDto.<ApprovalDto>builder()
                 .someList(approvalDtos)
                 .totalPages(totalPages)
                 .build();
+
+    }
+
+    // 결재 상세내역 조회
+    @Transactional
+    public ApprovalEntity getDetailedApproval( int aprvNo ){
+
+        Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById( aprvNo );
+
+        if( optionalApprovalEntity.isPresent() ){
+            return optionalApprovalEntity.get();
+        }
+
+        return null;
     }
 
 
