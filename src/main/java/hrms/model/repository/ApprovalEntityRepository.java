@@ -48,7 +48,7 @@ public interface ApprovalEntityRepository extends JpaRepository<ApprovalEntity,I
             "   (case " +
             "       WHEN :apState = 0 THEN true " +
                     // 완료된 결재건
-            "       WHEN :apState = 1 THEN (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no AND aplog.aplog_sta = 1) = (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no AND aplog.aplog_sta = 1) " +
+            "       WHEN :apState = 1 THEN (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no AND aplog.aplog_sta = 1) = (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no) " +
                     // 결재 반려건
             "       WHEN :apState = 2 THEN (SELECT COUNT(*) FROM aplog WHERE aprv.aprv_no = aplog.aprv_no AND aplog.aplog_sta = 2) > 0 " +
                     // 결재 진행건
