@@ -26,7 +26,7 @@ public class ApprovalEntity extends BaseTime {
     @Column(nullable = false)
     private int aprvType;          // 결재타입 (1 프로젝트팀결성 / 2 프로젝트기획 / 3 연차,휴직,병가 / 4 퇴사)
     @ColumnDefault( "''" )          // default
-    @Column( length = 40 )
+    @Column( length = 80 )
     private String aprvCont;       // 간단한 결재내용
     @Column(columnDefinition = "LONGTEXT")
     private String aprvJson;       // json형식의 문자열[테이블별 변경할 객체 정보 저장]

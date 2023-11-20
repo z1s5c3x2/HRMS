@@ -94,7 +94,7 @@ public class ApprovalService {
     //post시 json 저장이 필요한 경우
     @Transactional
     public ApprovalEntity postApprovalJson(int aprvType, String aprvCont, ArrayList<String> approvers,String aprvJson) {
-        /*System.out.println("aprvType = " + aprvType + ", aprvCont = " + aprvCont + ", approvers = " + approvers + ", aprvJson = " + aprvJson);*/
+
         try{
             // 상신자
             Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
@@ -114,10 +114,10 @@ public class ApprovalService {
                 // DB 저장
                 System.out.println("approvalEntity = " + approvalEntity);
                 ApprovalEntity result = approvalRepository.save(approvalEntity);
-                /* 단방향 */
+
                 // 검토자에 대한 사원테이블 JPA 단방향 관계 정립
                 result.setEmpNo(optionalEmployeeEntity.get());
-                /* 양방향 */
+
                 // 사원테이블 JPA 단방향 관계 정립
                 optionalEmployeeEntity.get().getApprovalEntities().add(result);
                 // 검토자 DB 저장을 위한 메서드 실행
@@ -561,8 +561,6 @@ public class ApprovalService {
                     optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity); //부서 pk
                     optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
                     employeeEntity.getDepartmentHistoryEntities().add(departmentHistoryEntity);
-                    System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity.get().getEmployeeEntities());
-                    System.out.println("employeeEntity.getApprovalEntities() = " + employeeEntity.getApprovalEntities());
 
                 }
             }
