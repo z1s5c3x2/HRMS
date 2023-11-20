@@ -68,7 +68,10 @@ public class AttendanceController {
 
         return attendanceService.getMonthChart( year, month);
     }
-
+    @GetMapping("/checkWork")
+    public boolean checkMyWork(){
+        return attendanceService.checkMyWrok();
+    }
     @GetMapping("/getmylrqChart")
     public List<AttendanceDto> getlrqChart(@RequestParam int year, @RequestParam int month){
         System.out.println("AttendanceController.getlrqChart");

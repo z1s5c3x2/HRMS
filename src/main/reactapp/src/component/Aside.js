@@ -26,6 +26,16 @@ let currentMenu = location == '' ? 'employee' : location;
             })
     }
 
+    const checkWork = (e)=>{
+     axios
+         .get("/attendance/checkWork")
+         .then( (r) => {
+             setAttendance(r.data)
+          })
+         .catch( (e) =>{
+             console.log( e )
+         })
+    }
     const [isAttendance, setAttendance] = useState(false);
     console.log("현재상태 :: "+ isAttendance);
     useEffect (() =>{},[isAttendance])
@@ -63,9 +73,6 @@ let currentMenu = location == '' ? 'employee' : location;
                         })
                     .then( r=>{ console.log(r.data); })
             }
-
-
-
     }
 
     // 로그인 상태를 저장할 상태변수 선언
@@ -107,7 +114,10 @@ let currentMenu = location == '' ? 'employee' : location;
     }, [currentMenu])
 
 
-
+    if(login != null){
+        console.log( login )
+        checkWork()
+    }
 
     return(<>
         <aside className="maside">

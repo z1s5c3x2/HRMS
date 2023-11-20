@@ -15,15 +15,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 @Service
@@ -172,5 +172,22 @@ public class AttendanceService {
         return "출근";
 
     }
+    @Transactional
+    public boolean checkMyWrok()
+    {
+        Optional<EmployeeEntity> optionalEmployeeEntity =  employeeEntityRepository.findByEmpNo(securityService.getEmp().getEmpNo());
 
+        if(optionalEmployeeEntity.isPresent())
+        {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            AttendanceEntity attendanceEntity  = optionalEmployeeEntity.get().getAttendanceEntities().get(optionalEmployeeEntity.get().getAttendanceEntities().size()-1);
+            System.out.println(LocalDate.parse(attendanceEntity.getAttdWrst().split(" ")[0],formatter) );
+            if(attendanceEntity.getAttdWrend().equals(attendanceEntity.getAttdWrst()) && LocalDate.now().isEqual(LocalDate.parse(attendanceEntity.getAttdWrst().split(" ")[0],formatter) ) )
+            {
+                return true;
+            }
+
+        }
+        return false;
+    }
 }
