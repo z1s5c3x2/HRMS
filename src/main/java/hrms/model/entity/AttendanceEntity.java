@@ -47,7 +47,7 @@ public class AttendanceEntity extends BaseTime{
                 .attdNo(this.attdNo)
                 .attdWrend(this.attdWrend)
                 .attdWrst(this.attdWrst)
-                .empRK(this.empNo.getEmpRk())
+                .empRk(this.empNo.getEmpRk())
                 .empName(this.empNo.getEmpName())
                 .empSta(this.empNo.isEmpSta())
                 .dptmName(this.empNo.getDptmNo().getDptmName())

@@ -94,22 +94,25 @@ export default function Index( props ){
                                 <Route path='/salary/view' element={<SalaryView/>} />
                                 <Route path='/salary/list' element={<SalaryList/>} />
 
-                            { /* LeaveRequest*/ }
-                                <Route path='/leaveRequest' element={<LeaveRequestMain/>} />
-                                <Route path='/leaveRequest/write' element={<LeaveRequestWrite/>} />
-                                <Route path='/leaveRequest/view' element={<LeaveRequestView/>} />
-                                <Route path='/leaveRequest/list' element={<LeaveRequestList/>} />
-                                <Route path='/leaveRequest/update' element={<LeaveRequestUpdate/>} />
-                                <Route path='/sickleaveRequest/write' element={<SickLeaveRequestWrite/>} />
-                                <Route path='/leaveofabsenceRequest/write' element={<LeaveOfAbsenceRequestWrite/>} />
+                            { /* LeaveRequest 근태안에 종속 */ }
+                                <Route path='attendance/leaveRequestMe' element={<LeaveRequestMain/>} />
+                                <Route path='/attendance/leaveRequestwrite' element={<LeaveRequestWrite/>} />
+                                <Route path='/attendance/leaveRequestview' element={<LeaveRequestView/>} />
+                                <Route path='/attendance/leaveRequestlist' element={<LeaveRequestList/>} />
+                                {/* 연차 수정 */}
+                                <Route path='/attendance/leaveRequestupdate' element={<LeaveRequestUpdate/>} />
+                                {/* 병가신청 */}
+                                <Route path='/attendance/sickleaveRequestwrite' element={<SickLeaveRequestWrite/>} />
+                                {/* 휴직신청 */}
+                                <Route path='/employee/leaveofabsenceRequestwrite' element={<LeaveOfAbsenceRequestWrite/>} />
 
                             {/* TeamProject */}
-                                <Route path='/teamproject' element={<TeamProjectMain />} />
-                                <Route path='/teamproject/listAll' element={<TeamProjectList />} />
-                                <Route path='/teamproject/update' element={<TeamProjectUpdate />} />
-                                <Route path='/teamproject/teammember/write' element={<TeamMemberWrite />} />
-                                <Route path='/teamproject/teammember/print' element={<TeamMemberList />} />
-                                <Route path='/teamproject/teammember/update' element={<TeamMemberUpdate />} />
+                                <Route path='/teamProject' element={<TeamProjectMain />} />
+                                <Route path='/teamProject/listAll' element={<TeamProjectList />} />
+                                <Route path='/teamProject/update' element={<TeamProjectUpdate />} />
+                                <Route path='/teamProject/teammember/write' element={<TeamMemberWrite />} />
+                                <Route path='/teamProject/teammember/print' element={<TeamMemberList />} />
+                                <Route path='/teamProject/teammember/update' element={<TeamMemberUpdate />} />
 
                             {/* Login */}
                                 <Route path='/member/login' element={<Login/>} />

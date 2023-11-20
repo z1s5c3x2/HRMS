@@ -82,8 +82,10 @@ export default function ApprovalList(props){
     return (<>
         <Modal isOpen={isModalOpen} closeModal={closeModal} aprvNo={aprvNo} />
 
-        <h3> 결재 메인페이지 </h3>
+
         <div class="contentBox">
+            <div className="pageinfo"><span className="lv0">결재관리</span> > <span className="lv1">전사원결재조회</span></div>
+
             <div class="searchBox">
 
                 <span>
@@ -123,7 +125,7 @@ export default function ApprovalList(props){
                         onChange = { e =>{
                         setPageInfo( { ...pageInfo, keyword : e.target.value } )
                     }}  />
-                    <button type="button" className=""
+                    <button type="button" className="searchbtn"
                     onClick ={ e => {
                         getList()
                     }} > 검색 </button>

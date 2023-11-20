@@ -78,7 +78,11 @@ public class EmployeeController {
     {
         return employeeService.getOneEmp(empNo);
     }
-
+    @GetMapping("/myinfo")
+    public EmployeeDto getMyInfo()
+    {
+        return employeeService.getMyInfo();
+    }
     //
     @GetMapping("/findoneoption")
     public PageDto<EmployeeDto> findOneOption(EmployeeSearchOptionDto employeeSearchOptionDto)
@@ -98,11 +102,7 @@ public class EmployeeController {
         return securityService.getEmp();
     }
 
-    @GetMapping("/test1")
-    public boolean test1(@RequestParam int a , @RequestParam int b){
-        employeeService.test1(a,b);
-        return true;
-    }
+
 
     @GetMapping("getteammebers")
     public List<EmployeeDto> getTeamsMebers(){

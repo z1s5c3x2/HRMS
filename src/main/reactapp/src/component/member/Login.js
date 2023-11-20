@@ -16,7 +16,7 @@ export default function Login(props){
                 console.log(r);
                 if(r.data){
                     alert('로그인 성공');
-                    window.location.href = '/';
+                    window.location.href = '/attendance/pcalendar';
                 }else{
                     alert('로그인 실패');
                 }

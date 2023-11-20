@@ -2,6 +2,7 @@ package hrms.controller.teamproject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hrms.model.dto.*;
 import hrms.service.approval.ApprovalService;
 import hrms.service.teamproject.TeamProjectService;
@@ -23,6 +24,7 @@ public class TeamProjectController {
     // 1. 팀프로젝트 생성
     @PostMapping("/post")
     public boolean postTeamProject(@RequestBody ApprovalRequestDto<ProjectDto> approvalRequestDto){
+        System.out.println("approvalRequestDto = " + approvalRequestDto);
         boolean result = teamProjectService.postTeamProject(approvalRequestDto);
 
         return result;
@@ -60,6 +62,7 @@ public class TeamProjectController {
 
         // DTO객체 => json 문자열
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());  // datetime 모듈 추가
         String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
         approvalRequestDto.setAprvJson(json);
 

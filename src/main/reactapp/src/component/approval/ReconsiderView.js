@@ -70,16 +70,12 @@ export default function ReconsiderView(props){
 
 
     return (<>
-
-        <h3> 상신관리 </h3>
-
         <div class="contentBox">
-
+            <div className="pageinfo"><span className="lv0">결재관리</span> > <span className="lv1">상신관리</span></div>
             <div class="searchBox">
 
                 <span>
-                    상신일자
-                    조회기간 : <input type="date" className="periodStart"
+                    상신일자: <input type="date" className="periodStart"
                         onChange = { e =>{
                         setPageInfo( { ...pageInfo, strDate : e.target.value } )
                     }} />
@@ -113,7 +109,7 @@ export default function ReconsiderView(props){
                         onChange = { e =>{
                         setPageInfo( { ...pageInfo, keyword : e.target.value } )
                     }}  />
-                    <button type="button" className=""
+                    <button type="button" className="searchbtn"
                     onClick ={ e => {
                         getList()
                     }} > 검색 </button>

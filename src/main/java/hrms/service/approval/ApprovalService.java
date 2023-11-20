@@ -65,6 +65,7 @@ public class ApprovalService {
 
         if (optionalEmployeeEntity.isPresent()) {
 
+
             ApprovalEntity approvalEntity = ApprovalEntity
                     .builder()
                     .aprvType(aprvType)
@@ -343,7 +344,6 @@ public class ApprovalService {
                     //이후 처리
                     Optional<DepartmentHistoryEntity> optionalDepartmentHistoryEntity = departmentHistoryEntityRepository.findTop1ByEmpNoAndHdptmEndIsNullOrderByHdptmEndDesc(optionalEmployeeEntity.get());
                     Optional<TeamMemberEntity> optionalTeamMemberEntity = teamMemberRepository.findTop1ByEmpNoAndTmEndIsNullOrderByTmNoDesc(optionalEmployeeEntity.get());
-                    System.out.println("step 3");
                     if(optionalDepartmentHistoryEntity.isPresent() && optionalTeamMemberEntity.isPresent())
                     {
                         optionalDepartmentHistoryEntity.get().setHdptmEnd(retiredEmployeeDto.getRtempDate()); //부서 마지막날 설정
@@ -475,6 +475,7 @@ public class ApprovalService {
     public boolean updateLeaveRequestInfoAproval(int aprvNo) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
 
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
@@ -496,6 +497,7 @@ public class ApprovalService {
     public boolean updateProjectInfoAproval(int aprvNo) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());  // datetime 모듈 추가
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
 
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
@@ -577,6 +579,7 @@ public class ApprovalService {
     public boolean updateTeamMemberApproval(int aprvNo) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());  // datetime 모듈 추가
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
 
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);

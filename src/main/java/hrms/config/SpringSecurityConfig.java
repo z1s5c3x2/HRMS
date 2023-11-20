@@ -27,13 +27,45 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // 0. 인증(로그인)된 권환(허가) 통해 페이지 접근 제한  UserDetails 내 유저네임과 일치시켜야함
         http.authorizeHttpRequests()    // 1. 인증된
                 //.antMatchers("/info").hasRole("인사")   // 인증된 권한중에 인사팀이면 HTTP 허용
-                .antMatchers("/teamproject/teammember/print").hasRole("인사")
-                .antMatchers("/teamproject/teammember/write").hasRole("인사")
+                .antMatchers("/teamproject/teammember/print",
+                        "/teamProject/teammember/write",
+                        "/teamProject/teammember/update",
+                        "/teamProject",
+                        "/teamProject/update",
+                        "/attendance",
+                        "/attendance/dall",
+                        "/attendance/leaveRequestlist",
+                        "/employee/list",
+                        "/employee/register",
+                        "/employee/update",
+                        "/employee/searchemp",
+                        "/salary/list",
+                        "/salary/write",
+                        "/salary/view",
+                        "/approval").hasAuthority("인사")
+                .antMatchers("/teamproject/teammember/print").hasAuthority("개발")
+                .antMatchers("/teamproject/teammember/print").hasAuthority("기획")
+                /*.antMatchers("/teamproject/teammember/write").hasAuthority("인사")
+                .antMatchers("/teamproject/teammember/update").hasAuthority("인사")
+                .antMatchers("/teamproject").hasAuthority("인사")
+                .antMatchers("/teamproject/listAll").hasAuthority("인사")
+                .antMatchers("/teamproject/update").hasAuthority("인사")
+                .antMatchers("/attendance").hasAuthority("인사")
+                .antMatchers("/attendance/dall").hasAuthority("인사")
+                .antMatchers("/attendance/leaveRequestlist").hasAuthority("인사")
+                .antMatchers("/employee/list").hasAuthority("인사")
+                .antMatchers("/employee/register").hasAuthority("인사")
+                .antMatchers("/employee/update").hasAuthority("인사")
+                .antMatchers("/employee/searchemp").hasAuthority("인사")
+                .antMatchers("/salary/list").hasAuthority("인사")
+                .antMatchers("/salary/write").hasAuthority("인사")
+                .antMatchers("/salary/view").hasAuthority("인사")*/
                 .antMatchers("/**").permitAll()     // 모든 페이지는 권한 모두 허용
                 //.anyRequest().authenticated()     // 모든 페이지는 인증 필요
                 .and()
                 .exceptionHandling().accessDeniedHandler((httpServletRequest, httpServletResponse, e) -> {
-                    httpServletResponse.sendRedirect("/accessdenied");
+                    //httpServletResponse.sendRedirect("/accessdenied");
+                    httpServletResponse.setHeader("Refresh", "0; URL=/accessdenied");
                 });
         // 1. 인증(로그인) 커스텀
         http.formLogin()                                    // 1. 시큐리티 로그인 사용[form전송]

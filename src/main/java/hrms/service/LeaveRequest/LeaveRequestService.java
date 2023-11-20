@@ -65,9 +65,10 @@ public class LeaveRequestService {
                     .build();
 
             leaveRequestRepository.save(leaveRequestEntity);
-
+            employeeEntity.setEmpSta(false);
             // 양방향
             approvalEntity.getLeaveRequestEntities().add(leaveRequestEntity);
+            employeeEntity.getLeaveRequestEntities().add(leaveRequestEntity);
 
             if (leaveRequestEntity.getLrqNo() >= 1) {
                 return true;
@@ -101,12 +102,12 @@ public class LeaveRequestService {
     }
 
     // 개별 출력 ( 기본적으로 Main에서 내정보 보기 , 인사팀이 사원정보로 입력시 정보 호출 )
-    public PageDto lrqGet(int page, int view, String empNo) {
+    public PageDto lrqGet(int page, int view, String empNo , int lrqType, int lrqSrtype, String DateSt, String DateEnd) {
         // 페이징처리
         Pageable pageable = PageRequest.of(page - 1, view);
 
         // 1. 해당 empNo에 맞는 엔티티 호출
-        Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findByEmpNo_EmpNo(empNo, pageable);
+        Page<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findByEmpNo_EmpNo(empNo, lrqType ,lrqSrtype , DateSt , DateEnd , pageable);
 
         List<LeaveRequestDto> leaveRequestDtos = new ArrayList<>();
         leaveRequestEntities.forEach(e -> {

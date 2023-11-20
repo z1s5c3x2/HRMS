@@ -1,7 +1,6 @@
 package hrms.service.teamproject;
 
 import hrms.model.dto.ApprovalRequestDto;
-import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.PageDto;
 import hrms.model.dto.ProjectDto;
 import hrms.model.entity.ApprovalEntity;
@@ -17,9 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -44,7 +40,7 @@ public class TeamProjectService {
     // 프로젝트팀 생성
     @Transactional
     public boolean postTeamProject(ApprovalRequestDto<ProjectDto> approvalRequestDto){
-
+        System.out.println("프로젝트서비스");
         // 입력한 프로젝트팀 관리자 pk번호 호출
         Optional<EmployeeEntity> employeeEntityOptional =
                 employeeRepository.findByEmpNo(approvalRequestDto.getData().getEmpNo());
@@ -58,7 +54,7 @@ public class TeamProjectService {
                 approvalRequestDto.getAprvCont(),
                 approvalRequestDto.getApprovers()
         );
-
+        System.out.println("1");
         // 프로젝트팀 생성
         ProjectEntity projectEntity =
                 projectRepository.save( approvalRequestDto.getData().saveToEntity() );
@@ -113,17 +109,52 @@ public class TeamProjectService {
         // 페이징처리 라이브러리
         // 한페이지에 보여질 팀프로젝트 수
         Pageable pageable = PageRequest.of(page-1, 5);
+        List<ProjectDto> projectDtos = new ArrayList<>();
 
         // 총 페이지수
         int totalPages = 0;
         // 총 게시물수
         long totalCount = 0;
 
-        Page<ProjectEntity> projectEntities = projectRepository.findAll(pageable);
-        List<ProjectDto> projectDtos = new ArrayList<>();
-        System.out.println(projectEntities);
+        if(approval == 1){
+            Page<ProjectEntity> projectEntities = projectRepository.findByAllAplogStaIs1(pageable);
 
-        for (ProjectEntity projectEntity : projectEntities) {
+            for(ProjectEntity projectEntity : projectEntities){
+                projectDtos.add(projectEntity.allToDto());
+            }
+
+            totalPages = projectEntities.getTotalPages();
+            totalCount = projectEntities.getTotalElements();
+
+        }
+
+        if(approval == 2){
+            Page<ProjectEntity> projectEntities = projectRepository.findProjectsByApprovalLogAplogSta2(pageable);
+
+            for(ProjectEntity projectEntity : projectEntities){
+                projectEntity.setPjtSta(1);
+                projectDtos.add(projectEntity.allToDto());
+            }
+
+            totalPages = projectEntities.getTotalPages();
+            totalCount = projectEntities.getTotalElements();
+        }
+
+        if(approval == 3){
+            Page<ProjectEntity> projectEntities = projectRepository.findProjectsByApprovalLog(pageable);
+
+            for(ProjectEntity projectEntity : projectEntities){
+                projectDtos.add(projectEntity.allToDto());
+            }
+
+            totalPages = projectEntities.getTotalPages();
+            totalCount = projectEntities.getTotalElements();
+        }
+
+
+
+
+        /*for (ProjectEntity projectEntity : projectEntities) {
             List<ApprovalLogEntity> approvalLogEntities = projectEntity.getAprvNo().getApprovalLogEntities();
             boolean allStaThree = true;     // 검토중 판단
             boolean hasRejection = false;   // 반려상태 판단
@@ -144,23 +175,14 @@ public class TeamProjectService {
             if (approval == 1 && allStaThree) {
                 // 모두 1(승인) 상태일 때 승인
                 projectDtos.add(projectEntity.allToDto());
-                totalCount++;
             } else if (approval == 2 && hasRejection) {
                 // 2(반려) 상태가 하나라도 있을 때 반려
                 projectDtos.add(projectEntity.allToDto());
-                totalCount++;
             } else if(approval == 3 && !allStaThree){
                 // 나머지 경우의 수, 3(검토중) 상태가 있을 때 검토중
                 projectDtos.add(projectEntity.allToDto());
-                totalCount++;
             }
-            System.out.println(totalCount);
-        }
-        totalPages = ( ( (int)(totalCount-1) ) / 5 ) + 1;
-        if(totalCount % 5 == 0 && totalCount != 0){
-            totalPages++;
-        }
-
+        }*/
 
         // PageDto구성
         PageDto<ProjectDto> pageDto = PageDto.<ProjectDto>builder()

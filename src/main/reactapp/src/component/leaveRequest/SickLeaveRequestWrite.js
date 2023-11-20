@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState , useEffect  } from 'react';
 
 import styles from '../../css/leaveRequest/leaveRequestWrite.css';
 
@@ -19,6 +19,14 @@ dayjs.locale('ko');
 export default function SickLeaveRequestWrite(props) {
  const [isOn, setIsOn] = useState(false);
 
+// 3. 현재 로그인된 회원의 번호
+           const login = JSON.parse(sessionStorage.getItem('login_token'));
+           const login_empNo = login != null ? login.empNo : null;
+           const login_empName = login != null ? login.empName : null;
+
+
+
+
   const modalController = () => {
     setIsOn(!isOn);
   };
@@ -31,7 +39,7 @@ const data = {
       lrqEnd: selectedDate2,
       lrqType: 3,
       lrqSrtype: Number(paymentType),
-      empNo: '2311006' // 추후에 세션 구현하면 접속한 본인 사번 대입
+      empNo: login_empNo // 추후에 세션 구현하면 접속한 본인 사번 대입
     };
     console.log(data);
 

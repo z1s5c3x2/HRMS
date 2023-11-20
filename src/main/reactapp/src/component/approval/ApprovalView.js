@@ -91,11 +91,12 @@ export default function ApprovalMain(props){
         <h3> 결재관리 </h3>
 
         <div class="contentBox">
+            <div className="pageinfo"><span className="lv0">결재관리</span> > <span className="lv1">결재내역상세조회</span></div>
+
             <div class="searchBox">
 
                 <span>
-                    상신일자
-                    조회기간 : <input type="date" className="periodStart"
+                    상신기간 : <input type="date" className="periodStart"
                         onChange = { e =>{
                         setPageInfo( { ...pageInfo, strDate : e.target.value } )
                     }} />
@@ -130,7 +131,7 @@ export default function ApprovalMain(props){
                         onChange = { e =>{
                         setPageInfo( { ...pageInfo, keyword : e.target.value } )
                     }}  />
-                    <button type="button" className=""
+                    <button type="button" className="searchbtn"
                     onClick ={ e => {
                         getApprovalList()
                     }} > 검색 </button>

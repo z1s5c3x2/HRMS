@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hrms.model.dto.*;
 import hrms.model.entity.ApprovalEntity;
-import hrms.model.repository.ApprovalEntityRepository;
 import hrms.service.approval.ApprovalService;
 import hrms.service.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +72,7 @@ public class ApprovalController {
 
         // DTO객체 => json 문자열
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());  // datetime 모듈 추가
         String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
         approvalRequestDto.setAprvJson(json);
 
@@ -94,6 +94,7 @@ public class ApprovalController {
 
         // DTO객체 => json 문자열
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());  // datetime 모듈 추가
         String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
         approvalRequestDto.setAprvJson(json);
 
@@ -145,25 +146,10 @@ public class ApprovalController {
 
     // 결재 상세내역 조회
     @GetMapping("/getDetailedApproval")
-    public ApprovalEntity getDetailedApproval( int aprvNo ){
+    public  ApprovalEntity getDetailedApproval( int aprvNo ){
         return approvalService.getDetailedApproval( aprvNo );
     }
 
-    @Autowired
-    private ApprovalEntityRepository approvalRepository;
-
-    @DeleteMapping("/deleteAapproval")
-    public boolean deleteApproval( int aprvNo ){
-
-        try {
-            approvalRepository.deleteById( aprvNo );
-
-            return true;
-        } catch ( Exception e ){
-            return false;
-        }
-
-    }
 
 
 

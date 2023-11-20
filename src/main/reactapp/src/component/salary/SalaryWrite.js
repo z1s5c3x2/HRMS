@@ -38,11 +38,15 @@ export default function SalaryWrite(props) {
   const [empNumber, setEmpNumber] = useState('');
   const [empName, setEmpName] = useState('');
   const [rankNumber, setRankNumber] = useState('');
+  const [empList, setEmpList] = useState([]);
+  const [pageInfo, setPageInfo] = useState({ page: 1, dptmNo: 0, sta: '0', totalCount: 0, totalPages: 0 });
+  const [slryType, setSlryType] = useState("1"); // 초기 값 1으로 설정
+
 const data = {
       empNo: empNumber,
       slryDate: selectedDate,
       slryPay: Number(amount),
-      slryType: Number(paymentType),
+      slryType: slryType
     };
     console.log(data);
   const handleSubmit = () => {
@@ -87,8 +91,6 @@ const data = {
     return { name, calories, fat, carbs, protein };
   }
 
-  const [empList, setEmpList] = useState([]);
-  const [pageInfo, setPageInfo] = useState({ page: 1, dptmNo: 0, sta: '0', totalCount: 0, totalPages: 0 });
 
   useEffect(() => {
     getList();
@@ -105,18 +107,20 @@ const data = {
         console.log(e);
       });
   };
-
+    const handleRadioChange = (value) => {
+            setSlryType(value);
+          };
   return (
     <>
     <div className="contentBox">
-            <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">나의 급여내역</span></div>
-      <div>
+        <div className="pageinfo"><span className="lv0">급여관리</span> > <span className="lv1">급여 등록</span></div>
+        <div>
         {/* 급여지급 관련 입력구역 */}
         <div className="inputbox">
             <form className="boardForm">
                 <div className="maincontent">
-                   <div className="inputcontent">
-                    <div className="top"  style={{display:'flex', justifyContent:'space-between'}}>
+                   <div className="inputcontent ">
+                    <div className="top divflex"  >
                        <div className="empNo">
                            <TextField
                                 sx={{ width: '110px' }}
@@ -136,7 +140,7 @@ const data = {
 
                       <div className="accountNo">
                             <TextField
-                            sx={{ width: '130px' }}
+                            sx={{ width: '200px' }}
                             disabled={true} size="small" label="계좌번호" type="text" value={accountNumber} />
                       </div>
 
@@ -158,21 +162,85 @@ const data = {
 
                       <div className="value">
                             <TextField
-                                sx={{ width: '130px' }}
+                                sx={{ width: '140px' }}
                                 size="small" label="금액" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
                       </div>
-
-                      <div className="value">
-                           <TextField
-                                sx={{ width: '90px' }}
-                                size="small" label="지급 타입" type="number" value={paymentType} onChange={(e) => setPaymentType(e.target.value)} />
-                       </div>
                       <div className="btn">
-                        <Button className="btn1"
-                            style={ { height: '50px' , width: '100px' }}
-                            sx={{}}
-                            variant="contained" color="primary" onClick={modalController}>결재요청</Button>
+                          <Button className="btn1"
+                              sx={{height: '' , width: '100px', backgroundColor: 'var(--main02)'}}
+                              variant="contained" color="primary" onClick={modalController}>결재요청</Button>
                       </div>
+                    </div>
+                    <div className="w100 pd10_0">
+                      <div className="divflex  ">
+                        <div>급여 종류 선택 : </div>
+
+                                      <input
+                                        type="radio"
+                                        onChange={() => handleRadioChange("1")}
+                                        name="slryType"
+                                        value="1"
+                                        checked="checked"
+                                        checked={slryType === "1"}
+                                      /> 기본급
+
+                                      <input
+                                        type="radio"
+                                        onChange={() => handleRadioChange("2")}
+                                        name="slryType"
+                                        value="2"
+                                        checked={slryType === "2"}
+                                      /> 정기상여
+
+                                       <input
+                                          type="radio"
+                                          onChange={() => handleRadioChange("3")}
+                                          name="slryType"
+                                          value="3"
+                                          checked={slryType === "3"}
+                                       /> 특별상여
+
+                                      <input
+                                         type="radio"
+                                         onChange={() => handleRadioChange("4")}
+                                         name="slryType"
+                                         value="4"
+                                         checked={slryType === "4"}
+                                      /> 성과금
+
+                                     <input
+                                        type="radio"
+                                        onChange={() => handleRadioChange("5")}
+                                        name="slryType"
+                                        value="5"
+                                        checked={slryType === "5"}
+                                     /> 명절휴가비
+
+                                     <input
+                                         type="radio"
+                                         onChange={() => handleRadioChange("6")}
+                                         name="slryType"
+                                         value="6"
+                                         checked={slryType === "6"}
+                                      /> 퇴직금
+
+                                       <input
+                                          type="radio"
+                                          onChange={() => handleRadioChange("7")}
+                                          name="slryType"
+                                          value="7"
+                                          checked={slryType === "7"}
+                                       /> 경조사비
+
+                                    <input
+                                       type="radio"
+                                       onChange={() => handleRadioChange("8")}
+                                       name="slryType"
+                                       value="8"
+                                       checked={slryType === "8"}
+                                    /> 연가보상비
+                              </div>
+
 
                     </div>
                    </div>
@@ -190,8 +258,8 @@ const data = {
                 'td': {
                     textAlign: 'center',
                     fontSize: '0.8rem',
-                    paddingTop: '5px',
-                    paddingBottom: '5px',
+                    paddingTop: '9px',
+                    paddingBottom: '9px',
                     paddingLeft: '3px',
                     paddingRight: '3px',
                     border:'solid 1px var(--lgray)'
@@ -253,21 +321,21 @@ const data = {
           <ApprovalModal
             data={data}
             aprvType={
-              data.slryType === 1
+              data.slryType == 1
                 ? 18
-                : data.slryType === 2
+                : data.slryType == 2
                 ? 19
-                : data.slryType === 3
+                : data.slryType == 3
                 ? 20
-                : data.slryType === 4
+                : data.slryType == 4
                 ? 21
-                : data.slryType === 5
+                : data.slryType == 5
                 ? 22
-                : data.slryType === 6
+                : data.slryType == 6
                 ? 23
-                : data.slryType === 7
+                : data.slryType == 7
                 ? 24
-                : data.slryType === 8
+                : data.slryType == 8
                 ? 25
                 : null
             }

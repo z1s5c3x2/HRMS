@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -17,16 +18,18 @@ export default function LeaveRequestMain(props) {
    let [ pageDto , setPageDto ] = useState( {
                   someList : [] , totalPages : 0 , totalCount : 0
     } );
-   // 0. 스프링에게 전달할 객체
-          const [ pageInfo , setPageInfo ] = useState( {
-              page : 1 ,  view : 5 , empNo : "2311006" // 추후 세션으로 가져와 변경
-          }); console.log( pageInfo );
-
-    /*
     // 3. 현재 로그인된 회원의 번호
     const login = JSON.parse(sessionStorage.getItem('login_token'));
-    const empNo = login != null ? login.empNo : null;
-    */
+    const login_empNo = login != null ? login.empNo : null;
+    const login_empName = login != null ? login.empName : null;
+   // 0. 스프링에게 전달할 객체
+          const [ pageInfo , setPageInfo ] = useState( {
+              page : 1 ,  view : 5 , empNo : login_empNo , lrqType : 0 , lrqSrtype: 2 , DateSt : '' , DateEnd : ''
+
+              // 추후 세션으로 가져와 변경
+          }); console.log( pageInfo );
+
+
 
     // 특정 레코드 클릭시 해당 레코드 상세보기
     const loadView = ( lrqNo ) => {
@@ -73,9 +76,10 @@ export default function LeaveRequestMain(props) {
     }
 
     return (<>
-            <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">개인 연차내역</span></div>
-            <h3>{ /*row.empNo*/ } 이효재(2311006)님 연차보기 ( 추후에 사번으로 이름 찾아서 대입 )</h3>
+            <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">개인 연차/병가/휴직 내역</span></div>
+            <h3>{ /*row.empNo*/ } {login_empName}({login_empNo})님 연차보기</h3>
              <p> page : { pageInfo.page  } totalCount : { pageDto.totalCount  } </p>
+       <div style={{ display:'flex' }}>
              <select
                       value = { pageInfo.view }
                       onChange={ (e)=>{  setPageInfo( { ...pageInfo , view : e.target.value} );  } }
@@ -84,10 +88,59 @@ export default function LeaveRequestMain(props) {
                         <option value="10"> 10 </option>
                        <option value="20"> 20 </option>
              </select>
+             <select
+                   value = { pageInfo.lrqType }
+                   onChange={ (e)=>{  setPageInfo( { ...pageInfo ,  lrqType : e.target.value} );  } }
+                   >
+                   <option  value="0"> 전체유형 </option>
+                   <option  value="1"> 휴직 </option>
+                   <option  value="2"> 연차 </option>
+                   <option  value="3"> 병가 </option>
 
-            <TableContainer component={Paper}>
+             </select>
+             <select
+                 value = { pageInfo.lrqSrtype }
+                 onChange={ (e)=>{  setPageInfo( { ...pageInfo ,  lrqSrtype : e.target.value} );  } }
+                 >
+                 <option  value="2"> 전체급여유형 </option>
+                 <option  value="0"> 무급 </option>
+                 <option  value="1"> 유급 </option>
+
+             </select>
+             <div style= {{ marginLeft : '15px' }}>
+                                      조회기간 : <input type="date" className="periodStart" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateSt : e.target.value} ); } }/> ~
+                                      <input type="date" className="periodEnd" onChange={ (e)=> { setPageInfo( { ...pageInfo , DateEnd : e.target.value} ); } } />
+             </div>
+      </div>
+            <TableContainer
+                sx={{
+                    width: 900,
+                    height: 500,
+                    'td': {
+                        textAlign: 'center',
+                        fontSize: '0.8rem',
+                        paddingTop: '9px',
+                        paddingBottom: '9px',
+                        paddingLeft: '3px',
+                        paddingRight: '3px',
+                        border:'solid 1px var(--lgray)'
+                    }
+                }}
+                component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
+                    <TableHead
+                         sx={{
+                             'th':{
+                                 textAlign: 'center',
+                                 fontSize: '0.9rem',
+                                 bgcolor: 'var(--main04)',
+                                 color: '#fff',
+                                 paddingTop: '10px' ,
+                                 paddingBottom: '10px',
+                             }
+                         }}
+
+                       >
                         <TableRow>
                            <TableCell style={{ width : '10%' }} align="right">번호</TableCell>
                            <TableCell style={{ width : '20%' }} align="right">연차신청날짜</TableCell>
