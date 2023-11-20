@@ -132,10 +132,10 @@ let currentMenu = location == '' ? 'employee' : location;
                     <li id="menu1" onClick={clickMenu} className={activeMenu === 'menu1' ? 'smenu' : ''}><Link to='/employee/list'>사원 조회</Link></li>
                     <li id="menu2" onClick={clickMenu} className={activeMenu === 'menu2' ? 'smenu' : ''}><Link to='/employee/register'>사원등록</Link></li>
                     <li id="menu4" onClick={clickMenu} className={activeMenu === 'menu4' ? 'smenu' : ''}><Link to='/employee/searchemp'>사원 검색</Link></li>
-                    <li><Link to='/employee/retemplist'>퇴사 사원 조회</Link></li>
+                    {/*<li><Link to='/employee/retemplist'>퇴사 사원 조회</Link></li>
                     <li><Link to='/employee/leaveofabsence/view'>휴직 사원 조회</Link></li>
                     <li><Link to='/employee/leaveofabsence/write'>사원 휴직기간 등록</Link></li>
-                    <li><Link to='/employee/leaveofabsence/update'>사원 휴직기간 수정</Link></li>
+                    <li><Link to='/employee/leaveofabsence/update'>사원 휴직기간 수정</Link></li>*/}
                 </>
                 )}
 
@@ -156,7 +156,7 @@ let currentMenu = location == '' ? 'employee' : location;
                    <li id="menu3" onClick={clickMenu} className={activeMenu === 'menu3' ? 'smenu' : ''}><a href='/attendance/dall'>전체 출결현황</a></li>
                    <li id="menu4" onClick={clickMenu} className={activeMenu === 'menu4' ? 'smenu' : ''}><Link to='/attendance/dcalendar'>개인 출결 캘린더</Link></li>
                    <li id="menu5" onClick={clickMenu} className={activeMenu === 'menu5' ? 'smenu' : ''}><Link to='/attendance/sickleaveRequestwrite'>병가신청</Link></li>
-                    <li id="menu9" onClick={clickMenu} className={activeMenu === 'menu9' ? 'smenu' : ''}><Link to='/attendance/leaveRequestwrite'>개인 연차신청</Link></li>
+                   <li id="menu9" onClick={clickMenu} className={activeMenu === 'menu9' ? 'smenu' : ''}><Link to='/attendance/leaveRequestwrite'>개인 연차신청</Link></li>
                    <li id="menu7" onClick={clickMenu} className={activeMenu === 'menu7' ? 'smenu' : ''}><Link to='/attendance/leaveRequestMe'>개인 연차/병가/휴직 내역</Link></li>
                    <li id="menu8" onClick={clickMenu} className={activeMenu === 'menu8' ? 'smenu' : ''}><a href='/attendance/leaveRequestlist'>전체 연차/병가/휴직 내역 </a></li>
 

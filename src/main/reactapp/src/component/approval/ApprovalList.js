@@ -70,8 +70,7 @@ export default function ApprovalList(props){
             <div class="searchBox">
 
                 <span>
-                    상신일자
-                    조회기간 : <input type="date" className="periodStart"
+                    상신일기간 : <input type="date" className="periodStart"
                         onChange = { e =>{
                         setPageInfo( { ...pageInfo, strDate : e.target.value } )
                     }} />

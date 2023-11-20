@@ -89,7 +89,7 @@ axios.get("/leaveRequest/getLeave" , { params : login_empNo } )
   return (<>
     <div className="contentBox">
     <div class="pageinfo"><span class="lv0">근태관리</span> > <span class="lv1">연차 등록</span></div>
-      <h3>{login_empName}({login_empNo})님 사용 가능한 연차 : {leaveNumber}일</h3>
+     {/*} <h3>{login_empName}({login_empNo})님 사용 가능한 연차 : {leaveNumber}일</h3>*/}
 
       <form className="boardForm">
       <div className="emp_regs_content">
@@ -118,26 +118,28 @@ axios.get("/leaveRequest/getLeave" , { params : login_empNo } )
                         </LocalizationProvider>
           </div>
 
-        <div className="eregInputBox pmBox">
+        <div className="eregInputBox ma pdt15_0">
                 <div className="input_title ">급여 유무</div>
-                무급
+
                 <input
                   type="radio"
+                  style={{ boxShadow:'none'}}
                   onChange={() => handleRadioChange("0")}
                   name="lrqSrtype"
                   value="0"
                   checked={lrqSrtype === "0"}
-                />
-                유급
+                /> 무급
+
                 <input
                   type="radio"
+                  style={{ boxShadow:'none'}}
                   onChange={() => handleRadioChange("1")}
                   name="lrqSrtype"
                   value="1"
                   checked={lrqSrtype === "1"}
-                />
+                /> 유급
         </div>
-        <div className="eregBtnBox">
+        <div className="eregBtnBox pdt10_0">
             <Button className="btn01" variant="contained" color="primary" onClick={modalController}>
               결재요청
             </Button>
