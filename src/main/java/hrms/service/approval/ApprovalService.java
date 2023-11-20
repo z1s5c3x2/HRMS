@@ -496,6 +496,7 @@ public class ApprovalService {
     public boolean updateProjectInfoAproval(int aprvNo) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());  // datetime 모듈 추가
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
 
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
@@ -577,6 +578,7 @@ public class ApprovalService {
     public boolean updateTeamMemberApproval(int aprvNo) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());  // datetime 모듈 추가
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
 
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
