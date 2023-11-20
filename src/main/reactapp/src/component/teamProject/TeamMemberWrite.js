@@ -112,33 +112,29 @@ export default function TeamMemberWrite( props ){
         <div className="teamMemberWrap">
             <div class="contentBox">
                 <div class="pageinfo"><span class="lv0">프로젝트팀관리</span> > <span class="lv1">프로젝트팀 팀원등록</span></div>
-                <div class="emp_regs_content">
+                <div class="emp_regs_content divflex w100">
+                    <div class="divflex w30">
+                        <div class="w20 ma ls3">팀명 </div>
+                        <div class="w80"><input type="text" value={pjtName} class="pjtNo" name="pjtNo"/></div>
+                    </div>
+                    <div class="divflex w15">
+                        <div class="w40 ma ld2">팀원명 </div>
+                        <div class="w60"><input type="text" value={empName} class="empNo" name="empNo"/></div>
+                    </div>
 
-                    <div class="eregInputBox pmBox">
-                        <div class="input_title " className="inputPm">프로젝트팀원</div>
-                        <div class="input_box">
-                            <input type="text" value={empName} class="empNo" name="empNo"/>
-                        </div>
-                    </div>
-                    <div class="eregInputBox pmBox">
-                        <div class="input_title " className="inputPm">프로젝트팀</div>
-                        <div class="input_box">
-                            <input type="text" value={pjtName} class="pjtNo" name="pjtNo"/>
-                        </div>
-                    </div>
-                    <div class="eregInputBox">
-                        <div class="input_title ">팀원투입날짜</div>
+                    <div class="divflex w33">
+                        <div class="w30 ma">팀원투입일 </div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DesktopDatePicker
                             value={selectedSDate}
-                            sx={{ width: '70%'}}
+                            sx={{ width: '180px'}}
                             renderInput={(params) => <TextField {...params} label="날짜" />}
                             format="YYYY-MM-DD"
                             onChange={(date)=> setSelectedSDate(date)}
                           />
                         </LocalizationProvider>
                     </div>
-                    <div class="eregBtnBox">
+                    <div class="w12">
                         <button class="btn01" type="button" onClick={modalController}>팀원등록</button>
                     </div>
                 </div>
@@ -150,70 +146,126 @@ export default function TeamMemberWrite( props ){
                                               modalControll={modalController}>
                     </ApprovalModal></> : <> </> }
             </div>
-            <div className="selectBox">   {/* 프로젝트팀 출력 공간 */}
-                <div className="contentBox2">
-                    <div className="cont">
-                        <TableContainer component={Paper}>
-                          <Table sx={{ minWidth: 200 }} aria-label="simple table">
-                            <TableHead>
-                              <TableRow className="table_head th01">
-                                <TableCell  align="center" className="th_cell">번호</TableCell>
-                                <TableCell className="th_cell" align="center">프로젝트명</TableCell>
-                                <TableCell className="th_cell" align="center">PM</TableCell>
-                              </TableRow>
-                            {/* 테이블 제목 구역 */}
-                            </TableHead>
-                            {/* 테이블 내용 구역 */}
-                            <TableBody>
-                              {projectTeam.map((row) => (
-                                <TableRow
-                                  className="tbody_tr"
-                                  onClick={() => {
-                                    setPjtName(row.pjtName);
-                                    setPjtNumber(row.pjtNo);
-                                  }}
-                                  key={row.name}
-                                >
-                                  <TableCell align="center">{row.pjtNo}</TableCell>
-                                  <TableCell align="center">{row.pjtName}</TableCell>
-                                  <TableCell align="center">{row.empName}</TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-                    </div>
+            <hr class="hr00"/>
+            {/* 프로젝트팀 출력 공간 */}
+            <div className="contentBox2 divflex">
+                <div className="cont">
+                    <TableContainer
+                        sx={{
+                            width: 430,
+                            height: 500,
+                            'table':{
+                                borderRadius: '5px'
+                            },
+                            'td': {
+                                textAlign: 'center',
+                                fontSize: '0.8rem',
+                                paddingTop: '9px',
+                                paddingBottom: '9px',
+                                paddingLeft: '3px',
+                                paddingRight: '3px',
+                                border:'solid 1px var(--lgray)'
+                            }
+                        }}
+                        component={Paper}>
+                      <Table sx={{ minWidth: 200 }} aria-label="simple table">
+                        <TableHead
+                             sx={{
+                                 'th':{
+                                     textAlign: 'center',
+                                     fontSize: '0.9rem',
+                                     bgcolor: 'var(--main04)',
+                                     color: '#fff',
+                                     paddingTop: '10px' ,
+                                     paddingBottom: '10px',
+                                 }
+                             }}
+                        >
+                          <TableRow>
+                            <TableCell  align="center" className="th_cell">번호</TableCell>
+                            <TableCell className="th_cell" align="center">프로젝트명</TableCell>
+                            <TableCell className="th_cell" align="center">PM</TableCell>
+                          </TableRow>
+                        {/* 테이블 제목 구역 */}
+                        </TableHead>
+                        {/* 테이블 내용 구역 */}
+                        <TableBody>
+                          {projectTeam.map((row) => (
+                            <TableRow
+
+                              onClick={() => {
+                                setPjtName(row.pjtName);
+                                setPjtNumber(row.pjtNo);
+                              }}
+                              key={row.name}
+                            >
+                              <TableCell align="center">{row.pjtNo}</TableCell>
+                              <TableCell align="center">{row.pjtName}</TableCell>
+                              <TableCell align="center">{row.empName}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                 </div>
-                <div className="contentBox2">
-                    <div className="cont">
-                        <TableContainer component={Paper}>
-                          <Table sx={{ minWidth: 200 }} aria-label="simple table">
-                            <TableHead>
-                              <TableRow className="table_head th01">
-                                <TableCell  align="center" className="th_cell">이름</TableCell>
-                                <TableCell className="th_cell" align="center">직급</TableCell>
-                                <TableCell className="th_cell" align="center">부서</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              {empList.map((emp) => (
-                                   <TableRow
-                                      onClick={() => {
-                                          setEmpName(emp.empName);
-                                          setEmpNumber(emp.empNo);
-                                        }}
-                                   >
-                                       <TableCell align="center">{emp.empName}</TableCell>
-                                       <TableCell align="center">{rkList[emp.empRk]}</TableCell>
-                                       <TableCell align="center">{dptList[emp.dptmNo - 1]}</TableCell>
-                                   </TableRow>
-                               ))}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-                    </div>
+
+                <div className="cont">
+                    <TableContainer
+                        sx={{
+                            width: 450,
+                            height: 500,
+                            'table':{
+                                borderRadius:'5px'
+                            },
+                            'td': {
+                                textAlign: 'center',
+                                fontSize: '0.8rem',
+                                paddingTop: '9px',
+                                paddingBottom: '9px',
+                                paddingLeft: '3px',
+                                paddingRight: '3px',
+                                border:'solid 1px var(--lgray)'
+                            }
+                        }}
+                        component={Paper}>
+                      <Table sx={{ minWidth: 200 }} aria-label="simple table">
+                        <TableHead
+                             sx={{
+                                 'th':{
+                                     textAlign: 'center',
+                                     fontSize: '0.9rem',
+                                     bgcolor: 'var(--main04)',
+                                     color: '#fff',
+                                     paddingTop: '10px' ,
+                                     paddingBottom: '10px',
+                                 }
+                             }}
+                        >
+                          <TableRow>
+                            <TableCell  align="center" className="th_cell">이름</TableCell>
+                            <TableCell className="th_cell" align="center">직급</TableCell>
+                            <TableCell className="th_cell" align="center">부서</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {empList.map((emp) => (
+                               <TableRow
+                                  onClick={() => {
+                                      setEmpName(emp.empName);
+                                      setEmpNumber(emp.empNo);
+                                    }}
+                               >
+                                   <TableCell align="center">{emp.empName}</TableCell>
+                                   <TableCell align="center">{rkList[emp.empRk]}</TableCell>
+                                   <TableCell align="center">{dptList[emp.dptmNo - 1]}</TableCell>
+                               </TableRow>
+                           ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                 </div>
             </div>
+
         </div>
     </>)
 }

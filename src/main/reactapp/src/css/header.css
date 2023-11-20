@@ -35,6 +35,10 @@ header ul > li {
 	align-items: center;
 }
 
+header ul > li:hover {
+	cursor: pointer;
+}
+
 /* 푸터 */
 footer {
   margin-top: 80px;

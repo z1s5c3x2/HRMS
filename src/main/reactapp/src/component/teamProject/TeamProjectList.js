@@ -125,10 +125,35 @@ export default function TeamProjectList(props){
                 className="cb4"
                 onClick={(e) => checkOnlyOne(e.target)} /></span>
             </div>
-            <TableContainer component={Paper}>
+            <TableContainer
+                sx={{
+                    width: 900,
+                    height:500,
+                    'td': {
+                        textAlign: 'center',
+                        fontSize: '0.8rem',
+                        paddingTop: '9px',
+                        paddingBottom: '9px',
+                        paddingLeft: '3px',
+                        paddingRight: '3px',
+                        border:'solid 1px var(--lgray)'
+                    }
+                }}
+                component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow className="table_head th01">
+                <TableHead
+                     sx={{
+                         'th':{
+                             textAlign: 'center',
+                             fontSize: '0.9rem',
+                             bgcolor: 'var(--main04)',
+                             color: '#fff',
+                             paddingTop: '10px' ,
+                             paddingBottom: '10px',
+                         }
+                     }}
+                >
+                  <TableRow >
                     <TableCell  align="center" className="th_cell">번호</TableCell>
                     <TableCell className="th_cell" align="center">프로젝트명</TableCell>
                     <TableCell className="th_cell" align="center">PM</TableCell>
@@ -143,12 +168,11 @@ export default function TeamProjectList(props){
                 <TableBody>
                   {rows.someList.map((row) => (
                     <TableRow
-                      className="tbody_tr"
                       key={row.name}
                     >
                       <TableCell align="center">{row.pjtNo}</TableCell>
                       <TableCell align="center">
-                        <a href={'/teamproject/teammember/print?pjtNo=' + row.pjtNo}>
+                        <a href={'/teamProject/teammember/print?pjtNo=' + row.pjtNo}>
                             {row.pjtName}
                         </a>
                       </TableCell>
@@ -157,12 +181,12 @@ export default function TeamProjectList(props){
                       <TableCell align="center">{row.pjtEND}</TableCell>
                       <TableCell align="center">{row.pjtSta == 1 ? '완료' : '진행중'}</TableCell>
                       <TableCell align="center">
-                        <button type="button" >
-                            <Link to={'/teamproject/update?pjtNo=' + row.pjtNo}>
+                        <button type="button" class="searchbtn" style={{marginRight:'5px'}}>
+                            <Link to={'/teamProject/update?pjtNo=' + row.pjtNo}>
                                 수정
                             </Link>
                         </button>
-                        <button onClick={ () => {projectDelete(row.pjtNo)} } type="button" > 삭제 </button>
+                        <button onClick={ () => {projectDelete(row.pjtNo)} } class="searchbtn" type="button" > 삭제 </button>
                       </TableCell>
                     </TableRow>
                   ))}

@@ -59,11 +59,8 @@ export default function ReconsiderView(props){
 
 
     return (<>
-
-        <h3> 상신관리 </h3>
-
         <div class="contentBox">
-
+            <div className="pageinfo"><span className="lv0">결재관리</span> > <span className="lv1">상신관리</span></div>
             <div class="searchBox">
 
                 <span>
@@ -86,7 +83,7 @@ export default function ReconsiderView(props){
                         <option value="aprvCont"> 내용 </option>
                     </select>
                     <input type="text" />
-                    <button type="button" className=""> 검색 </button>
+                    <button type="button" className="searchbtn"> 검색 </button>
                 </span>
 
             </div>
