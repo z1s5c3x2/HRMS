@@ -22,11 +22,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // super.configure(http);
-
         // 0. 인증(로그인)된 권환(허가) 통해 페이지 접근 제한  UserDetails 내 유저네임과 일치시켜야함
-        http.authorizeHttpRequests()    // 1. 인증된
-                //.antMatchers("/info").hasRole("인사")   // 인증된 권한중에 인사팀이면 HTTP 허용
+        http.authorizeHttpRequests()    // HTTP 요청을 승인하고 권한 부여하는 메서드
                 .antMatchers("/teamproject/teammember/print",
                         "/teamProject/teammember/write",
                         "/teamProject/teammember/update",
@@ -42,38 +39,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/salary/list",
                         "/salary/write",
                         "/salary/view",
-                        "/approval").hasAuthority("인사")
+                        "/approval").hasAuthority("인사")// 인증된 권한중에 인사팀이면 HTTP 허용
                 .antMatchers("/teamproject/teammember/print").hasAuthority("개발")
                 .antMatchers("/teamproject/teammember/print").hasAuthority("기획")
-                /*.antMatchers("/teamproject/teammember/write").hasAuthority("인사")
-                .antMatchers("/teamproject/teammember/update").hasAuthority("인사")
-                .antMatchers("/teamproject").hasAuthority("인사")
-                .antMatchers("/teamproject/listAll").hasAuthority("인사")
-                .antMatchers("/teamproject/update").hasAuthority("인사")
-                .antMatchers("/attendance").hasAuthority("인사")
-                .antMatchers("/attendance/dall").hasAuthority("인사")
-                .antMatchers("/attendance/leaveRequestlist").hasAuthority("인사")
-                .antMatchers("/employee/list").hasAuthority("인사")
-                .antMatchers("/employee/register").hasAuthority("인사")
-                .antMatchers("/employee/update").hasAuthority("인사")
-                .antMatchers("/employee/searchemp").hasAuthority("인사")
-                .antMatchers("/salary/list").hasAuthority("인사")
-                .antMatchers("/salary/write").hasAuthority("인사")
-                .antMatchers("/salary/view").hasAuthority("인사")*/
                 .antMatchers("/**").permitAll()     // 모든 페이지는 권한 모두 허용
-                //.anyRequest().authenticated()     // 모든 페이지는 인증 필요
                 .and()
                 .exceptionHandling().accessDeniedHandler((httpServletRequest, httpServletResponse, e) -> {
-                    //httpServletResponse.sendRedirect("/accessdenied");
-                    httpServletResponse.setHeader("Refresh", "0; URL=/accessdenied");
+                    httpServletResponse.sendRedirect("/accessdenied");
+                    //httpServletResponse.setHeader("Refresh", "0; URL=/accessdenied");
                 });
         // 1. 인증(로그인) 커스텀
         http.formLogin()                                    // 1. 시큐리티 로그인 사용[form전송]
                 .loginPage("/member/Login")                        // 2. 시큐리티 로그인으로 사용할 VIEW 페이지 HTTP주소
                 .loginProcessingUrl("/member/login")        // 3. 시큐리티 로그인(인증)처리 요청시 사용할 HTTP주소
-                // HTTP '/member/login' POST 요청시 ---> MemberService의 loadUserByUsername으로 이동
-                //.defaultSuccessUrl("/")                     // 4. 만약 로그인 성공하면 이동할 HTTP 주소
-                //.failureUrl("/login")    // 5. 만약에 로그인 실패하면 이동할 HTTP 주소
                 .usernameParameter("empNo")                // 6. 로그인시 입력받은 아이디의 변수명 정의
                 .passwordParameter("empPwd")            // 7. 로그인시 입력받은 비밀번호의 변수명 정의
                 .successHandler(authLoginController)       // 로그인 성공했을때 해당 클래스 매핑

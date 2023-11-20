@@ -22,10 +22,6 @@ import java.util.Optional;
 @Service
 public class SecurityService implements UserDetailsService {
 
-    // ----------------------------- 일반회원 서비스 -------------------
-
-    // Service -> Repository
-    // Service <- Repository
     @Autowired
     private EmployeeEntityRepository employeeEntityRepository;
 
@@ -41,14 +37,12 @@ public class SecurityService implements UserDetailsService {
     // 9
     @Transactional
     public EmployeeDto getEmp(){
-        // 시큐리티 사용전 -> 서블릿 세션을 이용한 로그인상태 저장
         // 시큐리티 사용할때는 일반 서블릿 세션이 아니고 시큐리티 저장소를 이용한다
         System.out.println( "시큐리티에 저장된 세션 정보 저장소 : " + SecurityContextHolder.getContext() );
         System.out.println( "시큐리티에 저장된 세션 정보 저장소에 저장된 인증 : " +
                 SecurityContextHolder.getContext().getAuthentication() );
         System.out.println( "시큐리티에 저장된 세션 정보 저장소에 저장된 인증 호출 : " +
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal() );
-
 
         // 인증에 성공한 정보 호출[ 세션 호출 ]
         Object o = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -70,14 +64,6 @@ public class SecurityService implements UserDetailsService {
         // login 페이지에서 form을 통해 전송된 아이디를 받음(패스워드 없음)
         System.out.println("empNo = " + empNo);
 
-        /*// 임의의 아이디와 패스워드를 넣고 UserDetails 객체 만들기
-        UserDetails userDetails = User.builder()
-                .username("qweqwe") // 아이디
-                // .password("1234")   // 패스워드( 암호화 적용x )
-                .password( passwordEncoder.encode( "1234" ) )   // 암호화 적용 패스워드
-                .authorities("ROLE_USER")   // 인가 정보
-                .build();*/
-
         // 1. 사용자의 아이디만으로 사용자 정보를 로딩[불러오기]
         Optional<EmployeeEntity> employeeEntityOptional = employeeEntityRepository.findByEmpNo(empNo);
         EmployeeEntity employeeEntity = null;
@@ -86,12 +72,6 @@ public class SecurityService implements UserDetailsService {
         }
         // 2. 없는 아이디 이면 (throw : 예외처리 던지기) - UsernameNotFoundException : username이 없을때 사용하는 예외 클래스
         if(employeeEntity == null){ throw new UsernameNotFoundException("없는 아이디입니다."); }
-
-        // 2. 로딩[불러오기]된 사용자의 정보를 이용해서 패스워드를 검증
-        /*UserDetails userDetails = User.builder()
-                .username(memberEntity.getMemail())         // 찾은 사용자 정보의 아이디
-                .password(memberEntity.getMpassword())      // 찾은 사용자 정보의 패스워드
-                .authorities(memberEntity.getMrole()).build();  */        // 찾은 사용자 정보의 권한
 
         // 2-1 권한 목록 추가
         List<GrantedAuthority> authList = new ArrayList<>();
