@@ -65,7 +65,6 @@ public class ApprovalService {
 
         if (optionalEmployeeEntity.isPresent()) {
 
-
             ApprovalEntity approvalEntity = ApprovalEntity
                     .builder()
                     .aprvType(aprvType)
@@ -652,17 +651,23 @@ public class ApprovalService {
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) {
 
-        // 페이지별 출력 결재 건수는 15건 고정
-        Pageable pageable = PageRequest.of( page-1, 15 );
         
         // 상신자
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
 
-        // DB의 개별 상신목록 저장
-        Page<ApprovalEntity> approvalEntities = approvalRepository.reconsiderViewSearch( key, keyword, apState, strDate, endDate, securityService.getEmp().getEmpNo(), pageable );
+        /* 자체 페이지 네이션 ============================================================= */
 
-        // 총 페이지 수
-        int totalPages = approvalEntities.getTotalPages();
+        // 페이지별 출력 결재 건수는 15건 고정
+        int maxSize = 15;
+        // 페이지 레코드 시작번호 ( 0, 13, 26 ... )
+        int startRow = (page-1) * maxSize;
+        // 총 출력 결재 건수
+        int totalApprovalCount = approvalRepository.reconsiderMaxCheck( key, keyword, apState, strDate, endDate, securityService.getEmp().getEmpNo() ).size();
+
+        /* ============================================================================= */
+
+        // DB의 개별 상신목록 저장
+        List<ApprovalEntity> approvalEntities = approvalRepository.reconsiderViewSearch( key, keyword, apState, strDate, endDate, securityService.getEmp().getEmpNo(), startRow, maxSize );
 
         // 변환할 DTO 리스트
         List<ApprovalDto> approvalDtos = new ArrayList<>();
@@ -680,9 +685,11 @@ public class ApprovalService {
 
         });
 
-        return PageDto.<ApprovalDto>builder()
+        return PageDto.<ApprovalDto> builder()
                 .someList(approvalDtos)
-                .totalPages(totalPages)
+                .totalPages(totalApprovalCount%maxSize == 0
+                            ? totalApprovalCount/maxSize
+                            : totalApprovalCount/maxSize+1)
                 .build();
     }
 
@@ -693,15 +700,20 @@ public class ApprovalService {
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) {
 
-        
+
+        /* 자체 페이지 네이션 ============================================================= */
+
         // 페이지별 출력 결재 건수는 15건 고정
-        Pageable pageable = PageRequest.of( page-1, 15 );
+        int maxSize = 15;
+        // 페이지 레코드 시작번호 ( 0, 13, 26 ... )
+        int startRow = (page-1) * maxSize;
+        // 총 출력 결재 건수
+        int totalApprovalCount = approvalRepository.approvalViewMaxCheck( key, keyword, apState, strDate, endDate, securityService.getEmp().getEmpNo() ).size();
+
+        /* ============================================================================= */
 
         // DB의 결재목록 저장
-        Page<ApprovalEntity> approvalEntities = approvalRepository.approvalViewSearch( key, keyword, apState, strDate, endDate, securityService.getEmp().getEmpNo(), pageable );
-
-        // 총 페이지 수
-        int totalPages = approvalEntities.getTotalPages();
+        List<ApprovalEntity> approvalEntities = approvalRepository.approvalViewSearch( key, keyword, apState, strDate, endDate, securityService.getEmp().getEmpNo(), startRow, maxSize );
 
         // 반환할 LIST 선언
         List<ApprovalDto> approvalDtos = new ArrayList<>();
@@ -718,9 +730,12 @@ public class ApprovalService {
 
         });
 
+
         return PageDto.<ApprovalDto>builder()
                 .someList(approvalDtos)
-                .totalPages(totalPages)
+                .totalPages(totalApprovalCount%maxSize == 0
+                            ? totalApprovalCount/maxSize
+                            : totalApprovalCount/maxSize+1 )
                 .build();
     }
        
@@ -732,24 +747,24 @@ public class ApprovalService {
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) throws JsonProcessingException {
 
-        System.out.println("page = " + page + ", key = " + key + ", keyword = " + keyword + ", apState = " + apState + ", strDate = " + strDate + ", endDate = " + endDate);
+
+        /* 자체 페이지 네이션 ============================================================= */
 
         // 페이지별 출력 결재 건수는 15건 고정
-        Pageable pageable = PageRequest.of( page-1, 15 );
+        int maxSize = 15;
+        // 페이지 레코드 시작번호 ( 0, 13, 26 ... )
+        int startRow = (page-1) * maxSize;
+        // 총 출력 결재 건수
+        int totalApprovalCount = approvalRepository.findByMaxCheck( key, keyword, apState, strDate, endDate ).size();
+
+        /* ============================================================================= */
+
 
         // DB의 전사원 결재목록 저장
-        Page<ApprovalEntity> approvalEntities = approvalRepository.findBySearch( key, keyword, apState, strDate, endDate, pageable );
-        //List<ApprovalEntity> approvalEntities = approvalRepository.findAll();
-
-
-        // 총 페이지 수
-        int totalPages = approvalEntities.getTotalPages();
-
+        List<ApprovalEntity> approvalEntities = approvalRepository.findBySearch( key, keyword, apState, strDate, endDate,startRow ,maxSize );
 
         // 반환할 LIST 선언
         List<ApprovalDto> approvalDtos = new ArrayList<>();
-
-
 
         approvalEntities.forEach( e-> {
 
@@ -763,10 +778,11 @@ public class ApprovalService {
 
         });
 
-
         return PageDto.<ApprovalDto>builder()
                 .someList(approvalDtos)
-                .totalPages(totalPages)
+                .totalPages( totalApprovalCount % maxSize == 0
+                            ? totalApprovalCount / maxSize
+                            : totalApprovalCount / maxSize+1  )
                 .build();
 
     }
