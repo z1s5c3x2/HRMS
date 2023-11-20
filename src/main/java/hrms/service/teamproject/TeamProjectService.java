@@ -1,6 +1,7 @@
 package hrms.service.teamproject;
 
 import hrms.model.dto.ApprovalRequestDto;
+import hrms.model.dto.EmployeeDto;
 import hrms.model.dto.PageDto;
 import hrms.model.dto.ProjectDto;
 import hrms.model.entity.ApprovalEntity;
@@ -16,6 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -40,7 +44,7 @@ public class TeamProjectService {
     // 프로젝트팀 생성
     @Transactional
     public boolean postTeamProject(ApprovalRequestDto<ProjectDto> approvalRequestDto){
-        System.out.println("프로젝트서비스");
+
         // 입력한 프로젝트팀 관리자 pk번호 호출
         Optional<EmployeeEntity> employeeEntityOptional =
                 employeeRepository.findByEmpNo(approvalRequestDto.getData().getEmpNo());
@@ -54,7 +58,7 @@ public class TeamProjectService {
                 approvalRequestDto.getAprvCont(),
                 approvalRequestDto.getApprovers()
         );
-        System.out.println("1");
+
         // 프로젝트팀 생성
         ProjectEntity projectEntity =
                 projectRepository.save( approvalRequestDto.getData().saveToEntity() );
