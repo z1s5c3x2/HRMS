@@ -72,6 +72,7 @@ public class ApprovalController {
 
         // DTO객체 => json 문자열
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());  // datetime 모듈 추가
         String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
         approvalRequestDto.setAprvJson(json);
 
@@ -93,6 +94,7 @@ public class ApprovalController {
 
         // DTO객체 => json 문자열
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());  // datetime 모듈 추가
         String json = objectMapper.writeValueAsString(approvalRequestDto.getData());
         approvalRequestDto.setAprvJson(json);
 
