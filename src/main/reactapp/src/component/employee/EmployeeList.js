@@ -37,16 +37,6 @@ export default function EmployeeList() {
                 console.log( e )
             })
     }
-    function wwwwwwwww(e){
-        axios
-            .get("/employee/test1?a="+document.querySelector(".a").value+"&b="+document.querySelector(".b").value)
-            .then( (r) => {
-                console.log( r.data )
-             })
-            .catch( (e) =>{
-                console.log( e )
-            })
-    }
 
     return (<>
         <div className="contentBox">
@@ -75,9 +65,7 @@ export default function EmployeeList() {
                 </select>
                 {/* 필터 구역*/}
                 {/* 검색 필드 */}
-                 <input type={"text"} className={"a"} />
-                 <input type={"text"} className={"b"} />
-                 <button className="searchbtn" type={"button"} onClick={wwwwwwwww}>검색</button>
+
              </div>
              <hr className="hr00"/>
             {/* 리스트 출력*/}
