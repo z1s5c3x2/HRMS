@@ -177,7 +177,7 @@ public class AttendanceService {
     {
         Optional<EmployeeEntity> optionalEmployeeEntity =  employeeEntityRepository.findByEmpNo(securityService.getEmp().getEmpNo());
 
-        if(optionalEmployeeEntity.isPresent())
+        if(optionalEmployeeEntity.isPresent() && optionalEmployeeEntity.get().getAttendanceEntities().size() != 0)
         {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             AttendanceEntity attendanceEntity  = optionalEmployeeEntity.get().getAttendanceEntities().get(optionalEmployeeEntity.get().getAttendanceEntities().size()-1);

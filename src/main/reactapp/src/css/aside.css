@@ -20,7 +20,7 @@
 	--main03: #526D82;
 	--main04: #27374d;
 	--lsand :#f1f0e8;
-	--dsand:#dac0a3;
+	--dsand :#dac0a3;
 	--yellow:#f1c232;
 }
 @font-face {
@@ -363,7 +363,7 @@ header .topmenu{
 .po_abtr0 {
     position:absolute;
     bottom:-8px;
-    right:32;
+    right:32px;
 }
 
 /*마진*/
@@ -407,6 +407,7 @@ header .topmenu{
 .pd10_0{padding:10px 0;}
 .pd15_0{padding:15px 0;}
 .pdt10_0{padding-top:10px 0;}
+.pdt15_0{padding-top:15px 0;}
 .ma{margin:auto;}
 .mb18{margin-bottom:18px;}
 .mt5{margin-top:5px;}

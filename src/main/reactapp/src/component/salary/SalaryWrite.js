@@ -46,7 +46,7 @@ const data = {
       empNo: empNumber,
       slryDate: selectedDate,
       slryPay: Number(amount),
-      slryType: slryType
+      slryType: slryType,
     };
     console.log(data);
   const handleSubmit = () => {
@@ -321,23 +321,23 @@ const data = {
           <ApprovalModal
             data={data}
             aprvType={
-              data.slryType == 1
-                ? 18
-                : data.slryType == 2
-                ? 19
-                : data.slryType == 3
-                ? 20
-                : data.slryType == 4
-                ? 21
-                : data.slryType == 5
-                ? 22
-                : data.slryType == 6
-                ? 23
-                : data.slryType == 7
-                ? 24
-                : data.slryType == 8
-                ? 25
-                : null
+                data.slryType === "1"
+                    ? 18
+                    : data.slryType === "2"
+                        ? 19
+                        : data.slryType === "3"
+                            ? 20
+                            : data.slryType === "4"
+                                ? 21
+                                : data.slryType === "5"
+                                    ? 22
+                                    : data.slryType === "6"
+                                        ? 23
+                                        : data.slryType === "7"
+                                            ? 24
+                                            : data.slryType === "8"
+                                                ? 25
+                                                : null
             }
             targetUrl="/salary/post"
             successUrl="/salary/write"

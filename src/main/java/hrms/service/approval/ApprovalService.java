@@ -65,7 +65,6 @@ public class ApprovalService {
 
         if (optionalEmployeeEntity.isPresent()) {
 
-
             ApprovalEntity approvalEntity = ApprovalEntity
                     .builder()
                     .aprvType(aprvType)
@@ -94,7 +93,7 @@ public class ApprovalService {
     //post시 json 저장이 필요한 경우
     @Transactional
     public ApprovalEntity postApprovalJson(int aprvType, String aprvCont, ArrayList<String> approvers,String aprvJson) {
-
+        /*System.out.println("aprvType = " + aprvType + ", aprvCont = " + aprvCont + ", approvers = " + approvers + ", aprvJson = " + aprvJson);*/
         try{
             // 상신자
             Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
@@ -114,10 +113,10 @@ public class ApprovalService {
                 // DB 저장
                 System.out.println("approvalEntity = " + approvalEntity);
                 ApprovalEntity result = approvalRepository.save(approvalEntity);
-
+                /* 단방향 */
                 // 검토자에 대한 사원테이블 JPA 단방향 관계 정립
                 result.setEmpNo(optionalEmployeeEntity.get());
-
+                /* 양방향 */
                 // 사원테이블 JPA 단방향 관계 정립
                 optionalEmployeeEntity.get().getApprovalEntities().add(result);
                 // 검토자 DB 저장을 위한 메서드 실행
@@ -435,7 +434,9 @@ public class ApprovalService {
             //부서, 사원 id로 가져오기
             Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(departmentHistoryDto.getEmpNo());
             Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(departmentHistoryDto.getDptmNo());
-
+            System.out.println("오나?");
+            System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
+            System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
             // 부서,사원을 성공적으로 가져오면 실행
             if(optionalEmployeeEntity.isPresent() && optionalDepartmentEntity.isPresent())
             {
@@ -452,7 +453,9 @@ public class ApprovalService {
                         .aprvNo(optionalApprovalEntity.get()).build();
 
                 /* 단방향 */
+                System.out.println("여기");
                 optionalEmployeeEntity.get().setDptmNo(departmentHistoryEntity.getDptmNo());
+                System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
                 departmentHistoryEntityRepository.save(departmentHistoryEntity);
                 /* 양방향 */
                 optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
@@ -561,6 +564,8 @@ public class ApprovalService {
                     optionalDepartmentEntity.get().getEmployeeEntities().add(employeeEntity); //부서 pk
                     optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
                     employeeEntity.getDepartmentHistoryEntities().add(departmentHistoryEntity);
+                    System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity.get().getEmployeeEntities());
+                    System.out.println("employeeEntity.getApprovalEntities() = " + employeeEntity.getApprovalEntities());
 
                 }
             }
@@ -788,13 +793,17 @@ public class ApprovalService {
 
     // 결재 상세내역 조회
     @Transactional
-    public ApprovalEntity getDetailedApproval( int aprvNo ){
+    public ApprovalDto getDetailedApproval( int aprvNo ){
 
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById( aprvNo );
 
+        // ApprovalRequest참고해서
+
         if( optionalApprovalEntity.isPresent() ){
-            return optionalApprovalEntity.get();
+            return optionalApprovalEntity.get().toApprovalDto();
         }
+
+
 
         return null;
     }

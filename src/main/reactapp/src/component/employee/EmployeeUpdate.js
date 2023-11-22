@@ -12,8 +12,7 @@ export default function EmployeeUpdate(props)
 {
     /*모달 호출 선언 필요*/
     const [isOn, setIsOn] = useState(false)
-    /* 변경 데이터 재 지정 */
-    const [changeDepartment, setChangeDepartment] = useState({empNo:"2311001"})
+
     /* 모달 키고 끄기*/
     const modalController = (e)=> {
         setIsOn(!isOn)
@@ -27,6 +26,8 @@ export default function EmployeeUpdate(props)
     const [aprvType, setAprvType] = useState(0)
     const [saveDp, setSaveDp] = useState()
     const [saveRk, setSaveRk] = useState()
+    /* 변경 데이터 재 지정 */
+    const [changeDepartment, setChangeDepartment] = useState({empNo:searchParams.get('empNo')})
     useEffect(() => {
         axios
             .get("/employee/findemp?empNo="+searchParams.get('empNo'))
@@ -41,7 +42,7 @@ export default function EmployeeUpdate(props)
             })
     }, []);
     const changeInfo = (e) =>{
-        // 부서 직급 변경의 결제타입이 다름, 한번에 하나씩 수정
+        // 부서 직급 변경의 결재타입이 다름, 한번에 하나씩 수정
         if( (e.target.name == "empRk" && saveDp != changeDepartment.dptmNo) || (e.target.name == "dptmNo" && saveRk != empInfo.empRk)  )
         {
             alert("한개씩 수정 해주세요")
@@ -121,14 +122,14 @@ export default function EmployeeUpdate(props)
             }
                 <div class="eregBtnBox" style={{display:'flex', justifyContent:"space-between"}}>
                     <button type="button" class="btn w49" onClick={e => window.location.reload()}> 새로고침 </button>
-                    <button type="button" class="btn w49" onClick={modalController}> 결제</button>
+                    <button type="button" class="btn w49" onClick={modalController}> 결재</button>
                 </div>
             </div>
         </div>
         { isOn ? <> <ApprovalModal data={aprvType == 5 ? empInfo : changeDepartment }
                                    aprvType={aprvType}
                                    targetUrl={aprvType == 5 ? "/employee/changernk ": "/employee/changedptm"}
-                                   successUrl={"/employee/list"}
+                                   successUrl={"/approval/reconsiderview"}
                                    modalControll={modalController}>
 
         </ApprovalModal></> : <> </> }

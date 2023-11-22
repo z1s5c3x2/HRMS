@@ -69,7 +69,7 @@ export default function Index( props ){
                         <Routes>
 
                             {/* MAIN*/}
-                            <Route path='/' element = { <Main />} />
+                            <Route path='/' element = { <Login />} />
                             {/* Approval*/}
                                 <Route path='/approval' element = { <ApprovalList/> } />
                                 <Route path='/approval/reconsiderview' element = { <ReconsiderView/> } />

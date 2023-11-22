@@ -88,11 +88,11 @@ export default function RegisterEmp(props) {
             </div>
 
         </div>
-        {/*!-- 결제 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결제 타입 설정  successUrl :결제 성공후 이동할 url  */   }
+        {/*!-- 결재 모달 Start --> targetUrl: axios로 보낼 url aprvType: 결재 타입 설정  successUrl :결재 성공후 이동할 url  */   }
         { isOn ? <> <ApprovalModal data={aprovalInfo}
                                    aprvType={1}
                                    targetUrl={"/employee/postEmp"}
-                                   successUrl={"/employee/list"}
+                                   successUrl={"/approval/reconsiderview"}
                                    modalControll={modalController}>
         </ApprovalModal></> : <> </> }
 

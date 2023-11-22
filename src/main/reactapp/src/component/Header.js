@@ -46,7 +46,7 @@ export default function Header( props ){
         				<ul className="topMenuList">
         					<li className=""><a href='/employee/list'>인사관리</a></li>
         					<li className=""><a href='/teamProject/listAll'>프로젝트팀관리</a></li>
-        					<li className=""><Link to='/attendance/pcalendar'>근태관리</Link></li>
+        					<li className=""><Link to='/attendance/dcalendar'>근태관리</Link></li>
         					<li className=""><Link to='/salary'>급여관리</Link></li>
         					{/*<li className=""><Link to='/leaveRequest'>연차관리</Link></li>*/}
         					<li className=""><Link to='/approval'>결재관리</Link></li>

@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 /* 다른 컴포넌트 import */
-import Modal from './ApprovalDetailed';
 import { getTypeName } from './ListOutputConverter';
+import ApprovalDetailed from './ApprovalDetailed';
 
 /* MUI TABLE 관련 컴포넌트 import */
 import Table from '@mui/material/Table';
@@ -16,6 +16,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
 /* MUI 페이지네이션 */
 import Pagination from '@mui/material/Pagination';
 
@@ -24,15 +25,18 @@ export default function ApprovalList(props){
 
     /* MODAL =============================================== */
 
-
+        // MODAL 스위치 상태변수
     const [isModalOpen, setIsModalOpen] = useState(false);
+        // 결재번호
     const [aprvNo, setAprvNo] = useState(0);
 
+        // MODAL을 열었을 때
     const openModal = ( aprvNo ) => {
         setIsModalOpen(true);
         setAprvNo(aprvNo);
     };
 
+        // MODAL을 닫았을 때
     const closeModal = () => {
         setIsModalOpen(false);
     };
@@ -80,8 +84,9 @@ export default function ApprovalList(props){
     }, [pageInfo.page])
 
     return (<>
-        <Modal isOpen={isModalOpen} closeModal={closeModal} aprvNo={aprvNo} />
 
+        // 출력될 모달창
+        <ApprovalDetailed isOpen={isModalOpen} closeModal={closeModal} aprvNo={aprvNo} />
 
         <div class="contentBox">
             <div className="pageinfo"><span className="lv0">결재관리</span> > <span className="lv1">전사원결재조회</span></div>
@@ -89,8 +94,7 @@ export default function ApprovalList(props){
             <div class="searchBox">
 
                 <span>
-                    상신일자
-                    조회기간 : <input type="date" className="periodStart"
+                    상신일기간 : <input type="date" className="periodStart"
                         onChange = { e =>{
                         setPageInfo( { ...pageInfo, strDate : e.target.value } )
                     }} />
@@ -150,7 +154,7 @@ export default function ApprovalList(props){
                     <tr className="outputTd">
                         <td> 제 { r.aprvNo }호 </td>
                         <td> { getTypeName( r.aprvType ) } </td>
-                        <td onClick={() => openModal(r.aprvNo)} > { r.aprvCont } </td>
+                        <td onClick={() => openModal(r.aprvNo)} > { r.aprvCont !== "" ? r.aprvCont : "-" } </td>
                         <td>
                             <span> { (r.cdate.split("T"))[0] } </span>
                             <span> { ((r.cdate.split("T"))[1].split("."))[0].substring(0, 5) } </span>

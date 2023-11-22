@@ -87,9 +87,6 @@ export default function ApprovalMain(props){
     }
 
     return (<>
-
-        <h3> 결재관리 </h3>
-
         <div class="contentBox">
             <div className="pageinfo"><span className="lv0">결재관리</span> > <span className="lv1">결재내역상세조회</span></div>
 
