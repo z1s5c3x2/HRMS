@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class ApprovalService {
@@ -52,13 +53,6 @@ public class ApprovalService {
     @Transactional
     public ApprovalEntity postApproval(int aprvType, String aprvCont, ArrayList<String> approvers) {
 
-        /*
-        타입 정리가 확실히 될 시 유효성 검사 추가 예정
-
-        if( aprvType == 0 ){
-            return null;
-        }
-        */
 
         // 상신자
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
@@ -134,14 +128,6 @@ public class ApprovalService {
     // 수정 : 결재 테이블 JSON문자열 저장 [수정 기능에 관한 테이블]
     @Transactional
     public boolean updateApproval(int aprvType, String aprvCont, ArrayList<String> approvers, String aprvJson) {
-
-        /*
-        타입 정리가 확실히 될 시 유효성 검사 추가 예정
-
-        if( aprvType == 0 ){
-            return null;
-        }
-        */
 
         // 상신자
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
@@ -793,17 +779,46 @@ public class ApprovalService {
 
     // 결재 상세내역 조회
     @Transactional
-    public ApprovalDto getDetailedApproval( int aprvNo ){
+    public ApprovalResponseDto getDetailedApproval( int aprvNo ){
 
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById( aprvNo );
 
-        // ApprovalRequest참고해서
-
         if( optionalApprovalEntity.isPresent() ){
-            return optionalApprovalEntity.get().toApprovalDto();
+            optionalApprovalEntity.get().toApprovalDto();
+
+            System.out.println(11111);
+            System.out.println("aprvNo = " + aprvNo);
+
+            // 결재 상세내역 반환 DTO 생성
+            return ApprovalResponseDto.builder()
+                    .aprvNo( aprvNo )
+                    .aprvType( optionalApprovalEntity.get().getAprvType() )
+                    .aprvCont( optionalApprovalEntity.get().getAprvCont() )
+                    .empName( optionalApprovalEntity.get().getEmpNo().getEmpName() )
+                    .apState( checkApprovalState( optionalApprovalEntity.get() ) )
+                    .cdate( optionalApprovalEntity.get().getCdate() )
+                    .empRk( optionalApprovalEntity.get().getEmpNo().getEmpRk() )
+                    .dptmName( optionalApprovalEntity.get().getEmpNo().getDptmNo().getDptmName() )
+                    // 다수의 검토자 ApproversDto 인스턴스화
+                        // 0 ~ ApprovalLogEntities.size() 까지 인덱스의 범위를 설정하여 IntStream을 생성
+                    .approvers( IntStream.range(0, optionalApprovalEntity.get().getApprovalLogEntities().size())
+                            .mapToObj(i -> {
+
+                                // 해당 결재건에 대한 검토자 1명
+                                ApprovalLogEntity approver = optionalApprovalEntity.get().getApprovalLogEntities().get(i);
+
+                                return ApproversDto.builder()
+                                        .empName( approver.getEmpNo().getEmpName() )
+                                        .empRk( approver.getEmpNo().getEmpRk() )
+                                        .dptmName( approver.getEmpNo().getDptmNo().getDptmName() )
+                                        .apState( approver.getAplogSta() )
+                                        .udate( approver.getUdate() )
+                                        .build();
+
+                            }).collect( Collectors.toList() ))
+                    .build();
+
         }
-
-
 
         return null;
     }

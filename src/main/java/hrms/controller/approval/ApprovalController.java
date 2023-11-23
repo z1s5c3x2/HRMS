@@ -147,7 +147,7 @@ public class ApprovalController {
 
     // 결재 상세내역 조회
     @GetMapping("/getDetailedApproval")
-    public ApprovalDto getDetailedApproval( int aprvNo ){
+    public ApprovalResponseDto getDetailedApproval( Integer aprvNo ){
         return approvalService.getDetailedApproval( aprvNo );
     }
 

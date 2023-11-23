@@ -85,7 +85,6 @@ export default function ApprovalList(props){
 
     return (<>
 
-        // 출력될 모달창
         <ApprovalDetailed isOpen={isModalOpen} closeModal={closeModal} aprvNo={aprvNo} />
 
         <div class="contentBox">

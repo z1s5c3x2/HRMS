@@ -2,18 +2,25 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import styles from '../../css/ApprovalDetailed.css';
+
 export default function ApprovalDetailed( { isOpen, closeModal, aprvNo } ){
 
+    // 상세 결제건 저장 상태변수
+    const [moreInformation, setMoreInformation] = useState({});
+
     useEffect( () => {
-        console.log( aprvNo )
-    })
+
+        getApprovaDetailed()
+
+    }, [ aprvNo ])
 
     // 결재건 상세정보 호출
     const getApprovaDetailed = () => {
 
-        axios.get( '/approval/getDetailedApproval', {params : aprvNo} )
+        axios.get( '/approval/getDetailedApproval', { params: { aprvNo: aprvNo } } )
             .then( result => {
-                console.log( result.data );
+                setMoreInformation( result.data );
         })
 
     }
