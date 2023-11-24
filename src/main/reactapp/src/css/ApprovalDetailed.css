@@ -14,10 +14,36 @@
 
 .modal-content {
   background: white;
-  width: 1000px;
-  height: 620px;
+  width: 600px;
+  height: 800px;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   z-index: 1001; /* overlay보다 더 위에 올라가도록 설정 */
+  position: relative;
 }
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.close-button button {
+    padding: 6px 10px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
