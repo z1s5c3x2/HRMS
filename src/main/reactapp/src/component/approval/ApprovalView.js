@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 /* 컴포넌트 import */
 import { getTypeName } from './ListOutputConverter';
+import ApprovalDetailed from './ApprovalDetailed';
 
 /* MUI TABLE 관련 컴포넌트 import */
 import Table from '@mui/material/Table';
@@ -27,8 +28,26 @@ export default function ApprovalMain(props){
         window.location.href = '/approval'
     }
 
+    /* MODAL =============================================== */
 
-    /* 리스트 출력 ================================================================== */
+        // MODAL 스위치 상태변수
+    const [isModalOpen, setIsModalOpen] = useState(false);
+        // 결재번호
+    const [aprvNo, setAprvNo] = useState(0);
+
+        // MODAL을 열었을 때
+    const openModal = ( aprvNo ) => {
+        setIsModalOpen(true);
+        setAprvNo(aprvNo);
+    };
+
+        // MODAL을 닫았을 때
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+
+    /* APPROVAL =============================================== */
 
     // 출력할 결재 리스트 상태변수
     const [ approvalList, setApprovalList ] = useState( [] )
@@ -87,6 +106,9 @@ export default function ApprovalMain(props){
     }
 
     return (<>
+
+        <ApprovalDetailed isOpen={isModalOpen} closeModal={closeModal} aprvNo={aprvNo} />
+
         <div class="contentBox">
             <div className="pageinfo"><span className="lv0">결재관리</span> > <span className="lv1">결재내역상세조회</span></div>
 
@@ -153,7 +175,7 @@ export default function ApprovalMain(props){
                     <tr className="outputTd" >
                         <td> 제 { r.aprvNo }호 </td>
                         <td> { getTypeName( r.aprvType ) } </td>
-                        <td> { r.aprvCont !== "" ? r.aprvCont : "-" } </td>
+                        <td onClick={() => openModal(r.aprvNo)} > <div className="outputContBox"> { r.aprvCont !== "" ? r.aprvCont : "-" } </div> </td>
                         <td>
                             <span> { (r.cdate.split("T"))[0] } </span>
                             <span> { ((r.cdate.split("T"))[1].split("."))[0].substring(0, 5) } </span>

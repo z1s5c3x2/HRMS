@@ -8,15 +8,6 @@ import { Link } from 'react-router-dom';
 import { getTypeName } from './ListOutputConverter';
 import ApprovalDetailed from './ApprovalDetailed';
 
-/* MUI TABLE 관련 컴포넌트 import */
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
 /* MUI 페이지네이션 */
 import Pagination from '@mui/material/Pagination';
 
@@ -137,23 +128,23 @@ export default function ApprovalList(props){
 
 
             <hr class="hr01"/>
-            <table className="tableTypeA">
+            <table className="tableTypeA approvalListTable">
 
                 <tr>
-                    <th width="12%"> 결재번호 </th>
-                    <th width="20%"> 상신유형 </th>
-                    <th width="29%"> 내용 </th>
-                    <th width="17%"> 상신일시 </th>
-                    <th width="10%"> 상신자 </th>
-                    <th width="12%"> 진행상태 </th>
+                    <th width="108px">결재번호</th>
+                    <th width="180px">상신유형</th>
+                    <th width="261px">내용</th>
+                    <th width="153px">상신일시</th>
+                    <th width="90px">상신자</th>
+                    <th width="108px">진행상태</th>
                 </tr>
 
 
                 { allApprovalList.someList && allApprovalList.someList.map( r =>(
                     <tr className="outputTd">
-                        <td> 제 { r.aprvNo }호 </td>
+                        <td > 제 { r.aprvNo }호 </td>
                         <td> { getTypeName( r.aprvType ) } </td>
-                        <td onClick={() => openModal(r.aprvNo)} > { r.aprvCont !== "" ? r.aprvCont : "-" } </td>
+                        <td onClick={() => openModal(r.aprvNo)} > <div className="outputContBox"> { r.aprvCont !== "" ? r.aprvCont : "-" } </div> </td>
                         <td>
                             <span> { (r.cdate.split("T"))[0] } </span>
                             <span> { ((r.cdate.split("T"))[1].split("."))[0].substring(0, 5) } </span>

@@ -53,7 +53,7 @@ export default function ApprovalModal(props)
                 if(r.data)
                 {
                     window.location.href=props.successUrl
-                }else{
+                } else {
                     alert("결재 실패")
                 }
             })

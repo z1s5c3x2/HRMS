@@ -1,10 +1,17 @@
+
+
+.outputContBox {
+    overflow: hidden!important;
+    text-overflow: ellipsis!important;
+    white-space: normal!important; /* 또는 생략하려는 텍스트의 자동 줄 바꿈을 허용하도록 수정 */
+}
+
 .reconsiderTable th, td{
     border : 1px solid black;
 }
 
 .outputTd{
      height : 30px;
-
 }
 
 .outputTd td{
@@ -14,4 +21,9 @@
 .outputTd button{
     height : 28px !important;
     padding: 2px 12px !important;
+}
+
+.outputContBox {
+    width : 224px;
+    margin: 0 auto;
 }

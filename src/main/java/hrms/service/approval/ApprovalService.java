@@ -53,7 +53,6 @@ public class ApprovalService {
     @Transactional
     public ApprovalEntity postApproval(int aprvType, String aprvCont, ArrayList<String> approvers) {
 
-
         // 상신자
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
 
@@ -84,10 +83,10 @@ public class ApprovalService {
         return null;
     }
 
-    //post시 json 저장이 필요한 경우
+    // post시 json 저장이 필요한 경우
     @Transactional
     public ApprovalEntity postApprovalJson(int aprvType, String aprvCont, ArrayList<String> approvers,String aprvJson) {
-        /*System.out.println("aprvType = " + aprvType + ", aprvCont = " + aprvCont + ", approvers = " + approvers + ", aprvJson = " + aprvJson);*/
+
         try{
             // 상신자
             Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
@@ -105,7 +104,7 @@ public class ApprovalService {
                         .empNo(optionalEmployeeEntity.get())
                         .build();
                 // DB 저장
-                System.out.println("approvalEntity = " + approvalEntity);
+
                 ApprovalEntity result = approvalRepository.save(approvalEntity);
                 /* 단방향 */
                 // 검토자에 대한 사원테이블 JPA 단방향 관계 정립
@@ -161,7 +160,6 @@ public class ApprovalService {
 
         return false;
     }
-
 
     // 결재 검토자 테이블에 검토자 등록
     @Autowired
@@ -301,7 +299,32 @@ public class ApprovalService {
         return -1;
     }
 
-    @Transactional // 결제 완료된 사원 퇴사
+    // 현 검토자에 대한 결재 진행상태 확인
+    @Transactional
+    public int checkApprovalIndividualState( ApprovalEntity approvalEntity ){
+
+        // 1개의 결재건에 대한 검토자리스트 호출
+        for (int i = 0; i < approvalEntity.getApprovalLogEntities().size(); i++) {
+
+            // 1명의 검토자 비교
+            switch (approvalEntity.getApprovalLogEntities().get(i).getAplogSta()) {
+
+                case 2: return 2;   // 결재상태 : 반려
+
+                case 3:             // 결재상태 : 검토중
+                    if( approvalEntity.getApprovalLogEntities().get(i).getEmpNo().equals( securityService.getEmp().getEmpNo() ) ) return 3;
+
+                case 1:             // 결재상태 : 완료
+                    if( i == approvalEntity.getApprovalLogEntities().size()-1 )  return 1;
+
+            }
+        }
+
+        return -1;
+    }
+
+    // 결제 완료된 사원 퇴사
+    @Transactional
     public boolean commitRetiredEmployee(int aprvNo)
     {
         try{
@@ -351,8 +374,6 @@ public class ApprovalService {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-
-
         Optional<ApprovalEntity> optionalApprovalEntity = approvalRepository.findById(aprvNo);
         if (!optionalApprovalEntity.isPresent()) return false;
         if(optionalApprovalEntity.get().getAprvType() == 2 || optionalApprovalEntity.get().getAprvType() == 5) // 기본 정보 수정
@@ -360,7 +381,6 @@ public class ApprovalService {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         }else if(optionalApprovalEntity.get().getAprvType() == 3) //사원 퇴사
         {
-            System.out.println("타입 3 들어옴");
             return commitRetiredEmployee(aprvNo);
         }else if(optionalApprovalEntity.get().getAprvType() == 4) //부서 변경
         {
@@ -420,9 +440,7 @@ public class ApprovalService {
             //부서, 사원 id로 가져오기
             Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo(departmentHistoryDto.getEmpNo());
             Optional<DepartmentEntity> optionalDepartmentEntity = departmentEntityRepository.findById(departmentHistoryDto.getDptmNo());
-            System.out.println("오나?");
-            System.out.println("optionalDepartmentEntity = " + optionalDepartmentEntity);
-            System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
+
             // 부서,사원을 성공적으로 가져오면 실행
             if(optionalEmployeeEntity.isPresent() && optionalDepartmentEntity.isPresent())
             {
@@ -439,9 +457,9 @@ public class ApprovalService {
                         .aprvNo(optionalApprovalEntity.get()).build();
 
                 /* 단방향 */
-                System.out.println("여기");
+
                 optionalEmployeeEntity.get().setDptmNo(departmentHistoryEntity.getDptmNo());
-                System.out.println("optionalEmployeeEntity = " + optionalEmployeeEntity);
+
                 departmentHistoryEntityRepository.save(departmentHistoryEntity);
                 /* 양방향 */
                 optionalDepartmentEntity.get().getDepartmentHistory().add(departmentHistoryEntity);
@@ -634,13 +652,11 @@ public class ApprovalService {
         return false;
     }
 
-
     // 개별 상신목록 조회
     @Transactional
     public PageDto<ApprovalDto> getReconsiderHistory(
             int page, String key, String keyword,
             int apState, String strDate, String endDate ) {
-
         
         // 상신자
         Optional<EmployeeEntity> optionalEmployeeEntity = employeeRepository.findByEmpNo( securityService.getEmp().getEmpNo() );
@@ -683,7 +699,6 @@ public class ApprovalService {
                 .build();
     }
 
-    
     // 개별 결재목록 조회
     @Transactional
     public PageDto<ApprovalDto> getApprovalHistory(
@@ -714,7 +729,7 @@ public class ApprovalService {
             approvalDtos.add( e.toApprovalDto() );
             // checkApprovalState(e) : 추가된 결재 건에 대해 검토진행 현황 확인 후 저장
             // 1:완료  2:반려  3:검토중
-            approvalDtos.get(approvalDtos.size()-1).setApState( checkApprovalState( e ) );
+            approvalDtos.get(approvalDtos.size()-1).setApState( checkApprovalIndividualState( e ) );
             // 상신자명 저장
             approvalDtos.get(approvalDtos.size()-1).setEmpName( e.getEmpNo().getEmpName() );
 
@@ -785,9 +800,6 @@ public class ApprovalService {
 
         if( optionalApprovalEntity.isPresent() ){
             optionalApprovalEntity.get().toApprovalDto();
-
-            System.out.println(11111);
-            System.out.println("aprvNo = " + aprvNo);
 
             // 결재 상세내역 반환 DTO 생성
             return ApprovalResponseDto.builder()
